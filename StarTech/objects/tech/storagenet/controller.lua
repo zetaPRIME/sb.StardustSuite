@@ -25,6 +25,14 @@ local function checkUpdateItems()
   itemUpdateId = itemUpdateId + 1
   
   -- okay, here it goes
+  local function itemcpy(item)
+    return {
+      name = item.name
+      count = item.count
+      parameters = item.parameters
+    }
+  end
+  
   local dict = {}
   local function stackIn(item)
     if not item.count then item.count = 1 end -- not sure how this would happen, but just in case
@@ -33,7 +41,7 @@ local function checkUpdateItems()
     end
     local list = dict[item.name]
     if not item.parameters then
-      if not list[0] then list[0] = item return nil end
+      if not list[0] then list[0] = itemcpy(item) return nil end
       list[0].count = list[0].count + item.count
     else
       for i = 1, #list do
@@ -42,7 +50,7 @@ local function checkUpdateItems()
           return nil
         end
       end
-      list[#list+1] = item
+      list[#list+1] = itemcpy(item)
     end
   end
   

@@ -81,7 +81,7 @@ function spTemplate:getPriority(item)
         parameters = item.parameters
       }
       
-      for k, itm in pairs(sp.item.parameters.contents) do
+      for k, itm in pairs(self.item.parameters.contents) do
         if itemutil.canStack(itemAnon, itm) and itm.count > 0 then
           priorityMod = priorityMod + priorityModifier
           break

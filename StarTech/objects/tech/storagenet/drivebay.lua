@@ -212,6 +212,15 @@ function compactTable(tbl)
   return nt
 end
 
+function updateLights()
+  local cc = world.containerItems(entity.id())
+  local lights = {}
+  for i,v in pairs(cc) do
+    lights[i] = 1
+  end
+  object.setAnimationParameter("lights", lights)
+end
+
 -------------------------
 -- Container functions --
 -------------------------
@@ -229,6 +238,8 @@ function init()
   -- set up messages
   message.setHandler("getInfo", uiGetInfo)
   message.setHandler("setInfo", uiSetInfo)
+  
+  updateLights()
 end
 
 function uninit()
@@ -251,6 +262,7 @@ function containerCallback()
   end
   
   containerLock = false
+  updateLights()
 end
 
 function onStorageNetUpdate()

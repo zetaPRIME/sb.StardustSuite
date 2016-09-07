@@ -24,6 +24,8 @@
   "scripts" : [ "drivebay.lua" ],
   "scriptDelta" : 1,
   
+  "animationScripts" : [ "drivebay.render.lua" ],
+  
   "inputNodes" : [ [0, 0] ],
   
   "networkTags" : {

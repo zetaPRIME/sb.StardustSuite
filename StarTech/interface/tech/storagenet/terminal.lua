@@ -155,12 +155,28 @@ end
 function refreshDisplay()
   shownItems = {}
   local i = 1
-  for k,v in pairs(items) do
-    if search == "" or string.find(string.lower(v.parameters.shortdescription or root.itemConfig(v).config.shortdescription), search) then
+  if search == "" then
+    for k,v in pairs(items) do
       shownItems[i] = v
       i = i + 1
     end
+  elseif search:sub(1, 2) == "/ " then
+    local filter = search:sub(3)
+    for k,v in pairs(items) do
+      if itemutil.matchFilter(filter, v) then
+        shownItems[i] = v
+        i = i + 1
+      end
+    end
+  else
+    for k,v in pairs(items) do
+      if string.find(string.lower(v.parameters.shortdescription or root.itemConfig(v).config.shortdescription), search) then
+        shownItems[i] = v
+        i = i + 1
+      end
+    end
   end
+  
   table.sort(shownItems, itemSortByCount)
   buildList()
 end

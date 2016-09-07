@@ -48,6 +48,7 @@ function update()
   localAnimator.clearLightSources()
   
   local lightStates = objectAnimator.animationParameter("lights", {})
+  if not lightStates then return nil end
   
   for i,v in pairs(lightStates) do
   i = i - 1 -- 0-indexed pls

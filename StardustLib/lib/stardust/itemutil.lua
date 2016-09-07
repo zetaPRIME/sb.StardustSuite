@@ -73,10 +73,10 @@ do
       return not not (item.parameters.shortdescription or config.config.shortdescription):lower():find(match:lower()) -- same as entering search box
     end
     filterTypes["_"] = function(item, config, match) -- _internalname
-      return not not item.name.lower():find(match:lower())
+      return not not item.name:lower():find(match:lower())
     end
     filterTypes["@"] = function(item, config, match) -- @category; only internal names for now, have to figure out how to do otherwise
-      return not not (item.parameters.category or config.config.category):lower():find(match:lower()) -- same as entering search box
+      return not not (item.parameters.category or config.config.category or ""):lower():find(match:lower()) -- same as entering search box
     end
     filterTypes["#"] = function(item, config, match) -- #tag (because what else); matches overall type, then item tags, then colony tags
       local mlow = match:lower()
@@ -102,8 +102,8 @@ do
       if not config then config = itemutil.getCachedConfig(item) end
       
       for tkn in filter:gmatch("%S+") do
-        local f, r = filterTypes[tkn:sub(1,1)]
-        if f then r = f(item, config, tkn:sub(2)) else r = filterTypes.default(item, config, tkn) end
+        local f, m, r = filterTypes[tkn:sub(1,1)], tkn:sub(2)
+        if f and m and m ~= "" then r = f(item, config, m) else r = filterTypes.default(item, config, tkn) end
         if r then return true end
       end
       return false

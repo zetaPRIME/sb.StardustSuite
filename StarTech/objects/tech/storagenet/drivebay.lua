@@ -214,6 +214,7 @@ end
 
 function updateLights()
   local cc = world.containerItems(entity.id())
+  if not cc then return nil end -- !?
   local lights = {}
   for i,v in pairs(cc) do
     lights[i] = 1

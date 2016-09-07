@@ -1,0 +1,14 @@
+{
+  "itemName" : "storagenet.drive.1k",
+  "shortdescription" : "Storage Drive (1k)",
+  "description" : "Stores items as data.\n^#7f7f7f;(not formatted)",
+  "category" : "storagenet.storage",
+  "inventoryIcon" : "drive.png",
+  "rarity" : "uncommon",
+  "maxStack" : 1,
+  
+  "driveParameters" : {
+    "description" : "Stores items as data.",
+    "capacity" : 8192 // 1024 x 8bit
+  }
+}

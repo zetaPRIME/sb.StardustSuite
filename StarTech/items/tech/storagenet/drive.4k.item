@@ -1,0 +1,14 @@
+{
+  "itemName" : "storagenet.drive.4k",
+  "shortdescription" : "Storage Drive (4k)",
+  "description" : "Stores items as data.\n^#7f7f7f;(not formatted)",
+  "category" : "storagenet.storage",
+  "inventoryIcon" : "drive.png",
+  "rarity" : "uncommon",
+  "maxStack" : 1,
+  
+  "driveParameters" : {
+    "description" : "Stores items as data.",
+    "capacity" : 32768 // 4096 x 8bit
+  }
+}

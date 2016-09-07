@@ -1,0 +1,4 @@
+[
+  { "op" : "replace", "path" : "/energyCostPerSecond", "value" : 10 },
+  { "op" : "replace", "path" : "/dashSpeedModifier", "value" : 2.0 }
+]

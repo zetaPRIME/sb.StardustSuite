@@ -1,0 +1,14 @@
+{
+  "itemName" : "storagenet.drive.256k",
+  "shortdescription" : "Storage Drive (256k)",
+  "description" : "Stores items as data.\n^#7f7f7f;(not formatted)",
+  "category" : "storagenet.storage",
+  "inventoryIcon" : "drive.png",
+  "rarity" : "legendary",
+  "maxStack" : 1,
+  
+  "driveParameters" : {
+    "description" : "Stores items as data.",
+    "capacity" : 2097152 // 262144 x 8bit
+  }
+}

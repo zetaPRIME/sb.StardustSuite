@@ -1,0 +1,50 @@
+{
+  "itemName" : "wrench",
+  "price" : 150,
+  "level" : 1,
+  "maxStack" : 1,
+  "rarity" : "Uncommon",
+  "description" : "Useful for adjusting mechanical things. Also good for percussive maintenance.",
+  "shortdescription" : "Wrench",
+  "stooltipKind" : "sword",
+  "category" : "tool",
+  "twoHanded" : true,
+  "itemTags" : ["weapon","melee","broadsword"],
+  
+  "isWrench" : true,
+
+  "inventoryIcon" : "wrench.png",
+
+  "animation" : "/items/active/weapons/melee/broadsword/combobroadsword.animation",
+  "animationParts" : {
+    "handle" : "",
+    "blade" : "wrench.png"
+  },
+  "animationCustom" : { },
+
+  "scripts" : ["/items/active/weapons/melee/meleeweapon.lua", "wrench.lua"],
+
+  "elementalType" : "physical",
+
+  "primaryAbilityType" : "broadswordcombo",
+  "primaryAbility" : {
+    "fireTime" : 0.5,
+    "baseDps" : 8.5,
+    "damageConfig" : {
+      "damageSourceKind" : "hammer"
+    },
+    "stances" : {
+      "wait1" : { "duration" : 0.1 },
+      "wait2" : { "duration" : 0.1 }
+    }
+  },
+
+  "saltAbilityType" : "risingslash",
+  "saltAbility" : {
+    "damageConfig" : {
+      "damageSourceKind" : "hammer"
+    }
+  },
+
+  "builder" : "/items/buildscripts/buildunrandweapon.lua"
+}

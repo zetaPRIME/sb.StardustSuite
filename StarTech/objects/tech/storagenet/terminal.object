@@ -1,0 +1,64 @@
+{
+  "objectName" : "storagenet.terminal",
+  //"colonyTags" : ["wired"],
+  "printable" : false,
+  "rarity" : "Rare",
+  "description" : "A storage terminal which provides access to a transmatter network's contents.",
+  "shortdescription" : "Transmatter Terminal",
+
+  "category" : "storagenet",
+  "price" : 500,
+
+  "inventoryIcon" : "terminal.png",
+  "orientations" : [
+    {
+      "image" : "terminal.png",
+      "imagePosition" : [-8, -8],
+
+      "spaceScan" : 0.1,
+      "anchors" : [ "background" ]
+    }
+  ],
+
+  "scripts" : [ "terminal.lua" ],
+  "scriptDelta" : 1,
+  
+  "animationScripts" : [ "terminal.render.lua" ],
+
+  //"animation" : "stardusttest.animation", //"/objects/wired/logic/logic.animation",
+
+  "animationParts" : {
+    "switch" : "/objects/wired/logic/bulb.png"
+  },
+  "animationPosition" : [-8, -8],
+  
+  "uiConfig" : "/interface/tech/storagenet/terminal.config",
+  /*"interactAction" : "OpenCraftingInterface", // lolwut
+  "interactData" : {
+    "config" : "/interface/tech/storagenet/terminal.config",
+    "paneLayoutOverride" : {
+      "windowtitle" : {
+        "subtitle" : "Everything at your fingertips"
+      }
+    }
+  },//*/
+  
+  //"interactAction" : "ScriptConsole",
+  //"interactData" : "/objects/generic/arcadegame/arcadegamegui.config",
+  
+  "objectType" : "container",
+
+  "openSounds" : [ "/sfx/objects/apexcoolcomputer_switchon.ogg" ],
+  "closeSounds" : [ "/sfx/objects/apexcoolcomputer_switchoff.ogg" ],
+  "slotCount" : 16,
+  "frameCooldown" : 5,
+  "autoCloseCooldown" : 3600,
+
+  "inputNodes" : [ [0, 0] ],
+  
+  "networkTags" : {
+    "storageNet" : true
+  }
+  
+  //
+}

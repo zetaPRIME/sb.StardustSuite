@@ -1,0 +1,42 @@
+{
+  "objectName" : "storagenet.drivebay",
+  "rarity" : "Rare",
+  "objectType" : "container",
+  
+  "category" : "storagenet.storage",
+  "price" : 500,
+  "description" : "A drive bay for holding and accessing transmatter storage discs.",
+  "shortdescription" : "Transmatter Drive Bay",
+  "health" : 5.73,
+
+  "inventoryIcon" : "drivebay.icon.png",
+  "orientations" : [
+    {
+      "dualImage" : "drivebay.png", //:<color>",
+      "imagePosition" : [-8, 0],
+
+      "spaceScan" : 0.1,
+      "anchors" : [ "bottom" ],
+      "collision" : "platform"
+    }
+  ],
+  
+  "scripts" : [ "drivebay.lua" ],
+  "scriptDelta" : 1,
+  
+  "inputNodes" : [ [0, 0] ],
+  
+  "networkTags" : {
+    "storageNet" : true,
+    "storageNet.storage" : true // HERP DERP
+  },
+
+  "openSounds" : [ "/sfx/objects/locker_open.ogg" ],
+  "closeSounds" : [ "/sfx/objects/locker_close.ogg" ],
+  "slotCount" : 8,
+  "uiConfig" : "/interface/tech/storagenet/drivebay.config",
+  "frameCooldown" : 5,
+  "autoCloseCooldown" : 3600,
+  
+  "learnBlueprintsOnPickup" : [ "storagenet.drivecomponent" ]
+}

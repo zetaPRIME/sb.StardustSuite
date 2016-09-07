@@ -1,0 +1,40 @@
+{
+  "objectName" : "networkrelay",
+  "colonyTags" : ["wired"],
+  "printable" : false,
+  "rarity" : "Common",
+  "description" : "A relay. Connects things together and keeps network wiring organized.",
+  "shortdescription" : "Network Relay",
+  "race" : "human",
+
+  "category" : "wire",
+  "price" : 10,
+
+  "inventoryIcon" : "networkrelay.png",
+  "orientations" : [
+    {
+      "image" : "networkrelay.png",
+      "imagePosition" : [0, -8],
+
+      "spaceScan" : 0.1,
+      "anchors" : [ "background" ]
+    }
+  ],
+
+  //"scripts" : [ "stardusttest.lua" ],
+  //"scriptDelta" : 1,
+
+  /* "animation" : "/objects/wired/logic/logic.animation",
+
+  "animationParts" : {
+    "switch" : "/objects/wired/logic/bulb.png"
+  },
+  "animationPosition" : [-8, -8], */
+  
+  "isNetworkRelay" : true,
+  
+  "inputNodes" : [ [0, 0] ],
+  "outputNodes" : [ [0, -1] ]
+  
+  //
+}

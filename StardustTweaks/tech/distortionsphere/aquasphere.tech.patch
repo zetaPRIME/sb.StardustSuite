@@ -1,0 +1,12 @@
+[
+  { "op" : "replace", "path" : "/transformedMovementParameters/airJumpProfile/jumpSpeed", "value" : 24.0 },
+  { "op" : "replace", "path" : "/transformedMovementParameters/liquidJumpProfile/jumpSpeed", "value" : 24.0 },
+  { "op" : "replace", "path" : "/transformedMovementParameters/liquidJumpProfile/jumpControlForce", "value" : 800.0 },
+  { "op" : "remove", "path" : "/transformedMovementParameters/liquidJumpProfile/multiJump" },
+  { "op" : "remove", "path" : "/transformedMovementParameters/liquidJumpProfile/autoJump" },
+  { "op" : "add", "path" : "/transformedMovementParameters/liquidJumpProfile/jumpInitialPercentage", "value" : 1.0 },
+  { "op" : "add", "path" : "/transformedMovementParameters/liquidJumpProfile/jumpHoldTime", "value" : 0.1 },
+  { "op" : "replace", "path" : "/ballSpeed", "value" : 24.0 },
+  { "op" : "replace", "path" : "/ballLiquidSpeed", "value" : 48.0 },
+  { "op" : "replace", "path" : "/energyCost", "value" : 0.0 }
+]

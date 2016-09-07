@@ -1,0 +1,50 @@
+{
+  "objectName" : "storagenet.storagebus",
+  "colonyTags" : ["wired"],
+  "printable" : false,
+  "rarity" : "Common",
+  "description" : "A storage bus. Connects external storage to a transmatter network.",
+  "shortdescription" : "Transmatter Storage Bus",
+  "race" : "human",
+
+  "category" : "storagenet.storage",
+  "price" : 500,
+
+  "inventoryIcon" : "storagebus.png",
+  "orientations" : [
+    {
+      "image" : "storagebus.png",
+      "imagePosition" : [0, 0],
+      "renderLayer" : "object+100",
+
+      "spaceScan" : 0.1,
+      "anchors" : [ "background" ]
+    }
+  ],
+  "zlevel" : 10000,
+
+  "scripts" : [ "storagebus.lua" ],
+  "scriptDelta" : 1,
+  
+  "animation" : "storagebus.animation",
+  "animationScripts" : [ "storagebus.render.lua" ],
+  
+  "interactAction" : "ScriptPane",
+  "interactData" : "/interface/tech/storagenet/storagebus.config",
+
+  /*"animation" : "/objects/wired/logic/logic.animation",
+
+  "animationParts" : {
+    "switch" : "/objects/wired/logic/bulb.png"
+  },
+  "animationPosition" : [-8, -8], */
+  
+  "networkTags" : {
+    "storageNet" : true,
+    "storageNet.storage" : true
+  },
+  
+  "inputNodes" : [ [0, 0] ]
+  
+  //
+}

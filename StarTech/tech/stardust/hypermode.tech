@@ -1,0 +1,45 @@
+{
+  "name" : "hypermode",
+  "type" : "head",
+
+  "scripts" : ["hypermode.lua"],
+  "animator" : "hypermode.animation",
+
+  "description" : "Channel an ^red;intense^white; surge of energy to boost all stats ^green;[F]",
+  "shortDescription" : "Hyper Mode",
+  "rarity" : "Uncommon",
+  "icon" : "/tech/distortionsphere.png",
+
+  "chipCost" : 0, // 16? 24?
+
+  "animationParts" : {
+    "ballGlow" : "distortionsphereglow.png",
+    "ball" : "distortionsphere.png"
+  },
+
+  "transformedMovementParameters" : {
+    "collisionPoly" : [ [-0.85, -0.45], [-0.45, -0.85], [0.45, -0.85], [0.85, -0.45], [0.85, 0.45], [0.45, 0.85], [-0.45, 0.85], [-0.85, 0.45] ],
+
+    "groundForce" : 450.0,
+    "normalGroundFriction" : 1.5,
+    "ambulatingGroundFriction" : 0.2,
+    "slopeSlidingFactor" : 3.0,
+
+    "airJumpProfile" : {
+      "jumpSpeed" : 16,
+      "jumpControlForce" : 800.0,
+      "jumpInitialPercentage" : 1.0,
+      "jumpHoldTime" : 0.1
+    },
+
+    "liquidJumpProfile" : {
+      "jumpSpeed" : 0.0,
+      "jumpControlForce" : 0.0,
+
+      "multiJump" : false,
+      "autoJump" : false
+    }
+  },
+
+  "energyCost" : 10
+}

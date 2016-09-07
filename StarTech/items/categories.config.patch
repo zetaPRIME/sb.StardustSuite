@@ -1,0 +1,4 @@
+[
+  { "op" : "add", "path" : "/labels/storagenet", "value" : "Transmatter Network" },
+  { "op" : "add", "path" : "/labels/storagenet.storage", "value" : "Transmatter Storage" }
+] 

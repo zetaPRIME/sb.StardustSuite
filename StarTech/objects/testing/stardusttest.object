@@ -1,0 +1,52 @@
+{
+  "objectName" : "stardusttest",
+  "colonyTags" : ["wired"],
+  "printable" : false,
+  "rarity" : "Common",
+  "description" : "An output light. Indicates whether something is on or off.",
+  "shortdescription" : "Derptester",
+  "race" : "human",
+
+  "category" : "wire",
+  "price" : 10,
+
+  "inventoryIcon" : "/objects/wired/logic/bulb.png:default.1",
+  "orientations" : [
+    {
+      "image" : "/objects/wired/logic/bulb.png:<color>.off",
+      "imagePosition" : [-8, -8],
+
+      "spaceScan" : 0.1,
+      "anchors" : [ "background" ]
+    }
+  ],
+
+  "scripts" : [ "stardusttest.lua" ],
+  "scriptDelta" : 1,
+
+  "animation" : "stardusttest.animation", //"/objects/wired/logic/logic.animation",
+
+  "animationParts" : {
+    "switch" : "/objects/wired/logic/bulb.png"
+  },
+  "animationPosition" : [-8, -8],
+  
+  "uiConfig" : "/interface/chests/chesttest.config",
+  
+  "interactAction" : "ScriptConsole",
+  "interactData" : "/objects/generic/arcadegame/arcadegamegui.config",
+  
+  "objectType" : "container",
+  "containerCallback" : "ccall",
+
+  "openSounds" : [ "/sfx/objects/mannequin_open.ogg" ],
+  "closeSounds" : [ "/sfx/objects/mannequin_close.ogg" ],
+  "slotCount" : 3,
+  "frameCooldown" : 5,
+  "autoCloseCooldown" : 3600,
+
+  "inputNodes" : [ [0, 0] ],
+  "outputNodes" : [ [-1, 0] ]
+  
+  //
+}

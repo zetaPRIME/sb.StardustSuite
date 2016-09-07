@@ -1,0 +1,8 @@
+{
+  "version" : "(wip)",
+  "friendlyName" : "StardustTweaks",
+  "name" : "StardustTweaks",
+  "author" : "zetaPRIME",
+  "description" : "Various tweaks to vanilla mechanics.",
+  "requires" : [ "StardustLib" ]
+}

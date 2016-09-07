@@ -1,0 +1,6 @@
+[
+  { "op" : "add", "path" : "/statusControllerSettings/primaryScriptSources/-", "value" : "/derpitude/derpPlayer.lua" },
+  { "op" : "add", "path" : "/movementParameters/groundForce", "value" : 150.0 }, // default 100 lfm 250
+  { "op" : "add", "path" : "/movementParameters/airForce", "value" : 80.0 }, // default 20 lfm 190
+  { "op" : "replace", "path" : "/statusControllerSettings/stats/fallDamageMultiplier/baseValue", "value" : 0.9 }
+] 

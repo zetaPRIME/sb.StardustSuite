@@ -1,0 +1,13 @@
+{
+  "input" : [
+    { "item" : "tungstenbar", "count" : 8 },
+    { "item" : "silverbar", "count" : 4 },
+    { "item" : "goldbar", "count" : 1 },
+    { "item" : "glass", "count" : 5 },
+    { "item" : "corefragmentore", "count" : 15 },
+    { "item" : "solidfuel", "count" : 5 }
+  ],
+  "output" : { "item" : "storagenet.terminal", "count" : 1 },
+  "duration" : 5,
+  "groups" : [ "inventorstable", "craftingstations", "all" ]
+}

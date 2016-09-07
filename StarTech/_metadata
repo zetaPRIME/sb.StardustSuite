@@ -1,0 +1,8 @@
+{
+  "version" : "(wip)",
+  "friendlyName" : "StarTech",
+  "name" : "StarTech",
+  "author" : "zetaPRIME",
+  "description" : "Transmatter networks! Technological advancements like you'd expect in a universe like Starbound's!",
+  "requires" : [ "StardustLib" ]
+}

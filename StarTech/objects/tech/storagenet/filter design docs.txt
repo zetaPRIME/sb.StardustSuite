@@ -1,0 +1,7 @@
+keywords are matched one by one
+
+no prefix: item display name
+_internalname
+@category
+
+... okay, I have a good idea of what this is

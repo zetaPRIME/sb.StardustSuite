@@ -1,0 +1,6 @@
+[
+  { "op" : "add", "path" : "/sounds/spikeJump", "value" : [ "/sfx/tech/tech_sprint_start.ogg"] },
+  { "op" : "add", "path" : "/sounds/spikeJump2", "value" : [ "/sfx/gun/aegisaltpistol_stop.ogg" ] },
+  { "op" : "add", "path" : "/sounds/spikeLock", "value" : [ "/sfx/objects/ancientconsole_button_on.ogg" ] },
+  { "op" : "add", "path" : "/sounds/spikeLock2", "value" : [ "/sfx/blocks/footstep_metallic.ogg" ] }
+]

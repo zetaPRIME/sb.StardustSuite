@@ -1,0 +1,10 @@
+{
+  "lights" : {
+    "hyper" : {
+      "active" : true,
+      "position" : [0.0, 0.0],
+      "color" : [240, 240, 240],
+      "pointLight" : true
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "itemName" : "storagenet.drivecomponent",
+  "shortdescription" : "1k Storage Chip",
+  "description" : "An essential component of any transmatter storage drive.",
+  "category" : "craftingMaterial",
+  "itemTags" : [ "reagent" ],
+  "inventoryIcon" : "drivecomponent.png",
+  "rarity" : "uncommon",
+  "price" : 100,
+  "maxStack" : 1024, // because why not
+  "learnBlueprintsOnPickup" : [
+    "storagenet.drive.1k",
+    "storagenet.drive.4k",
+    "storagenet.drive.16k",
+    "storagenet.drive.64k",
+    "storagenet.drive.256k"/*,
+    "storagenet.drive.1m",
+    "storagenet.drive.4m",
+    "storagenet.drive.16m",
+    "storagenet.drive.64m",
+    "storagenet.drive.256m"*/
+  ]
+}

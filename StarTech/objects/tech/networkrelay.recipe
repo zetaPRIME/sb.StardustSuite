@@ -1,0 +1,9 @@
+{
+  "input" : [
+    { "item" : "silverbar", "count" : 5 },
+    { "item" : "copperbar", "count" : 3 }
+  ],
+  "output" : { "item" : "networkrelay", "count" : 1 },
+  "duration" : 7,
+  "groups" : [ "inventorstable", "craftingstations", "all" ]
+}

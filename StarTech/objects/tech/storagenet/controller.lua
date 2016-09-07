@@ -27,8 +27,8 @@ local function checkUpdateItems()
   -- okay, here it goes
   local function itemcpy(item)
     return {
-      name = item.name
-      count = item.count
+      name = item.name,
+      count = item.count,
       parameters = item.parameters
     }
   end

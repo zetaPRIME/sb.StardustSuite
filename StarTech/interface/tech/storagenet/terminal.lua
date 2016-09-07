@@ -232,7 +232,7 @@ function applyIcon(item, wid, doFrame)
     widget.setImage(layer, table.concat({ "/interface/tech/storagenet/itemSlot.rarity.", (item.parameters.rarity or conf.config.rarity or "common"):lower(), ".png" }))
   end
     
-	local icon = item.parameters.inventoryIcon or conf.config.inventoryIcon
+	local icon = item.parameters.inventoryIcon or conf.config.inventoryIcon or conf.config.codexIcon
   
   local addColor = ""
   local colorOpt = item.parameters.colorOptions or conf.config.colorOptions

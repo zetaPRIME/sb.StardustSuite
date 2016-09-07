@@ -1,3 +1,4 @@
 [
+  { "op" : "add", "path" : "/itemTags", "value" : [] },
   { "op" : "add", "path" : "/itemTags/-", "value" : "ingot" }
 ]

@@ -6,7 +6,7 @@ A few Starbound mods designed to work together.
 Provides various library functions and systems.
 
 ## StardustTweaks
-A few tweaks to Starbound mechanics; mostly physics at the moment, but also makes rail platforms not pop off quite so easily.
+A few tweaks to Starbound mechanics; mostly physics and techs at the moment, but also makes rail platforms not pop off quite so easily.
 
 ## StarTech
 All sorts of technological advancements! Store your items in a transmatter network, \<EOF\>

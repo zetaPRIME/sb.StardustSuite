@@ -5,7 +5,7 @@ require "/scripts/interp.lua"
 TilePixels = 8
 
 function init()
-  script.setUpdateDelta(1) -- was 5
+  script.setUpdateDelta(3) -- was 5
   
   self.drawPath = "/objects/tech/storagenet/"
   self.dGlow = self.drawPath .. "storagebus.glow.png"

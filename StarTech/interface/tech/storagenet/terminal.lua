@@ -88,13 +88,24 @@ function setExpandedInfo(setting)
   if setting == nil then setting = not infoExpanded end
   infoExpanded = setting
   
+  local btnImg = "/interface/tech/storagenet/buttons/expandinfo.png"
+  
   if setting then
-    widget.setSize("selItem_description", { 300, 140 })
+    widget.setSize("selItem_description", { 300, 132 })
     widget.setPosition("expandedinfocover", { 0, 0 })
+    widget.setPosition("selItem_label", { 35, 142 })
+    
+    btnImg = btnImg .. "?flipy"
   else
     widget.setSize("selItem_description", { 300, 30 })
     widget.setPosition("expandedinfocover", { 5730, 0 })
+    widget.setPosition("selItem_label", { 35, 39 })
   end
+  
+  widget.setButtonImages("expandinfo", {
+    base = btnImg .. "?replace;ffffff=bfbfbf",
+    hover = btnImg
+  })
 end
 
 function selectItem(i, updating)
@@ -126,7 +137,7 @@ function selectItem(i, updating)
   
   local addInfo = ""
   if conf.config.itemTags and conf.config.itemTags[1] == "weapon" then
-    addInfo = "\n\n" .. tooltip.weaponInfo(selectedItem)
+    addInfo = tooltip.weaponInfo(selectedItem, nil, "\n")
   end
   
   widget.setText("selItem_description.text", table.concat({

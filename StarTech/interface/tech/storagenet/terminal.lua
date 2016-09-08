@@ -7,8 +7,11 @@
 -- variable color for on-icon count (maybe red being in the millions? *shrug*)
 -- ...search additions? @category etc.
 
+require "/scripts/vec2.lua"
+
 require "/lib/stardust/sync.lua"
 require "/lib/stardust/itemutil.lua"
+require "/scripts/StarTech/tooltip.lua"
 
 gridSize = 24
 gridSpace = 25
@@ -75,11 +78,27 @@ function update()
   
 end
 
-function uninit()
+function dismissed() --uninit()
   sync.msg("playerClose", pid)
 end
 
+function btnExpandInfo() setExpandedInfo() end
+infoExpanded = false
+function setExpandedInfo(setting)
+  if setting == nil then setting = not infoExpanded end
+  infoExpanded = setting
+  
+  if setting then
+    widget.setSize("selItem_description", { 300, 140 })
+    widget.setPosition("expandedinfocover", { 0, 0 })
+  else
+    widget.setSize("selItem_description", { 300, 30 })
+    widget.setPosition("expandedinfocover", { 5730, 0 })
+  end
+end
+
 function selectItem(i, updating)
+  setExpandedInfo(false)
   if i < 0 then -- -1 == blank
     selectedItem = {}
     selectedId = -1 -- hmm. I wonder..
@@ -100,9 +119,21 @@ function selectItem(i, updating)
   selectedId = i
   applyIcon(selectedItem, "selItem_icon")
   
-  widget.setText("selItem_label", table.concat({ selectedItem.parameters.shortdescription or getConf(selectedItem).config.shortdescription, " ^#7fffff;(x", selectedItem.count, ")" }))
+  local conf = getConf(selectedItem)
+  
+  widget.setText("selItem_label", table.concat({ selectedItem.parameters.shortdescription or conf.config.shortdescription, " ^#7fffff;(x", selectedItem.count, ")" }))
   --if not updating then widget.setText("selItem_description.text", "") end -- try to reset scroll height
-  widget.setText("selItem_description.text", selectedItem.parameters.description or getConf(selectedItem).config.description)
+  
+  local addInfo = ""
+  if conf.config.itemTags and conf.config.itemTags[1] == "weapon" then
+    addInfo = "\n\n" .. tooltip.weaponInfo(selectedItem)
+  end
+  
+  widget.setText("selItem_description.text", table.concat({
+    selectedItem.parameters.description or conf.config.description,
+    addInfo
+  }))
+  --sb.logInfo(sb.printJson(root.itemConfig(selectedItem)))
 end
 
 function updateItemList()
@@ -212,7 +243,7 @@ function buildList()
     local icon = table.concat({ pfx, "-icon" })
     itemButtons[i] = icon
     local icount = table.concat({ pfx, "-count" })
-    widget.setPosition(icon, {gridSpace * (gx - 1), 0} )
+    widget.setPosition(icon, {gridSpace * (gx - 1), gridSize} )
     applyIcon(shownItems[i], icon, true)
     widget.setPosition(icount, {gridSpace * (gx - 1) + (gridSpace - 2), 0} )
     widget.setText(icount, prettyCount(shownItems[i].count or 1))
@@ -225,6 +256,7 @@ end
 
 function prettyCount(num)
   if num < 1 then return "craft"
+  elseif num > 999999999 then return math.floor(num / 1000000000) .. "B"
   elseif num > 999999 then return math.floor(num / 1000000) .. "M"
   elseif num > 9999 then return math.floor(num / 1000) .. "K"
   end
@@ -308,7 +340,7 @@ function applyIcon(item, wid, doFrame)
       ipos = { ipos[1] * 0.75, ipos[2] * 0.75 } -- don't modify original
       ipos[1] = (offset[1] + (ipos[1] * scale))
       ipos[2] = (offset[2] + (ipos[2] * scale))
-      widget.setPosition(layer, ipos)--offset)
+      widget.setPosition(layer, ipos)
     end
   end
 end

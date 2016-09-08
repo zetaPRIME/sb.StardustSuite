@@ -25,7 +25,7 @@ do
       --"\n\n",
       clr.weaponType, conf.config.shortdescription, " ", "^#7fff7f;", "(lv.", string.format("%d)\n", conf.parameters.level or 1),
       buildAbility(item, conf, conf.config.primaryAbility, "Primary"),
-      buildAbility(item, conf, conf.config.altAbility, "Secondary"), "\na1\na2\na3\na4\na5\na6\na7\na8\na9\na10"
+      buildAbility(item, conf, conf.config.altAbility, "Secondary")--, "\na1\na2\na3\na4\na5\na6\na7\na8\na9\na10"
     })
   end
 end

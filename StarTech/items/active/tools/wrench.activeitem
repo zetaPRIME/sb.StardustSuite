@@ -1,5 +1,5 @@
 {
-  "itemName" : "wrench",
+  "itemName" : "startech:wrench",
   "price" : 150,
   "level" : 1,
   "maxStack" : 1,

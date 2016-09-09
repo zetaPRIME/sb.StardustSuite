@@ -4,10 +4,10 @@
     { "item" : "silverbar", "count" : 5 },
     { "item" : "goldbar", "count" : 3 },
     { "item" : "diamond", "count" : 3 },
-    { "item" : "storagenet.drivecomponent", "count" : 256 }
+    { "item" : "startech:storagenet.drivecomponent", "count" : 256 }
   ],
   "output" : {
-    "item" : "storagenet.drive.256k",
+    "item" : "startech:storagenet.drive.256k",
     "count" : 1
   },
   "duration" : 5,

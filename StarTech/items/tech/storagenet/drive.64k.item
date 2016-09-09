@@ -1,5 +1,5 @@
 {
-  "itemName" : "storagenet.drive.64k",
+  "itemName" : "startech:storagenet.drive.64k",
   "shortdescription" : "Storage Drive (64k)",
   "description" : "Stores items as data.\n^#7f7f7f;(not formatted)",
   "category" : "storagenet.storage",

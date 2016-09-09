@@ -3,10 +3,10 @@
     { "item" : "tungstenbar", "count" : 5 },
     { "item" : "silverbar", "count" : 2 },
     { "item" : "goldbar", "count" : 1 },
-    { "item" : "storagenet.drivecomponent", "count" : 4 }
+    { "item" : "startech:storagenet.drivecomponent", "count" : 4 }
   ],
   "output" : {
-    "item" : "storagenet.drive.4k",
+    "item" : "startech:storagenet.drive.4k",
     "count" : 1
   },
   "duration" : 5,

@@ -1,5 +1,5 @@
 [
   { "op" : "add", "path" : "/defaultBlueprints/tier1/-", "value" : { "item" : "storagenet.controller" } },
-  { "op" : "add", "path" : "/defaultBlueprints/tier1/-", "value" : { "item" : "wrench" } },
+  { "op" : "add", "path" : "/defaultBlueprints/tier1/-", "value" : { "item" : "startech:wrench" } },
   { "op" : "add", "path" : "/defaultBlueprints/tier1/-", "value" : { "item" : "networkrelay" } }
 ] 

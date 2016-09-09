@@ -2,10 +2,10 @@
   "input" : [
     { "item" : "tungstenbar", "count" : 5 },
     { "item" : "silverbar", "count" : 3 },
-    { "item" : "storagenet.drivecomponent", "count" : 1 }
+    { "item" : "startech:storagenet.drivecomponent", "count" : 1 }
   ],
   "output" : {
-    "item" : "storagenet.drive.1k",
+    "item" : "startech:storagenet.drive.1k",
     "count" : 1
   },
   "duration" : 5,

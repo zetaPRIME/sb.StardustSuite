@@ -3,10 +3,10 @@
     { "item" : "titaniumbar", "count" : 5 },
     { "item" : "silverbar", "count" : 3 },
     { "item" : "goldbar", "count" : 2 },
-    { "item" : "storagenet.drivecomponent", "count" : 16 }
+    { "item" : "startech:storagenet.drivecomponent", "count" : 16 }
   ],
   "output" : {
-    "item" : "storagenet.drive.16k",
+    "item" : "startech:storagenet.drive.16k",
     "count" : 1
   },
   "duration" : 5,

@@ -1,4 +1,5 @@
 -- StardustLib.ItemUtil
+require "/lib/stardust/interop.lua"
 
 do
   itemutil = {}
@@ -39,7 +40,8 @@ do
     local cname = item.name .. (item.parameters.seed or "")
     local pc = cc[cname]
     if pc then return pc end
-    pc = root.itemConfig({name=item.name, parameters={seed = item.parameters.seed}}) -- fully generic version, please
+    pc = zpcall(root.itemConfig, {name=item.name, parameters={seed = item.parameters.seed}}) -- fully generic version, please
+      or itemutil.getCachedConfig({name="perfectlygenericitem", parameters={}}) -- no itemexception pls
     cc[cname] = pc
     cc.__c = cc.__c + 1
     return pc

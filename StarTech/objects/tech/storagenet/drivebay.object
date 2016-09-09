@@ -40,5 +40,5 @@
   "frameCooldown" : 5,
   "autoCloseCooldown" : 3600,
   
-  "learnBlueprintsOnPickup" : [ "storagenet.drivecomponent" ]
+  "learnBlueprintsOnPickup" : [ "startech:storagenet.drivecomponent" ]
 }

@@ -1,5 +1,5 @@
 {
-  "objectName" : "startech:storagenet.controller",
+  "objectName" : "storagenet.controller",
   //"colonyTags" : ["outpost","storage","commerce"],
   "rarity" : "Rare",
   "objectType" : "container",
@@ -20,10 +20,10 @@
   "hylotlDescription" : "A cargo crate of modern design.",
   "novakidDescription" : "A basic lookin' crate. Could hold valuable cargo...",*/
 
-  "inventoryIcon" : "controller.icon.png",
+  "inventoryIcon" : "/objects/tech/storagenet/controller.icon.png",
   "orientations" : [
     {
-      "image" : "controller.icon.png",
+      "image" : "/objects/tech/storagenet/controller.icon.png",
       "imagePosition" : [-8, 0],
 
       "spaceScan" : 0.1,
@@ -31,10 +31,7 @@
       "collision" : "platform"
     }
   ],
-  "animation" : "controller.animation",
-  "animationScripts" : [ "controller.render.lua" ],
-  
-  "scripts" : [ "controller.lua" ],
+  "scripts" : [ "die.lua" ],
   "scriptDelta" : 1,
   
   "outputNodes" : [ [ 0, 1 ] ],
@@ -45,8 +42,8 @@
 
   "openSounds" : [ "/sfx/objects/metalbox_open.ogg" ],
   "closeSounds" : [ "/sfx/objects/metalbox_close.ogg" ],
-  "slotCount" : 0, // not sure if I want it to be not-a-container, so I'll just avoid later breakage
-  "uiConfig" : "/interface/chests/chest1.config",
+  "slotCount" : 16, // 16 will do, I suppose...
+  "uiConfig" : "/interface/chests/chest16.config",
   "frameCooldown" : 5,
   "autoCloseCooldown" : 3600,
   

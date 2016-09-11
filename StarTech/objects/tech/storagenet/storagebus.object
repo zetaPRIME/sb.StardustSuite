@@ -1,5 +1,5 @@
 {
-  "objectName" : "storagenet.storagebus",
+  "objectName" : "startech:storagenet.storagebus",
   "colonyTags" : ["wired"],
   "printable" : false,
   "rarity" : "Common",

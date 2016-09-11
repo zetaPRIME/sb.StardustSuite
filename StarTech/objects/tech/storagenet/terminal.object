@@ -1,5 +1,5 @@
 {
-  "objectName" : "storagenet.terminal",
+  "objectName" : "startech:storagenet.terminal",
   //"colonyTags" : ["wired"],
   "printable" : false,
   "rarity" : "Rare",

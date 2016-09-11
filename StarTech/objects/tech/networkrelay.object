@@ -1,5 +1,5 @@
 {
-  "objectName" : "networkrelay",
+  "objectName" : "startech:networkrelay",
   "colonyTags" : ["wired"],
   "printable" : false,
   "rarity" : "Common",

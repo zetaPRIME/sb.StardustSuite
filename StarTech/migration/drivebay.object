@@ -1,18 +1,18 @@
 {
-  "objectName" : "startech:storagenet.drivebay",
+  "objectName" : "storagenet.drivebay",
   "rarity" : "Rare",
   "objectType" : "container",
   
   "category" : "storagenet.storage",
   "price" : 500,
-  "description" : "A drive bay for holding and accessing transmatter storage discs.",
-  "shortdescription" : "Transmatter Drive Bay",
+  "description" : "Place down to automatically convert",
+  "shortdescription" : "!! Unmigrated Object !!",
   "health" : 5.73,
 
-  "inventoryIcon" : "drivebay.icon.png",
+  "inventoryIcon" : "warning.png",
   "orientations" : [
     {
-      "dualImage" : "drivebay.png", //:<color>",
+      "dualImage" : "/objects/tech/storagenet/drivebay.png?multiply=ff0000", //:<color>",
       "imagePosition" : [-8, 0],
 
       "spaceScan" : 0.1,
@@ -21,10 +21,10 @@
     }
   ],
   
-  "scripts" : [ "drivebay.lua" ],
+  "scripts" : [ "drivebay-replaceme.lua" ],
   "scriptDelta" : 1,
   
-  "animationScripts" : [ "drivebay.render.lua" ],
+  //"animationScripts" : [ "drivebay.render.lua" ],
   
   "inputNodes" : [ [0, 0] ],
   
@@ -36,7 +36,7 @@
   "openSounds" : [ "/sfx/objects/locker_open.ogg" ],
   "closeSounds" : [ "/sfx/objects/locker_close.ogg" ],
   "slotCount" : 8,
-  "uiConfig" : "/interface/tech/storagenet/drivebay.config",
+  "uiConfig" : "/interface/chests/chest16.config",
   "frameCooldown" : 5,
   "autoCloseCooldown" : 3600,
   

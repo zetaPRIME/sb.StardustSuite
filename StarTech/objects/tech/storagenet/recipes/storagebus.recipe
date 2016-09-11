@@ -4,7 +4,7 @@
     { "item" : "silverbar", "count" : 5 },
     { "item" : "solidfuel", "count" : 1 }
   ],
-  "output" : { "item" : "storagenet.storagebus", "count" : 1 },
+  "output" : { "item" : "startech:storagenet.storagebus", "count" : 1 },
   "duration" : 3,
   "groups" : [ "inventorstable", "craftingstations", "all" ]
 }

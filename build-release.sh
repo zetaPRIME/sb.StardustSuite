@@ -10,13 +10,14 @@ asset_packer () {
 
 function pack {
     echo $1
-    rm -rf ./_release/$1
-    cp f ./$1 ./_release/$1
+    rm -rf ./_release/$1/
+    mkdir -p ./_release/$1/
+    cp -rf ./$1/* ./_release/$1/
     ./jq ".version |= . + \"-$cmthash\"" ./$1/_metadata > ./_release/$1/_metadata
     asset_packer ./_release/$1/ ./_release/$1.pak
 }
 
-mkdir -p ./_release/
+# mkdir -p ./_release/
 
 pack StardustLib
 pack StardustTweaks

@@ -3,5 +3,7 @@
   "friendlyName" : "StardustLib",
   "name" : "StardustLib",
   "author" : "zetaPRIME",
-  "description" : "Libraries for various interop, etc."
+  "description" : "Libraries for various interop, etc.",
+  "link" : "steam://url/CommunityFilePage/764887546",
+  "steamContentId" : "764887546"
 }

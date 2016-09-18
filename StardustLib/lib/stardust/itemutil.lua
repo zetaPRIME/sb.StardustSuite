@@ -29,7 +29,7 @@ do
   function itemutil.getCachedConfig(item)
     local cc = itemutil.ccache
     if item.name == "sapling" then -- because they otherwise break horribly
-      local cname = table.concat({ item.name, item.parameters.stemName, item.parameters.stemHueShift, item.parameters.foliageName, item.parameters.foliageHueShift })
+      local cname = table.concat({ item.name, item.parameters.stemName or "none", item.parameters.stemHueShift or 0, item.parameters.foliageName or "none", item.parameters.foliageHueShift or 0 })
       local pc = cc[cname]
       if pc then return pc end
       pc = root.itemConfig({name=item.name, parameters=item.parameters}) -- fully generic version, please

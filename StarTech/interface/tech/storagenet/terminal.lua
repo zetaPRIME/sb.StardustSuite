@@ -297,16 +297,18 @@ function applyIcon(item, wid, doFrame)
   local colorOpt = item.parameters.colorOptions or conf.config.colorOptions
   if colorOpt then
     local colordef = colorOpt[(item.parameters.colorIndex or 0)+1]
-    local cb, i = {"?replace"}, 2
-    for k,v in pairs(colordef) do
-      cb[i] = ";"
-      cb[i+1] = k
-      cb[i+2] = "="
-      cb[i+3] = v
-      i = i + 4
+    if colordef then
+      local cb, i = {"?replace"}, 2
+      for k,v in pairs(colordef) do
+        cb[i] = ";"
+        cb[i+1] = k
+        cb[i+2] = "="
+        cb[i+3] = v
+        i = i + 4
+      end
+      cb[i] = item.parameters.directives -- might as well bake this in here
+      addColor = table.concat(cb)
     end
-    cb[i] = item.parameters.directives -- might as well bake this in here
-    addColor = table.concat(cb)
   end
   
   if icon ~= nil and type(icon) == "string" then

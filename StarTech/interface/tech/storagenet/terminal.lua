@@ -320,7 +320,7 @@ function applyIcon(item, wid, doFrame)
       local xicon = absolutePath(conf.directory, v.image)
       local ipos = v.position or {0,0}
       ipos = { ipos[1] * 0.75, ipos[2] * 0.75 } -- super silly hack, but it seems to fix guns being in pieces so ???
-      local ibounds = root.nonEmptyRegion(xicon)
+      local ibounds = root.nonEmptyRegion(xicon) or {0,0,0,0}
       
       -- take offsets into account
       ibounds[1] = ibounds[1] + ipos[1]

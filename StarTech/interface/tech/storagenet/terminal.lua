@@ -17,6 +17,16 @@ gridSize = 24
 gridSpace = 25
 gridWidth = 8 -- 8 max
 
+if false then -- testing probe
+  setmetatable(_ENV, { __index = function(t,k)
+    sb.logInfo("missing field "..k.." accessed")
+    local f = function(...)
+      sb.logInfo("called")
+    end
+    return nil -- f
+  end })
+end
+
 function init()
   items = {}
   itemUpdateId = "NaN"
@@ -35,6 +45,15 @@ function init()
   
   pid = pane.playerEntityId()
   sync.msg("playerOpen", pid)
+  
+  --sb.logInfo("_ENV dump:\n" .. dump(_ENV))
+  --world.callScriptedEntity(pane.playerEntityId(), "require", "/tstf.lua")
+  
+  local mm = player.essentialItem("beamaxe")
+  player.removeEssentialItem("beamaxe")
+  player.giveEssentialItem("beamaxe", mm)
+  
+  sb.logInfo("beamaxe:\n" .. dump(mm));
 end
 
 function update()
@@ -78,6 +97,9 @@ function update()
   
 end
 
+function uninist()
+  dismissed()
+end
 function dismissed() --uninit()
   sync.msg("playerClose", pid)
 end
@@ -172,7 +194,7 @@ function onRecvItemList(rpc)
   local rItems, rUid = rpc:result()
   if not rItems then return nil end
   items = rItems
-  itemUpdateId = rUid
+  itemUpdateId = rUid -- TODO: FIX THIS
   refreshDisplay()
 end
 
@@ -370,17 +392,21 @@ function absolutePath(directory, path)
 end
 
 
-function dump(o)
-   if type(o) == 'table' then
-      local s = '{ '
-      for k,v in pairs(o) do
-         if type(k) ~= 'number' then k = '"'..k..'"' end
-         s = s .. '['..k..'] = ' .. dump(v) .. ','
-      end
-      return s .. '} '
-   else
-      return tostring(o)
-   end
+function dump(o, ind)
+  if not ind then ind = 2 end
+  local pfx, epfx = "", ""
+  for i=1,ind do pfx = pfx .. " " end
+  for i=3,ind do epfx = epfx .. " " end
+  if type(o) == 'table' then
+    local s = '{\n'
+    for k,v in pairs(o) do
+      if type(k) ~= 'number' then k = '"'..k..'"' end
+      s = s .. pfx .. '['..k..'] = ' .. dump(v, ind+2) .. ',\n'
+    end
+    return s .. epfx .. '}'
+  else
+    return tostring(o)
+  end
 end
 
 -- moved into itemutil :D

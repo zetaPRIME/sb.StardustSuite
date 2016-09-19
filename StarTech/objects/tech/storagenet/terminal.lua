@@ -29,6 +29,7 @@ end
 
 function playerClose(msg, isLocal, pid)
   openPlayers[pid] = nil
+  --object.say("playerClose")
 end
 
 function playerHeartbeat(msg, isLocal, pid)

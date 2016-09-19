@@ -45,6 +45,8 @@
       "damageSourceKind" : "hammer"
     }
   },
+  
+  // test "pickupQuestTemplates" : ["stardustlib:playerext"],
 
   "builder" : "/items/buildscripts/buildunrandweapon.lua"
 }

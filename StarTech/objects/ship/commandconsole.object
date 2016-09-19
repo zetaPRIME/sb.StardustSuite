@@ -1,0 +1,61 @@
+{
+  "objectName" : "startech:commandconsole",
+  "itemTags" : ["captainschair"],
+  "printable" : false,
+  "rarity" : "Common",
+  "objectType" : "loungeable",
+
+  "description" : "Central control for a custom-built ship.",
+  "shortdescription" : "Command Console",
+  "category" : "furniture",
+
+  "lightColor" : [39, 62, 64],
+
+  "flickerPeriod" : 0.5,
+  "flickerMinIntensity" : 0.95,
+  "flickerMaxIntensity" : 1,
+  "flickerPeriodVariance" : 0.1,
+  "flickerIntensityVariance" : 0.0,
+  
+  "inventoryIcon" : "/objects/upgrade/techconsole/icon.png",
+  "orientations" : [
+    {
+      "imageLayers" : [ { "image" : "/objects/upgrade/techconsole/techconsole.png:<color>.<frame>", "fullbright" : true }, { "image" : "/objects/upgrade/techconsole/techconsolelit.png:<color>.<frame>" } ],
+      "imagePosition" : [-8, 0],
+
+      "frames" : 4,
+      "animationCycle" : 0.5,
+
+      "direction" : "left",
+      "flipImages" : true,
+
+      "spaceScan" : 0.1,
+      "anchors" : [ "bottom" ],
+      "sitPosition" : [-19.5, 20] // -24 + 4.5
+    },
+    {
+      "imageLayers" : [ { "image" : "/objects/upgrade/techconsole/techconsole.png:<color>.<frame>", "fullbright" : true }, { "image" : "/objects/upgrade/techconsole/techconsolelit.png:<color>.<frame>" } ],
+      "imagePosition" : [-8, 0],
+
+      "frames" : 4,
+      "animationCycle" : 0.5,
+
+      "direction" : "right",
+
+      "spaceScan" : 0.1,
+      "anchors" : [ "bottom" ],
+      "sitPosition" : [-27.5, 20] // -24 + -3.5
+    }
+  ],
+
+  "interactAction" : "openCockpitInterface",
+  
+  "outputNodes": [ [0, 0] ],
+  
+  "sitOrientation" : "stand",
+  "sitFlipDirection" : true,
+  //"soundEffect" : "/sfx/objects/shipengine.ogg",
+  //"soundEffectRadius" : 1000,
+  
+  "." : false
+}

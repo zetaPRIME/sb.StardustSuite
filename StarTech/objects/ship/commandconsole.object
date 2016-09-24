@@ -50,6 +50,9 @@
 
   "interactAction" : "openCockpitInterface",
   
+  "scripts" : [ "commandconsole.lua" ],
+  "scriptDelta" : 1,
+  
   "outputNodes": [ [0, 0] ],
   
   "sitOrientation" : "stand",

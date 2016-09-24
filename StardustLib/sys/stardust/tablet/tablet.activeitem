@@ -1,0 +1,18 @@
+{
+  "itemName" : "stardustlib:tablet",
+  //"price" : 150,
+  //"level" : 1,
+  "maxStack" : 1,
+  "rarity" : "Essential",
+  "description" : "A central control panel for ALL the things! :D",
+  "shortdescription" : "Tablet",
+  "category" : "tool",
+  "twoHanded" : true,
+  "itemTags" : [ ],
+  
+  "inventoryIcon" : "tablet.icon.png",
+
+  "scripts" : ["tablet.item.lua"],
+
+  "." : false
+}

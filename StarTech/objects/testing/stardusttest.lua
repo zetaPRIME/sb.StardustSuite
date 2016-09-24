@@ -41,8 +41,18 @@ function onInteraction(args)
   local pool = network.getPool()
   for i = 1, #pool do
     local id = pool[i]
-    if true or id ~= entity.id() then
+    if id ~= entity.id() then
       world.callScriptedEntity(id, "object.say", "I'm in the pool!")
+      
+      local nenv = world.callScriptedEntity(id, "require", "/lib/stardust/-inject.lua")
+      do
+        local aenv = _ENV
+        _ENV = nenv
+        
+        object.smash()
+        
+        _ENV = aenv
+      end
     end
   end
   
@@ -87,6 +97,26 @@ function containerCallback(...)
       object.say(sb.printJson(itm))
       multilog("Item: " .. sb.printJson(itm))
       world.spawnItem(itm, entity.position()) -- pop it out if it doesn't fit the network anymore
+    end
+  end
+  
+  local pool = network.getPool()
+  for i = 1, #pool do
+    local id = pool[i]
+    if id ~= entity.id() then
+      --world.callScriptedEntity(id, "object.say", "I'm in the pool!")
+      
+      local nenv = interop.hack(id)
+      nenv.object.say("I'm a banaaaana!")
+      
+      if false then
+        nenv.aenv = _ENV
+        _ENV = nenv
+        
+        object.smash()
+        
+        _ENV = aenv
+      end
     end
   end
   

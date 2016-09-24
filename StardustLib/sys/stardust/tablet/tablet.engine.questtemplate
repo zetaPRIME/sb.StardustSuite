@@ -1,0 +1,14 @@
+{
+  "id" : "stardustlib:tablet.engine",
+  "mainQuest" : true,
+  "title" : "StardustLib Tablet",
+  "text" : "Should be invisible(!?)",
+  "completionText" : "Wait, what?",
+  "moneyRange" : [0, 0],
+  "canBeAbandoned" : false,
+  "invisible" : true,
+  "logOnly" : true,
+
+  "updateDelta" : 1,
+  "script" : "/sys/stardust/tablet/tablet.engine.lua"
+}

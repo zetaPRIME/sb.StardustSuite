@@ -1,0 +1,3 @@
+[
+  { "op" : "add", "path" : "/statusControllerSettings/primaryScriptSources/-", "value" : "/sys/stardust/playerext-bootstrap.lua" }
+] 

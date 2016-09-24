@@ -41,4 +41,12 @@ do
     return nil
   end
   
+  function interop.hack(id) -- this is REALLY SILLY; returns a given entity's execution environment
+    local s = pcall(world.callScriptedEntity, id, "require", "/lib/stardust/-inject.lua")
+    if not s then return nil end -- not callable
+    local henv = world.callScriptedEntity(id, "_renv")
+    
+    return henv
+  end
+  
 end

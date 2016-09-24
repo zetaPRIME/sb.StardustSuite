@@ -70,3 +70,13 @@ function onInteractComplete(rpc)
     activeItem.interact(response.interact.type, response.interact.id, response.interact.customConfig or root.assetJson(response.interact.config))
   end
 end
+
+if false then -- testing probe
+  setmetatable(_ENV, { __index = function(t,k)
+    sb.logInfo("missing field "..k.." accessed")
+    local f = function(...)
+      sb.logInfo("called")
+    end
+    return nil -- f
+  end })
+end

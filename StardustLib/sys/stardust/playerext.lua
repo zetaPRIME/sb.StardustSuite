@@ -28,21 +28,62 @@ function dump(o, ind)
 end
 
 function update()
-  --
+  status.setPersistentEffects("startech:playerext", { { stat = "playerextActive", amount = 1 } })
+  
+  --mcontroller.setRotation(math.pi*0.5)
+  
+  --sb.logInfo("active!!")
 end
 
-function init()
-  liveMsg("WIP, please ignore for now")
-  quest.fail()
-  --liveMsg(dump(player.essentialItem("painttool")))
+function _mightBeUsefulLater()
+  local mspd = 1000
+  mcontroller.clearControls()
+  mcontroller.controlParameters({
+    --stickyCollision = true,
+    --stickyForce = 10,
+    frictionEnabled = false,
+    groundForce = 0,
+    airForce = 0,
+    gravityEnabled = false,
+    airJumpProfile = {jumpControlForce = 0, jumpSpeed = 0},
+    walkSpeed = mspd, runSpeed = mspd, speedLimit = mspd, flySpeed = mspd,
+    
+    dummy = false
+  })
+  mcontroller.controlDown()
   --player.giveEssentialItem("painttool", {
   --  name = "painttool",
   --  count = 1,
   --  parameters = {}
   --})
+  
+end
+
+svc = {}
+function init()
+  for name,func in pairs(svc) do
+    if type(func) == "function" then
+      message.setHandler("playerext:" .. name, func)
+    end
+  end
 end
 
 function liveMsg(msg)
-  player.radioMessage({text=msg,messageId="scriptDbg",unique=false})
+  player.radioMessage({text=msg,messageId="scriptDbg",unique=false,portraitImage="/interface/chatbubbles/static.png:<frame>",portraitFrames=4,portraitSpeed=0.3,senderName="SVC"})
+end
+
+function questStart()
+  --liveMsg("Indeed!")
+end
+
+function questComplete()
+  status.clearPersistentEffects("startech:playerext")
+end
+function questFail()
+  status.clearPersistentEffects("startech:playerext")
+end
+
+function svc.message(msg, isLocal, param)
+  liveMsg(param)
 end
 

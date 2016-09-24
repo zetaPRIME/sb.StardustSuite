@@ -9,8 +9,17 @@ do
     target = tgt
     return sync
   end
+  function sync.targetDefault()
+    target = nil
+    return sync
+  end
   local function msgTarget()
-    return target or (pane.sourceEntity or pane.containerEntityId)()
+    if target then return target end
+    target = (
+      (pane and (pane.sourceEntity or pane.containerEntityId)) or
+      (console and console.sourceEntity) or
+      function() return nil end)()
+    return target
   end
   
   function sync.poll(msg, func, ...)

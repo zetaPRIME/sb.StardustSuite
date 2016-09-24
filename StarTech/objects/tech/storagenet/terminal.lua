@@ -20,6 +20,16 @@ function init()
   message.setHandler("playerClose", playerClose)
   message.setHandler("playerHeartbeat", playerHeartbeat)
   --
+  --object.say(dump(world.getProperty("worldType")))
+  --sb.logInfo(dump(world.entityQuery(entity.position(), 1000)))
+  if true then return nil end
+  for k,v in pairs(world.entityQuery(entity.position(), 10000)) do
+    local tp = world.entityType(v)
+    local tn = false
+    if tp == "stagehand" then tn = world.callScriptedEntity(v, "stagehand.typeName")
+    else tn = world.entityName(v) or "n/a" end
+    sb.logInfo("["..k.."] " .. tp .. " - " .. tn)
+  end
 end
 
 function playerOpen(msg, isLocal, pid)
@@ -55,17 +65,21 @@ function update(dt)
   inUse = isOpen
 end
 
-function dump(o)
-   if type(o) == 'table' then
-      local s = '{ '
-      for k,v in pairs(o) do
-         if type(k) ~= 'number' then k = '"'..k..'"' end
-         s = s .. '['..k..'] = ' .. dump(v) .. ','
-      end
-      return s .. '} '
-   else
-      return tostring(o)
-   end
+function dump(o, ind)
+  if not ind then ind = 2 end
+  local pfx, epfx = "", ""
+  for i=1,ind do pfx = pfx .. " " end
+  for i=3,ind do epfx = epfx .. " " end
+  if type(o) == 'table' then
+    local s = '{\n'
+    for k,v in pairs(o) do
+      if type(k) ~= 'number' then k = '"'..k..'"' end
+      s = s .. pfx .. '['..k..'] = ' .. dump(v, ind+2) .. ',\n'
+    end
+    return s .. epfx .. '}'
+  else
+    return tostring(o)
+  end
 end
 
 _ccdis = false

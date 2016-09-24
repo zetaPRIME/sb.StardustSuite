@@ -45,15 +45,6 @@ function init()
   
   pid = pane.playerEntityId()
   sync.msg("playerOpen", pid)
-  
-  --sb.logInfo("_ENV dump:\n" .. dump(_ENV))
-  --world.callScriptedEntity(pane.playerEntityId(), "require", "/tstf.lua")
-  
-  local mm = player.essentialItem("beamaxe")
-  player.removeEssentialItem("beamaxe")
-  player.giveEssentialItem("beamaxe", mm)
-  
-  sb.logInfo("beamaxe:\n" .. dump(mm));
 end
 
 function update()

@@ -19,17 +19,6 @@ function init()
   message.setHandler("playerOpen", playerOpen)
   message.setHandler("playerClose", playerClose)
   message.setHandler("playerHeartbeat", playerHeartbeat)
-  --
-  --object.say(dump(world.getProperty("worldType")))
-  --sb.logInfo(dump(world.entityQuery(entity.position(), 1000)))
-  if true then return nil end
-  for k,v in pairs(world.entityQuery(entity.position(), 10000)) do
-    local tp = world.entityType(v)
-    local tn = false
-    if tp == "stagehand" then tn = world.callScriptedEntity(v, "stagehand.typeName")
-    else tn = world.entityName(v) or "n/a" end
-    sb.logInfo("["..k.."] " .. tp .. " - " .. tn)
-  end
 end
 
 function playerOpen(msg, isLocal, pid)

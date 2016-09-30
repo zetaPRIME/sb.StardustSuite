@@ -28,6 +28,12 @@ end
 
 function update(args)
   self.doubleTap:update(args.dt, args.moves)
+  
+  if mcontroller.crouching() then
+    mcontroller.controlParameters({
+      normalGroundFriction = 3
+    })
+  end
 
   if self.dashDirection then
     if args.moves[self.dashDirection > 0 and "right" or "left"]

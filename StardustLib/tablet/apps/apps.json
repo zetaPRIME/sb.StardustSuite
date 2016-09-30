@@ -1,0 +1,10 @@
+{
+  "sysUI" : {
+    "name" : "StardustOS System UI",
+    "hideInLauncher" : true
+  },
+  "launcher" : {
+    "name" : "Stardust Launcher",
+    "hideInLauncher" : true
+  }
+}

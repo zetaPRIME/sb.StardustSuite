@@ -87,3 +87,14 @@ function svc.message(msg, isLocal, param)
   liveMsg(param)
 end
 
+function svc.startTabletEngine()
+  local questName = "stardustlib:tablet.engine"
+  if not player.hasQuest(questName) then
+    player.startQuest({
+      questId = questName,
+      templateId = questName,
+      parameters = {}
+    })
+  end
+end
+

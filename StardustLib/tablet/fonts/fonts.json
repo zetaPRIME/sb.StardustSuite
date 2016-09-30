@@ -1,0 +1,36 @@
+{
+  "default" : "micro",
+  
+  "micro" : { // default font for now
+    "chars" : "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789.,!?:;'\"`~=-+_/\\|@#$%^&*(){}[]<> ",
+    "frameSize" : [5,8],
+    "baseScale" : 1,
+    "baseHeight" : 5,
+    "fullHeight" : 7,
+    "charSpacing" : 1,
+    "lineSpacing" : 1,
+    "charWidth" : {
+      "default" : 3,
+      
+      "M" : 5,
+      "N" : 4,
+      //"Q" : 4,
+      "W" : 5,
+      
+      "i" : 1,
+      "j" : 2,
+      "l" : 1,
+      "m" : 5,
+      "w" : 5,
+      
+      "." : 1, "," : 2, "!" : 1,
+      ":" : 1, ";" : 2,
+      "'" : 1, "`" : 2, "~" : 5,
+      "|" : 1,
+      "@" : 5, "#" : 5,
+      "(" : 2, ")" : 2,
+      
+      " " : 1
+    }
+  }
+}

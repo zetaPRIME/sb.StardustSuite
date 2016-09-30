@@ -15,24 +15,33 @@ iostate = {
 
 dFunc = {}
 
+fontCache = {}
+function dFunc.font(fontImg, fsrc, color, ...)
+  local lst = {...}
+  if not fontCache[fontImg] then fontCache[fontImg] = {} end
+  local fc = fontCache[fontImg]
+  local function cfc(chr)
+    if fc[chr] then return fc[chr] end
+    fc[chr] = fontImg .. chr
+    return fc[chr]
+  end
+  for k,v in ipairs(lst) do
+    console.canvasDrawImageRect(cfc(v[1]), fsrc, v[2], v[3] or color)
+  end
+end
+
 function init()
   --canvasDraw 10char
   for k,v in pairs(console) do
-    if k:sub(1, 10) == "canvasDraw" then dFunc[k:sub(11, 11):lower() .. k:sub(12)] = v
+    if k:sub(1, 10) == "canvasDraw" then dFunc[k:sub(11, 11):lower() .. k:sub(12)] = v end
   end
+  --sb.logInfo("player table " .. (player and "" or "not ") .. "found")
 end
 
 function displayed()
   -- init engine if not present
-  local questName = "stardustlib:tablet.engine"
-  if not player.hasQuest(questName) then
-    player.startQuest({
-      questId = questName,
-      questTemplate = questName,
-      parameters = {}
-    })
-  end
-  -- and
+  sync.msg("playerext:startTabletEngine")
+  -- and notify
   sync.msg("sdltablet:uiAttach")
 end
 
@@ -61,7 +70,7 @@ function onReceiveResponse(rpc)
     -- debug stuff here
     return nil
   end
-  local res = rpc.result()
+  local res = rpc:result()
   iostate.o.draw = res.draw or {}
   iostate.o.soundQueue = res.soundQueue or {}
   

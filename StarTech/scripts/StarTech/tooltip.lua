@@ -11,6 +11,18 @@ do
   clr.dpsDmg = "^#ff7f7f;"
   clr.dpsSpd = "^#7fff7f;"
   
+  local function truncFormat(num, p) -- why is there no native function to do this!?
+    local sign = ""
+    if num < 0 then num = num * -1 sign = "-" end
+    local sub = num % 1
+    local main = num - sub
+    if main == 0 and sub ~= 0 then main = sign else main = string.format("%s%.0f", sign, main) end
+    sub = string.format("%f", sub):sub(2):sub(1, p+1)
+    if tonumber(sub) == 0 then sub = "" end
+    
+    return main .. sub
+  end
+  
   local function buildAbility(item, conf, abl, label)
     if not abl then return "" end
     local dps = (abl.baseDps or 0) * (conf.config.damageLevelMultiplier or 1)
@@ -21,9 +33,9 @@ do
     })}
     if dps > 0 then ls[#ls+1] = table.concat({ "\n",
       clr.dpsBase, " > ",
-      clr.dps, string.format("%.1f", dps), clr.dpsBase, "dps (",
-      clr.dpsDmg, string.format("%.1f", dps * ftime),
-      clr.dpsBase, "/hit x ", clr.dpsSpd, string.format("%.1f", spd), clr.dpsBase, "/s)"
+      clr.dps, truncFormat(dps, 1), clr.dpsBase, "dps (",
+      clr.dpsDmg, truncFormat(dps * ftime, 1),
+      clr.dpsBase, "/hit x ", clr.dpsSpd, truncFormat(spd, 1), clr.dpsBase, "/s)"
     }) end
     return table.concat(ls)
   end
@@ -32,7 +44,7 @@ do
     if not conf then conf = root.itemConfig(item) end
     return table.concat({
       prefix or "",
-      clr.weaponType, conf.config.shortdescription or "Unknown Weapon Type", " ", "^#7fff7f;", "(lv.", string.format("%d)\n", conf.parameters.level or 1),
+      clr.weaponType, conf.config.shortdescription or "Unknown Weapon Type", " ", "^#7fff7f;", "(lv.", truncFormat(conf.parameters.level or 1, 1), ")\n",
       buildAbility(item, conf, conf.config.primaryAbility, "Primary"),
       buildAbility(item, conf, conf.config.altAbility, "Secondary")--, "\na1\na2\na3\na4\na5\na6\na7\na8\na9\na10"
     })

@@ -257,8 +257,10 @@ do
     -- update input state
     osstate.input.keysLast = osstate.input.keys
     osstate.input.keys = inp.key
+    osstate.input.keys["."] = nil
     osstate.input.mouseLast = osstate.input.mouse
     osstate.input.mouse = inp.mouse
+    osstate.input.mouse["."] = nil
     osstate.input.mousePos = inp.mousePos
     
     -- then handle the update itself

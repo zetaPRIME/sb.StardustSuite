@@ -35,6 +35,11 @@ function init()
   for k,v in pairs(console) do
     if k:sub(1, 10) == "canvasDraw" then dFunc[k:sub(11, 11):lower() .. k:sub(12)] = v end
   end
+  
+  -- ... let's disabuse the json serializer of the idea that these might be json arrays
+  iostate.i.key["."] = false
+  iostate.i.mouse["."] = false
+  
   --sb.logInfo("player table " .. (player and "" or "not ") .. "found")
 end
 

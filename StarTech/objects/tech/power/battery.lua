@@ -4,14 +4,8 @@ require "/lib/stardust/prefabs.lua"
 require "/lib/stardust/power.lua"
 
 function init()
-  --local cfg = config.getParameter("batteryStats")
-  local cfg = {
-    capacity = 10000,
-    ioRate = 50
-  }
+  local cfg = config.getParameter("batteryStats")
   battery = prefabs.fluxpulse.battery(cfg.capacity, cfg.ioRate):hookUp():autoSave()
-  -- test
-  battery.state.energy = cfg.capacity / 2
 end
 
 function update()

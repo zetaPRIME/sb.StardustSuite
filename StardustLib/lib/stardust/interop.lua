@@ -24,13 +24,6 @@ do
     return world.callScriptedEntity(id, func, ...)
   end
   
-  --function unpack(t, i) -- WHY IS THIS MISSING oh wait, it's table.unpack now
-  --  i = i or 1
-  --  if t[i] ~= nil then
-  --    return t[i], unpack(t, i + 1)
-  --  end
-  --end
-  
   function zpcall(func, ...)
     --local par = {...}
     --local res = {pcall(function() return func(unpack(par)) end)}

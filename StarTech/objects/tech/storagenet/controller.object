@@ -37,6 +37,7 @@
   "scripts" : [ "controller.lua" ],
   "scriptDelta" : 1,
   
+  "inputNodes" : [ [ 0, 0 ] ],
   "outputNodes" : [ [ 0, 1 ] ],
   
   "networkTags" : {

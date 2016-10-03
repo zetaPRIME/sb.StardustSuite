@@ -38,14 +38,14 @@ function power.sendEnergy(socket, amount, testOnly)
   local tsend = math.min(total, amount)
   if testOnly then return tsend end -- or not, if this is set
   for i, c in ipairs(conn) do
-    c.receptor:receive(c.socket, tsend * (maxTake / total))
+    c.receptor:receive(c.socket, tsend * (c.maxTake / total))
   end
   return tsend
 end
 
 function power.autoSendEnergy(amount, testOnly)
   -- I suppose each socket should have its own I/O and not a shared rate limit across all of them
-  for i = 0, object.outputNodeCount() do
+  for i = 0, object.outputNodeCount() - 1 do
     -- for now, just do it this way... clunky and strictly sequential, but much faster than doing two layers of what sendEnergy does
     shared.energyProvider:extract(i, power.sendEnergy(i, shared.energyProvider:extract(i, amount, true), testOnly), testOnly)
   end

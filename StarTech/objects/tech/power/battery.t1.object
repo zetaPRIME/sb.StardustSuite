@@ -1,0 +1,35 @@
+{
+  "objectName" : "startech:battery.t1",
+  "rarity" : "Rare",
+  
+  //"category" : "storagenet.storage",
+  "price" : 500,
+  "description" : "It's a battery.",
+  "shortdescription" : "Pulse Cell",
+  "health" : 5.73,
+
+  "inventoryIcon" : "/objects/tech/storagenet/drivebay.png",
+  "orientations" : [
+    {
+      "dualImage" : "/objects/tech/storagenet/drivebay.png?multiply=7f7fbf", //:<color>",
+      "imagePosition" : [-8, 0],
+
+      "spaceScan" : 0.1,
+      "anchors" : [ "bottom" ],
+      "collision" : "platform"
+    }
+  ],
+  
+  "scripts" : [ "battery.lua" ],
+  "scriptDelta" : 1,
+  
+  "batteryStats" : {
+    "capacity" : 10000,
+    "ioRate" : 50
+  },
+  
+  //"animationScripts" : [ "drivebay.render.lua" ],
+  
+  "inputNodes" : [ [0, 0] ],
+  "outputNodes" : [ [0, 1] ]
+}

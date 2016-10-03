@@ -5,7 +5,8 @@ local loadedPrefabs = {}
 
 local function loadPrefab(path)
   if loadedPrefabs[path] then return loadedPrefabs[path] end
-  require("/prefabs/" .. prefabPath:gsub(".", "/") .. ".lua")
+  sb.logInfo("/prefabs/" .. prefabPath:gsub("%.", "/") .. ".lua")
+  require("/prefabs/" .. prefabPath:gsub("%.", "/") .. ".lua")
   local pf = __prefab
   __prefab = nil
   loadedPrefabs[path] = pf

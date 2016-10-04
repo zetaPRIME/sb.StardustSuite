@@ -42,4 +42,5 @@ luac.out
 # stuff
 _release/*
 _tmp/*
+_hype/*
 

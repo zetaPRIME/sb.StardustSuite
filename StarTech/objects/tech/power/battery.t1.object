@@ -4,14 +4,14 @@
   
   //"category" : "storagenet.storage",
   "price" : 500,
-  "description" : "It's a battery.",
+  "description" : "A basic fluxpulse battery.",
   "shortdescription" : "Pulse Cell",
   "health" : 5.73,
 
-  "inventoryIcon" : "/objects/tech/storagenet/drivebay.png",
+  "inventoryIcon" : "battery.frame.png",
   "orientations" : [
     {
-      "dualImage" : "/objects/tech/storagenet/drivebay.png?multiply=7f7fbf", //:<color>",
+      "image" : "battery.frame.png", //:<color>",
       "imagePosition" : [-8, 0],
 
       "spaceScan" : 0.1,
@@ -22,6 +22,8 @@
   
   "scripts" : [ "battery.lua" ],
   "scriptDelta" : 1,
+  
+  "animationScripts" : [ "battery.render.lua" ],
   
   "batteryStats" : {
     "capacity" : 10000,

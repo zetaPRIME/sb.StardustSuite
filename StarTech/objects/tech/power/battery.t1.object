@@ -4,11 +4,15 @@
   
   //"category" : "storagenet.storage",
   "price" : 500,
-  "description" : "A basic fluxpulse battery.",
+  "description" : "A basic fluxpulse battery.\n^green;0FP/10000FP",
+  "baseDescription" : "A basic fluxpulse battery.",
   "shortdescription" : "Pulse Cell",
   "health" : 5.73,
 
-  "inventoryIcon" : "battery.frame.png",
+  "inventoryIcon" : [
+    { "image" : "battery.frame.png" }
+  ],
+  
   "orientations" : [
     {
       "image" : "battery.frame.png", //:<color>",

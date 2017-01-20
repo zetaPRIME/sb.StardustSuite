@@ -300,5 +300,5 @@ end
 --
 
 function questStart()
-  
+  sb.logInfo("tablet quest started!!!")
 end

@@ -47,7 +47,7 @@ function update()
   localAnimator.clearLightSources()
   
   local fdt = -1
-  if objectAnimator.animationParameter("active") then fdt = 1 end
+  if animationConfig.animationParameter("active") then fdt = 1 end
   frame = math.max(0, math.min(3, frame + fdt ))
   
   local pos = vec2.add(objectAnimator.position(), {0.0, 0.0})

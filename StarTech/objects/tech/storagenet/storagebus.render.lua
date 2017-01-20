@@ -75,7 +75,7 @@ function update()
     image = self.dGlow,
     position = pos,
     --rotation = rot[animator.animationState("orientation")],
-    rotation = rot[objectAnimator.animationParameter("orientation", 1)],
+    rotation = rot[animationConfig.animationParameter("orientation", 1)],
     fullbright = true,
     centered = true,
     zlevel = 1000000

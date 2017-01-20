@@ -47,7 +47,7 @@ function update()
   localAnimator.clearDrawables()
   localAnimator.clearLightSources()
   
-  local lightStates = objectAnimator.animationParameter("lights", {})
+  local lightStates = animationConfig.animationParameter("lights", {})
   if not lightStates then return nil end
   
   for i,v in pairs(lightStates) do

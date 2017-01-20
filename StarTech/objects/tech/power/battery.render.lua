@@ -44,7 +44,7 @@ function colorToString(color)
 end
 
 function update()
-  local batLevel = objectAnimator.animationParameter("level") or 0 -- float, 0..1
+  local batLevel = animationConfig.animationParameter("level") or 0 -- float, 0..1
   if batLevel == lastBatLevel then return nil end -- let's ease up a lil
   lastBatLevel = batLevel
   

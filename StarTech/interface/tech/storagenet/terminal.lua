@@ -310,7 +310,7 @@ function applyIcon(item, wid, doFrame)
   local colorOpt = item.parameters.colorOptions or conf.config.colorOptions
   if colorOpt then
     local colordef = colorOpt[(item.parameters.colorIndex or 0)+1]
-    if colordef and type(colordef) ~= "table" then colordef = [colordef] end -- tablify anything that's not a table
+    if colordef and type(colordef) ~= "table" then colordef = {colordef} end -- tablify anything that's not a table
     if colordef then
       local cb, i = {"?replace"}, 2
       for k,v in pairs(colordef) do

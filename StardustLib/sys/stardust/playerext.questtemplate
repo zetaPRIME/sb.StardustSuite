@@ -1,4 +1,4 @@
-{
+{ // -*- grammar-ext: json -*-
   "id" : "stardustlib:playerext",
   "mainQuest" : true,
   "title" : "StardustLib Player Extensions",

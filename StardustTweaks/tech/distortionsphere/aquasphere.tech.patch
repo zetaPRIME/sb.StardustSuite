@@ -1,4 +1,4 @@
-[
+[ // -*- grammar-ext: json -*-
   { "op" : "replace", "path" : "/transformedMovementParameters/airJumpProfile/jumpSpeed", "value" : 24.0 },
   { "op" : "replace", "path" : "/transformedMovementParameters/liquidJumpProfile/jumpSpeed", "value" : 24.0 },
   { "op" : "replace", "path" : "/transformedMovementParameters/liquidJumpProfile/jumpControlForce", "value" : 800.0 },

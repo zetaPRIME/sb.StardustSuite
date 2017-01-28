@@ -1,4 +1,4 @@
-{
+{ // -*- grammar-ext: json -*-
   "itemName" : "startech:storagenet.drivecomponent",
   "shortdescription" : "1k Storage Chip",
   "description" : "An essential component of any transmatter storage drive.",

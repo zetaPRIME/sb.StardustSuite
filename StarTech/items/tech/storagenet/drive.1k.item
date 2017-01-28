@@ -1,4 +1,4 @@
-{
+{ // -*- grammar-ext: json -*-
   "itemName" : "startech:storagenet.drive.1k",
   "shortdescription" : "Storage Drive (1k)",
   "description" : "Stores items as data.\n^#7f7f7f;(not formatted)",

@@ -1,4 +1,4 @@
-{
+{ // -*- grammar-ext: json -*-
   "input" : [
     { "item" : "glass", "count" : 2 },
     { "item" : "sand2", "count" : 1 },

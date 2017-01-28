@@ -1,4 +1,4 @@
-{
+{ // -*- grammar-ext: json -*-
   /*"animatedParts" : {
     "stateTypes" : {
       "trapState" : {

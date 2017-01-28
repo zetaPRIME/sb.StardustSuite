@@ -1,4 +1,4 @@
-{
+{ // -*- grammar-ext: json -*-
   "objectName" : "startech:commandconsole",
   "itemTags" : ["captainschair"],
   "printable" : false,

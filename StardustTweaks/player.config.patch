@@ -1,4 +1,4 @@
-[
+[ // -*- grammar-ext: json -*-
   //{ "op" : "add", "path" : "/statusControllerSettings/primaryScriptSources/-", "value" : "/derpitude/derpPlayer.lua" },
   { "op" : "add", "path" : "/movementParameters/groundForce", "value" : 150.0 }, // default 100 lfm 250
   { "op" : "add", "path" : "/movementParameters/airForce", "value" : 80.0 }, // default 20 lfm 190

@@ -1,4 +1,4 @@
-{
+{ // -*- grammar-ext: json -*-
   "objectName" : "startech:storagenet.terminal",
   //"colonyTags" : ["wired"],
   "printable" : false,

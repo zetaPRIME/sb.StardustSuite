@@ -154,7 +154,7 @@ function selectItem(i, updating)
   end
   
   widget.setText("selItem_description.text", table.concat({
-    selectedItem.parameters.description or conf.config.description,
+    selectedItem.parameters.description or conf.config.description or "",
     addInfo
   }))
   --sb.logInfo(sb.printJson(root.itemConfig(selectedItem)))

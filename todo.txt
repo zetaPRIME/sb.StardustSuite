@@ -1,1 +1,11 @@
 try hacking an itemdrop and dumping _ENV
+
+rework transmat terminal to use shiny new itemslot functionality so it actually acts like an inventory :D
+figure out how the feck to detect if shift is held
+
+BYOS functionality as machine
+patch warp state matching into encounter variations of booster flames (/objects/ship/boosters/)
+add distinguishing names to even/odd small booster flames
+lots of shiny new ship components, especially animating ones that match their state to flight
+
+some major cleanup in places

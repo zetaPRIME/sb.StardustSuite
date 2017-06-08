@@ -175,7 +175,7 @@ function request(btn)
   if not selectedItem.name then return nil end -- no item selected!
   sync.poll("request", updateItemList(), {
     name = selectedItem.name,
-    count = math.min(requestBtn[btn] or 1000, selectedItem.parameters.maxStack or getConf(selectedItem).config.maxStack or 1000),
+    count = math.min((type(btn) == "number" and btn) or requestBtn[btn] or 1000, selectedItem.parameters.maxStack or getConf(selectedItem).config.maxStack or 1000),
     parameters = selectedItem.parameters
   }, pane.playerEntityId()) --]]
 
@@ -278,11 +278,32 @@ function buildList()
     widget.setPosition(icount, {gridSpace * (gx - 1) + (gridSpace - 2), 0} )
     widget.setText(icount, prettyCount(shownItems[i].count or 1))
     
+    local ix = i
+    widget.registerMemberCallback(rows[gy] .. ".slotcontainer", "left", function() onSlotClick(ix, 0) end)
+    widget.registerMemberCallback(rows[gy] .. ".slotcontainer", "right", function() onSlotClick(ix, 1) end)
+    local slot = rows[gy] .. ".slotcontainer." .. widget.addListItem(rows[gy] .. ".slotcontainer") .. ".slot"
+    local xitm = shownItems[i]
+    widget.setItemSlotItem(slot, {name = xitm.name, count = 1, parameters = xitm.parameters})
+    
     gx = gx + 1
   end
   
   if not foundSel then selectItem(-1) end
   widget.setPosition("grid.nudge", {0, (math.ceil((gy-1)/8) * -gridSpace) - 2});
+end
+
+function onSlotClick(id, button)
+  sb.logInfo("hello! slot " .. id .. " button " .. button)
+  if selectedId ~= id then
+    selectItem(id)
+    if button == 1 then return nil end -- select only if rightclicked when not selected
+  end
+  local b = nil;
+  local cur = itemutil.normalize(player.swapSlotItem() or {})
+  local maxStack = itemutil.property(selectedItem, "maxStack") or 1000
+  if itemutil.canStack(selectedItem, cur) and cur.count < maxStack then b = maxStack - cur.count end
+  if button == 1 then b = 1 end
+  request(b)
 end
 
 function prettyCount(num)
@@ -310,6 +331,8 @@ function applyIcon(item, wid, doFrame)
     layer = table.concat({ wid, ".", widget.addListItem(wid), ".icon" })
     widget.setImage(layer, table.concat({ "/interface/tech/storagenet/itemSlot.rarity.", (item.parameters.rarity or conf.config.rarity or "common"):lower(), ".png" }))
   end
+  
+  if true then return nil end -- disable icon view for now
     
 	local icon = item.parameters.inventoryIcon or conf.config.inventoryIcon or conf.config.codexIcon
   

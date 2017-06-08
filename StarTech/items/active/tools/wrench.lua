@@ -67,7 +67,7 @@ function onInteractComplete(rpc)
   sb.logInfo("response")
   if response.interact then
     sb.logInfo("interact response")
-    activeItem.interact(response.interact.type, response.interact.id, response.interact.customConfig or root.assetJson(response.interact.config))
+    activeItem.interact(response.interact.type, response.interact.customConfig or root.assetJson(response.interact.config), response.interact.id)
   end
 end
 

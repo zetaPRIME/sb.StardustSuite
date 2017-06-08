@@ -3,11 +3,18 @@
   "itemTags" : ["captainschair"],
   "printable" : false,
   "rarity" : "Common",
-  "objectType" : "loungeable",
 
   "description" : "Central control for a custom-built ship.",
   "shortdescription" : "Command Console",
   "category" : "furniture",
+  
+  "apexDescription" : "The ship's navigation control panel.",
+  "avianDescription" : "The ship's navigation controls. Clean and shiny!",
+  "floranDescription" : "Thisss piece of glasss showsss many ssstarsss!",
+  "glitchDescription" : "Excited. This screen displays everywhere the ship can go. Time for adventure!",
+  "humanDescription" : "That's the nagivation panel for this ship. Reminds me of those early tablets people used to carry around!",
+  "hylotlDescription" : "A navigation system befitting such a finely crafted vessel as this.",
+  "novakidDescription" : "That's a fancy sorta steerin' wheel for this here fancy custom ship!",
 
   "lightColor" : [39, 62, 64],
 
@@ -48,15 +55,16 @@
     }
   ],
 
-  "interactAction" : "openCockpitInterface",
+  "interactAction" : "ScriptPane",
+  "interactData" : "/interface/cockpit/cockpit.config",
   
   "scripts" : [ "commandconsole.lua" ],
   "scriptDelta" : 1,
   
   "outputNodes": [ [0, 0] ],
   
-  "sitOrientation" : "stand",
-  "sitFlipDirection" : true,
+  //"sitOrientation" : "stand",
+  //"sitFlipDirection" : true,
   //"soundEffect" : "/sfx/objects/shipengine.ogg",
   //"soundEffectRadius" : 1000,
   

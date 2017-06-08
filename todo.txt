@@ -1,7 +1,9 @@
 try hacking an itemdrop and dumping _ENV
 
-rework transmat terminal to use shiny new itemslot functionality so it actually acts like an inventory :D
 figure out how the feck to detect if shift is held
+implement slot-drop
+reimplement preview slot
+CLEAN UP REMNANTS OF OLD TERMINAL IMPLEMENTATION
 
 BYOS functionality as machine
 patch warp state matching into encounter variations of booster flames (/objects/ship/boosters/)

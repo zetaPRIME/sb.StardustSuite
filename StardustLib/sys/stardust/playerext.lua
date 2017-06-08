@@ -1,4 +1,6 @@
+-- stardustlib player extension
 
+require "/lib/stardust/itemutil.lua"
 
 setmetatable(_ENV, { __index = function(t,k)
   sb.logInfo("missing field "..k.." accessed")
@@ -28,7 +30,9 @@ function dump(o, ind)
 end
 
 function update()
-  status.setPersistentEffects("startech:playerext", { { stat = "playerextActive", amount = 1 } })
+  status.setPersistentEffects("stardustlib:playerext", { { stat = "playerextActive", amount = 1 } })
+  
+  --player.setSwapSlotItem({name = "startech:storagenet.terminal", count = 1})
   
   --mcontroller.setRotation(math.pi*0.5)
   
@@ -98,3 +102,34 @@ function svc.startTabletEngine()
   end
 end
 
+function svc.giveItemToCursor(msg, isLocal, itm)
+  --[[
+    give cursor as much as can be added to stack; give inventory the rest
+  ]]
+  itemutil.normalize(itm) -- normalize recieved descriptor
+  local cur = itemutil.normalize(player.swapSlotItem() or {name = itm.name, count = 0, parameters = itm.parameters});
+  if cur.count == 0 or itemutil.canStack(cur, itm) then
+    -- stack into cursor, then into inventory
+    local maxStack = itemutil.property(itm, "maxStack") or 1000
+    local pcount = cur.count or 0
+    local ccount = pcount + itm.count
+    
+    player.setSwapSlotItem({name = itm.name, count = math.min(ccount, maxStack), parameters = itm.parameters})
+    local overflow = math.max(0, ccount - maxStack)
+    if overflow > 0 then
+      player.giveItem({name = itm.name, count = overflow, parameters = itm.parameters})
+    end
+  else
+    -- just give to inventory
+    player.giveItem(itm)
+  end
+end
+
+
+
+
+
+
+
+
+--

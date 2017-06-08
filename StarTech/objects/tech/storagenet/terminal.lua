@@ -1,6 +1,7 @@
 require "/scripts/vec2.lua"
 
 require "/lib/stardust/network.lua"
+--require "/lib/stardust/sync.lua"
 
 openPlayers = {}
 inUse = false
@@ -121,6 +122,7 @@ function fulfillRequest(msg, isLocal, item, player)
   
   local result = shared.controller:tryTakeItem(item)
   if result and result.count > 0 then
-    world.spawnItem(result, world.entityPosition(player))
+    --world.spawnItem(result, world.entityPosition(player))
+    world.sendEntityMessage(player, "playerext:giveItemToCursor", result)
   end
 end

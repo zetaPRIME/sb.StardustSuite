@@ -66,6 +66,20 @@ do
     return deepCompare(i1.parameters, i2.parameters) -- I don't think anything outside of parameters has any bearing
   end
   
+  -- returns a given property of an item, overridden where applicable
+  function itemutil.property(itm, prop)
+    return (itm.parameters and itm.parameters[prop]) or itemutil.getCachedConfig(itm)[prop]
+  end
+  
+  -- normalize item descriptor
+  function itemutil.normalize(itm)
+    itm.parameters = itm.parameters or {}
+    itm.count = itm.count or 0
+    itm.name = itm.name or ""
+    
+    return itm
+  end
+  
   -- filter system
   do
     local function gfalse() return false end

@@ -15,7 +15,7 @@ require "/scripts/StarTech/tooltip.lua"
 
 gridSize = 24
 gridSpace = 25
-gridWidth = 8 -- 8 max
+gridWidth = 1--8 -- 8 max
 
 if false then -- testing probe
   setmetatable(_ENV, { __index = function(t,k)
@@ -177,7 +177,13 @@ function request(btn)
     name = selectedItem.name,
     count = math.min(requestBtn[btn] or 1000, selectedItem.parameters.maxStack or getConf(selectedItem).config.maxStack or 1000),
     parameters = selectedItem.parameters
-  }, pane.playerEntityId())
+  }, pane.playerEntityId()) --]]
+
+  --[[player.setSwapSlotItem({
+    name = selectedItem.name,
+    count = math.min(requestBtn[btn] or 1000, selectedItem.parameters.maxStack or getConf(selectedItem).config.maxStack or 1000),
+    parameters = selectedItem.parameters
+  }); --]]
 end
 
 function onRecvItemList(rpc)
@@ -276,6 +282,7 @@ function buildList()
   end
   
   if not foundSel then selectItem(-1) end
+  widget.setPosition("grid.nudge", {0, (math.ceil((gy-1)/8) * -gridSpace) - 2});
 end
 
 function prettyCount(num)

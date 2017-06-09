@@ -1,5 +1,5 @@
 { // -*- grammar-ext: json -*-
-  "version" : "Alpha v0.03",
+  "version" : "Alpha v0.04",
   "friendlyName" : "StardustLib",
   "name" : "StardustLib",
   "author" : "zetaPRIME",

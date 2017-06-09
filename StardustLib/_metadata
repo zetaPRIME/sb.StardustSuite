@@ -1,4 +1,4 @@
-{ // -*- grammar-ext: json -*-
+{
   "version" : "Alpha v0.04",
   "friendlyName" : "StardustLib",
   "name" : "StardustLib",

@@ -1,5 +1,10 @@
 try hacking an itemdrop and dumping _ENV
 
+playerext:openInterface {
+    setSwapSlotItem to an activeitem containing the old one and interact parameters, which restores previous item and opens the dialog on first update (init?)
+    alway rember happy day
+}
+
 figure out how the feck to detect if shift is held
 implement slot-drop
 reimplement preview slot

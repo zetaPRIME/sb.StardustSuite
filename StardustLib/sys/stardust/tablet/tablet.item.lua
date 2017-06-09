@@ -35,5 +35,5 @@ function update(dt, fireMode, shiftHeld, moves)
 end
 
 function fire(...)
-  activeItem.interact("ScriptConsole", "/sys/stardust/tablet/tablet.ui.config", activeItem.ownerEntityId())
+  activeItem.interact("ScriptPane", "/sys/stardust/tablet/tablet.ui.config", activeItem.ownerEntityId())
 end

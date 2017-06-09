@@ -26,15 +26,25 @@ function dFunc.font(fontImg, fsrc, color, ...)
     return fc[chr]
   end
   for k,v in ipairs(lst) do
-    console.canvasDrawImageRect(cfc(v[1]), fsrc, v[2], v[3] or color)
+    canvas:drawImageRect(cfc(v[1]), fsrc, v[2], v[3] or color)
   end
 end
 
 function init()
+  canvas = widget.bindCanvas("scriptCanvas")
+  widget.focus("scriptCanvas")
   --canvasDraw 10char
-  for k,v in pairs(console) do
-    if k:sub(1, 10) == "canvasDraw" then dFunc[k:sub(11, 11):lower() .. k:sub(12)] = v end
-  end
+  --for k,v in pairs(canvas) do
+  --  if k:sub(1, 4) == "draw" then dFunc[k:sub(5, 5):lower() .. k:sub(6)] = v end
+  --end
+  dFunc.image = function(...) canvas:drawImage(...) end
+  dFunc.imageDrawable = function(...) canvas:drawImageDrawable(...) end
+  dFunc.imageRect = function(...) canvas:drawImageRect(...) end
+  dFunc.tiledImage = function(...) canvas:drawTiledImage(...) end
+  dFunc.line = function(...) canvas:drawLine(...) end
+  dFunc.rect = function(...) canvas:drawRect(...) end
+  dFunc.poly = function(...) canvas:drawPoly(...) end
+  dFunc.triangles = function(...) canvas:drawTriangles(...) end
   
   -- ... let's disabuse the json serializer of the idea that these might be json arrays
   iostate.i.key["."] = false
@@ -55,7 +65,7 @@ function uninit()
 end
 
 function update()
-  iostate.i.mousePos = console.canvasMousePosition()
+  iostate.i.mousePos = canvas:mousePosition()
   if iostate.next then
     iostate.next = false
     sync.poll("sdltablet:uiUpdate", onReceiveResponse, iostate.i)
@@ -83,8 +93,10 @@ function onReceiveResponse(rpc)
 end
 
 function drawFromQueue()
-  console.canvasDrawRect({0, 0, 1024, 1024}, {0, 0, 0}) -- blankslate
+  canvas:clear()
+  canvas:drawRect({0, 0, 1024, 1024}, {0, 0, 0}) -- blankslate
   for _,q in ipairs(iostate.o.draw) do
+    --sb.logInfo(dump(q))
     dFunc[q[1]](table.unpack(q, 2))
   end
 end

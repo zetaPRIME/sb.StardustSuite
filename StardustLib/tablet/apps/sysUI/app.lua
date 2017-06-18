@@ -16,6 +16,6 @@ function uiUpdate()
 end
 
 function uiPostUpdate()
-  gfx.drawRect({0, 240, 160, 16}, {15, 15, 15})
-  gfx.drawText("This is sysUI. :D", {80, 248}, nil, { centered = true })
+  gfx.drawRect({0, 240-16, 160, 16}, {15, 15, 15})
+  gfx.drawText("This is sysUI. :D", {80, 248-16}, nil, { centered = true })
 end

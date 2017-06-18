@@ -7,21 +7,22 @@ function init()
   message.setHandler("wrenchInteract", wrenchInteract)
 end
 
-lastLounged = false
+--lastLounged = false
 function update()
-  local lounged = world.loungeableOccupied(entity.id())
-  
-  if lounged ~= lastLounged then
-    local o = lounged
+  local flyingType = world.flyingType()
+  if flyingType ~= storage.flyingType then
+    --animator.setAnimationState("boosterState", self.flyingBoosterStates[newFlyingType])
+    storage.flyingType = flyingType
+    
+    local o = flyingType and flyingType ~= "none"
     if storage.invert then o = not o end
     object.setOutputNodeLevel(0, o)
   end
-  lastLounged = lounged
 end
 
 function wrenchInteract(msg, isLocal, shift)
   storage.invert = not storage.invert
-  lastLounged = 42
+  --lastLounged = 42
   object.say("Invert output: " .. (storage.invert and "on" or "off"))
 end
 

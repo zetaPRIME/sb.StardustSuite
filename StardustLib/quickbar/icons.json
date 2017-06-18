@@ -1,0 +1,12 @@
+{
+  "priority" : [
+    { "label" : "Matter Manipulator", "pane" : "/interface/scripted/mmupgrade/mmupgradegui.original.config", "icon" : "/items/generic/other/manipulatormodule.png" }  
+  ],
+  "admin" : [
+    { "label" : "Ship Remote Control", "pane" : "/interface/cockpit/cockpit.config", "icon" : "/items/active/stationtransponder/stationtransponder.png" },
+    { "label" : "Tech Panel", "pane" : "/interface/scripted/techupgrade/techupgradegui.config", "icon" : "/items/generic/other/techcard.png" }
+  ],
+  "normal" : [
+    
+  ]
+}

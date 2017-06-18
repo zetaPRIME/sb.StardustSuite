@@ -109,6 +109,10 @@ function canvasClickEvent(position, key, keyDown)
   iostate.i.mouse[key] = keyDown or nil -- clear if false
 end
 
+function scroll(...)
+  sb.logInfo("scroll event")
+end
+
 setmetatable(_ENV, { __index = function(t,k)
   info = "missing field "..k.." accessed"
   local f = function(...)

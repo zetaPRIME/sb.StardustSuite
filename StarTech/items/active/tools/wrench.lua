@@ -32,6 +32,9 @@ function update(dt, fireMode, shiftHeld, moves)
 end
 
 function xfire(moves, shiftHeld)
+  -- test
+  --world.damageTileArea(activeItem.ownerAimPosition(), 10, "background", activeItem.ownerAimPosition(), "beamish", 1000000, 1000000)
+  
   local aim = activeItem.ownerAimPosition()
   aim[1] = math.floor(aim[1])
   aim[2] = math.floor(aim[2])

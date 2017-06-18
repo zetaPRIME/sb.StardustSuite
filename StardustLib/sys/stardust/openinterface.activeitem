@@ -1,0 +1,16 @@
+{ // -*- grammar-ext: json -*-
+  "itemName" : "stardustlib:openinterface",
+  "maxStack" : 1,
+  "rarity" : "Essential",
+  "description" : "",
+  "shortdescription" : "...",
+  "category" : "tool",
+  "twoHanded" : true,
+  "itemTags" : [ ],
+  
+  "inventoryIcon" : "nothing.png",
+
+  "scripts" : ["openinterface.lua"],
+
+  "." : false
+}

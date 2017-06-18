@@ -59,7 +59,7 @@
   "interactData" : "/interface/cockpit/cockpit.config",
   
   "scripts" : [ "commandconsole.lua" ],
-  "scriptDelta" : 1,
+  "scriptDelta" : 10,
   
   "outputNodes": [ [0, 0] ],
   

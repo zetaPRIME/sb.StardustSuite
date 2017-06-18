@@ -1,0 +1,13 @@
+{
+  "frameGrid" : {
+    "size" : [18, 18],
+    "dimensions" : [1, 5],
+    "names" : [
+      [ "base" ],
+      [ "hover" ],
+      [ "open" ],
+      [ "openHover" ],
+      [ "disabled" ]
+    ]
+  }
+}

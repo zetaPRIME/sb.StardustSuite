@@ -139,12 +139,12 @@ do
   end
   
   gfx = {}
-  local screenSize = { 160, 256 } -- 240 plus 16 for softkeys
+  local screenSize = { 320, 240 } -- an actual 4:3 tablet resolution because why not
   local function translateVec(v)
-    return { v[1], 256 - v[2] }
+    return { v[1], 240 - v[2] }
   end
   local function translateRect(r) -- topleft xywh to bottomleft corner-corner
-    return { r[1], 256 - r[2], r[1] + r[3], 256 - (r[2] + r[4]) }
+    return { r[1], 240 - r[2], r[1] + r[3], 240 - (r[2] + r[4]) }
   end
   
   function gfx.drawImage(img, pos, scale, centered)

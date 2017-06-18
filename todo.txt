@@ -1,9 +1,7 @@
-try hacking an itemdrop and dumping _ENV
+// try hacking an itemdrop and dumping _ENV
 
-playerext:openInterface {
-    setSwapSlotItem to an activeitem containing the old one and interact parameters, which restores previous item and opens the dialog on first update (init?)
-    alway rember happy day
-}
+move the business end of playerext:openInterface into a library function so panes can use it directly
+...and use it in a secondary shortcut bar in place of the MM upgrade UI
 
 figure out how the feck to detect if shift is held
 implement slot-drop
@@ -13,13 +11,43 @@ somewhat redesign UI to make better use of now-unneeded tooltip area
 
 TERMINAL THEMABILITY?
 
-BYOS functionality as machine
+BYOS functionality as machine {
+    damageTileArea with ridiculously high strength and harvest level and radius big enough to cover a t8 vanilla ship from one end, in both fg and bg
+    itemDropQuery and collect into database
+    upgrade player ship to custom tier to get rid of bg image and collision material
+    force-kill objects set "residual" by Hacking them and using object.smash
+}
 patch warp state matching into encounter variations of booster flames (/objects/ship/boosters/)
 add distinguishing names to even/odd small booster flames
-lots of shiny new ship components, especially animating ones that match their state to flight
+lots of shiny new ship components, especially animating ones that match their state to flight {
+    also floor-only teleporters
+}
+
+machine that powers warp core via fluxpulse (world property "ship.fuel")
 
 some major cleanup in places
 
 probably a UI lib that encapsulates widgets (read from heirarchy)
 
-eventually, replace matter manipulator upgrade UI with tablet (thank you canvas-anywhere <3)
+eventually, replace *collections* UI? with tablet (thank you canvas-anywhere <3)
+
+Extend sync library {
+    //Recognize RpcPromise returning another RpcPromise and replace in queue
+    
+    actually, response system with a proper response-message instead of just an RpcPromise
+    generate responseID with makeuuid? register with an anonymous function for continuation of operation after response
+}
+
+Transmatter network reimplementation {
+    Controller {
+        API {
+            callable via both callScriptedEntity and sendEntityMessage
+            each request runs as a coroutine placed on a queue for suspendability and environment cleanliness
+            
+            ...
+        }
+        Network Scan Module {
+            periodically scans the network pool, assembles the list of storage devices and notifies peripherals
+        }
+    }
+}

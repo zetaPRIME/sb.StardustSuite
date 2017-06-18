@@ -33,8 +33,8 @@
   
   "uiConfig" : "/interface/chests/chesttest.config",
   
-  "interactAction" : "ScriptConsole",
-  "interactData" : "/objects/generic/arcadegame/arcadegamegui.config",
+  //"interactAction" : "ScriptConsole",
+  //"interactData" : "/objects/generic/arcadegame/arcadegamegui.config",
   
   "objectType" : "container",
   "containerCallback" : "ccall",

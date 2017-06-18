@@ -125,6 +125,17 @@ function svc.giveItemToCursor(msg, isLocal, itm)
   end
 end
 
+function svc.openInterface(msg, isLocal, info)
+  player.setSwapSlotItem({
+    name = "stardustlib:openinterface",
+    count = 1,
+    parameters = {
+      info = info,
+      restore = player.swapSlotItem()
+    }
+  })
+end
+
 
 
 

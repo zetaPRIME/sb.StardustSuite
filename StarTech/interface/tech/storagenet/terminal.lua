@@ -95,7 +95,11 @@ function dismissed() --uninit()
   sync.msg("playerClose", pid)
 end
 
-function btnExpandInfo() setExpandedInfo() end
+function btnExpandInfo()
+  --setExpandedInfo()
+  -- temp: test playerext
+  world.sendEntityMessage(pane.playerEntityId(), "playerext:openInterface", "/interface/cockpit/cockpit.config")
+end
 infoExpanded = false
 function setExpandedInfo(setting)
   if setting == nil then setting = not infoExpanded end

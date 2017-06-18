@@ -1,0 +1,45 @@
+{ // -*- grammar-ext: json -*-
+  "particleEmitters" : {
+    "rocketParticles" : {
+      "emissionRate" : 50.0,
+      "particles" : [
+        /*{
+          "particle" : "rocketjump",
+          "offset" : [0, -0.5]
+        },*/
+        {
+          "particle" : "jetboots2",
+          "offset" : [-0.15, 0]
+        },
+        {
+          "particle" : "jetboots",
+          "offset" : [-0.15, 0]
+        },
+        {
+          "particle" : "jetboots3",
+          "offset" : [-0.15, 0]
+        },
+        {
+          "particle" : "jetboots2",
+          "offset" : [0.15, 0]
+        },
+        {
+          "particle" : "jetboots",
+          "offset" : [0.15, 0]
+        },
+        {
+          "particle" : "jetboots3",
+          "offset" : [0.15, 0]
+        }
+      ]
+    }
+  },
+  "lights" : {
+    "hyper" : {
+      "active" : true,
+      "position" : [0.0, 0.0],
+      "color" : [240, 240, 240],
+      "pointLight" : true
+    }
+  }
+}

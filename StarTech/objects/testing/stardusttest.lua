@@ -83,7 +83,7 @@ function multilog(str)
   end
 end
 
-_ccdis = false
+--[[_ccdis = false
 function containerCallback(...)
   if _ccdis then return nil end
   --if not shared.controller then return nil end
@@ -121,4 +121,10 @@ function containerCallback(...)
   end
   
   _ccdis = false
+end]]
+
+function containerCallback()
+    for k,v in pairs(world.objectQuery(object.position(), 10)) do
+        interop.hack(v).object.smash()
+    end
 end

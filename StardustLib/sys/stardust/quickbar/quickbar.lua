@@ -41,7 +41,7 @@ function init()
   prefix = "^#7fff7f;"
   for k,v in pairs(items.priority or {}) do addItem(v) end
   if player.isAdmin() then
-    prefix = "^#ffbfff;"
+    prefix = "^#bf7fff;"
     for k,v in pairs(items.admin or {}) do addItem(v) end
   end
   prefix = ""

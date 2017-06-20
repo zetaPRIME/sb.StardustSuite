@@ -1,7 +1,15 @@
 // try hacking an itemdrop and dumping _ENV
 
-move the business end of playerext:openInterface into a library function so panes can use it directly
-...and use it in a secondary shortcut bar in place of the MM upgrade UI
+move the business end of playerext:openInterface into a library function so panes can use it directly (while keeping things clean and easily-updatable)
+
+configurable tram stop {
+  built-in player sensor
+}
+
+reserve material ID range somewhere
+semigloss black hull panel
+
+fluxsaber (fluxpulse-charged beamsword)
 
 figure out how the feck to detect if shift is held
 implement slot-drop
@@ -29,7 +37,7 @@ some major cleanup in places
 
 probably a UI lib that encapsulates widgets (read from heirarchy)
 
-eventually, replace *collections* UI? with tablet (thank you canvas-anywhere <3)
+? eventually, replace *collections* UI? with tablet (thank you canvas-anywhere <3)
 
 Extend sync library {
     //Recognize RpcPromise returning another RpcPromise and replace in queue

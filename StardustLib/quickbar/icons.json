@@ -4,7 +4,8 @@
   ],
   "admin" : [
     { "label" : "Ship Remote Control", "pane" : "/interface/cockpit/cockpit.config", "icon" : "/items/active/stationtransponder/stationtransponder.png" },
-    { "label" : "Tech Panel", "pane" : "/interface/scripted/techupgrade/techupgradegui.config", "icon" : "/items/generic/other/techcard.png" }
+    { "label" : "Tech Panel", "pane" : "/interface/scripted/techupgrade/techupgradegui.config", "icon" : "/items/generic/other/techcard.png" },
+    { "label" : "Mech Assembly", "pane" : "/interface/scripted/mechassembly/mechassemblygui.config", "icon" : "/items/generic/salvage/salvagetier5.png" }
   ],
   "normal" : [
     

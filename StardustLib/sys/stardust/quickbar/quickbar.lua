@@ -4,6 +4,11 @@
 
 
 function openInterface(info)
+  if player.isLounging() then
+    -- fail...
+    pane.playSound("/sfx/interface/clickon_error.ogg")
+    return nil
+  end
   player.setSwapSlotItem({
     name = "stardustlib:openinterface",
     count = 1,

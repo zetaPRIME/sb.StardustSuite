@@ -22,10 +22,17 @@ end
 
 --[[
 TODO:
+- unique graphics instead of it being a clone of the doom cannon
 - visually distinguish beam modes
-- make beam not fire backwards
-- flashlight effect
-- make beam end look like it's actually doing something
+- make beam not fire backwards (and always fire forwards the minimum amount)
+- flashlight effect when turned off
+- make beam end look like it's actually doing something (particles)
+- "charge ring" drawing inwards at the beam focus while charging up
+- deal damage over time to hostiles in the beam's path
+  - push erchius ghost?
+- additional sound layers for damaging tiles and entities
+
+- configurable strength and radius values?
 ]]
 
 function init()

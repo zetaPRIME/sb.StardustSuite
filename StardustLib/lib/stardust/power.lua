@@ -57,4 +57,3 @@ end
 -- float energyProvider:extract(int socket, float amount, bool testOnly) - returns amount successfully extracted
 
 -- float energyReceptor:receive(int socket, float amount, bool testOnly) - returns amount successfully input
-

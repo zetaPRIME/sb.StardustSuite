@@ -2,6 +2,8 @@ require "/scripts/util.lua"
 require "/scripts/vec2.lua"
 require "/items/active/weapons/weapon.lua"
 
+require "/lib/stardust/power.item.lua"
+
 state = {} -- state data
 states = {} -- list of state machines
 currentState = ""
@@ -153,6 +155,11 @@ states.fire = {
     animator.setSoundVolume("fireloop", 0, 0.125)
   end,
   update = function(dt, fireMode, shiftHeld)
+    if power.drawEquipEnergy(1) < 1 then
+      enterState("release")
+      return nil
+    end
+    
     local owner = activeItem.ownerEntityId()
     local origin = vec2.add(mcontroller.position(), activeItem.handPosition(self.weapon.muzzleOffset))
     local endpoint = activeItem.ownerAimPosition()

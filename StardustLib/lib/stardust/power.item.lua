@@ -16,7 +16,7 @@ function power.drawItemEnergy(item, amount, testOnly)
   
   -- assemble actual battery stats
   local bs = copy(cfg.batteryStats or {})
-  for k,v in (item.parameters.batteryStats or {}) do bs[k] = v end
+  for k,v in pairs(item.parameters.batteryStats or {}) do bs[k] = v end
   
   -- calculate how much can actually be taken
   local r = math.min(amount, bs.ioRate or amount)
@@ -45,11 +45,13 @@ function power.drawEquipEnergy(amount, testOnly)
     -- check each slot
     local item = player.equippedItem(slot)
     local amt = power.drawItemEnergy(item, amount - acc, testOnly) -- try to draw from equipped item
+    --sb.logInfo("slot " .. slot .. ": drew " .. amt .. "FP")
     acc = acc + amt -- accumulate...
     if amt > 0 and not testOnly then player.setEquippedItem(slot, item) end -- update item if capacity changed
     if acc >= amount then return acc end -- early out when quota reached
   end
   
+  --sb.logInfo("drew " .. acc .. " total")
   return acc
 end
 

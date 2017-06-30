@@ -9,8 +9,6 @@ configurable tram stop {
 reserve material ID range somewhere
 semigloss black hull panel
 
-fluxsaber (fluxpulse-charged beamsword)
-
 figure out how the feck to detect if shift is held
 implement slot-drop
 reimplement preview slot
@@ -31,7 +29,25 @@ lots of shiny new ship components, especially animating ones that match their st
     also floor-only teleporters
 }
 
-machine that powers warp core via fluxpulse (world property "ship.fuel")
+power stuffs {
+    - some sort of generator
+    refine the combustion generator some {
+        burning info and capacitor state in UI, fueled indication in front grate
+        add moar fuel info
+    }
+    machine that powers warp core via fluxpulse (world property "ship.fuel")
+    wired and wireless chargers
+    
+    technician table for reconfiguring modulars
+    augpack as EPP + power source, lower-tier precursor to powersuit
+    powersuit {
+        hijack tech? how much?
+    }
+
+    fluxsaber (fluxpulse-charged beamsword)
+    
+    recipes for stuff!!!
+}
 
 some major cleanup in places
 

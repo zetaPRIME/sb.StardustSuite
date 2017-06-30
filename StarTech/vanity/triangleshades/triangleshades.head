@@ -12,6 +12,8 @@
   "maleFrames" : "head.png",
   "femaleFrames" : "head.png",
   "mask" : "mask.png",
+  
+  //"itemAgingScripts" : [ "/items/active/startech/tools/agetest.lua" ],
 
   "colorOptions" : [
     // BROWN

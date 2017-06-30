@@ -35,6 +35,8 @@ TODO:
 - additional sound layers for damaging tiles and entities
 
 - configurable strength and radius values?
+
+- proper power draw logic and configuration... once a fluxpack exists
 ]]
 
 function init()
@@ -155,7 +157,7 @@ states.fire = {
     animator.setSoundVolume("fireloop", 0, 0.125)
   end,
   update = function(dt, fireMode, shiftHeld)
-    if power.drawEquipEnergy(1) < 1 then
+    if power.drawEquipEnergy(1) < -1 then
       enterState("release")
       return nil
     end

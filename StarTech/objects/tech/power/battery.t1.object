@@ -4,7 +4,7 @@
   
   //"category" : "storagenet.storage",
   "price" : 500,
-  "description" : "A basic fluxpulse battery.\n^green;0FP/10000FP",
+  "description" : "A basic fluxpulse battery.\n^green;0FP/100000FP",
   "baseDescription" : "A basic fluxpulse battery.",
   "shortdescription" : "Pulse Cell",
   "health" : 5.73,
@@ -27,10 +27,12 @@
   "scripts" : [ "battery.lua" ],
   "scriptDelta" : 1,
   
+  "smashOnBreak" : true,
+  
   "animationScripts" : [ "battery.render.lua" ],
   
   "batteryStats" : {
-    "capacity" : 10000,
+    "capacity" : 100000,
     "ioRate" : 50
   },
   

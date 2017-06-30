@@ -1,0 +1,48 @@
+{ // -*- grammar-ext: json -*-
+  "objectName" : "startech:generator.basic",
+  "rarity" : "Rare",
+  
+  //"category" : "storagenet.storage",
+  "price" : 500,
+  "description" : "A basic generator. Generates power by burning solid fuel.",
+  "shortdescription" : "Combustion Generator",
+  "health" : 5.73,
+
+  "inventoryIcon" : [
+    { "image" : "generator.basic.png" }
+  ],
+  
+  "orientations" : [
+    {
+      "image" : "generator.basic.png",
+      "imagePosition" : [-8, 0],
+
+      "spaceScan" : 0.1,
+      "anchors" : [ "bottom" ],
+      "collision" : "platform"
+    }
+  ],
+  
+  "scripts" : [ "generator.basic.lua" ],
+  "scriptDelta" : 1,
+  
+  //"smashOnBreak" : true,
+  
+  //"animationScripts" : [ "battery.render.lua" ],
+  
+  "objectType" : "container",
+  //"openSounds" : [ "/sfx/objects/metalbox_open.ogg" ],
+  //"closeSounds" : [ "/sfx/objects/metalbox_close.ogg" ],
+  "slotCount" : 1,
+  "uiConfig" : "/interface/chests/chest1.config",
+  "frameCooldown" : 5,
+  "autoCloseCooldown" : 3600,
+  
+  "batteryStats" : {
+    "capacity" : 100000,
+    "ioRate" : 50
+  },
+  
+  //"inputNodes" : [ [0, 0] ],
+  "outputNodes" : [ [0, 0] ]
+}

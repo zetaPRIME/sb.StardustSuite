@@ -3,18 +3,14 @@
 require "/lib/stardust/prefabs.lua"
 require "/lib/stardust/power.lua"
 
-local fuelStats = {
-  coalore = { -- 8 1/3 seconds at 10FP/t for a total of 5000FP per coal... or 5.5sec at 15FP/t
-    burnTime = 500,
-    powerPerTick = 10 -- pretty sure 10/t is final, not so sure of duration
-  }
-}
 function getFuelStats(item)
   if not item.count then return nil end -- early out on null item
   return fuelStats[item.name]
 end
 
 function init()
+  fuelStats = config.getParameter("fuelStats")
+  
   local cfg = config.getParameter("batteryStats")
   battery = prefabs.power.battery(cfg.capacity, cfg.ioRate):hookUp():autoSave()
   storage.burning = storage.burning or {}

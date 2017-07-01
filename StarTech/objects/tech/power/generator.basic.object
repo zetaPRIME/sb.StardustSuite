@@ -34,7 +34,7 @@
   //"openSounds" : [ "/sfx/objects/metalbox_open.ogg" ],
   //"closeSounds" : [ "/sfx/objects/metalbox_close.ogg" ],
   "slotCount" : 1,
-  "uiConfig" : "/interface/chests/chest1.config",
+  "uiConfig" : "/interface/tech/power/generator.basic.config",
   "frameCooldown" : 5,
   "autoCloseCooldown" : 3600,
   

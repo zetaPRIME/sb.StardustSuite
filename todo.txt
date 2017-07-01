@@ -32,11 +32,14 @@ lots of shiny new ship components, especially animating ones that match their st
 power stuffs {
     - some sort of generator
     refine the combustion generator some {
-        burning info and capacitor state in UI, fueled indication in front grate
-        add moar fuel info
+        - burning info and capacitor state in UI
+        lit indication in front grate
+        - add moar fuel info
     }
     machine that powers warp core via fluxpulse (world property "ship.fuel")
     wired and wireless chargers
+    
+    invert positions of battery wiring ports?
     
     technician table for reconfiguring modulars
     augpack as EPP + power source, lower-tier precursor to powersuit

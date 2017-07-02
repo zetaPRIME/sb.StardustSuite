@@ -14,6 +14,7 @@ implement slot-drop
 reimplement preview slot
 CLEAN UP REMNANTS OF OLD TERMINAL IMPLEMENTATION
 somewhat redesign UI to make better use of now-unneeded tooltip area
+... fix weird lagspikes every second or so (something weird with terminal updates?)
 
 TERMINAL THEMABILITY?
 
@@ -33,13 +34,13 @@ power stuffs {
     - some sort of generator
     refine the combustion generator some {
         - burning info and capacitor state in UI
-        lit indication in front grate
+        - lit indication in front grate
         - add moar fuel info
     }
     machine that powers warp core via fluxpulse (world property "ship.fuel")
     wired and wireless chargers
     
-    invert positions of battery wiring ports?
+    - invert positions of battery wiring ports
     
     technician table for reconfiguring modulars
     augpack as EPP + power source, lower-tier precursor to powersuit
@@ -52,6 +53,9 @@ power stuffs {
     recipes for stuff!!!
     
     creative (infinite) power source
+    power category?
+    
+    eventually make transmatter network require power
 }
 
 compost bin that makes food age faster, for use as biofuel

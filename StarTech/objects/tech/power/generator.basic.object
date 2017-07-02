@@ -12,6 +12,13 @@
     { "image" : "generator.basic.png" }
   ],
   
+  /*"animation" : "generator.animation",
+  "animationParts" : {
+    "generator" : "generator.basic.png",
+    "flame" : "generator.flame.png"
+  },
+  "animationPosition" : [-8, 0],//*/
+  
   "orientations" : [
     {
       "image" : "generator.basic.png",
@@ -28,7 +35,7 @@
   
   //"smashOnBreak" : true,
   
-  //"animationScripts" : [ "battery.render.lua" ],
+  "animationScripts" : [ "generator.render.lua" ],
   
   "objectType" : "container",
   //"openSounds" : [ "/sfx/objects/metalbox_open.ogg" ],

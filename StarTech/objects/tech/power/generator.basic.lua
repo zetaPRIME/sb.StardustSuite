@@ -60,6 +60,15 @@ function update()
   else
     script.setUpdateDelta(30) -- slow down when inactive
   end
+  
+  -- and handle animation states
+  if burning.timeLeft > 0 then
+    --animator.setAnimationState("litState", "active", false)
+    object.setAnimationParameter("lit", 1)
+  else
+    --animator.setAnimationState("litState", "idle", false)
+    object.setAnimationParameter("lit", 0)
+  end
 end
 
 function uiSyncRequest(msg, isLocal, ...)

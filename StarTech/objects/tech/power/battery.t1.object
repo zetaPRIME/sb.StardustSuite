@@ -38,6 +38,6 @@
   
   //"animationScripts" : [ "drivebay.render.lua" ],
   
-  "inputNodes" : [ [0, 0] ],
-  "outputNodes" : [ [0, 1] ]
+  "inputNodes" : [ [0, 1] ],
+  "outputNodes" : [ [0, 0] ]
 }

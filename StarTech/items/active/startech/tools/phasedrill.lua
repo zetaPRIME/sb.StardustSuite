@@ -37,6 +37,8 @@ TODO:
 - configurable strength and radius values?
 
 - proper power draw logic and configuration... once a fluxpack exists
+
+- make it only spawn the item collector stagehand if there's items there
 ]]
 
 function init()

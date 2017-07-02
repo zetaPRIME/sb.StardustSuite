@@ -24,7 +24,11 @@ function recvSync(rpc)
   
   -- update burn slot
   widget.setItemSlotItem("burning", data.burning.item or nullItem)
-  widget.setItemSlotProgress("burning", (data.burning.timeLeft or 0) / (data.burning.fuelTime or 1))
+  if data.burning.item.count >= 1 then
+    widget.setItemSlotProgress("burning", (data.burning.timeLeft or 0) / (data.burning.fuelTime or 1))
+  else
+    widget.setItemSlotProgress("burning", 1)
+  end
   
   -- and capacitor status
   --widget.setText("batteryStats", table.concat({data.batteryStats.energy or 0, "/", data.batteryStats.capacity or 0, "FP"}))

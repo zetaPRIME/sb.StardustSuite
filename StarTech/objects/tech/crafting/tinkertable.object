@@ -1,0 +1,46 @@
+{
+  "objectName" : "startech:tinkertable",
+  "colonyTags" : ["crafting","electronic"],
+  "rarity" : "Legendary",
+  "price" : 1250,
+  "interactAction" : "OpenCraftingInterface",
+  "interactData" : {
+    "config" : "/interface/tech/crafting/tinkertable.config",
+    "paneLayoutOverride" : {
+      "windowtitle" : {
+        "title" : " Tinkerer's Workshop",
+        "subtitle" : " Advanced electronics",
+        "icon" : {
+          "file" : "/interface/crafting/wiringstation.png"
+        }
+      }
+    },
+    "filter" : [ "startech:tinkertable" ]
+  },
+  "printable" : false,
+  "description" : "Used to produce various electronics.",
+  "shortdescription" : "^#bf7fff;Tinkerer's Workshop^reset;",
+  "race" : "generic",
+  "category" : "crafting",
+
+  /*"apexDescription" : "I can create equipment to use for wiring here.",
+  "avianDescription" : "It's a workstation for crafting equipment to use for wiring.",
+  "floranDescription" : "Floran can make equipment for wiring thingsss.",
+  "glitchDescription" : "Pleased. A workstation for creating wiring related equipment. Very handy.",
+  "humanDescription" : "Wiring related equipment can be crafted on this workstation. Neat!",
+  "hylotlDescription" : "For wiring tools and accessories, this is the go to workstation.",
+  "novakidDescription" : "A workstation for all things wirin' related.",*/
+
+  "inventoryIcon" : "tinkertable.icon.png",
+  "orientations" : [
+    {
+      "dualImage" : "tinkertable.png",
+
+      "imagePosition" : [-16, 0],
+
+      "spaceScan" : 0.1,
+      "anchors" : [ "bottom" ]
+
+    }
+  ]
+}

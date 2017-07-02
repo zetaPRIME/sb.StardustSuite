@@ -14,7 +14,6 @@ implement slot-drop
 reimplement preview slot
 CLEAN UP REMNANTS OF OLD TERMINAL IMPLEMENTATION
 somewhat redesign UI to make better use of now-unneeded tooltip area
-... fix weird lagspikes every second or so (something weird with terminal updates?)
 
 TERMINAL THEMABILITY?
 
@@ -31,16 +30,10 @@ lots of shiny new ship components, especially animating ones that match their st
 }
 
 power stuffs {
-    - some sort of generator
-    refine the combustion generator some {
-        - burning info and capacitor state in UI
-        - lit indication in front grate
-        - add moar fuel info
-    }
+    pure conduits to route power further and more neatly
+    
     machine that powers warp core via fluxpulse (world property "ship.fuel")
     wired and wireless chargers
-    
-    - invert positions of battery wiring ports
     
     technician table for reconfiguring modulars
     augpack as EPP + power source, lower-tier precursor to powersuit
@@ -51,6 +44,7 @@ power stuffs {
     fluxsaber (fluxpulse-charged beamsword)
     
     recipes for stuff!!!
+    tinkerer's workshop
     
     creative (infinite) power source
     power category?
@@ -64,8 +58,6 @@ compost bin that makes food age faster, for use as biofuel
 some major cleanup in places
 
 probably a UI lib that encapsulates widgets (read from heirarchy)
-
-? eventually, replace *collections* UI? with tablet (thank you canvas-anywhere <3)
 
 Extend sync library {
     //Recognize RpcPromise returning another RpcPromise and replace in queue

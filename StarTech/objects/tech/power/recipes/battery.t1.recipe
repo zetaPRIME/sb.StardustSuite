@@ -1,0 +1,11 @@
+{ // -*- grammar-ext: json -*-
+  "input" : [
+    { "item" : "tungstenbar", "count" : 15 },
+    { "item" : "silverbar", "count" : 5 },
+    //{ "item" : "copperbar", "count" : 3 },
+    { "item" : "corefragmentore", "count" : 5 }
+  ],
+  "output" : { "item" : "startech:battery.t1", "count" : 1 },
+  "duration" : 1.5,
+  "groups" : [ "startech:tinkertable", "power", "all" ]
+}

@@ -12,13 +12,6 @@
     { "image" : "generator.basic.png" }
   ],
   
-  /*"animation" : "generator.animation",
-  "animationParts" : {
-    "generator" : "generator.basic.png",
-    "flame" : "generator.flame.png"
-  },
-  "animationPosition" : [-8, 0],//*/
-  
   "orientations" : [
     {
       "image" : "generator.basic.png",
@@ -32,8 +25,6 @@
   
   "scripts" : [ "generator.basic.lua" ],
   "scriptDelta" : 1,
-  
-  //"smashOnBreak" : true,
   
   "animationScripts" : [ "generator.render.lua" ],
   
@@ -50,7 +41,6 @@
     "ioRate" : 150
   },
   
-  //"inputNodes" : [ [0, 0] ],
   "outputNodes" : [ [0, 0] ],
   
   "fuelStats" : {

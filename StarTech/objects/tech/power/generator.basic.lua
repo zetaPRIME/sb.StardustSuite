@@ -63,10 +63,8 @@ function update()
   
   -- and handle animation states
   if burning.timeLeft > 0 then
-    --animator.setAnimationState("litState", "active", false)
     object.setAnimationParameter("lit", 1)
   else
-    --animator.setAnimationState("litState", "idle", false)
     object.setAnimationParameter("lit", 0)
   end
 end

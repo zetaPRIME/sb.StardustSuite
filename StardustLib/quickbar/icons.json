@@ -1,6 +1,6 @@
 {
   "priority" : [
-    { "label" : "Matter Manipulator", "pane" : "/interface/scripted/mmupgrade/mmupgradegui.original.config", "icon" : "/items/generic/other/manipulatormodule.png" }  
+    { "label" : "Matter Manipulator", "pane" : "/interface/scripted/mmupgrade/mmupgradegui.original.config", "icon" : "/items/tools/miningtools/beamaxe.png" }
   ],
   "admin" : [
     { "label" : "Ship Remote Control", "pane" : "/interface/cockpit/cockpit.config", "icon" : "/items/active/stationtransponder/stationtransponder.png" },

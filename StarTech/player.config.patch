@@ -1,4 +1,5 @@
 [ // -*- grammar-ext: json -*-
+  { "op" : "add", "path" : "/defaultBlueprints/tier1/-", "value" : { "item" : "startech:tinkertable" } },
   { "op" : "add", "path" : "/defaultBlueprints/tier1/-", "value" : { "item" : "startech:storagenet.controller" } },
   { "op" : "add", "path" : "/defaultBlueprints/tier1/-", "value" : { "item" : "startech:wrench" } },
   { "op" : "add", "path" : "/defaultBlueprints/tier1/-", "value" : { "item" : "startech:networkrelay" } }

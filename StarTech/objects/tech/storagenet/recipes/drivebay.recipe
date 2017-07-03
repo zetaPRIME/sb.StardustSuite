@@ -7,5 +7,5 @@
   ],
   "output" : { "item" : "startech:storagenet.drivebay", "count" : 1 },
   "duration" : 5,
-  "groups" : [ "inventorstable", "craftingstations", "all" ]
+  "groups" : [ "startech:tinkertable", "storagenet", "all" ]
 }

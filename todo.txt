@@ -43,8 +43,9 @@ power stuffs {
 
     fluxsaber (fluxpulse-charged beamsword)
     
-    recipes for stuff!!!
-    tinkerer's workshop
+    - tinkerer's workshop
+    - recipes for stuff!!!
+    ^ intermediary pulse-battery component?
     
     creative (infinite) power source
     power category?

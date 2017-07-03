@@ -10,5 +10,5 @@
     "count" : 1
   },
   "duration" : 0.25,
-  "groups" : [ "craftingfurnace2", "ingredients", "all" ]
+  "groups" : [ "startech:tinkertable", "storagenet", "all" ]
 }

@@ -36,6 +36,8 @@ function power.sendEnergy(socket, amount, testOnly)
     total = total + c.maxTake
   end
   
+  if total <= 0 or total ~= total then return 0 end -- don't NaN, thanks
+  
   -- and send
   local tsend = math.min(total, amount)
   if testOnly then return tsend end -- or not, if this is set

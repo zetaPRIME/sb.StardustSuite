@@ -159,7 +159,7 @@ states.fire = {
     animator.setSoundVolume("fireloop", 0, 0.125)
   end,
   update = function(dt, fireMode, shiftHeld)
-    if power.drawEquipEnergy(1) < -1 then
+    if power.drawEquipEnergy(20) < 20 then
       enterState("release")
       return nil
     end

@@ -1,0 +1,8 @@
+{ // -*- grammar-ext: json -*-
+  "input" : [
+    { "item" : "startech:generator.creative", "count" : 1 }
+  ],
+  "output" : { "item" : "startech:generator.creative", "count" : 1 },
+  "duration" : 1.5,
+  "groups" : [ "startech:tinkertable", "power", "all" ]
+}

@@ -1,0 +1,29 @@
+{ // -*- grammar-ext: json -*-
+  "objectName" : "startech:generator.creative",
+  "rarity" : "Essential",
+  
+  //"category" : "storagenet.storage",
+  "price" : 5000000000000000000,
+  "description" : "^magenta;PHENOMENAL COSMIC POWER!\n\n\n^cyan;...itty-bitty living space.",
+  "shortdescription" : "Creative Power Supply",
+  "health" : 5.73,
+
+  "inventoryIcon" : [
+    { "image" : "generator.creative.png" }
+  ],
+  
+  "orientations" : [
+    {
+      "image" : "generator.creative.png",
+      "imagePosition" : [0, 0],
+
+      "spaceScan" : 0.1,
+      "anchors" : [ "background" ]
+    }
+  ],
+  
+  "scripts" : [ "generator.creative.lua" ],
+  "scriptDelta" : 1,
+  
+  "outputNodes" : [ [0, 0] ]
+}

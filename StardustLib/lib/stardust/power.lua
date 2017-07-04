@@ -13,7 +13,8 @@ end
 
 function power.sendEnergy(socket, amount, testOnly)
   if not object.isOutputNodeConnected(socket) then return 0 end -- well of course
-  if amount <= 0 then return 0 end -- why are you trying to send 0 anyway? let's not NaN, please
+  if amount <= 0 then return 0 end -- why are you trying to send 0 anyway?
+  if amount ~= amount then return 0 end -- let's not NaN, please
   -- try to distribute power as evenly as possible
   local conn = {}
   

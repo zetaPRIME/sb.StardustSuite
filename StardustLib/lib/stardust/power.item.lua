@@ -12,19 +12,17 @@ parameters.batteryStats {
 ]]
 
 function power.setItemTooltipFields(item)
-  --if true then return nil end -- just an early-out until actual tooltip finished
-  
   local cfg = itemutil.getCachedConfig(item)
   local capacity = (item.parameters.batteryStats or {}).capacity or (cfg.config.batteryStats or {}).capacity
   local energy = (item.parameters.batteryStats or {}).energy or 0
   
-  -- TODO: actually set up tooltipFields
+  -- actually set up tooltipFields
   if not item.parameters.tooltipFields then item.parameters.tooltipFields = {} end
   item.parameters.tooltipFields.batteryStatsLabel = string.format("%d/%dFP", energy, capacity)
 end
 
 function power.fillItemEnergy(item, amount, testOnly)
-  if not item.count then return 0 end -- no item here!
+  if not item or not item.count or item.count <= 0 then return 0 end -- no item here!
   local cfg = itemutil.getCachedConfig(item)
   if not cfg.config.batteryStats and not item.parameters.batteryStats then return 0 end -- no internal battery
   
@@ -49,7 +47,7 @@ function power.fillItemEnergy(item, amount, testOnly)
 end
 
 function power.drawItemEnergy(item, amount, testOnly)
-  if not item.count then return 0 end -- no item here!
+  if not item or not item.count or item.count <= 0 then return 0 end -- no item here!
   local cfg = itemutil.getCachedConfig(item)
   if not cfg.config.batteryStats and not item.parameters.batteryStats then return 0 end -- no internal battery
   

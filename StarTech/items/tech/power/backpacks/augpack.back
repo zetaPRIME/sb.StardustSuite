@@ -2,9 +2,9 @@
   "itemName" : "startech:augpack",
   "price" : 5000,
   "inventoryIcon" : "/items/armors/backitems/xenonpack/xenonpackicon.png",
-  "rarity" : "Rare",
+  "rarity" : "Legendary",
   "category" : "backwear",
-  "description" : "augpack description goes here",
+  "description" : "An advanced fluxpulse pack that can take augments and EPP modules.\n\n^darkgray;(no items installed)^reset;",
   "shortdescription" : "Pulse Augpack",
   "tooltipKind" : "stardustlib.power.wearable",
 
@@ -20,6 +20,8 @@
     "capacity" : 250000,
     "ioRate" : 250
   },
+  
+  "configuratorLayout" : "augpack",
   
   "tooltipFields" : {
     "batteryStatsLabel" : "0/250000FP"

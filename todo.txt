@@ -33,7 +33,7 @@ power stuffs {
     pure conduits to route power further and more neatly
     
     machine that powers warp core via fluxpulse (world property "ship.fuel")
-    wired and wireless chargers
+    wireless charger
     
     technician table for reconfiguring modulars
     augpack as EPP + power source, lower-tier precursor to powersuit
@@ -43,11 +43,8 @@ power stuffs {
 
     fluxsaber (fluxpulse-charged beamsword)
     
-    - tinkerer's workshop
-    - recipes for stuff!!!
-    ^ intermediary pulse-battery component?
+    intermediary pulse-battery component?
     
-    creative (infinite) power source
     power category?
     
     eventually make transmatter network require power

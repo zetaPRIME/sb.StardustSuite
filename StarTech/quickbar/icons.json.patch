@@ -1,0 +1,3 @@
+[
+  { "op" : "add", "path" : "/admin/-", "value" : { "label" : "Configurator", "pane" : "/interface/tech/configurator/configurator.config", "icon" : "/items/generic/other/techcard.png" } }
+]

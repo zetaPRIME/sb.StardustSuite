@@ -104,7 +104,8 @@ function update()
           end
           
           local scaleFactor = 8.0
-          image = image .. "?scalebicubic=" .. (scale[1] * scaleFactor) .. "=" .. (scale[2] * scaleFactor)
+          --image = image .. "?scalebicubic=" .. (scale[1] * scaleFactor) .. "=" .. (scale[2] * scaleFactor)
+          image = string.format("%s?scalebilinear=%f2=%f2", image, scale[1] * scaleFactor, scale[2] * scaleFactor)
           
           -- per-segment offsets (jitter, waveform, etc)
           local thisOffset = {0, 0}

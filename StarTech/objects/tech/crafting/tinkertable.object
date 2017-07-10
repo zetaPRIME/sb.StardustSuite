@@ -9,7 +9,7 @@
     "paneLayoutOverride" : {
       "windowtitle" : {
         "title" : " Tinkerer's Workshop",
-        "subtitle" : " Advanced electronics",
+        "subtitle" : " Advanced tools and electronics",
         "icon" : {
           "file" : "/interface/crafting/wiringstation.png"
         }

@@ -8,6 +8,11 @@
   "baseDescription" : "A basic fluxpulse battery.",
   "shortdescription" : "Pulse Cell",
   "health" : 5.73,
+  
+  "learnBlueprintsOnPickup" : [
+    "startech:augpack",
+    "startech:chargingbench"
+  ],
 
   "inventoryIcon" : [
     { "image" : "battery.frame.png" }

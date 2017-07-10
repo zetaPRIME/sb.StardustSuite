@@ -53,6 +53,14 @@ power stuffs {
 compost bin that makes food age faster, for use as biofuel
 ^ some sort of powered processor to make (liquid) biodiesel?
 
+renamer (custom shortdescription, put vanilla one as category because tooltip)
+
+actual configurator object instead of having it in the quickbar for non-admins
+
+recipes {
+    (all clear!)
+}
+
 some major cleanup in places
 
 probably a UI lib that encapsulates widgets (read from heirarchy)

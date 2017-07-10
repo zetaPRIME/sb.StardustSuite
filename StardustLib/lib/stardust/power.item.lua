@@ -18,7 +18,7 @@ function power.setItemTooltipFields(item)
   
   -- actually set up tooltipFields
   if not item.parameters.tooltipFields then item.parameters.tooltipFields = {} end
-  item.parameters.tooltipFields.batteryStatsLabel = string.format("%d/%dFP", energy, capacity)
+  item.parameters.tooltipFields.batteryStatsLabel = string.format("%d^gray;/^reset;%d^gray;FP^reset;", energy, capacity)
 end
 
 function power.fillItemEnergy(item, amount, testOnly)

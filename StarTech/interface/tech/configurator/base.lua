@@ -18,8 +18,12 @@ function ui.reset()
   chromeCanvas:clear()
 end
 
+function ui.resetLayout()
+  startLayout(currentLayoutName)
+end
+
 local nullItem = { name = "", count = 0, parameters = {} }
-local function swapItem(slot, item, rightClick)
+local function swapItem(slot, item, rightClick, maxStack)
   -- takes item input in case something wants to modify it on the way in
   item = item or nullItem
   local si = widget.itemSlotItem(slot) or nullItem
@@ -32,12 +36,12 @@ function slotCallback(slotNum, callback, rightClick)
   local item = player.swapSlotItem() or {}
   if not item.count or item.count == 0 then item = nil end
   
-  local result = callback(item, rightClick)
+  local result, maxStack = callback(item, rightClick)
   
   item = item or nullItem
   
   if result then
-    player.setSwapSlotItem(swapItem(ui.itemSlots[slotNum], item, rightClick))
+    player.setSwapSlotItem(swapItem(ui.itemSlots[slotNum], item, rightClick, maxStack))
     if type(result) == "function" then
       result() -- TODO: params?
     end
@@ -92,8 +96,19 @@ function ui.slotSetItem(id, item)
   widget.setItemSlotItem(id, item or nullItem)
 end
 
+function ui.addLabel(pos, text, scale)
+  if pos[1] then
+    pos = {
+      position = pos,
+      verticalAnchor = "bottom"
+    }
+  end
+  chromeCanvas:drawText(text, pos, 8 * (scale or 1))
+end
+
 layouts = {}
 currentLayout = {}
+currentLayoutName = ""
 
 function getLayout(name)
   -- fetch if present
@@ -130,6 +145,7 @@ end
 function startLayout(name)
   callLayout("exit") -- exit current layout if not already exited
   ui.reset()
+  currentLayoutName = name
   local lyt = getLayout(name)
   currentLayout = setmetatable({}, {__index = lyt})
   callLayout("init") -- and call new layout's init

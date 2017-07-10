@@ -4,9 +4,13 @@
   "inventoryIcon" : "/items/armors/backitems/xenonpack/xenonpackicon.png",
   "rarity" : "Legendary",
   "category" : "backwear",
-  "description" : "An advanced fluxpulse pack that can take augments and EPP modules.\n\n^darkgray;(no items installed)^reset;",
+  "description" : "An advanced fluxpulse pack that can take augments and EPP modules.\n^darkgray;(install using Configurator)^reset;",
   "shortdescription" : "Pulse Augpack",
   "tooltipKind" : "stardustlib.power.wearable",
+  
+  "learnBlueprintsOnPickup" : [
+    "startech:phasedrill"
+  ],
 
   "maleFrames" : "/items/armors/backitems/xenonpack/back.png",
   "femaleFrames" : "/items/armors/backitems/xenonpack/back.png",
@@ -24,7 +28,7 @@
   "configuratorLayout" : "augpack",
   
   "tooltipFields" : {
-    "batteryStatsLabel" : "0/250000FP"
+    "batteryStatsLabel" : "0^gray;/^reset;250000^gray;FP^reset;"
   },
 
   "colorOptions" : [

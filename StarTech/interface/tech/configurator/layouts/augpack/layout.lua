@@ -5,7 +5,7 @@ _ENV = __layout -- adopt local environment
 numSlots = 5
 
 function init()
-  --widget.setPosition("mainSlot", {2, 2})
+  ui.addLabel({ position = {22, startY - 5}, wrapWidth = 108 }, "Place ^green;EPP modules^reset; or ^green;augments^reset; in these slots to add their effects to your augpack.\n\n^darkgray;(This includes augments already socketed into an EPP)^reset;")
   
   local item = ui.mainSlotItem()
   local augs = item.parameters.insertedItems or {}

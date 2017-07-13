@@ -30,7 +30,7 @@ function addItem(itm)
   local li = lst .. "." .. widget.addListItem(lst)
   widget.setText(li .. ".label", prefix .. itm.label)
   widget.registerMemberCallback(li .. ".buttonContainer", "click", function()
-    openInterface(itm.pane)
+    openInterface({ config = itm.pane, loadScript = itm.loadScript })
   end)
   local btn = li .. ".buttonContainer." .. widget.addListItem(li .. ".buttonContainer") .. ".button"
   if itm.icon then

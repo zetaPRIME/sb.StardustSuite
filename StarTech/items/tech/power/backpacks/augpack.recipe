@@ -1,0 +1,23 @@
+{ // -*- grammar-ext: json -*-
+  "input" : [
+    { "item" : "tungstenbar", "count" : 40 },
+    //{ "item" : "glass", "count" : 25 },
+    { "item" : "silverbar", "count" : 15 },
+    { "item" : "startech:battery.t1", "count" : 3 },
+    //{ "item" : "solidfuel", "count" : 15 },
+    //{ "item" : "liquidfuel", "count" : 50 },
+    { "item" : "salvagetier4", "count" : 3 },
+    { "item" : "salvagearm", "count" : 3 },
+    { "item" : "siliconboard", "count" : 3 },
+    { "item" : "wire", "count" : 5 },
+    { "item" : "phasematter", "count" : 5 },
+    { "item" : "volatilepowder", "count" : 15 },
+    { "item" : "money", "count" : 2500 }
+  ],
+  "output" : {
+    "item" : "startech:augpack",
+    "count" : 1
+  },
+  "duration" : 2.5,
+  "groups" : [ "startech:tinkertable", "tools", "all" ]
+}

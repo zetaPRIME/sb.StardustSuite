@@ -4,10 +4,15 @@
   
   //"category" : "storagenet.storage",
   "price" : 500,
-  "description" : "A basic fluxpulse battery.\n^green;0FP/10000FP",
+  "description" : "A basic fluxpulse battery.\n^green;0/100000FP",
   "baseDescription" : "A basic fluxpulse battery.",
   "shortdescription" : "Pulse Cell",
   "health" : 5.73,
+  
+  "learnBlueprintsOnPickup" : [
+    "startech:augpack",
+    "startech:chargingbench"
+  ],
 
   "inventoryIcon" : [
     { "image" : "battery.frame.png" }
@@ -27,15 +32,17 @@
   "scripts" : [ "battery.lua" ],
   "scriptDelta" : 1,
   
+  "smashOnBreak" : true,
+  
   "animationScripts" : [ "battery.render.lua" ],
   
   "batteryStats" : {
-    "capacity" : 10000,
+    "capacity" : 100000,
     "ioRate" : 50
   },
   
   //"animationScripts" : [ "drivebay.render.lua" ],
   
-  "inputNodes" : [ [0, 0] ],
-  "outputNodes" : [ [0, 1] ]
+  "inputNodes" : [ [0, 1] ],
+  "outputNodes" : [ [0, 0] ]
 }

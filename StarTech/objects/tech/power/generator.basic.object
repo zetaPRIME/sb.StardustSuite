@@ -1,0 +1,70 @@
+{ // -*- grammar-ext: json -*-
+  "objectName" : "startech:generator.basic",
+  "rarity" : "Rare",
+  
+  //"category" : "storagenet.storage",
+  "price" : 500,
+  "description" : "A basic generator. Generates power by burning solid fuel.",
+  "shortdescription" : "Combustion Generator",
+  "health" : 5.73,
+
+  "inventoryIcon" : [
+    { "image" : "generator.basic.png" }
+  ],
+  
+  "orientations" : [
+    {
+      "image" : "generator.basic.png",
+      "imagePosition" : [-8, 0],
+
+      "spaceScan" : 0.1,
+      "anchors" : [ "bottom" ],
+      "collision" : "platform"
+    }
+  ],
+  
+  "scripts" : [ "generator.basic.lua" ],
+  "scriptDelta" : 1,
+  
+  "animationScripts" : [ "generator.render.lua" ],
+  
+  "objectType" : "container",
+  //"openSounds" : [ "/sfx/objects/metalbox_open.ogg" ],
+  //"closeSounds" : [ "/sfx/objects/metalbox_close.ogg" ],
+  "slotCount" : 1,
+  "uiConfig" : "/interface/tech/power/generator.basic.config",
+  "frameCooldown" : 5,
+  "autoCloseCooldown" : 3600,
+  
+  "batteryStats" : {
+    "capacity" : 100000,
+    "ioRate" : 150
+  },
+  
+  "outputNodes" : [ [0, 0] ],
+  
+  "fuelStats" : {
+    "coalore" : { // 8 1/3 seconds at 10FP/t for a total of 5000FP per coal... or 5.5sec at 15FP/t
+      "burnTime" : 500,
+      "powerPerTick" : 10
+    },
+    "logblock" : { // half a piece of coal, I guess - 2500FP
+      "burnTime" : 250,
+      "powerPerTick" : 10
+    },
+    "darkwoodmaterial" : { // planks are 1/5 the material as logs, but burn at 1.5x heat - 750FP
+      "burnTime" : 50,
+      "powerPerTick" : 15
+    },
+    "plantfibre" : { // raw plant fibre isn't super great at burning, but will do in a pinch
+      "burnTime" : 250,
+      "powerPerTick" : 5
+    },
+    
+    // junk burnables
+    "rottenfood" : { "burnTime" : 100, "powerPerTick" : 11 }, // decent fuel for being otherwise worthless, I guess
+    "cotton" : { "burnTime" : 1, "powerPerTick" : 25 }, // just kind of goes up in a flash
+    
+    "advanced shicketry" : {} // endcap
+  }
+}

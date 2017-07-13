@@ -40,9 +40,19 @@ function addItem(itm)
   end
 end
 
+local items = {}
+local autoRefreshRate = 0
+local autoRefreshTimer = 0
 function init()
+  items = root.assetJson("/quickbar/icons.json") or {}
+  refresh()
+  
+  autoRefreshRate = config.getParameter("autoRefreshRate")
+  autoRefreshTimer = autoRefreshRate
+end
+
+function refresh()
   widget.clearListItems(lst)
-  local items = root.assetJson("/quickbar/icons.json") or {}
   prefix = "^#7fff7f;"
   for k,v in pairs(items.priority or {}) do addItem(v) end
   if player.isAdmin() then
@@ -51,4 +61,12 @@ function init()
   end
   prefix = ""
   for k,v in pairs(items.normal or {}) do addItem(v) end
+end
+
+function update(dt)
+  autoRefreshTimer = math.max(0, autoRefreshTimer - dt)
+  if autoRefreshTimer == 0 then
+    autoRefreshTimer = autoRefreshRate
+    --refresh() -- whoops, that just kind of derps things up :(
+  end
 end

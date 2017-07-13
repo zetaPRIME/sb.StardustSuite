@@ -1,0 +1,109 @@
+{ // -*- grammar-ext: json -*-
+  "itemName" : "startech:phasedrill",
+  "price" : 150,
+  "level" : 1,
+  "maxStack" : 1,
+  "rarity" : "Legendary",
+  "description" : "High-powered mining tool. Automatically collects items.\n^orange;Requires a worn fluxpulse power source!^reset;",//"\nPrimary fire: Mine foreground\nSecondary fire: Mine both layers\nShift: Drain fluids",
+  "shortdescription" : "Phase Drill",
+  "tooltipKind" : "object",
+  "category" : "tool",
+  "twoHanded" : true,
+  //"itemTags" : ["weapon","melee","broadsword"],
+  
+  "inventoryIcon" : "phasedrill.png",
+
+  "animation" : "/items/active/weapons/ranged/gun.animation",
+  "animationParts" : {
+    "butt" : "",
+    "middle" : "phasedrill.png",
+    "barrel" : "",
+    "muzzleFlash" : ""
+  },
+  "animationCustom" : {
+    "sounds" : {
+      "charge" : [ "/sfx/melee/charge_up15.ogg" ],
+      "firestart" : [ "/sfx/objects/crystaltrap_on2.ogg" ],
+      "fireloop" : [ "/sfx/gun/erchiuseyebeam_loop.ogg" ]
+    },
+    
+    "lights" : {
+      "flashlightSpread" : {
+        "active" : true,
+        "position" : [-0.75, 0],
+        "transformationGroups" : ["muzzle"],
+        "color" : [63, 95, 127],
+        "pointLight" : true
+      },
+      "flashlight" : {
+        "active" : true,
+        "position" : [-0.75, 0],
+        "transformationGroups" : ["muzzle"],
+        "color" : [220, 220, 255],
+        "pointLight" : true,
+        "pointAngle" : 0.00,
+        "pointBeam" : 3.0
+      }
+    }
+  },
+  
+  "baseOffset" : [0.0625, 0.3125], // [0.125, 0.625],
+  "muzzleOffset" : [2.25, 0.0625], // 1.75
+  
+  "stances" : {
+    "idle" : {
+      "armRotation" : 0,
+      "weaponRotation" : 0,
+      "twoHanded" : true,
+
+      "allowRotate" : true,
+      "allowFlip" : true
+    }
+  },
+  
+  //"animationScripts" : ["/items/active/effects/chain.lua"],
+  "animationScripts" : ["/sys/stardust/effects/chainplus.lua"],
+  "chain" : {
+     "startOffset" : [0, 0],
+     "startSegmentImage" : "/items/active/startech/tools/phasedrill.beam.start.png",
+     "startSegmentOffset" : [-0.75, 0],
+     "segmentImage" : "/items/active/startech/tools/phasedrill.beam.png",
+     "endSegmentImage" : "/items/active/startech/tools/phasedrill.beam.end.png",
+     "segmentSize" : 0.5,
+     "overdrawLength" : 0,
+     "baseScale" : 0.5,
+     //"taper" : 0,
+     "waveform" : {
+       "frequency" : 3,
+       "amplitude" : 0,
+       "movement" : 8
+     },
+     "fullbright" : true,
+     "segmentLight" : {
+       "color" : [0.93, 0.90, 1.00]
+     }
+   },
+
+  "scripts" : ["phasedrill.lua"],
+
+  "elementalType" : "physical",
+
+  "primaryAbility" : { },
+  
+  "beamStats" : {
+    "tileStrength" : 1,
+    "entityDamage" : 1,
+    "baseRadius" : 4
+  },
+  
+  "powerUsage" : {
+    "base" : 10,
+    "hitTilesPrimary" : 10,
+    "hitTilesSecondary" : 7,
+    "hitEnemy" : 5
+  },
+
+  "builder" : "/items/buildscripts/buildunrandweapon.lua",
+  //"itemAgingScripts" : [ "/items/active/startech/tools/agetest.lua" ],
+  "." : false
+}

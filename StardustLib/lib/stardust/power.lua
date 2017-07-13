@@ -13,7 +13,8 @@ end
 
 function power.sendEnergy(socket, amount, testOnly)
   if not object.isOutputNodeConnected(socket) then return 0 end -- well of course
-  if amount <= 0 then return 0 end -- why are you trying to send 0 anyway? let's not NaN, please
+  if amount <= 0 then return 0 end -- why are you trying to send 0 anyway?
+  if amount ~= amount then return 0 end -- let's not NaN, please
   -- try to distribute power as evenly as possible
   local conn = {}
   
@@ -34,6 +35,8 @@ function power.sendEnergy(socket, amount, testOnly)
     c.maxTake = c.receptor:receive(c.socket, amount, true)
     total = total + c.maxTake
   end
+  
+  if total <= 0 or total ~= total then return 0 end -- don't NaN, thanks
   
   -- and send
   local tsend = math.min(total, amount)
@@ -57,4 +60,3 @@ end
 -- float energyProvider:extract(int socket, float amount, bool testOnly) - returns amount successfully extracted
 
 -- float energyReceptor:receive(int socket, float amount, bool testOnly) - returns amount successfully input
-

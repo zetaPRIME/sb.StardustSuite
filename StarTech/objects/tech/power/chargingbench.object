@@ -1,0 +1,35 @@
+{ // -*- grammar-ext: json -*-
+  "objectName" : "startech:chargingbench",
+  "rarity" : "Rare",
+  
+  //"category" : "storagenet.storage",
+  "price" : 2500,
+  "description" : "Charges up items with integrated pulse cells.",
+  "shortdescription" : "Charging Bench",
+  "health" : 5.73,
+
+  "inventoryIcon" : [
+    { "image" : "chargingbench.png" }
+  ],
+  
+  "orientations" : [
+    {
+      "dualImage" : "chargingbench.png",
+      "imagePosition" : [-8, 0],
+
+      "spaceScan" : 0.1,
+      "anchors" : [ "bottom" ]
+    }
+  ],
+  
+  "objectType" : "container",
+  "slotCount" : 9, // not sure if I want it to be not-a-container, so I'll just avoid later breakage
+  "uiConfig" : "/interface/chests/chest9.config",
+  "frameCooldown" : 5,
+  "autoCloseCooldown" : 3600,
+  
+  "scripts" : [ "chargingbench.lua" ],
+  "scriptDelta" : 1,
+  
+  "inputNodes" : [ [0, 0] ]
+}

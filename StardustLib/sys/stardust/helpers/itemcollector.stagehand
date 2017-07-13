@@ -1,0 +1,5 @@
+{
+  "type" : "stardustlib:itemcollector",
+  "scripts" : [ "/sys/stardust/helpers/itemcollector.lua" ],
+  "scriptDelta" : 1
+}

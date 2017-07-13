@@ -32,7 +32,7 @@ function update()
 end
 
 function getDescription()
-  return string.format("%s\n^green;%dFP/%dFP", dDesc, math.floor(battery.state.energy), math.floor(battery.capacity))
+  return string.format("%s\n^green;%d/%dFP", dDesc, math.floor(battery.state.energy), math.floor(battery.capacity))
 end
 
 function sayLevel()

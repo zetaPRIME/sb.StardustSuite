@@ -28,14 +28,14 @@
 
   "primaryAbilityType" : "broadswordcombo",
   "primaryAbility" : {
-    "fireTime" : 0.5,
-    "baseDps" : 8.5,
+    "fireTime" : 0.43,
+    "baseDps" : 13.5,
     "damageConfig" : {
       "damageSourceKind" : "hammer"
     },
     "stances" : {
-      "wait1" : { "duration" : 0.1 },
-      "wait2" : { "duration" : 0.1 }
+      "wait1" : { "duration" : 0.001 },
+      "wait2" : { "duration" : 0.001 }
     }
   },
 

@@ -102,6 +102,15 @@ function svc.startTabletEngine()
   end
 end
 
+function svc.giveItems(msg, isLocal, ...)
+  local items = {...}
+  for k,item in pairs(items) do
+    if type(item) == "table" and item.name and item.count and item.parameters then
+      player.giveItem(item)
+    end
+  end
+end
+
 function svc.giveItemToCursor(msg, isLocal, itm)
   --[[
     give cursor as much as can be added to stack; give inventory the rest

@@ -1,0 +1,4 @@
+[
+  // TODO: switch this back to admin once configurator exists inworld
+  { "op" : "add", "path" : "/normal/-", "value" : { "label" : "Configurator", "pane" : "/interface/tech/configurator/configurator.config", "icon" : "/items/generic/other/techcard.png" } }
+]

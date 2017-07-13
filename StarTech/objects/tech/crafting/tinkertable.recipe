@@ -1,0 +1,9 @@
+{ // -*- grammar-ext: json -*-
+  "input" : [
+    { "item" : "tungstenbar", "count" : 25 },
+    { "item" : "silverbar", "count" : 5 }
+  ],
+  "output" : { "item" : "startech:tinkertable", "count" : 1 },
+  "duration" : 0.7,
+  "groups" : [ "inventorstable", "craftingstations", "all" ]
+}

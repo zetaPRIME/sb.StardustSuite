@@ -2,10 +2,12 @@
 -- DONE add description(? category?), distinct request buttons (1, 10, 100, 1000 should be fine I guess)
 -- DONE doubleclick to grab a stack
 -- DONE of course, finish the visual redesign
--- rarity desplay on selection?
+-- rarity display on selection?
 -- maybe more sorting modes
 -- variable color for on-icon count (maybe red being in the millions? *shrug*)
 -- ...search additions? @category etc.
+
+-- add entry background with selection indicator!!
 
 require "/scripts/vec2.lua"
 
@@ -15,7 +17,7 @@ require "/scripts/StarTech/tooltip.lua"
 
 gridSize = 24
 gridSpace = 25
-gridWidth = 1--8 -- 8 max
+gridWidth = 8 -- 8 max
 
 if false then -- testing probe
   setmetatable(_ENV, { __index = function(t,k)
@@ -31,16 +33,16 @@ function init()
   items = {}
   itemUpdateId = "NaN"
   shownItems = {}
+  prevShownItems = {}
   selectedItem = {}
   selectedId = -1
-  itemButtons = {}
-  lastLayerSel = ""
-  rows = {}
-  rowInd = {}
+  --itemButtons = {}
+  listId = {}
+  slotId = {}
+  widget.clearListItems("grid.list")
   search = ""
   searchTime = 0
   updateTime = 0
-  doubleClickTime = 0
   heartbeatTime = 0
   
   pid = pane.playerEntityId()
@@ -54,7 +56,6 @@ function update()
   if updateTime <= 0 then updateItemList() end
   searchTime = searchTime - 1
   if searchTime == 0 then refreshDisplay() end
-  doubleClickTime = doubleClickTime - 1
   
   heartbeatTime = heartbeatTime - 1
   if heartbeatTime <= 0 then
@@ -63,29 +64,6 @@ function update()
   end
   
   sync.runQueue()
-  
-  local startInd = widget.getListSelected("grid.list")
-  if startInd then
-    startInd = rowInd[startInd]
-    for i = startInd, startInd+gridWidth-1 do
-      local btn = itemButtons[i]
-      if not btn then break end -- out of items
-      local lsel = widget.getListSelected(btn)
-      if lsel and lsel ~= lastLayerSel then
-        lastLayerSel = lsel
-        
-        
-        if i == selectedId and doubleClickTime > 0 then
-          request() -- request a stack
-        end
-        selectItem(i)
-        
-        doubleClickTime = 15
-        widget.blur("searchBox") -- unfocus search bar on selection
-      end
-    end
-  end
-  
 end
 
 function uninist()
@@ -96,9 +74,9 @@ function dismissed() --uninit()
 end
 
 function btnExpandInfo()
-  --setExpandedInfo()
+  setExpandedInfo()
   -- temp: test playerext
-  world.sendEntityMessage(pane.playerEntityId(), "playerext:openInterface", "/interface/cockpit/cockpit.config")
+  --world.sendEntityMessage(pane.playerEntityId(), "playerext:openInterface", "/interface/cockpit/cockpit.config")
 end
 infoExpanded = false
 function setExpandedInfo(setting)
@@ -125,6 +103,7 @@ function setExpandedInfo(setting)
   })
 end
 
+-- NEED NEW SELECTION INDICATOR!
 function selectItem(i, updating)
   setExpandedInfo(false)
   if i < 0 then -- -1 == blank
@@ -137,12 +116,12 @@ function selectItem(i, updating)
     return nil
   end
   if not updating and selectedId >= 0 then
-    applyIcon(selectedItem, itemButtons[selectedId], true) -- visibly deselect
+    --applyIcon(selectedItem, itemButtons[selectedId], true) -- visibly deselect
   end
   selectedItem = shownItems[i]
   if not updating then 
-    if selectedId >= 0 then applyIcon(shownItems[selectedId], itemButtons[selectedId], true) end -- visibly deselect
-    applyIcon(selectedItem, itemButtons[i], true) -- immediately reflash icon to selected
+    --if selectedId >= 0 then applyIcon(shownItems[selectedId], itemButtons[selectedId], true) end -- visibly deselect
+    --applyIcon(selectedItem, itemButtons[i], true) -- immediately reflash icon to selected
   end 
   selectedId = i
   applyIcon(selectedItem, "selItem_icon")
@@ -181,13 +160,7 @@ function request(btn)
     name = selectedItem.name,
     count = math.min((type(btn) == "number" and btn) or requestBtn[btn] or 1000, selectedItem.parameters.maxStack or getConf(selectedItem).config.maxStack or 1000),
     parameters = selectedItem.parameters
-  }, pane.playerEntityId()) --]]
-
-  --[[player.setSwapSlotItem({
-    name = selectedItem.name,
-    count = math.min(requestBtn[btn] or 1000, selectedItem.parameters.maxStack or getConf(selectedItem).config.maxStack or 1000),
-    parameters = selectedItem.parameters
-  }); --]]
+  }, pane.playerEntityId())
 end
 
 function onRecvItemList(rpc)
@@ -218,6 +191,7 @@ function searchBoxEnter()
 end
 
 function refreshDisplay()
+  prevShownItems = shownItems
   shownItems = {}
   local i = 1
   if search == "" then
@@ -246,54 +220,48 @@ function refreshDisplay()
   buildList()
 end
 
+function resizeList(count)
+  local num = #listId
+  if count < num then -- remove
+    for i = num, count + 1, -1 do
+      listId[i] = nil
+      slotId[i] = nil
+      widget.removeListItem("grid.list", i-1)
+    end
+  elseif count > num then -- add
+    for i = num + 1, count do
+      listId[i] = "grid.list." .. widget.addListItem("grid.list")
+      
+      local wcount = listId[i] .. ".count"
+      widget.setPosition(wcount, {gridSpace - 2, 0})
+      
+      local wslot = listId[i] .. ".slotcontainer"
+      local ix = i
+      widget.registerMemberCallback(wslot, "left", function() onSlotClick(ix, 0) end)
+      widget.registerMemberCallback(wslot, "right", function() onSlotClick(ix, 1) end)
+      
+      slotId[i] = table.concat({ wslot, ".", widget.addListItem(wslot), ".slot" })
+    end
+  end
+end
+
 function buildList()
-  rows = {}
-  rowInd = {}
-  itemButtons = {}
-  widget.clearListItems("grid.list")
-  
   local count = #shownItems
   
   local foundSel = false
   
-  local gy, gx = 0, 9
-  while true do
-    if gx > gridWidth then
-      gx = 1
-      gy = gy + 1
-      local i = (gy - 1) * gridWidth + gx -- v
-      if i > count then break end -- Avoid empty extra line at the bottom with an even multiple of gridWidth item slots
-      local li = widget.addListItem("grid.list")
-      rowInd[li] = 1 + (gy - 1) * gridWidth
-      rows[gy] = "grid.list." .. li
+  resizeList(count)
+  for i = 1, count do
+    widget.setText(listId[i] .. ".count", prettyCount(shownItems[i].count or 1))
+    if not prevShownItems[i] or not itemutil.canStack(shownItems[i], prevShownItems[i]) then
+      -- only set item if it should have changed, so as to avoid visible lag with every refresh
+      widget.setItemSlotItem(slotId[i], { name = shownItems[i].name, count = 1, parameters = shownItems[i].parameters })
     end
-    --
-    local i = (gy - 1) * gridWidth + gx
-    if i > count then break end
-    
     if selectedItem.name and itemutil.canStack(selectedItem, shownItems[i]) then selectedItem = shownItems[i] foundSel = true end -- preserve selection
-    
-    local pfx = table.concat({ rows[gy], ".s", gx })
-    local icon = table.concat({ pfx, "-icon" })
-    itemButtons[i] = icon
-    local icount = table.concat({ pfx, "-count" })
-    widget.setPosition(icon, {gridSpace * (gx - 1), gridSize} )
-    applyIcon(shownItems[i], icon, true)
-    widget.setPosition(icount, {gridSpace * (gx - 1) + (gridSpace - 2), 0} )
-    widget.setText(icount, prettyCount(shownItems[i].count or 1))
-    
-    local ix = i
-    widget.registerMemberCallback(rows[gy] .. ".slotcontainer", "left", function() onSlotClick(ix, 0) end)
-    widget.registerMemberCallback(rows[gy] .. ".slotcontainer", "right", function() onSlotClick(ix, 1) end)
-    local slot = rows[gy] .. ".slotcontainer." .. widget.addListItem(rows[gy] .. ".slotcontainer") .. ".slot"
-    local xitm = shownItems[i]
-    widget.setItemSlotItem(slot, {name = xitm.name, count = 1, parameters = xitm.parameters})
-    
-    gx = gx + 1
   end
   
   if not foundSel then selectItem(-1) end
-  widget.setPosition("grid.nudge", {0, (math.ceil((gy-1)/8) * -gridSpace) - 2});
+  widget.setPosition("grid.nudge", {0, (math.ceil((count-1) / gridWidth) * -gridSpace) - 2}); -- TODO: de-hardcode this some
 end
 
 function onSlotClick(id, button)
@@ -336,7 +304,7 @@ function applyIcon(item, wid, doFrame)
     widget.setImage(layer, table.concat({ "/interface/tech/storagenet/itemSlot.rarity.", (item.parameters.rarity or conf.config.rarity or "common"):lower(), ".png" }))
   end
   
-  if true then return nil end -- disable icon view for now
+  --if true then return nil end -- disable icon view for now
     
 	local icon = item.parameters.inventoryIcon or conf.config.inventoryIcon or conf.config.codexIcon
   

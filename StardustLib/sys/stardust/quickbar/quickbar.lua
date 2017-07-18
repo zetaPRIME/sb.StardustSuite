@@ -4,19 +4,33 @@
 
 
 function openInterface(info)
-  if player.isLounging() then
-    -- fail...
-    pane.playSound("/sfx/interface/clickon_error.ogg")
-    return nil
+  -- Type checking
+  if type(info) == "string" then
+    info = { config = root.assetJson(info) }
+  elseif type(info) ~= "table" then
+    sb.logError("Quickbar: Interface '%s' could not be opened. Expected a string or table.", info)
+    restoreItem()
+    return
   end
-  player.setSwapSlotItem({
-    name = "stardustlib:openinterface",
-    count = 1,
-    parameters = {
-      info = info,
-      restore = player.swapSlotItem()
-    }
-  })
+
+  -- Globally store configuration.
+  if type(info.config) == "string" then
+    quickbarConfig = root.assetJson(info.config)
+  elseif type(info.config) == "table" then
+    quickbarConfig = info.config
+  end
+
+  -- Allow dynamic modification of the loaded configuration through global 'quickbarConfig'.
+  if quickbarConfig and info.loadScript then
+    loadScript(info.loadScript)
+  end
+
+  -- Open interface.
+  if quickbarConfig then
+    player.interact(info.interactionType or "ScriptPane", quickbarConfig)
+  else
+    sb.logError("Quickbar: Couldn't open an interface, as no valid config was defined.\nInfo: %s", sb.printJson(info))
+  end
 end
 
 
@@ -46,7 +60,7 @@ local autoRefreshTimer = 0
 function init()
   items = root.assetJson("/quickbar/icons.json") or {}
   refresh()
-  
+
   autoRefreshRate = config.getParameter("autoRefreshRate")
   autoRefreshTimer = autoRefreshRate
 end
@@ -68,5 +82,12 @@ function update(dt)
   if autoRefreshTimer == 0 then
     autoRefreshTimer = autoRefreshRate
     --refresh() -- whoops, that just kind of derps things up :(
+  end
+end
+
+function loadScript(script)
+  local status, err = pcall(function() require(script) end)
+  if not status then
+    sb.logError("Quickbar: Failed loading '%s':\n%s", script, err)
   end
 end

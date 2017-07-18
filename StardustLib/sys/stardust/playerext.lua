@@ -135,14 +135,8 @@ function svc.giveItemToCursor(msg, isLocal, itm)
 end
 
 function svc.openInterface(msg, isLocal, info)
-  player.setSwapSlotItem({
-    name = "stardustlib:openinterface",
-    count = 1,
-    parameters = {
-      info = info,
-      restore = player.swapSlotItem()
-    }
-  })
+  if type(info) ~= "table" then info = {config = info} end
+  player.interact(info.interactionType or "ScriptPane", info.config or "/sys/stardust/tablet/tablet.ui.config")
 end
 
 

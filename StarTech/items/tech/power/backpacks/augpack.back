@@ -4,7 +4,7 @@
   "inventoryIcon" : "/items/armors/backitems/xenonpack/xenonpackicon.png",
   "rarity" : "Legendary",
   "category" : "backwear",
-  "description" : "An advanced fluxpulse pack that can take augments and EPP modules.\n^darkgray;(install using Configurator)^reset;",
+  "description" : "An advanced fluxpulse pack that can take augments and EPP modules.\n\n^darkgray;-(install using Configurator)-^reset;",
   "shortdescription" : "Pulse Augpack",
   "tooltipKind" : "stardustlib.power.wearable",
   

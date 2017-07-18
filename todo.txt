@@ -57,6 +57,8 @@ renamer (custom shortdescription, put vanilla one as category because tooltip)
 
 actual configurator object instead of having it in the quickbar for non-admins
 
+make RCS tech obtainable; balance energy use
+
 recipes {
     (all clear!)
 }

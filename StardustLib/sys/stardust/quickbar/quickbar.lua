@@ -4,19 +4,8 @@
 
 
 function openInterface(info)
-  if player.isLounging() then
-    -- fail...
-    pane.playSound("/sfx/interface/clickon_error.ogg")
-    return nil
-  end
-  player.setSwapSlotItem({
-    name = "stardustlib:openinterface",
-    count = 1,
-    parameters = {
-      info = info,
-      restore = player.swapSlotItem()
-    }
-  })
+  if type(info) ~= "table" then info = {config = info} end
+  player.interact(info.interactionType or "ScriptPane", info.config or "/sys/stardust/tablet/tablet.ui.config")
 end
 
 

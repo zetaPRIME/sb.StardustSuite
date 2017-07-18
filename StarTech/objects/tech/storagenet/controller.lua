@@ -202,6 +202,8 @@ function init()
   
   self.timerPollNetwork = 0
   self.timerPollStorage = 0
+  
+  object.setInteractive(false) -- there we go, container-safety without weird blank container panes
 end
 
 function setStorageDirty() self.timerPollStorage = 0 end

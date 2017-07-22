@@ -2,7 +2,7 @@
 
 require "/lib/stardust/itemutil.lua"
 
-setmetatable(_ENV, { __index = function(t,k)
+--[[setmetatable(_ENV, { __index = function(t,k)
   sb.logInfo("missing field "..k.." accessed")
   local f = function(...)
     local msg = "called "..k..":\n"..dump({...})
@@ -10,9 +10,9 @@ setmetatable(_ENV, { __index = function(t,k)
     player.radioMessage({text=msg,messageId="scriptDbg",unique=false})
   end
   return nil -- f
-end })
+end }) --]]
 
-function dump(o, ind)
+local function dump(o, ind)
   if not ind then ind = 2 end
   local pfx, epfx = "", ""
   for i=1,ind do pfx = pfx .. " " end
@@ -29,17 +29,7 @@ function dump(o, ind)
   end
 end
 
-function update()
-  --status.setPersistentEffects("stardustlib:playerext", { { stat = "playerextActive", amount = 1027.0 } })
-  
-  --player.setSwapSlotItem({name = "startech:storagenet.terminal", count = 1})
-  
-  --mcontroller.setRotation(math.pi*0.5)
-  
-  --sb.logInfo("active!!")
-end
-
-function _mightBeUsefulLater()
+local function _mightBeUsefulLater()
   local mspd = 1000
   mcontroller.clearControls()
   mcontroller.controlParameters({
@@ -63,32 +53,33 @@ function _mightBeUsefulLater()
   
 end
 
-svc = {}
-function init()
+local _update = update or function() end
+function update(dt, ...)
+  _update(dt, ...)
+  
+  -- NaN protection for velocity
+  local v = mcontroller.velocity()
+  if v[1] ~= v[1] or v[2] ~= v[2] then
+    mcontroller.setVelocity({0, 0})
+  end
+end
+
+local svc = {}
+local _init = init or function() end
+function init(...)
+  _init(...) -- run after deploy init
   for name,func in pairs(svc) do
     if type(func) == "function" then
       message.setHandler("playerext:" .. name, func)
     end
   end
   
-  status.setPersistentEffects("stardustlib:playerext", { { stat = "playerextActive", amount = 1337 } })
+  -- clean up remnants of playerext-as-quest
+  status.clearPersistentEffects("startech:playerext")
 end
 
-function liveMsg(msg)
+local function liveMsg(msg)
   player.radioMessage({text=msg,messageId="scriptDbg",unique=false,portraitImage="/interface/chatbubbles/static.png:<frame>",portraitFrames=4,portraitSpeed=0.3,senderName="SVC"})
-end
-
-function questStart()
-  --liveMsg("Indeed!")
-end
-
-function questComplete()
-  --status.clearPersistentEffects("startech:playerext")
-  status.setPersistentEffects("stardustlib:playerext", { { stat = "playerextActive", amount = -23.4 } })
-end
-function questFail()
-  --status.clearPersistentEffects("startech:playerext")
-  status.setPersistentEffects("stardustlib:playerext", { { stat = "playerextActive", amount = -23.4 } })
 end
 
 function svc.message(msg, isLocal, param)

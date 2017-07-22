@@ -38,6 +38,12 @@ function init()
   
   autoRefreshRate = config.getParameter("autoRefreshRate")
   autoRefreshTimer = autoRefreshRate
+  
+  -- make sure playerext quest is running
+  -- do not include in non-stardustlib implementations!
+  if not player.hasQuest("stardustlib:playerext") or player.hasCompletedQuest("stardustlib:playerext") then
+    --player.startQuest({ questId = "stardustlib:playerext", templateId = "stardustlib:playerext", parameters = {} })
+  end
 end
 
 function refresh()

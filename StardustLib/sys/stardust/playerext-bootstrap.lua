@@ -1,5 +1,6 @@
 function playerextInit()
-  if status.stat("playerextActive") ~= 0 then return end
+  if status.stat("playerextActive") == 1027.0 then return end
+  --if status.getPersistentEffects("stardustlib:playerext") then return nil end
   world.spawnItem({
     name = "techcard", --"perfectlygenericitem",
     count = 1,

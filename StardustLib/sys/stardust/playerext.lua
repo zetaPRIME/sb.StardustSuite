@@ -30,7 +30,7 @@ function dump(o, ind)
 end
 
 function update()
-  status.setPersistentEffects("stardustlib:playerext", { { stat = "playerextActive", amount = 1 } })
+  --status.setPersistentEffects("stardustlib:playerext", { { stat = "playerextActive", amount = 1027.0 } })
   
   --player.setSwapSlotItem({name = "startech:storagenet.terminal", count = 1})
   
@@ -70,6 +70,8 @@ function init()
       message.setHandler("playerext:" .. name, func)
     end
   end
+  
+  status.setPersistentEffects("stardustlib:playerext", { { stat = "playerextActive", amount = 1337 } })
 end
 
 function liveMsg(msg)
@@ -81,10 +83,12 @@ function questStart()
 end
 
 function questComplete()
-  status.clearPersistentEffects("startech:playerext")
+  --status.clearPersistentEffects("startech:playerext")
+  status.setPersistentEffects("stardustlib:playerext", { { stat = "playerextActive", amount = -23.4 } })
 end
 function questFail()
-  status.clearPersistentEffects("startech:playerext")
+  --status.clearPersistentEffects("startech:playerext")
+  status.setPersistentEffects("stardustlib:playerext", { { stat = "playerextActive", amount = -23.4 } })
 end
 
 function svc.message(msg, isLocal, param)

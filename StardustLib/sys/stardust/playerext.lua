@@ -57,11 +57,12 @@ local _update = update or function() end
 function update(dt, ...)
   _update(dt, ...)
   
+  --[[ TODO: figure out a place to put this
   -- NaN protection for velocity
   local v = mcontroller.velocity()
   if v[1] ~= v[1] or v[2] ~= v[2] then
     mcontroller.setVelocity({0, 0})
-  end
+  end --]]
 end
 
 local svc = {}

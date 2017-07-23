@@ -123,6 +123,6 @@ function fulfillRequest(msg, isLocal, item, player)
   local result = shared.controller:tryTakeItem(item)
   if result and result.count > 0 then
     --world.spawnItem(result, world.entityPosition(player))
-    world.sendEntityMessage(player, "playerext:giveItemToCursor", result)
+    world.sendEntityMessage(player, "playerext:giveItemToCursor", result, true)
   end
 end

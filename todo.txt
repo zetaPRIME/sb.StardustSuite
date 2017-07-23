@@ -9,10 +9,10 @@ configurable tram stop {
 reserve material ID range somewhere
 semigloss black hull panel
 
-figure out how the feck to detect if shift is held
+/ figure out how the feck to detect if shift is held (done hackishly, but at least it's there)
 implement slot-drop
-reimplement preview slot
-CLEAN UP REMNANTS OF OLD TERMINAL IMPLEMENTATION
+- reimplement preview slot
+- CLEAN UP REMNANTS OF OLD TERMINAL IMPLEMENTATION
 somewhat redesign UI to make better use of now-unneeded tooltip area
 
 TERMINAL THEMABILITY?
@@ -35,8 +35,6 @@ power stuffs {
     machine that powers warp core via fluxpulse (world property "ship.fuel")
     wireless charger
     
-    technician table for reconfiguring modulars
-    augpack as EPP + power source, lower-tier precursor to powersuit
     powersuit {
         hijack tech? how much?
     }

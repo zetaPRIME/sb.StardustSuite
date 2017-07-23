@@ -107,7 +107,7 @@ function svc.giveItems(msg, isLocal, ...)
   end
 end
 
-function svc.giveItemToCursor(msg, isLocal, itm)
+function svc.giveItemToCursor(msg, isLocal, itm, shiftable)
   --[[
     give cursor as much as can be added to stack; give inventory the rest
   ]]
@@ -119,7 +119,12 @@ function svc.giveItemToCursor(msg, isLocal, itm)
     local pcount = cur.count or 0
     local ccount = pcount + itm.count
     
-    player.setSwapSlotItem({name = itm.name, count = math.min(ccount, maxStack), parameters = itm.parameters})
+    local gItm = {name = itm.name, count = math.min(ccount, maxStack), parameters = itm.parameters}
+    if shiftable and cur.count == 0 then -- TODO: make this work not-weirdly with already-stackables
+      player.setSwapSlotItem({ name = "stardustlib:swapstub", count = 1, parameters = { mode = "shiftableGive", restore = gItm } })
+    else
+      player.setSwapSlotItem(gItm)
+    end
     local overflow = math.max(0, ccount - maxStack)
     if overflow > 0 then
       player.giveItem({name = itm.name, count = overflow, parameters = itm.parameters})

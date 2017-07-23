@@ -47,6 +47,8 @@ function init()
   
   pid = pane.playerEntityId()
   sync.msg("playerOpen", pid)
+  
+  --if status then sb.logInfo("status exists in panes!") end
 end
 
 function update()
@@ -103,7 +105,6 @@ function setExpandedInfo(setting)
   })
 end
 
--- NEED NEW SELECTION INDICATOR!
 function selectItem(i, updating)
   setExpandedInfo(false)
   if i < 0 then -- -1 == blank
@@ -116,12 +117,12 @@ function selectItem(i, updating)
     return nil
   end
   if not updating and selectedId >= 0 then
-    --applyIcon(selectedItem, itemButtons[selectedId], true) -- visibly deselect
+    if listId[selectedId] then widget.setVisible(listId[selectedId] .. ".selection", false) end -- visibly deselect
   end
   selectedItem = shownItems[i]
   if not updating then 
-    --if selectedId >= 0 then applyIcon(shownItems[selectedId], itemButtons[selectedId], true) end -- visibly deselect
-    --applyIcon(selectedItem, itemButtons[i], true) -- immediately reflash icon to selected
+    if listId[selectedId] then widget.setVisible(listId[selectedId] .. ".selection", false) end -- visibly deselect...
+    if listId[i] then widget.setVisible(listId[i] .. ".selection", true) end -- and highlight the new selection
   end 
   selectedId = i
   applyIcon(selectedItem, "selItem_icon")
@@ -237,8 +238,8 @@ function resizeList(count)
       
       local wslot = listId[i] .. ".slotcontainer"
       local ix = i
-      widget.registerMemberCallback(wslot, "left", function() onSlotClick(ix, 0) end)
-      widget.registerMemberCallback(wslot, "right", function() onSlotClick(ix, 1) end)
+      widget.registerMemberCallback(wslot, "left", function(name, shift) onSlotClick(ix, 0, shift) end)
+      widget.registerMemberCallback(wslot, "right", function(name, shift) onSlotClick(ix, 1, shift) end)
       
       slotId[i] = table.concat({ wslot, ".", widget.addListItem(wslot), ".slot" })
     end
@@ -264,8 +265,14 @@ function buildList()
   widget.setPosition("grid.nudge", {0, (math.ceil((count-1) / gridWidth) * -gridSpace) - 2}); -- TODO: de-hardcode this some
 end
 
-function onSlotClick(id, button)
+function checkShift()
+  player.setSwapSlotItem({ name = "stardustlib:swapstub", count = 1, parameters = { mode = "checkShift", restore = player.swapSlotItem() } })
+  return status.statusProperty("stardustlib:shiftHeld", false)
+end
+
+function onSlotClick(id, button, shift)
   sb.logInfo("hello! slot " .. id .. " button " .. button)
+  if shift then sb.logInfo("shift??") end
   if selectedId ~= id then
     selectItem(id)
     if button == 1 then return nil end -- select only if rightclicked when not selected

@@ -1,0 +1,13 @@
+{ // -*- grammar-ext: json -*-
+  "input" : [
+    { "item" : "tungstenbar", "count" : 15 },
+    { "item" : "silverbar", "count" : 5 },
+    { "item" : "copperbar", "count" : 2 },
+    { "item" : "corefragmentore", "count" : 3 },
+    { "item" : "volatilepowder", "count" : 15 },
+    { "item" : "scorchedcore", "count" : 1 }
+  ],
+  "output" : { "item" : "startech:autosmelter", "count" : 1 },
+  "duration" : 1.5,
+  "groups" : [ "startech:tinkertable", "power", "all" ]
+}

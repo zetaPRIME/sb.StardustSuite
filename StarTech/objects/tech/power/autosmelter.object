@@ -1,0 +1,116 @@
+{ // -*- grammar-ext: json -*-
+  "objectName" : "startech:autosmelter",
+  "rarity" : "Rare",
+  
+  //"category" : "storagenet.storage",
+  "price" : 2500,
+  "description" : "Smelts ores and other materials automatically. May yield bonuses!",
+  "shortdescription" : "Autosmelter",
+  "health" : 5.73,
+
+  "inventoryIcon" : [
+    { "image" : "autosmelter.png" }
+  ],
+  
+  "orientations" : [
+    {
+      "dualImage" : "autosmelter.png",
+      "imagePosition" : [-8, 0],
+
+      "spaceScan" : 0.1,
+      "anchors" : [ "bottom" ]
+    }
+  ],
+  
+  "scripts" : [ "autosmelter.lua" ],
+  "scriptDelta" : 1,
+  
+  "inputNodes" : [ [0, 0] ],
+  
+  "objectType" : "container",
+  "slotCount" : 12,
+  "uiConfig" : "/interface/tech/power/autosmelter.config",
+  "frameCooldown" : 5,
+  "autoCloseCooldown" : 3600,
+  
+  "slotConfig" : {
+    "input" : [ 1, 2, 3 ],
+    "output" : [ 4, 5, 6, 7, 8, 9, 10, 11, 12 ]
+  },
+  
+  "batteryStats" : {
+    "capacity" : 100000,
+    "ioRate" : 150
+  },
+  
+  "smelterConfig" : {
+    "ticksPerItem" : 20,
+    "powerPerTick" : 50
+  },
+  
+  "recipes" : {
+    // evergreen metals
+    "copperore" : { "count" : 2, "result" : { "name" : "copperbar" } },
+    "silverore" : { "count" : 2, "result" : { "name" : "silverbar" } },
+    "goldore" : { "count" : 2, "result" : { "name" : "goldbar" } },
+    
+    // tiered metals
+    "ironore" : {
+      "count" : 2,
+      "result" : { "name" : "ironbar", "count" : 1 },
+      "bonus" : { "name" : "ironbar", "count" : 1 },
+      "bonusChance" : 0.05
+    },
+    "tungstenore" : {
+      "count" : 2,
+      "result" : { "name" : "tungstenbar", "count" : 1 },
+      //"bonus" : { "name" : "ironbar", "count" : 1 },
+      "bonusChance" : 0.05
+    },
+    "titaniumore" : {
+      "count" : 2,
+      "result" : { "name" : "titaniumbar", "count" : 1 },
+      //"bonus" : { "name" : "ironbar", "count" : 1 },
+      "bonusChance" : 0.05
+    },
+    "durasteelore" : {
+      "count" : 2,
+      "result" : { "name" : "durasteelbar", "count" : 1 },
+      //"bonus" : { "name" : "ironbar", "count" : 1 },
+      "bonusChance" : 0.05
+    },
+    "aegisteelore" : {
+      "count" : 2,
+      "result" : { "name" : "refinedaegisteel", "count" : 1 },
+      //"bonus" : { "name" : "ironbar", "count" : 1 },
+      "bonusChance" : 0.01
+    },
+    "feroziumore" : {
+      "count" : 2,
+      "result" : { "name" : "refinedferozium", "count" : 1 },
+      //"bonus" : { "name" : "ironbar", "count" : 1 },
+      "bonusChance" : 0.01
+    },
+    "violiumore" : {
+      "count" : 2,
+      "result" : { "name" : "refinedviolium", "count" : 1 },
+      //"bonus" : { "name" : "ironbar", "count" : 1 },
+      "bonusChance" : 0.01
+    },
+    "solariumore" : {
+      "count" : 2,
+      "result" : { "name" : "solariumstar", "count" : 1 },
+      //"bonus" : { "name" : "ironbar", "count" : 1 },
+      "bonusChance" : 0.05
+    },
+    
+    // miscellany
+    "sand2" : { "count" : 2, "result" : { "name" : "glass" } },
+    "sand" : { "count" : 5, "result" : { "name" : "glass" } }, // silt!
+    
+    // shenanigans
+    "drillspear" : { "result" : { "name" : "drillspear" }, "bonus" : { "name" : "startech:triangleshades" }, "bonusChance" : 10.05 },
+    
+    "advanced shicketry" : {} // endcap
+  }
+}

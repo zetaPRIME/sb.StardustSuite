@@ -1,5 +1,5 @@
 { // -*- grammar-ext: json -*-
-  "itemName" : "stardustlib:openinterface",
+  "itemName" : "stardustlib:swapstub",
   "maxStack" : 1,
   "rarity" : "Essential",
   "description" : "",
@@ -10,7 +10,7 @@
   
   "inventoryIcon" : "nothing.png",
 
-  "scripts" : ["openinterface.lua"],
+  "scripts" : ["swapstub.lua"],
 
   "." : false
 }

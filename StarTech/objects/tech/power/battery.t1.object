@@ -11,6 +11,7 @@
   
   "learnBlueprintsOnPickup" : [
     "startech:augpack",
+    "startech:autosmelter",
     "startech:chargingbench"
   ],
 

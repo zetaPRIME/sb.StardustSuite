@@ -11,15 +11,36 @@ end
 
 
 
+modules = {}
+
+local function handleClick(itm)
+  if itm.scriptAction then -- scripted action specified
+    local ci = string.find(itm.scriptAction, ":")
+    local module = string.sub(itm.scriptAction, 1, ci-1)
+    local action = string.sub(itm.scriptAction, ci+1)
+    
+    if not modules[module] then
+      modules[module] = {} -- initialize module table and load in the appropriate script
+      _ENV.module = modules[module] -- allow code to be less dependent on filename
+      require(string.format("/quickbar/%s.lua", module))
+      _ENV.module = nil
+    end
+    
+    if modules[module][action] then
+      modules[module][action](itm) -- trigger script action, passing in the item table
+    end
+  elseif itm.pane then openInterface(itm.pane) end
+end
+
 local lst = "scroll.list"
 
 local prefix = ""
 
-function addItem(itm)
+local function addItem(itm)
   local li = lst .. "." .. widget.addListItem(lst)
   widget.setText(li .. ".label", prefix .. itm.label)
   widget.registerMemberCallback(li .. ".buttonContainer", "click", function()
-    openInterface(itm.pane)
+    handleClick(itm)
   end)
   local btn = li .. ".buttonContainer." .. widget.addListItem(li .. ".buttonContainer") .. ".button"
   if itm.icon then

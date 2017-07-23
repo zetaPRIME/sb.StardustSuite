@@ -39,7 +39,7 @@ function battery:receive(socket, amount, testOnly)
 end
 
 function battery:consume(amount, partial, testOnly)
-  if not partial and amount < self.state.energy then return false end
+  if not partial and amount > self.state.energy then return false end
   if not testOnly then self.state.energy = math.max(0, self.state.energy - amount) end
   return true
 end

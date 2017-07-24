@@ -1,4 +1,10 @@
 [ // -*- grammar-ext: json -*-
+  { "op" : "add", "path" : "/labels/power", "value" : "Power" },
+  { "op" : "add", "path" : "/labels/power.gen", "value" : "Power Generation" },
+  { "op" : "add", "path" : "/labels/power.storage", "value" : "Power Storage" },
+  { "op" : "add", "path" : "/labels/power.transport", "value" : "Power Transport" },
+  { "op" : "add", "path" : "/labels/power.machine", "value" : "Powered Machinery" },
+  
   { "op" : "add", "path" : "/labels/storagenet", "value" : "Transmatter Network" },
   { "op" : "add", "path" : "/labels/storagenet.storage", "value" : "Transmatter Storage" }
 ] 

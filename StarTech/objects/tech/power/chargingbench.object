@@ -2,7 +2,7 @@
   "objectName" : "startech:chargingbench",
   "rarity" : "Rare",
   
-  //"category" : "storagenet.storage",
+  "category" : "power.transport",
   "price" : 2500,
   "description" : "Charges up items with integrated pulse cells.",
   "shortdescription" : "Charging Bench",

@@ -1,0 +1,32 @@
+{ // -*- grammar-ext: json -*-
+  "objectName" : "startech:relay.sc",
+  "rarity" : "Legendary",
+  
+  "category" : "power.transport",
+  "price" : 500,
+  "description" : "The ultimate fluxpulse relay. Transfers ^green;unlimited power^reset;; ^red;use sparingly!^reset;",
+  "shortdescription" : "Pulse Superconductor",
+  "health" : 5.73,
+  
+  "inventoryIcon" : [
+    { "image" : "relay.sc.png" }
+  ],
+  
+  "orientations" : [
+    {
+      "image" : "relay.sc.png",
+      "imagePosition" : [-8, -8],
+
+      "spaces" : [ [0, 0] ],
+      "anchors" : [ "background" ]
+    }
+  ],
+  
+  "scripts" : [ "relay.sc.lua" ],
+  "scriptDelta" : 0,
+  
+  "isRelay" : true,
+  
+  "inputNodes" : [ [0, 1] ],
+  "outputNodes" : [ [0, 0] ]
+}

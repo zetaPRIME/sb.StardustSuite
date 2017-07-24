@@ -2,7 +2,7 @@
   "objectName" : "startech:battery.t1",
   "rarity" : "Rare",
   
-  //"category" : "storagenet.storage",
+  "category" : "power.storage",
   "price" : 500,
   "description" : "A basic fluxpulse battery.\n^green;0/100000FP",
   "baseDescription" : "A basic fluxpulse battery.",
@@ -10,6 +10,8 @@
   "health" : 5.73,
   
   "learnBlueprintsOnPickup" : [
+    "startech:relay.t1",
+    
     "startech:augpack",
     "startech:autosmelter",
     "startech:chargingbench"

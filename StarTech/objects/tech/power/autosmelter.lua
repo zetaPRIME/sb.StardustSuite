@@ -64,7 +64,7 @@ function update()
             if item.count >= recipe.count then
               -- match! take item
               smelting.item = world.containerTakeNumItemsAt(entity.id(), slot-1, recipe.count)
-              smelting.remaining = smelterConfig.ticksPerItem
+              smelting.remaining = recipe.time or smelterConfig.ticksPerItem
               smelting.smeltTime = smelting.remaining
               
               -- determine results
@@ -72,8 +72,12 @@ function update()
               smelting.results = results
               results[1] = { name = recipe.result.name, count = recipe.result.count or 1, parameters = recipe.result.parameters or {} }
               if recipe.bonus then
-                if rng:randf() < recipe.bonusChance then -- chance passed
-                  results[2] = { name = recipe.bonus.name, count = recipe.bonus.count or 1, parameters = recipe.bonus.parameters or {} }
+                local bonuses = recipe.bonus
+                if bonuses.name then bonuses = { bonuses } end -- arrayize if single entry
+                for _,bonus in pairs(bonuses) do
+                  if rng:randf() < (bonus.chance or 1) then -- chance passed (fallback purely for crash prevention, not sensibility)
+                    results[#results+1] = { name = bonus.name, count = bonus.count or 1, parameters = bonus.parameters or {} }
+                  end
                 end
               end
             end

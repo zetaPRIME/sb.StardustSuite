@@ -5,11 +5,13 @@ require "/lib/stardust/power.lua"
 
 function init()
   local cfg = config.getParameter("batteryStats")
-  battery = prefabs.power.battery(cfg.capacity, cfg.ioRate):hookUp():autoSave()
+  battery = prefabs.power.battery(cfg.capacity, cfg.ioRate):hookUp():autoSave():controlTickrate()
   
   --message.setHandler("wrenchInteract", onWrench)
   dDesc = config.getParameter("baseDescription")--root.itemConfig({ name = object.name(), count = 1 }).config.description
   tDesc = 573000000
+  
+  isRelay = config.getParameter("isRelay")
 end
 
 function update()
@@ -19,16 +21,20 @@ function update()
   end
   
   power.autoSendEnergy(1000000000)
-  object.setAnimationParameter("level", battery.state.energy / battery.capacity)
-  tDesc = tDesc + 1
-  if tDesc >= 10 then
-    tDesc = 0
-    if battery.state.energy ~= lastDescEnergy then
-      object.setConfigParameter("description", getDescription())
-      lastDescEnergy = battery.state.energy
+  
+  if not isRelay then
+    -- only applies to actual batteries
+    object.setAnimationParameter("level", battery.state.energy / battery.capacity)
+    tDesc = tDesc + 1
+    if tDesc >= 10 then
+      tDesc = 0
+      if battery.state.energy ~= lastDescEnergy then
+        object.setConfigParameter("description", getDescription())
+        lastDescEnergy = battery.state.energy
+      end
     end
+    --if storage.alwaysDisplay then sayLevel() end
   end
-  --if storage.alwaysDisplay then sayLevel() end
 end
 
 function getDescription()
@@ -49,6 +55,7 @@ function onWrench(msg, isLocal, player, shiftHeld)
 end
 
 function die()
+  if isRelay then return nil end -- custom drop logic only applicable to batteries
   local itm = {
     name = config.getParameter("objectName"),
     count = 1,

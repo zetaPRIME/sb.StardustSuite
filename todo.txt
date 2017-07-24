@@ -10,9 +10,7 @@ reserve material ID range somewhere
 semigloss black hull panel
 
 / figure out how the feck to detect if shift is held (done hackishly, but at least it's there)
-implement slot-drop
-- reimplement preview slot
-- CLEAN UP REMNANTS OF OLD TERMINAL IMPLEMENTATION
+implement slot-drop?
 somewhat redesign UI to make better use of now-unneeded tooltip area
 
 TERMINAL THEMABILITY?
@@ -43,7 +41,10 @@ power stuffs {
     
     intermediary pulse-battery component?
     
-    power category?
+    powered lamp that fills a large region with full-bright light (basically volumetric lighting at the cost of fp)
+    
+    - power categories
+    (move to stardustlib?)
     
     eventually make transmatter network require power
 }
@@ -55,11 +56,15 @@ renamer (custom shortdescription, put vanilla one as category because tooltip)
 
 actual configurator object instead of having it in the quickbar for non-admins
 
+some item transport for automation (and library to make use of input/output configuration)
+
 make RCS tech obtainable; balance energy use
 
 recipes {
     (all clear!)
 }
+
+clean up tinkertable categories
 
 some major cleanup in places
 

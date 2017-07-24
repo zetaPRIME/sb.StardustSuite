@@ -2,7 +2,7 @@
   "objectName" : "startech:generator.creative",
   "rarity" : "Essential",
   
-  //"category" : "storagenet.storage",
+  "category" : "power.gen",
   "price" : 5000000000000000000,
   "description" : "^magenta;PHENOMENAL COSMIC POWER!\n\n\n^cyan;...itty-bitty living space.",
   "shortdescription" : "Creative Power Supply",

@@ -26,20 +26,34 @@ function battery:autoSave(key)
   return self
 end
 
+function battery:controlTickrate()
+  self.controlsTickrate = true
+  return self
+end
+
+local function postUpdate(self)
+  if self.controlsTickrate then
+    script.setUpdateDelta((self.state.energy > 0) and 1 or 30)
+  end
+end
+
 function battery:extract(socket, amount, testOnly)
   local amt = math.min(math.min(amount, self.ioRate.output), self.state.energy)
   if not testOnly then self.state.energy = self.state.energy - amt end
+  postUpdate(self)
   return amt
 end
 
 function battery:receive(socket, amount, testOnly)
   local amt = math.min(math.min(amount, self.ioRate.input), self.capacity - self.state.energy)
   if not testOnly then self.state.energy = self.state.energy + amt end
+  postUpdate(self)
   return amt
 end
 
 function battery:consume(amount, partial, testOnly)
   if not partial and amount > self.state.energy then return false end
   if not testOnly then self.state.energy = math.max(0, self.state.energy - amount) end
+  postUpdate(self)
   return true
 end

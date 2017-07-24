@@ -78,9 +78,9 @@
         { "name" : "titaniumbar", "chance" : 0.05 }
       ]
     },
-    "aegisteelore" : {
+    "aegisaltore" : {
       "count" : 2,
-      "result" : { "name" : "refinedaegisteel" },
+      "result" : { "name" : "refinedaegisalt" },
       "bonus" : { "name" : "startech:resoniteore", "chance" : 0.05 }
     },
     "feroziumore" : {

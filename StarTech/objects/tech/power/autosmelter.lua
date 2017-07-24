@@ -80,10 +80,10 @@ function update()
                   end
                 end
               end
+              
+              script.setUpdateDelta(1) -- resume full tickrate operation
+              break -- done here
             end
-            
-            script.setUpdateDelta(1) -- resume full tickrate operation
-            break -- done here
           end
         end
       end

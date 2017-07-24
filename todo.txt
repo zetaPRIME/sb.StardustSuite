@@ -10,7 +10,7 @@ reserve material ID range somewhere
 semigloss black hull panel
 
 / figure out how the feck to detect if shift is held (done hackishly, but at least it's there)
-implement slot-drop?
+implement slot-drop? drop into empty space, or maybe the selection icon area?
 somewhat redesign UI to make better use of now-unneeded tooltip area
 
 TERMINAL THEMABILITY?
@@ -28,7 +28,7 @@ lots of shiny new ship components, especially animating ones that match their st
 }
 
 power stuffs {
-    pure conduits to route power further and more neatly
+    -  pure conduits to route power further and more neatly
     
     machine that powers warp core via fluxpulse (world property "ship.fuel")
     wireless charger
@@ -46,7 +46,7 @@ power stuffs {
     - power categories
     (move to stardustlib?)
     
-    eventually make transmatter network require power
+    eventually make transmatter network require power (after rewrite)
 }
 
 compost bin that makes food age faster, for use as biofuel

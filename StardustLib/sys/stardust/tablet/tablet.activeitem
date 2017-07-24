@@ -10,7 +10,7 @@
   "twoHanded" : true,
   "itemTags" : [ ],
   
-  "inventoryIcon" : "tablet.icon.png",
+  "inventoryIcon" : "/sys/stardust/nothing.png",//"tablet.icon.png",
 
   "scripts" : ["tablet.item.lua"],
 

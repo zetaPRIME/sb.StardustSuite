@@ -68,7 +68,7 @@ do
   
   -- returns a given property of an item, overridden where applicable
   function itemutil.property(itm, prop)
-    return (itm.parameters and itm.parameters[prop]) or itemutil.getCachedConfig(itm)[prop]
+    return (itm.parameters and itm.parameters[prop]) or itemutil.getCachedConfig(itm).config[prop]
   end
   
   -- normalize item descriptor

@@ -14,6 +14,7 @@ implement slot-drop? drop into empty space, or maybe the selection icon area?
 somewhat redesign UI to make better use of now-unneeded tooltip area
 
 TERMINAL THEMABILITY?
+make terminal not update every tick just for animation if it's not waiting on any players
 
 BYOS functionality as machine {
     damageTileArea with ridiculously high strength and harvest level and radius big enough to cover a t8 vanilla ship from one end, in both fg and bg

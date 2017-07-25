@@ -258,20 +258,17 @@ function buildList()
       -- only set item if it should have changed, so as to avoid visible lag with every refresh
       widget.setItemSlotItem(slotId[i], { name = shownItems[i].name, count = 1, parameters = shownItems[i].parameters })
     end
-    if selectedItem.name and itemutil.canStack(selectedItem, shownItems[i]) then selectedItem = shownItems[i] foundSel = true end -- preserve selection
+    if listId[i] then widget.setVisible(listId[i] .. ".selection", false) end -- visibly deselect everything, to be reselected after
+    if selectedItem.name and itemutil.canStack(selectedItem, shownItems[i]) then selectedItem = shownItems[i] foundSel = i end -- preserve selection
   end
   
-  if not foundSel then selectItem(-1) end
+  if not foundSel then selectItem(-1)
+  elseif listId[foundSel] then widget.setVisible(listId[foundSel] .. ".selection", true) end -- and rehighlight selection
   widget.setPosition("grid.nudge", {0, (math.ceil((count-1) / gridWidth) * -gridSpace) - 2}); -- TODO: de-hardcode this some
 end
 
-function checkShift()
-  player.setSwapSlotItem({ name = "stardustlib:swapstub", count = 1, parameters = { mode = "checkShift", restore = player.swapSlotItem() } })
-  return status.statusProperty("stardustlib:shiftHeld", false)
-end
-
 function onSlotClick(id, button, shift)
-  sb.logInfo("hello! slot " .. id .. " button " .. button)
+  --sb.logInfo("hello! slot " .. id .. " button " .. button)
   if shift then sb.logInfo("shift??") end
   if selectedId ~= id then
     selectItem(id)

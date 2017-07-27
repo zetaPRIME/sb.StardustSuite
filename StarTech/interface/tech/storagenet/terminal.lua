@@ -262,8 +262,11 @@ function buildList()
     if selectedItem.name and itemutil.canStack(selectedItem, shownItems[i]) then selectedItem = shownItems[i] foundSel = i end -- preserve selection
   end
   
-  if not foundSel then selectItem(-1)
-  elseif listId[foundSel] then widget.setVisible(listId[foundSel] .. ".selection", true) end -- and rehighlight selection
+  if not foundSel then
+    selectItem(-1) -- clear selection data
+  else
+    selectItem(foundSel) -- rehighlight selection and update tooltip
+  end
   widget.setPosition("grid.nudge", {0, (math.ceil((count-1) / gridWidth) * -gridSpace) - 2}); -- TODO: de-hardcode this some
 end
 

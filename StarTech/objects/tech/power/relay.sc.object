@@ -4,7 +4,7 @@
   
   "category" : "power.transport",
   "price" : 500,
-  "description" : "The ultimate fluxpulse relay. Transfers ^green;unlimited power^reset;; ^red;use sparingly!^reset;",
+  "description" : "The ultimate fluxpulse relay. Transfers ^cyan;unlimited power^reset;; ^red;use sparingly!^reset;",
   "shortdescription" : "Pulse Superconductor",
   "health" : 5.73,
   

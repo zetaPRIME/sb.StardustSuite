@@ -50,7 +50,11 @@ function updateItem()
         end
       elseif cfg.category == "enviroProtectionPack" then
         for k, v in pairs(cfg.statusEffects or {}) do
-          astatus[v.stat] = v.amount + (astatus[v.stat] or {amount=0}).amount
+          if type(v) == "table" then
+            astatus[v.stat] = (v.amount or 1) + (astatus[v.stat] or 0)
+          else
+            augfx[#augfx+1] = v -- guess this is the only actual way to have effects that don't have an amount attached along with ones that do!
+          end
         end
         if par.currentAugment then
           for k, v in pairs(par.currentAugment.effects) do

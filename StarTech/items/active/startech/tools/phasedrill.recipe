@@ -3,6 +3,7 @@
     { "item" : "durasteelbar", "count" : 25 },
     { "item" : "goldbar", "count" : 15 },
     { "item" : "silverbar", "count" : 5 },
+    { "item" : "manipulatormodule", "count" : 5 },
     { "item" : "salvagetier4", "count" : 5 },
     { "item" : "salvagearm", "count" : 10 },
     { "item" : "siliconboard", "count" : 3 },

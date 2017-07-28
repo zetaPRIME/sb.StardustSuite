@@ -45,7 +45,7 @@
   
   "smelterConfig" : {
     "ticksPerItem" : 20,
-    "powerPerTick" : 50
+    "powerPerTick" : 10
   },
   
   "recipes" : {

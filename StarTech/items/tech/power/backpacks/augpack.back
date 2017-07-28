@@ -1,4 +1,4 @@
-{
+{ // -*- grammar-ext: json -*-
   "itemName" : "startech:augpack",
   "price" : 5000,
   "inventoryIcon" : "/items/armors/backitems/xenonpack/xenonpackicon.png",
@@ -10,25 +10,25 @@
   
   "learnBlueprintsOnPickup" : [
     "startech:phasedrill"
+    
   ],
-
   "maleFrames" : "/items/armors/backitems/xenonpack/back.png",
   "femaleFrames" : "/items/armors/backitems/xenonpack/back.png",
   "maxStack" : 1,
 
   "statusEffects" : [
-    //"xenonglow"
+    //
   ],
   
   "batteryStats" : {
-    "capacity" : 250000,
+    "capacity" : 320000,
     "ioRate" : 250
   },
   
   "configuratorLayout" : "augpack",
   
   "tooltipFields" : {
-    "batteryStatsLabel" : "0^gray;/^reset;250000^gray;FP^reset;"
+    "batteryStatsLabel" : "0^gray;/^reset;320000^gray;FP^reset;"
   },
 
   "colorOptions" : [

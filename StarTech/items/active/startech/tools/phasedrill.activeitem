@@ -97,7 +97,7 @@
   },
   
   "powerUsage" : {
-    "base" : 10,
+    "base" : 5,
     "hitTilesPrimary" : 10,
     "hitTilesSecondary" : 7,
     "hitEnemy" : 5

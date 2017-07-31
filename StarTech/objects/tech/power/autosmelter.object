@@ -57,51 +57,56 @@
     // tiered metals
     "ironore" : {
       "count" : 2,
-      "result" : { "name" : "ironbar" },
-      "bonus" : { "name" : "ironbar", "chance" : 0.05 }
+      "result" : [ { "name" : "ironbar" }, { "name" : "ironbar", "chance" : 0.05 } ]
     },
     "tungstenore" : {
       "count" : 2,
-      "result" : { "name" : "tungstenbar" },
-      "bonus" : { "name" : "tungstenbar", "chance" : 0.075 }
+      "result" : [ { "name" : "tungstenbar" }, { "name" : "tungstenbar", "chance" : 0.075 } ]
     },
     "titaniumore" : {
       "count" : 2,
-      "result" : { "name" : "titaniumbar" },
-      "bonus" : { "name" : "tungstenbar", "chance" : 0.075 }
+      "result" : [ { "name" : "titaniumbar" }, { "name" : "tungstenbar", "chance" : 0.075 } ]
     },
     "durasteelore" : {
       "count" : 2,
-      "result" : { "name" : "durasteelbar" },
-      "bonus" : [
+      "result" : [
+        { "name" : "durasteelbar" },
         { "name" : "tungstenbar", "chance" : 0.075 },
         { "name" : "titaniumbar", "chance" : 0.05 }
       ]
     },
     "aegisaltore" : {
       "count" : 2,
-      "result" : { "name" : "refinedaegisalt" },
-      "bonus" : { "name" : "startech:resoniteore", "chance" : 0.05 }
+      "result" : [
+        { "name" : "refinedaegisalt" },
+        { "name" : "startech:resoniteore", "chance" : 0.05 }
+      ]
     },
     "feroziumore" : {
       "count" : 2,
-      "result" : { "name" : "refinedferozium" },
-      "bonus" : { "name" : "startech:resoniteore", "chance" : 0.05 }
+      "result" : [
+        { "name" : "refinedferozium" },
+        { "name" : "startech:resoniteore", "chance" : 0.05 }
+      ]
     },
     "violiumore" : {
       "count" : 2,
-      "result" : { "name" : "refinedviolium" },
-      "bonus" : { "name" : "startech:resoniteore", "chance" : 0.05 }
+      "result" : [
+        { "name" : "refinedviolium" },
+        { "name" : "startech:resoniteore", "chance" : 0.05 }
+      ]
     },
     "solariumore" : {
       "count" : 2,
-      "result" : { "name" : "solariumstar" },
-      "bonus" : { "name" : "startech:resoniteore", "chance" : 0.15 }
+      "result" : [
+        { "name" : "solariumstar" },
+        { "name" : "startech:resoniteore", "chance" : 0.15 }
+      ]
     },
     
     // vanilla-unused and non-vanilla materials
     "solidfuel" : { "count" : 25, "time" : 40, "result" : { "name" : "supermatter" } },
-    "prisiliteore" : { "count" : 3, "time" : 30, "result" : { "name" : "prisilitestar" }, "bonus" : { "name" : "startech:resoniteore", "chance" : 0.15 } },
+    "prisiliteore" : { "count" : 3, "time" : 30, "result" : [ { "name" : "prisilitestar" }, { "name" : "startech:resoniteore", "chance" : 0.15 } ] },
     "startech:resoniteore" : { "count" : 5, "time" : 30, "result" : { "name" : "startech:resonitebar" } },
     
     // miscellany
@@ -110,7 +115,7 @@
     "glassmaterial" : { "count" : 10, "time" : 90, "result" : { "name" : "glass" } }, // reclaim glass from blocks
     
     // shenanigans
-    "drillspear" : { "result" : { "name" : "drillspear" }, "bonus" : { "name" : "startech:triangleshades" }, "bonusChance" : 10.05 },
+    "drillspear" : { "result" : [ { "name" : "drillspear" }, { "name" : "startech:triangleshades" } ] },
     
     "advanced shicketry" : {} // endcap
   }

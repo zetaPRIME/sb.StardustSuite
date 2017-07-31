@@ -70,13 +70,12 @@ function update()
               -- determine results
               local results = {}
               smelting.results = results
-              results[1] = { name = recipe.result.name, count = recipe.result.count or 1, parameters = recipe.result.parameters or {} }
-              if recipe.bonus then
-                local bonuses = recipe.bonus
-                if bonuses.name then bonuses = { bonuses } end -- arrayize if single entry
-                for _,bonus in pairs(bonuses) do
-                  if rng:randf() < (bonus.chance or 1) then -- chance passed (fallback purely for crash prevention, not sensibility)
-                    results[#results+1] = { name = bonus.name, count = bonus.count or 1, parameters = bonus.parameters or {} }
+              if recipe.result then
+                local res = recipe.result
+                if res.name then res = { res } end -- arrayize if single entry
+                for _,r in pairs(res) do
+                  if rng:randf() < (r.chance or 1) then -- chance passed or no chance specified
+                    results[#results+1] = { name = r.name, count = r.count or 1, parameters = r.parameters or {} }
                   end
                 end
               end

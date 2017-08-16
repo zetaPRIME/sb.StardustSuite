@@ -98,6 +98,10 @@ function svc.startTabletEngine()
   end
 end
 
+function svc.warp(msg, isLocal, target, animation, deploy)
+  player.warp(target, animation, deploy)
+end
+
 function svc.giveItems(msg, isLocal, ...)
   local items = {...}
   for k,item in pairs(items) do

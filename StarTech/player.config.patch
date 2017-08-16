@@ -1,5 +1,6 @@
 [ // -*- grammar-ext: json -*-
   { "op" : "add", "path" : "/defaultBlueprints/tier1/-", "value" : { "item" : "startech:tinkertable" } },
+  { "op" : "add", "path" : "/defaultBlueprints/tier1/-", "value" : { "item" : "startech:telepad" } },
   { "op" : "add", "path" : "/defaultBlueprints/tier1/-", "value" : { "item" : "startech:generator.basic" } },
   { "op" : "add", "path" : "/defaultBlueprints/tier1/-", "value" : { "item" : "startech:battery.t1" } },
   { "op" : "add", "path" : "/defaultBlueprints/tier1/-", "value" : { "item" : "startech:storagenet.controller" } },

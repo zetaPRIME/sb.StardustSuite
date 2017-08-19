@@ -22,6 +22,7 @@ function slotCallback(item)
   local cfg = itemutil.getCachedConfig(item).config
   if cfg.augment and cfg.augment.type == "back" then return updateItem end
   if cfg.category == "enviroProtectionPack" then return updateItem end
+  if cfg.category == "^#e43774;Upgradeable EPP^reset;" then return updateItem end -- FU quantum pack and others...
 end
 
 function updateItem()
@@ -48,7 +49,7 @@ function updateItem()
         for k, v in pairs(cfg.augment.effects) do
           augfx[#augfx+1] = v
         end
-      elseif cfg.category == "enviroProtectionPack" then
+      elseif cfg.category == "enviroProtectionPack" or cfg.category == "^#e43774;Upgradeable EPP^reset;" then
         for k, v in pairs(cfg.statusEffects or {}) do
           if type(v) == "table" then
             astatus[v.stat] = (v.amount or 1) + (astatus[v.stat] or 0)

@@ -164,6 +164,8 @@ function uiChanged()
     cfg.lockName = nil
   end
   
+  cfg.worldId = player.worldId()
+  
   uiPostUpdate()
 end
 

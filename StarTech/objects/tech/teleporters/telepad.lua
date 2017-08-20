@@ -22,7 +22,13 @@ function onInteraction(args)
       "/interface/warping/shipteleporter.config"
     }
   end
-  world.sendEntityMessage(args.sourceId, "playerext:warp", storage.config.destination or "OwnShip", "default") -- formerly "beam"; turns out that's not actually what normal teleporters use
+  local wld = storage.config.worldId or "@@@@@"
+  local dest = storage.config.destination or OwnShip
+  if string.sub(dest, 0, string.len(wld)) == wld then
+    dest = string.sub(dest, string.len(wld)+1)
+    -- todo: implement some form of instant transmission within the same world
+  end
+  world.sendEntityMessage(args.sourceId, "playerext:warp", dest, "default") -- formerly "beam"; turns out that's not actually what normal teleporters use
 end
 
 function onWrench(msg, isLocal, player, shiftHeld)

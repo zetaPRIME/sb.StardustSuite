@@ -1,4 +1,4 @@
-// try hacking an itemdrop and dumping _ENV
+big rearrangement of everything (move all startech assets into /startech/*)
 
 move the business end of playerext:openInterface into a library function so panes can use it directly (while keeping things clean and easily-updatable)
 
@@ -43,6 +43,9 @@ power stuffs {
     intermediary pulse-battery component?
     
     powered lamp that fills a large region with full-bright light (basically volumetric lighting at the cost of fp)
+    
+    more smelter-type machines
+    ^ chance bias stat (inverse exponent to random number)
     
     - power categories
     (move to stardustlib?)

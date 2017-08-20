@@ -32,5 +32,5 @@ function recvSync(rpc)
   
   -- and capacitor status
   --widget.setText("batteryStats", table.concat({data.batteryStats.energy or 0, "/", data.batteryStats.capacity or 0, "FP"}))
-  widget.setText("batteryStats", string.format("%i^gray;/^reset;%i^gray;FP^reset;", data.batteryStats.energy or 0, data.batteryStats.capacity or 0))
+  widget.setText("batteryStats", string.format("%i^gray;/^reset;%i^gray;FP^reset;", math.floor(data.batteryStats.energy or 0), math.floor(data.batteryStats.capacity or 0)))
 end

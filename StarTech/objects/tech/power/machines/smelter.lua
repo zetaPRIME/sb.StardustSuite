@@ -10,6 +10,8 @@ function init()
   smelterConfig = config.getParameter("smelterConfig")
   recipes = config.getParameter("recipes")
   
+  rateMult = smelterConfig.rateMultiplier or 1
+  
   local cfg = config.getParameter("batteryStats")
   battery = prefabs.power.battery(cfg.capacity, cfg.ioRate):hookUp():autoSave()
   storage.smelting = storage.smelting or {}
@@ -64,7 +66,7 @@ function update()
             if item.count >= recipe.count then
               -- match! take item
               smelting.item = world.containerTakeNumItemsAt(entity.id(), slot-1, recipe.count)
-              smelting.remaining = recipe.time or smelterConfig.ticksPerItem
+              smelting.remaining = (recipe.time or smelterConfig.ticksPerItem) / rateMult
               smelting.smeltTime = smelting.remaining
               
               -- determine results

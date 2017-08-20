@@ -22,14 +22,14 @@
     }
   ],
   
-  "scripts" : [ "autosmelter.lua" ],
+  "scripts" : [ "smelter.lua" ],
   "scriptDelta" : 1,
   
   "inputNodes" : [ [0, 0] ],
   
   "objectType" : "container",
   "slotCount" : 12,
-  "uiConfig" : "/interface/tech/power/autosmelter.config",
+  "uiConfig" : "/interface/tech/power/machines/smelter.ui.config",
   "frameCooldown" : 5,
   "autoCloseCooldown" : 3600,
   

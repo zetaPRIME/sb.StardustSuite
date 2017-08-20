@@ -25,11 +25,11 @@ BYOS functionality as machine {
 patch warp state matching into encounter variations of booster flames (/objects/ship/boosters/)
 add distinguishing names to even/odd small booster flames
 lots of shiny new ship components, especially animating ones that match their state to flight {
-    also floor-only teleporters
+    - also floor-only teleporters (implemented as part of telepads)
 }
 
 power stuffs {
-    -  pure conduits to route power further and more neatly
+    - pure conduits to route power further and more neatly
     
     machine that powers warp core via fluxpulse (world property "ship.fuel")
     wireless charger
@@ -58,6 +58,7 @@ renamer (custom shortdescription, put vanilla one as category because tooltip)
 actual configurator object instead of having it in the quickbar for non-admins
 
 some item transport for automation (and library to make use of input/output configuration)
+networked wire I/O ports
 
 make RCS tech obtainable; balance energy use
 

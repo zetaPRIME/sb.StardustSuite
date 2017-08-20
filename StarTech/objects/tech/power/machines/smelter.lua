@@ -8,7 +8,22 @@ nullItem = { name = "", count = 0, parameters = {} }
 function init()
   slotConfig = config.getParameter("slotConfig")
   smelterConfig = config.getParameter("smelterConfig")
-  recipes = config.getParameter("recipes")
+  recipes = { }
+  
+  local function accumulateRecipes(recipes, objectId)
+    local obj = objectId and root.itemConfig({ name = objectId, count = 1, parameters = { } }).config or { }
+    
+    local rcpInclude = obj.recipeInclude or config.getParameter("recipeInclude") or { }
+    if type(rcpInclude) ~= "table" then rcpInclude = { rcpInclude } end
+    for k,inc in pairs(rcpInclude) do accumulateRecipes(recipes, inc) end
+    
+    local rcpList = obj.recipes or config.getParameter("recipes") or { }
+    for inp,rcp in pairs(rcpList) do
+      recipes[inp] = rcp
+    end
+  end
+  
+  accumulateRecipes(recipes)
   
   rateMult = smelterConfig.rateMultiplier or 1
   

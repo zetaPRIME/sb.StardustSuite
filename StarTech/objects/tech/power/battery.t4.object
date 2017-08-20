@@ -1,0 +1,46 @@
+{ // -*- grammar-ext: json -*-
+  "objectName" : "startech:battery.t4",
+  "rarity" : "Legendary",
+  
+  "category" : "power.storage",
+  "price" : 12500,
+  "description" : "An exceptionally high-capacity fluxpulse battery.\n^green;0^darkgreen;/^green;5000000^darkgreen;FP^reset;",
+  "baseDescription" : "An exceptionally high-capacity fluxpulse battery.",
+  "shortdescription" : "Pulse Cell^clear;\uFF04^reset;(Resonite)",
+  "health" : 5.73,
+  
+  "learnBlueprintsOnPickup" : [
+    //
+  ],
+  
+  "iconBaseImage" : "battery.frame.t4.png",
+  "inventoryIcon" : [
+    { "image" : "battery.frame.t4.png" }
+  ],
+  
+  "orientations" : [
+    {
+      "image" : "battery.frame.t4.png",
+      "imagePosition" : [-8, 0],
+
+      "spaceScan" : 0.1,
+      "anchors" : [ "bottom" ],
+      "collision" : "platform"
+    }
+  ],
+  
+  "scripts" : [ "battery.lua" ],
+  "scriptDelta" : 1,
+  
+  "smashOnBreak" : true,
+  
+  "animationScripts" : [ "battery.render.lua" ],
+  
+  "batteryStats" : {
+    "capacity" : 5000000,
+    "ioRate" : 1250
+  },
+    
+  "inputNodes" : [ [0, 1] ],
+  "outputNodes" : [ [0, 0] ]
+}

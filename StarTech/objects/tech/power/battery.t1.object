@@ -4,26 +4,34 @@
   
   "category" : "power.storage",
   "price" : 500,
-  "description" : "A basic fluxpulse battery.\n^green;0/100000FP",
+  "description" : "A basic fluxpulse battery.\n^green;0^darkgreen;/^green;100000^darkgreen;FP^reset;",
   "baseDescription" : "A basic fluxpulse battery.",
-  "shortdescription" : "Pulse Cell",
+  "shortdescription" : "Pulse Cell^clear;\uFF01^reset;(Basic)",
   "health" : 5.73,
   
   "learnBlueprintsOnPickup" : [
+    "startech:battery.t2",
+    "startech:battery.t3",
+    "startech:battery.t4",
+    
     "startech:relay.t1",
+    "startech:relay.t2",
+    "startech:relay.t3",
+    "startech:relay.t4",
     
     "startech:augpack",
     "startech:autosmelter",
     "startech:chargingbench"
   ],
-
+  
+  "iconBaseImage" : "battery.frame.png",
   "inventoryIcon" : [
     { "image" : "battery.frame.png" }
   ],
   
   "orientations" : [
     {
-      "image" : "battery.frame.png", //:<color>",
+      "image" : "battery.frame.png",
       "imagePosition" : [-8, 0],
 
       "spaceScan" : 0.1,
@@ -43,9 +51,7 @@
     "capacity" : 100000,
     "ioRate" : 50
   },
-  
-  //"animationScripts" : [ "drivebay.render.lua" ],
-  
+    
   "inputNodes" : [ [0, 1] ],
   "outputNodes" : [ [0, 0] ]
 }

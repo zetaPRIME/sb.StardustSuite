@@ -7,7 +7,7 @@ function init()
   local cfg = config.getParameter("batteryStats")
   battery = prefabs.power.battery(cfg.capacity, cfg.ioRate):hookUp():autoSave():controlTickrate()
   
-  --message.setHandler("wrenchInteract", onWrench)
+  message.setHandler("wrenchInteract", onWrench)
   dDesc = config.getParameter("baseDescription")--root.itemConfig({ name = object.name(), count = 1 }).config.description
   tDesc = 573000000
   
@@ -47,10 +47,8 @@ end
 
 function onWrench(msg, isLocal, player, shiftHeld)
   if shiftHeld then
-    storage.alwaysDisplay = (not storage.alwaysDisplay) or nil
-  else
-    sayLevel()
-    storage.alwaysDisplay = nil
+    brokenByPlr = player
+    object.smash() -- quick break a la modded-Minecraft
   end
 end
 
@@ -67,7 +65,7 @@ function die()
     
     local batLevel = battery.state.energy / battery.capacity
     itm.parameters.inventoryIcon = {
-      { image = "battery.frame.png" },
+      { image = config.getParameter("iconBaseImage") or "battery.frame.png" },
       {
         image = table.concat({
           "battery.meter.png?addmask=/objects/tech/power/battery.meter.png", ";0;",
@@ -79,7 +77,7 @@ function die()
     }
     --itm.parameters.largeImage = itm.parameters.inventoryIcon -- maybe?
   end
-  world.spawnItem(itm, entity.position())
+  world.spawnItem(itm, world.entityPosition(brokenByPlr or entity.id()))
   object.smash(true)
 end
 

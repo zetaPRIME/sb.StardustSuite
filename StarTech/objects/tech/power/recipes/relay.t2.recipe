@@ -1,0 +1,11 @@
+{ // -*- grammar-ext: json -*-
+  "input" : [
+    { "item" : "titaniumbar", "count" : 5 },
+    { "item" : "silverbar", "count" : 2 },
+    { "item" : "glass", "count" : 1 },
+    { "item" : "solidfuel", "count" : 5 }
+  ],
+  "output" : { "item" : "startech:relay.t2", "count" : 1 },
+  "duration" : 1,
+  "groups" : [ "startech:tinkertable", "power", "all" ]
+}

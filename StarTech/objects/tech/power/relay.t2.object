@@ -1,20 +1,20 @@
 { // -*- grammar-ext: json -*-
-  "objectName" : "startech:relay.t1",
+  "objectName" : "startech:relay.t2",
   "rarity" : "Rare",
   
   "category" : "power.transport",
-  "price" : 500,
-  "description" : "A basic fluxpulse relay. Transfers ^green;150FP/t^reset;.",
-  "shortdescription" : "Pulse Relay^clear;\uFF01^reset;(Basic)",
+  "price" : 1250,
+  "description" : "An enhanced fluxpulse relay. Transfers ^green;500FP/t^reset;.",
+  "shortdescription" : "Pulse Relay^clear;\uFF02^reset;(Empowered)",
   "health" : 5.73,
   
   "inventoryIcon" : [
-    { "image" : "relay.t1.png" }
+    { "image" : "relay.t2.png" }
   ],
   
   "orientations" : [
     {
-      "image" : "relay.t1.png",
+      "image" : "relay.t2.png",
       "imagePosition" : [0, 0],
 
       "spaceScan" : 0.1,
@@ -26,8 +26,8 @@
   "scriptDelta" : 1,
   
   "batteryStats" : {
-    "capacity" : 150,
-    "ioRate" : 150
+    "capacity" : 500,
+    "ioRate" : 500
   },
   "isRelay" : true,
   

@@ -1,0 +1,46 @@
+{ // -*- grammar-ext: json -*-
+  "objectName" : "startech:battery.t2",
+  "rarity" : "Rare",
+  
+  "category" : "power.storage",
+  "price" : 1250,
+  "description" : "An upgraded fluxpulse battery.\n^green;0^darkgreen;/^green;500000^darkgreen;FP^reset;",
+  "baseDescription" : "An upgraded fluxpulse battery.",
+  "shortdescription" : "Pulse Cell^clear;\uFF02^reset;(Empowered)",
+  "health" : 5.73,
+  
+  "learnBlueprintsOnPickup" : [
+    //
+  ],
+  
+  "iconBaseImage" : "battery.frame.t2.png",
+  "inventoryIcon" : [
+    { "image" : "battery.frame.t2.png" }
+  ],
+  
+  "orientations" : [
+    {
+      "image" : "battery.frame.t2.png",
+      "imagePosition" : [-8, 0],
+
+      "spaceScan" : 0.1,
+      "anchors" : [ "bottom" ],
+      "collision" : "platform"
+    }
+  ],
+  
+  "scripts" : [ "battery.lua" ],
+  "scriptDelta" : 1,
+  
+  "smashOnBreak" : true,
+  
+  "animationScripts" : [ "battery.render.lua" ],
+  
+  "batteryStats" : {
+    "capacity" : 500000,
+    "ioRate" : 150
+  },
+    
+  "inputNodes" : [ [0, 1] ],
+  "outputNodes" : [ [0, 0] ]
+}

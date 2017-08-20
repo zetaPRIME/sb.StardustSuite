@@ -1,0 +1,12 @@
+{ // -*- grammar-ext: json -*-
+  "input" : [
+    { "item" : "durasteelbar", "count" : 15 },
+    { "item" : "silverbar", "count" : 5 },
+    { "item" : "goldbar", "count" : 1 },
+    { "item" : "glass", "count" : 5 },
+    { "item" : "supermatter", "count" : 1 }
+  ],
+  "output" : { "item" : "startech:battery.t3", "count" : 1 },
+  "duration" : 1.5,
+  "groups" : [ "startech:tinkertable", "power", "all" ]
+}

@@ -13,6 +13,7 @@
   "flickerTiming" : 4,
   
   //"rooting" : true,
+  "health" : 24,
   
   "particleEmitter" : {
     "emissionRate" : 7,

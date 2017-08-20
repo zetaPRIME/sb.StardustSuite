@@ -38,7 +38,7 @@ function update()
 end
 
 function getDescription()
-  return string.format("%s\n^green;%d/%dFP", dDesc, math.floor(battery.state.energy), math.floor(battery.capacity))
+  return string.format("%s\n^green;%d^darkgreen;/^green;%d^darkgreen;FP^reset;", dDesc, math.floor(battery.state.energy), math.floor(battery.capacity))
 end
 
 function sayLevel()
@@ -81,6 +81,28 @@ function die()
   end
   world.spawnItem(itm, entity.position())
   object.smash(true)
+end
+
+-- FU translation
+function isPower() return "battery" end
+function power.onNodeConnectionChange(arg) return arg end
+function power.getEnergy()
+  return battery.state.energy * power.translationFactorFU
+end
+function power.getMaxEnergy()
+  return battery.capacity * power.translationFactorFU
+end
+function power.getStorageLeft()
+  return (battery.capacity - battery.state.energy) * power.translationFactorFU
+end
+function power.recievePower(amt)
+  -- can't really rate limit, since pushing from FU things isn't generally per-tick
+  amt = amt / power.translationFactorFU -- convert units
+  battery.state.energy = math.min(battery.state.energy + amt, battery.capacity)
+  battery:consume(0, true) -- trigger postupdate
+end
+function power.remove(amt)
+  battery:consume(amt / power.translationFactorFU) -- I guess use this
 end
 
 -- color stuffs

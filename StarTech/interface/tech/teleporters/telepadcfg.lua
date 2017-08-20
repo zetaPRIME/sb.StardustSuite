@@ -213,8 +213,8 @@ function onRecvConfig(rpc)
   
   -- update UI
   uiUnfocus()
+  widget.setChecked("chkLock", not not cfg.lock) -- needs to be first because shenanigans
   widget.setText("txtName", cfg.name or "")
-  widget.setChecked("chkLock", not not cfg.lock)
   
   local sel = listEntries[cfg.destination or false]
   if sel then

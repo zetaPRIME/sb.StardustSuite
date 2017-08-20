@@ -5,6 +5,11 @@ require "/lib/stardust/interop.lua"
 
 power = {}
 
+-- one fluxpacket translates to this many Joules in Frackin' Universe's power system
+-- multiple balance points are possible...
+--power.translationFactorFU = (1/60) * 1 -- naive rate
+power.translationFactorFU = 4/600 -- blast furnace = 4W = 4J/s; autosmelter = 10FP/t = 600FP/s
+
 function power.sendEnergyTo(target, targetSocket, amount, testOnly)
   local sh = interop.getShared(target)
   if not sh.energyReceptor then return 0 end

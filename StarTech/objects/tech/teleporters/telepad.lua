@@ -31,6 +31,11 @@ function onWrench(msg, isLocal, player, shiftHeld)
     return nil
   end
   
+  if shiftHeld then -- quick break a la modded-Minecraft
+    object.smash()
+    return nil
+  end
+  
   return { -- open interface
     interact = {
       id = entity.id(),

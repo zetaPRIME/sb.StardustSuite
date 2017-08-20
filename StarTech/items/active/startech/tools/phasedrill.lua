@@ -109,6 +109,24 @@ function collectItems(pt, radius)
   end
 end
 
+liquidAccumulator = {}
+function collectLiquid(pos)
+  local ll = world.destroyLiquid(pos)
+  if not ll then return nil end
+  -- add to accumulator, since level is floating-point
+  liquidAccumulator[ll[1]] = (liquidAccumulator[ll[1]] or 0) + ll[2]
+end
+
+function processLiquidAccumulation()
+  for id, lv in pairs(liquidAccumulator) do
+    local ct = math.floor(lv)
+    if ct >= 1 then -- give integer portion of accumulated liquid as its item
+      liquidAccumulator[id] = lv - ct
+      player.giveItem({ name = root.liquidConfig(id).config.itemDrop, count = ct, parameters = { } })
+    end
+  end
+end
+
 function damageEntities(p1, p2, dmg)
   local owner = activeItem.ownerEntityId()
   local numHit = 0
@@ -200,12 +218,12 @@ states.fire = {
       local dmg = cfg.entityDamage
       
       if shiftHeld then
-        -- todo: actually collect liquids
         for y = -1, 1 do
           for x = -1, 1 do
-            world.destroyLiquid({pt[1] + x, pt[2] + y})
+            collectLiquid({pt[1] + x, pt[2] + y})
           end
         end
+        processLiquidAccumulation()
         bw = bw * 0.8
         collectItems(pt, rad * 1.25 * 1.25)
       elseif fireMode == "primary" then

@@ -68,7 +68,7 @@ function die()
       { image = config.getParameter("iconBaseImage") or "battery.frame.png" },
       {
         image = table.concat({
-          "battery.meter.png?addmask=/objects/tech/power/battery.meter.png", ";0;",
+          "battery.meter.png?addmask=/startech/objects/power/battery.meter.png", ";0;",
           10 - math.floor(batLevel * 10),
           "?multiply=", colorToString(hslToRgb(math.max(0, batLevel*1.25 - 0.25) * 1/3, 1, 0.5, 1))
         }), 

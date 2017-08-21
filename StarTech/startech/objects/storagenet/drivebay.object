@@ -36,7 +36,7 @@
   "openSounds" : [ "/sfx/objects/locker_open.ogg" ],
   "closeSounds" : [ "/sfx/objects/locker_close.ogg" ],
   "slotCount" : 8,
-  "uiConfig" : "/interface/tech/storagenet/drivebay.config",
+  "uiConfig" : "/startech/interface/storagenet/drivebay.config",
   "frameCooldown" : 5,
   "autoCloseCooldown" : 3600,
   

@@ -121,12 +121,12 @@ function getLayout(name)
   layouts[name] = lyt
   __layout = lyt
   _ENV = lyt
-  require(string.format("/interface/tech/configurator/layouts/%s/layout.lua", name))
+  require(string.format("/startech/interface/configurator/layouts/%s/layout.lua", name))
   _ENV = _glb
   __layout = nil
   
   -- insert whatever layout-specific values
-  lyt.basePath = string.format("/interface/tech/configurator/layouts/%s/", name) -- asset base path
+  lyt.basePath = string.format("/startech/interface/configurator/layouts/%s/", name) -- asset base path
   
   return lyt
 end

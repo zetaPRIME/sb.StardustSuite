@@ -1,4 +1,4 @@
-{
+{ // -*- grammar-ext: json -*-
   "itemName" : "startech:triangleshades",
   "price" : 5000,
   "inventoryIcon" : "icons.png:head",
@@ -8,13 +8,11 @@
   "description" : "Now all you need is a cape.",
   "shortdescription" : "Piercing Shades",
   "tooltipKind" : "armor",
-
+  
   "maleFrames" : "head.png",
   "femaleFrames" : "head.png",
   "mask" : "mask.png",
   
-  //"itemAgingScripts" : [ "/items/active/startech/tools/agetest.lua" ],
-
   "colorOptions" : [
     // BROWN
     { "ffca8a" : "ccae7c", "e0975c" : "a47844", "a85636" : "754c23", "6f2919" : "472b13" },

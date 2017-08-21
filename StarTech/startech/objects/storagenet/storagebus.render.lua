@@ -7,7 +7,7 @@ TilePixels = 8
 function init()
   script.setUpdateDelta(3) -- was 5
   
-  self.drawPath = "/objects/tech/storagenet/"
+  self.drawPath = "/startech/objects/storagenet/"
   self.dGlow = self.drawPath .. "storagebus.glow.png"
 end
 

@@ -5,7 +5,7 @@ require "/scripts/vec2.lua"
 require "/scripts/interp.lua"
 
 function init()
-  self.drawPath = "/objects/tech/power/"
+  self.drawPath = "/startech/objects/power/"
   self.dFlame = self.drawPath .. "generator.flame.png"
   
   dPos = vec2.add(objectAnimator.position(), {-1, 0})

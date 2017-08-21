@@ -65,10 +65,10 @@
   "animationScripts" : ["/sys/stardust/effects/chainplus.lua"],
   "chain" : {
      "startOffset" : [0, 0],
-     "startSegmentImage" : "/items/active/startech/tools/phasedrill.beam.start.png",
+     "startSegmentImage" : "/startech/items/active/tools/phasedrill.beam.start.png",
      "startSegmentOffset" : [-0.75, 0],
-     "segmentImage" : "/items/active/startech/tools/phasedrill.beam.png",
-     "endSegmentImage" : "/items/active/startech/tools/phasedrill.beam.end.png",
+     "segmentImage" : "/startech/items/active/tools/phasedrill.beam.png",
+     "endSegmentImage" : "/startech/items/active/tools/phasedrill.beam.end.png",
      "segmentSize" : 0.5,
      "overdrawLength" : 0,
      "baseScale" : 0.5,
@@ -104,6 +104,5 @@
   },
 
   "builder" : "/items/buildscripts/buildunrandweapon.lua",
-  //"itemAgingScripts" : [ "/items/active/startech/tools/agetest.lua" ],
   "." : false
 }

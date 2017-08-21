@@ -32,10 +32,10 @@
   },
   "animationPosition" : [-8, -8],
   
-  "uiConfig" : "/interface/tech/storagenet/terminal.config",
+  "uiConfig" : "/startech/interface/storagenet/terminal.config",
   /*"interactAction" : "OpenCraftingInterface", // lolwut
   "interactData" : {
-    "config" : "/interface/tech/storagenet/terminal.config",
+    "config" : "/startech/interface/storagenet/terminal.config",
     "paneLayoutOverride" : {
       "windowtitle" : {
         "subtitle" : "Everything at your fingertips"

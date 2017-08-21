@@ -5,7 +5,7 @@ require "/scripts/interp.lua"
 function init()
   script.setUpdateDelta(3) -- was 5
   
-  self.drawPath = "/objects/tech/storagenet/"
+  self.drawPath = "/startech/objects/storagenet/"
   self.dLight = self.drawPath .. "drivebay.light.png?multiply=00FF00"
   
   dPos = vec2.add(objectAnimator.position(), {-1, 0})

@@ -7,7 +7,7 @@ TilePixels = 8
 function init()
   script.setUpdateDelta(1)
   
-  self.drawPath = "/objects/tech/storagenet/"
+  self.drawPath = "/startech/objects/storagenet/"
   self.dFrame = self.drawPath .. "controller.frame.png"
   self.dGlow = self.drawPath .. "controller.glow.png"
   self.dRain = self.drawPath .. "controller.rain.png"

@@ -46,7 +46,7 @@ function onWrench(msg, isLocal, player, shiftHeld)
     interact = {
       id = entity.id(),
       type = "ScriptPane",
-      config = "/interface/tech/teleporters/telepad.config"
+      config = "/startech/interface/teleporters/telepad.ui.config"
     }
   }
 end

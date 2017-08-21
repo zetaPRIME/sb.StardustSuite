@@ -13,7 +13,7 @@ require "/scripts/vec2.lua"
 
 require "/lib/stardust/sync.lua"
 require "/lib/stardust/itemutil.lua"
-require "/scripts/StarTech/tooltip.lua"
+require "/startech/scripts/tooltip.lua"
 
 gridSize = 24
 gridSpace = 25
@@ -85,7 +85,7 @@ function setExpandedInfo(setting)
   if setting == nil then setting = not infoExpanded end
   infoExpanded = setting
   
-  local btnImg = "/interface/tech/storagenet/buttons/expandinfo.png"
+  local btnImg = "/startech/interface/storagenet/buttons/expandinfo.png"
   
   if setting then
     widget.setSize("selItem_description", { 300, 132 })
@@ -302,13 +302,13 @@ function applyIcon(item, wid, doFrame)
   local conf = getConf(item) -- root.itemConfig(item)
   
   if doFrame then
-    local xicon = "/interface/tech/storagenet/itemSlot.png"
-    if item == selectedItem then xicon = "/interface/tech/storagenet/itemSlot.selected.png" end
+    local xicon = "/startech/interface/storagenet/itemSlot.png"
+    if item == selectedItem then xicon = "/startech/interface/storagenet/itemSlot.selected.png" end
     local layer = table.concat({ wid, ".", widget.addListItem(wid), ".icon" })
     widget.setImage(layer, xicon)
     
     layer = table.concat({ wid, ".", widget.addListItem(wid), ".icon" })
-    widget.setImage(layer, table.concat({ "/interface/tech/storagenet/itemSlot.rarity.", (item.parameters.rarity or conf.config.rarity or "common"):lower(), ".png" }))
+    widget.setImage(layer, table.concat({ "/startech/interface/storagenet/itemSlot.rarity.", (item.parameters.rarity or conf.config.rarity or "common"):lower(), ".png" }))
   end
   
   --if true then return nil end -- disable icon view for now

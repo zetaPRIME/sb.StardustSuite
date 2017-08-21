@@ -5,7 +5,7 @@
   "price" : 1250,
   "interactAction" : "OpenCraftingInterface",
   "interactData" : {
-    "config" : "/interface/tech/crafting/tinkertable.config",
+    "config" : "/startech/interface/crafting/tinkertable.config",
     "paneLayoutOverride" : {
       "windowtitle" : {
         "title" : " Tinkerer's Workshop",

@@ -1,9 +1,0 @@
-{
-  "type" : "drivebayreplacer",
-  "keepAlive" : true,
-
-  "scripts" : ["/migration/drivebayreplacer.lua"],
-  "scriptDelta" : 1,
-  
-  "broadcastArea" : [-5, -5, 5, 5]
-}

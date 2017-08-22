@@ -2,6 +2,7 @@
 
 require "/lib/stardust/prefabs.lua"
 require "/lib/stardust/power.lua"
+require "/lib/stardust/network.lua"
 
 function init()
   local cfg = config.getParameter("batteryStats")
@@ -14,11 +15,17 @@ function init()
   isRelay = config.getParameter("isRelay")
 end
 
+function postInit() -- run on first update, after everything is loaded
+  fuNetworkKickstart() -- kickstart anything this loaded after
+end
+
 function update()
   if not storage.loaded then
     battery.state.energy = world.getObjectParameter(entity.id(), "storedEnergy") or battery.state.energy -- we don't actually have to drain
     storage.loaded = true
   end
+  
+  if postInit then postInit() postInit = nil end
   
   power.autoSendEnergy(1000000000)
   
@@ -82,6 +89,13 @@ function die()
 end
 
 -- FU translation
+function fuNetworkKickstart()
+  local pool = network.getPool()
+  for _,id in pairs(pool) do
+    --sb.logInfo("kicking " .. id .. ", type " .. (world.callScriptedEntity(id, "config.getParameter", "name") or world.callScriptedEntity(id, "config.getParameter", "objectName")))
+    world.callScriptedEntity(id, "power.onNodeConnectionChange") -- force FU power network update, if applicable
+  end
+end
 function isPower() return "battery" end
 function power.onNodeConnectionChange(arg) return arg end
 function power.getEnergy()

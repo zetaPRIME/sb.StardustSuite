@@ -23,7 +23,7 @@ function onInteraction(args)
     }
   end
   local wld = storage.config.worldId or "@@@@@"
-  local dest = storage.config.destination or OwnShip
+  local dest = storage.config.destination or "OwnShip"
   if string.sub(dest, 0, string.len(wld)) == wld then
     dest = string.sub(dest, string.len(wld)+1)
     -- todo: implement some form of instant transmission within the same world

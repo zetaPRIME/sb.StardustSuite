@@ -127,7 +127,7 @@ function uiUpdateList()
     destination = "[normalTeleporter]",
     name = "Standard mode",
     desc = "Use as normal teleporter",
-    icon = "/objects/tech/teleporters/telepad.icon.png",
+    icon = "/startech/objects/teleporters/telepad.icon.png",
     system = true
   })
   addEntry({

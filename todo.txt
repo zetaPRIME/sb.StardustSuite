@@ -1,4 +1,4 @@
-big rearrangement of everything (move all startech assets into /startech/*)
+-
 
 move the business end of playerext:openInterface into a library function so panes can use it directly (while keeping things clean and easily-updatable)
 

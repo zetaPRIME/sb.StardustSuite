@@ -1,12 +1,8 @@
 [ // -*- grammar-ext: json -*-
-  { "op" : "replace", "path" : "/mainBar/mmUpgrade", "value" : {
-    "base" : "/sys/stardust/quickbar/openquickbar.png:base",
-    "hover" : "/sys/stardust/quickbar/openquickbar.png:hover",
-    "open" : "/sys/stardust/quickbar/openquickbar.png:open",
-    "openHover" : "/sys/stardust/quickbar/openquickbar.png:openHover",
-    "disabled" : "/sys/stardust/quickbar/openquickbar.png:disabled",
-    "pos" : [0, 40],
-    "poly" : [ [0, 40], [17, 40], [17, 57], [0, 57] ]
-  } },
+  { "op": "replace", "path": "/mainBar/mmUpgrade/base", "value": "/sys/stardust/quickbar/openquickbar.png:base" },
+  { "op": "replace", "path": "/mainBar/mmUpgrade/hover", "value": "/sys/stardust/quickbar/openquickbar.png:hover" },
+  { "op": "replace", "path": "/mainBar/mmUpgrade/open", "value": "/sys/stardust/quickbar/openquickbar.png:open" },
+  { "op": "replace", "path": "/mainBar/mmUpgrade/openHover", "value": "/sys/stardust/quickbar/openquickbar.png:openHover" },
+  { "op": "replace", "path": "/mainBar/mmUpgrade/disabled", "value": "/sys/stardust/quickbar/openquickbar.png:disabled" },
   { "op" : "replace", "path" : "/cursorTooltip/mmUpgradeText", "value" : "Quickbar" }
-] 
+]

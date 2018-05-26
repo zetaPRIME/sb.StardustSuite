@@ -1,3 +1,5 @@
+-- old buggy version saved for reference
+
 --
 require "/lib/stardust/network.lua"
 require "/lib/stardust/itemutil.lua"
@@ -10,8 +12,13 @@ spDeadMeta = { __index = spDeadTemplate }
 
 containerLock = false -- when true, containerCallback is disabled
 
--- each discrete type of item takes up 24 bytes of capacity; each count of item takes one bit
-local typeBits = 24 * 8
+-- have some values
+local typeBits = 24 * 8 -- so that a 1k storage (1024 bytes) can store... one stack... oh okay...  *sigh*
+-- let's see. would a 1m be a better starting point?
+-- that would be... 1048576 bytes, so 1048.576 stacks is *really silly* for a first thing
+-- 1k, 4k, 16k, 64k... 1024, 4096, 16384, 65536 hmm. should I just make the initial ones *really stupid cheap*?
+-- or maybe do the actual counting in *bits*! 8 stacks of one item for the 1k would actually be pretty decent
+-- types still counted in full bytes because why not
 
 --------------------------
 -- Storage Provider API --
@@ -79,7 +86,7 @@ function spTemplate:getPriority(item)
       for k, itm in pairs(self.item.parameters.contents) do
         if itemutil.canStack(itemAnon, itm) and itm.count > 0 then
           priorityMod = priorityMod + priorityModifier
-          break 
+          break
         end
       end
     end

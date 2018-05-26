@@ -47,8 +47,6 @@ function init()
   
   pid = pane.playerEntityId()
   sync.msg("playerOpen", pid)
-  
-  --if status then sb.logInfo("status exists in panes!") end
 end
 
 function update()

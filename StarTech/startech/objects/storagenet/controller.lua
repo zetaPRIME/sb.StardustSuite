@@ -20,7 +20,6 @@ local itemFindCache = {}
 local itemUpdateId = 0
 local function checkUpdateItems()
   if self.timerPollStorage > 0 then return nil end -- rate limit
-  --local nclock = os.clock()
   self.timerPollStorage = math.floor(60*2.5)
   itemUpdateId = itemUpdateId + 1
   
@@ -54,20 +53,6 @@ local function checkUpdateItems()
     end
   end
   
-  if snDebug then
-    -- temp: just use your own
-    local inv = world.containerItems(controller.id)
-    for k,v in pairs(inv) do stackIn(v) end
-    
-    -- test: also use what's below you
-    local blw = entity.position() blw[2] = blw[2] - 1
-    blw = world.objectAt(blw)
-    if blw then
-      inv = world.containerItems(blw)
-      for k,v in pairs(inv) do stackIn(v) end
-    end
-  end
-  
   for k,sp in pairs(controller.poolStorage) do
     --sb.logInfo("polling storage: " .. st)
     local noerr, items = pcall(sp.getItemList, sp)
@@ -85,7 +70,6 @@ local function checkUpdateItems()
     end
   end
   itemFindCache = dict -- might as well save this for quick polling
-  --object.say("listing items took " .. (os.clock() - nclock))
 end
 
 local function sortStoragePool(item)
@@ -126,19 +110,7 @@ end
 
 function controller:listItems()
   checkUpdateItems()
-  if true then return itemCache, itemUpdateId end -- always-condition to avoid syntax error
-  
-  -- old: for now just return the controller's own inventory
-  local inv = world.containerItems(controller.id)
-  local outv = {}
-  local i = 1
-  for k,v in pairs(inv) do
-    outv[i] = v
-    i = i + 1
-  end
-  
-  
-  return outv
+  return itemCache, itemUpdateId
 end
 
 function controller:findItem(item)
@@ -155,7 +127,6 @@ function controller:findItem(item)
 end
 
 function controller:tryTakeItem(itemReq)
-  --local nclock = os.clock()
   local count = 0
   for i, sp in ripairs(controller.poolStorage) do -- ripairs for highest-to-lowest-priority
     local take = zpcall(sp.tryTakeItem, sp, itemReq)
@@ -166,7 +137,6 @@ function controller:tryTakeItem(itemReq)
     end
   end
   if count > 0 then setStorageDirty() end
-  --object.say("fetching item took " .. (os.clock() - nclock))
   return {
     name = itemReq.name,
     count = count,
@@ -191,10 +161,10 @@ end
 -- keep itself updated on a variable tick system?
 
 -- storage interface:
--- getStoragePriority() -- returns an (integer?) priority value
+-- getPriority() -- returns a (usually integer) priority value
 -- getItemList() -- exactly how world.containerItems() returns, I guess
--- tryTakeItem(?)
--- tryPutItem(?)
+-- tryTakeItem(descriptor)
+-- tryPutItem(descriptor)
 
 
 function init()
@@ -209,9 +179,6 @@ end
 function setStorageDirty() self.timerPollStorage = 0 end
 
 function updateNetwork()
-  --local nclock = os.clock()
-  --local eid = entity.id() -- cache this, not sure if too important but whatever
-  
   if controller.pool then
     -- first, "unhook" anything in the old pool; anything still connected will be rehooked
     for i = 1, #(controller.pool) do
@@ -246,11 +213,7 @@ function updateNetwork()
       end
     end
   end
-  --table.sort(controller.poolStorage, function(s1, s2) if not s1 or not s2 then return false end return s2.getPriority() > s1.getPriority() end)
   sortStoragePoolMain()
-  
-  --sb.logInfo("controller storage pool: " .. dump(controller.poolStorage))
-  --object.say("updating network took " .. (os.clock() - nclock))
 end
 
 function update()

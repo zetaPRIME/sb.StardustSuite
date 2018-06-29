@@ -57,9 +57,11 @@ function spTemplate:commit()
   containerLock = true
   self:refreshInfo()
   self.item.parameters.syncId = genSyncId() -- generate a new sync UID
-  -- don't bother tossing a new itemdescriptor into lua context, please
-  while world.containerConsumeAt(entity.id(), self.slot - 1, 1) and false do end -- "and false" to disable the little hack
-  world.containerPutItemsAt(entity.id(), self.item, self.slot - 1) -- and commit
+  while true do -- sync, check and retry if failed
+    world.containerSwapItemsNoCombine(entity.id(), self.item, self.slot - 1)
+    local itm = world.containerItemAt(entity.id(), self.slot - 1)
+    if itm and itm.parameters and itm.parameters.syncId == self.item.parameters.syncId then break end
+  end
   containerLock = false
 end
 

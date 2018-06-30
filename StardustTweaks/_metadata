@@ -6,5 +6,6 @@
   "description" : "Various tweaks to vanilla mechanics.",
   "link" : "steam://url/CommunityFilePage/764903486",
   "steamContentId" : "764903486",
+  "hidden" : true,
   "requires" : [ "StardustLib" ]
 }

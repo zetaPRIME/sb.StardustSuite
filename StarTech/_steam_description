@@ -1,0 +1,21 @@
+~ StardustLib [b]required[/b]! ~
+Transmatter networks! Technological advancements like you'd expect in a universe like Starbound's!
+
+This mod is an early WIP; things will be rough around the edges, so bear with us!
+
+Quick primer on Transmatter Networks:
+- Craft and place *one* Transmatter Controller per network (any more and things will break!)
+- Craft and place any number of Terminals, Storage Buses and Drive Bays and hook them up to the controller via wire
+- - Network Relays will allow indirect connection, for distance or tidiness
+
+Terminals provide access to the items in the network
+Storage Buses link external storage to the network
+- Right-click with a wrench (made at an anvil) to change direction (indicated by the blue highlight)
+- Shift+right-click to configure filters and priority
+Drive Bays read/write inserted Transmatter Drives to provide compact, portable storage
+- Click the button next to a slot to configure that drive's filter/priority
+
+Ingame documentation coming soon; meanwhile, here's a tutorial Kriana wrote up:
+https://www.reddit.com/r/starbound/comments/537xox/startech_storage_mod/
+
+Follow development here: https://github.com/zetaPRIME/sb.StardustSuite

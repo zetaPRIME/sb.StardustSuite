@@ -7,6 +7,7 @@ while getopts ":s" opt; do
     s)
       _steamupload=1
       _steamuser=$(cat ./steamuser)
+      sudo true # elevate ahead of time
       ;;
     \?)
       echo "Invalid option: -$OPTARG" >&2
@@ -36,7 +37,39 @@ function pack {
   asset_packer ./_release/$1/ ./_release/$1.pak
   if [ ! -z "$_steamupload" ] ; then
     echo Uploading to Steam...
-    steamcmd +login $_steamuser +workshop_build_item ./$1.vdf +exit
+    
+    mkdir -p ./_release/tmp/upload
+    cp ./_release/$1.pak ./_release/tmp/upload/contents.pak
+    
+    # gather info from metadata files
+    local md="./$1/_metadata"
+    local title=$(jq -r '.friendlyName' $md)
+    local cid=$(jq -r '.steamContentId' $md)
+    local version=$(jq -r '.version' $md | sed "s/\\\"/''/g")
+    
+    # start building the vdf
+    local vdf="./_release/tmp/.vdf" ; touch $vdf
+    # get the easy stuff out of the way
+    printf "\"workshopitem\"{\"appid\"\"211820\"\"publishedfileid\"\"$cid\"\"title\"\"$title\"\"contentfolder\"\"$(realpath ./_release/tmp/upload)\"" >> $vdf
+    # add preview image if present
+    if [ -f "./$1/_previewimage" ] ; then printf "\"previewfile\"\"$(reaplath ./$1/_previewimage)\"" >> $vdf ; fi
+    # handle hidden parameter
+    if jq -re '.hidden' $md > /dev/null ; then printf "\"visibility\"\"2\"" >> $vdf ; else printf "\"visibility\"\"0\"" >> $vdf ; fi
+    # description!
+    if [ -f "./$1/_steam_description" ] ; then
+      printf "\"description\"\"$(sed "s/\\\"/''/g" ./$1/_steam_description)\"" >> $vdf
+    else
+      printf "\"description\"\"$(jq -r '.description' $md | sed "s/\\\"/''/g")\"" >> $vdf
+    fi
+    # changelog
+    printf "\"changenote\"\"[b]$version[/b]\nCheck git releases for more info:\n" >> $vdf
+    printf "https://github.com/zetaPRIME/sb.StardustSuite/releases" >> $vdf
+    printf "\"}" >> $vdf # and cap off
+    
+    # actually upload mod!
+    sudo steamcmd +login $_steamuser +workshop_build_item $(realpath $vdf) +exit
+    echo # force newline that steamcmd doesn't print
+    rm -rf ./_release/tmp
   fi
 }
 

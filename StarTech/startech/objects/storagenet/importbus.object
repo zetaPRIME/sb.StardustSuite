@@ -1,19 +1,20 @@
 { // -*- grammar-ext: json -*-
-  "objectName" : "startech:storagenet.storagebus",
+  "objectName" : "startech:storagenet.importbus",
   "colonyTags" : ["wired"],
   "printable" : false,
   "rarity" : "Common",
-  "description" : "A storage bus. Connects external storage to a transmatter network.",
-  "shortdescription" : "Transmatter Storage Bus",
+  "description" : "An import bus. Draws items from external inventories into a transmatter storage network.",
+  "shortdescription" : "Transmatter Import Bus",
   "race" : "human",
 
-  "category" : "storagenet.storage",
+  "category" : "storagenet",
   "price" : 500,
 
-  "inventoryIcon" : "storagebus.png",
+  //"inventoryIcon" : "importbus.png?blendadd=/startech/objects/storagenet/exportbus.png;-4;0",
+  "inventoryIcon" : "importbus.png",
   "orientations" : [
     {
-      "image" : "storagebus.png",
+      "image" : "importbus.png",
       "imagePosition" : [0, 0],
       "renderLayer" : "object+100",
 
@@ -23,13 +24,14 @@
   ],
   "zlevel" : 10000,
 
-  "scripts" : [ "storagebus.lua" ],
-  "scriptDelta" : 0,
+  "scripts" : [ "importbus.lua" ],
+  "scriptDelta" : 60,
   
+  //"animation" : "storagebus.animation",
   "animationScripts" : [ "storagebus.render.lua" ],
   
   "interactAction" : "ScriptPane",
-  "interactData" : "/startech/interface/storagenet/storagebus.config",
+  "interactData" : "/startech/interface/storagenet/importbus.config",
 
   /*"animation" : "/objects/wired/logic/logic.animation",
 
@@ -39,8 +41,7 @@
   "animationPosition" : [-8, -8], */
   
   "networkTags" : {
-    "storageNet" : true,
-    "storageNet.storage" : true
+    "storageNet" : true
   },
   
   "inputNodes" : [ [0, 0] ]

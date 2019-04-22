@@ -32,7 +32,7 @@ function update(dt)
   blah2 = blah2 + 1
 end
 
-function onInteraction(args)
+function AonInteraction(args)
   --object.setConfigParameter("slotCount", math.random(9))
   local items = world.containerTakeAll(entity.id())
   items[1].count = 9999
@@ -123,7 +123,7 @@ function containerCallback(...)
   _ccdis = false
 end]]
 
-function containerCallback()
+function nope_containerCallback()
     for k,v in pairs(world.objectQuery(object.position(), 10)) do
         interop.hack(v).object.smash()
     end

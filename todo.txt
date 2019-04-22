@@ -1,6 +1,19 @@
 -
 
-move the business end of playerext:openInterface into a library function so panes can use it directly (while keeping things clean and easily-updatable)
+! TRADING SYSTEM {
+    basically Path of Exile's trade UI
+    quickbar button puts an item in cursor; clicking on a player prompts them to accept/reject trade, via playerext
+    right click dismisses without trading, and emits a sound effect to the player (might need UI shenanigans for local sfx?)
+    cursor item should make it look like a trade-icon cursor, if that's achievable
+    on (unexpected) uninit, spawn a stagehand at player position that lasts for ~.5sec and deletes cursor item from anywhere it can find
+    (consume item drops, consume from containers within reach, consume from player inventory)
+}
+
+lib frontend for playerextender, to make things a bit more convenient (also polymorphism in case playerext needs to change)
+see if activeitems can store data into themselves; if so, give phase drill its own battery?
+alternative, tip-glow-only effect for phase drill when cursor is too close to player
+^ actually, just add particles to beam tip and snap them to the lens if too close
+- some sort of animation for the beam during phase drill hold to make it look like it's doing something and not just sitting there
 
 configurable tram stop {
   built-in player sensor
@@ -16,7 +29,7 @@ somewhat redesign UI to make better use of now-unneeded tooltip area
 TERMINAL THEMABILITY?
 make terminal not update every tick just for animation if it's not waiting on any players
 
-BYOS functionality as machine {
+x BYOS functionality as machine { // probably incompatible with FU's version
     damageTileArea with ridiculously high strength and harvest level and radius big enough to cover a t8 vanilla ship from one end, in both fg and bg
     itemDropQuery and collect into database
     upgrade player ship to custom tier to get rid of bg image and collision material
@@ -26,6 +39,7 @@ patch warp state matching into encounter variations of booster flames (/objects/
 add distinguishing names to even/odd small booster flames
 lots of shiny new ship components, especially animating ones that match their state to flight {
     - also floor-only teleporters (implemented as part of telepads)
+    warp cores should count as FU ones, if possible
 }
 
 power stuffs {
@@ -65,10 +79,6 @@ networked wire I/O ports
 
 make RCS tech obtainable; balance energy use
 
-recipes {
-    (all clear!)
-}
-
 clean up tinkertable categories
 
 some major cleanup in places
@@ -82,7 +92,7 @@ Extend sync library {
     generate responseID with makeuuid? register with an anonymous function for continuation of operation after response
 }
 
-Transmatter network reimplementation {
+// Transmatter network reimplementation { // not sure if it's needed or if drive bays just need further fixing up
     Controller {
         API {
             callable via both callScriptedEntity and sendEntityMessage

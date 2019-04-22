@@ -94,9 +94,10 @@ function setBeam(endPoint, width, opacity)
   
   if chain.segmentLight then 
     local l = chain.segmentLight.color
-    l[1] = l[1] * opacity * 0.64;
-    l[2] = l[2] * opacity * 0.64;
-    l[3] = l[3] * opacity * 0.64;
+    local intensity = opacity^.25
+    l[1] = l[1] * intensity * 0.64;
+    l[2] = l[2] * intensity * 0.64;
+    l[3] = l[3] * intensity * 0.64;
   end
   
 
@@ -224,7 +225,7 @@ states.fire = {
           end
         end
         processLiquidAccumulation()
-        bw = bw * 0.8
+        bw = bw * 0.64
         collectItems(pt, rad * 1.25 * 1.25)
       elseif fireMode == "primary" then
         if world.damageTileArea(pt, rad, "foreground", origin, "beamish", 1, 99999) then aec = aec + pwr.hitTilesPrimary end
@@ -238,7 +239,9 @@ states.fire = {
       end
     else enterState("release") end
     
-    setBeam(pt, bw, 1.0)
+    --if (state.time/.05) % 1 >= 0.5 then bw = bw * 0.25 end
+    local mul = ({1, 1, .825, 1, .75, .825})[1+math.floor((state.time/.015)% 6 )]
+    setBeam(pt, bw*mul, mul)
     if aec > 0 then
       power.drawEquipEnergy(aec)
     end

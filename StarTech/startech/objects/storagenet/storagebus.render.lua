@@ -66,15 +66,11 @@ function update()
   localAnimator.clearLightSources()
   
   local pos = vec2.add(objectAnimator.position(), {0.5, 0.5})
-  --pos[1] = pos[1] - 1
-  --local gpos = { pos[1], pos[2] + -3 + (self.glowPos / 8.0) }
   
   -- glow
   localAnimator.addDrawable({
-    --image = table.concat({self.dGlow, "?addmask=", self.dMask}),
     image = self.dGlow,
     position = pos,
-    --rotation = rot[animator.animationState("orientation")],
     rotation = rot[animationConfig.animationParameter("orientation", 1)],
     fullbright = true,
     centered = true,

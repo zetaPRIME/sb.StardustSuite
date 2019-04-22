@@ -44,7 +44,6 @@ function onWrench(msg, isLocal, player, shiftHeld)
     local dl = {"v","<","^",">"}
     storage.orientation = (storage.orientation % 4) + 1
     object.setAnimationParameter("orientation", storage.orientation)
-    --animator.setAnimationState("orientation", orientName[storage.orientation])
     object.say(dl[storage.orientation])
   end
 end
@@ -62,10 +61,6 @@ function uiSetInfo(msg, isLocal, filter, priority)
   end
 end
 
-function update(dt)
-  --
-end
-
 function dump(o)
    if type(o) == 'table' then
       local s = '{ '
@@ -77,10 +72,6 @@ function dump(o)
    else
       return tostring(o)
    end
-end
-
-function containerCallback(...)
-  --
 end
 
 function sendItems()

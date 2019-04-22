@@ -31,7 +31,8 @@
   },
   "animationPosition" : [-8, -8],
   
-  "uiConfig" : "/interface/chests/chesttest.config",
+  //"uiConfig" : "/interface/chests/chesttest.config",
+  "uiConfig" : "/sys/stardust/autocontainer.config",
   
   //"interactAction" : "ScriptConsole",
   //"interactData" : "/objects/generic/arcadegame/arcadegamegui.config",

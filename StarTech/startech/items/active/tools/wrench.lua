@@ -31,6 +31,10 @@ function update(dt, fireMode, shiftHeld, moves)
   self.previousFireMode = fireMode
 end
 
+function uninit()
+  --status.setResource("energy", 0)
+end
+
 function xfire(moves, shiftHeld)
   -- test
   --world.damageTileArea(activeItem.ownerAimPosition(), 10, "background", activeItem.ownerAimPosition(), "beamish", 1000000, 1000000)

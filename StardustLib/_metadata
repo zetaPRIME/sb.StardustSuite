@@ -1,9 +1,10 @@
 {
-  "version" : "Alpha v0.30",
+  "version" : "Alpha v0.31",
   "friendlyName" : "StardustLib",
   "name" : "StardustLib",
   "author" : "zetaPRIME",
   "description" : "Libraries for various interop, etc.",
   "link" : "steam://url/CommunityFilePage/764887546",
-  "steamContentId" : "764887546"
+  "steamContentId" : "764887546",
+  "includes" : [ "Enhanced Storage" ]
 }

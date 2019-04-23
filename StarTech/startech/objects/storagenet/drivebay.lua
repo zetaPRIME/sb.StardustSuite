@@ -91,7 +91,19 @@ function spTemplate:getPriority(item)
 end
 
 function spTemplate:getItemList()
-  return self.item.parameters.contents or {} -- the most simple thing ever :D
+  --return self.item.parameters.contents or { } -- the most simple thing ever :D
+  if not self.item.parameters.contents then return { } end -- if no contents table, return empty and not nil
+  local i = { }
+  local ii = 1;
+  for k, item in pairs(self.item.parameters.contents) do
+    i[ii] = {
+      name = item.name,
+      count = item.count,
+      parameters = item.parameters
+    }
+    ii = ii + 1
+  end
+  return i
 end
 
 function spTemplate:tryTakeItem(itemReq)

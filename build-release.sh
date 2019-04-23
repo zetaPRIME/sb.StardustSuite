@@ -29,7 +29,7 @@ asset_packer () {
 }
 
 confirm () {
-  read -p "$1 [y/n]" -n 1 -r
+  read -p "$1 [y/n] " -n 1 -r
   echo #
   if [[ $REPLY =~ ^[Yy]$ ]]
   then
@@ -46,10 +46,21 @@ function pack {
   jq ".version |= . + \"-$cmthash\"" ./$1/_metadata > ./_release/$1/_metadata
   asset_packer ./_release/$1/ ./_release/$1.pak
   if [ ! -z "$_steamupload" ] ; then
-    echo Uploading to Steam...
+    # skip if set to not upload to steam
+    if [ -f "./$1/_no_steam" ] ; then
+      return
+    fi
+    # confirm upload
+    if ! confirm "Upload $1 to Steam?" ; then
+      return
+    fi
+    echo Uploading...
     
     mkdir -p ./_release/tmp/upload
     cp ./_release/$1.pak ./_release/tmp/upload/contents.pak
+    if [ "$1" == "StardustLib" ] ; then
+      cp ./_release/StardustLibFixes.pak ./_release/tmp/upload/fixes.pak
+    fi
     
     # gather info from metadata files
     local md="./$1/_metadata"
@@ -85,6 +96,7 @@ function pack {
 
 # mkdir -p ./_release/
 
+pack StardustLibFixes
 pack StardustLib
 pack StardustTweaks
 pack StarTech

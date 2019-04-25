@@ -1,5 +1,6 @@
 --
 
+require("/lib/stardust/playerext.lua")
 
 
 
@@ -13,6 +14,12 @@ function init()
   
   self.surfaceEnergyCost = config.getParameter("surfaceEnergyCost", 1)
   self.zeroGEnergyCost = config.getParameter("zeroGEnergyCost", 1)
+  sb.logInfo("rcs tech init")
+  playerext.restoreTech() -- debug: force tech unlock
+end
+function uninit()
+  sb.logInfo("rcs tech uninit")
+  --playerext.overrideTech("nothing.lua")
 end
 
 function update(args)
@@ -56,6 +63,13 @@ function update(args)
     
     if self.jetpackActive then
       if status.overConsumeResource("energy", self.surfaceEnergyCost * args.dt) then
+        --[[playerext.setEquip("headCosmetic", {
+          name = "clocktophathead", count = 1
+        })
+        local h = playerext.getEquip("headCosmetic")
+        if h and h.name then playerext.message(h.name) end]]
+        --playerext.overrideTech("startech:rcs")
+        
         local bf = 300
         if mcontroller.yVelocity() < -5 then
           bf = bf * 1.2 -- greater boost force while canceling downwards momentum

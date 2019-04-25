@@ -65,7 +65,10 @@ function update(dt, ...)
   end --]]
 end
 
-local svc = {}
+local cfg
+local internal
+local svc = { }
+local svci = { } -- internal utilities
 local _init = init or function() end
 function init(...)
   _init(...) -- run after deploy init
@@ -77,6 +80,15 @@ function init(...)
   
   -- clean up remnants of playerext-as-quest
   status.clearPersistentEffects("startech:playerext")
+  
+  -- init configuration table
+  cfg = storage["stardustlib:playerconfig"] or { }
+  storage["stardustlib:playerconfig"] = cfg
+  internal = storage["stardustlib:_playerext_internal"] or { }
+  storage["stardustlib:_playerext_internal"] = internal
+  
+  -- and set up techs
+  svci.assertTechs()
 end
 
 local function liveMsg(msg)
@@ -87,7 +99,15 @@ function svc.message(msg, isLocal, param)
   liveMsg(param)
 end
 
-function svc.startTabletEngine()
+function svc.getPlayerConfig(msg, isLocal, key, default)
+  return cfg[key] or default
+end
+
+function svc.setPlayerConfig(msg, isLocal, key, value)
+  cfg[key] = value
+end
+
+--[[function svc.startTabletEngine()
   local questName = "stardustlib:tablet.engine"
   if not player.hasQuest(questName) then
     player.startQuest({
@@ -96,7 +116,7 @@ function svc.startTabletEngine()
       parameters = {}
     })
   end
-end
+end]]
 
 function svc.warp(msg, isLocal, target, animation, deploy)
   player.warp(target, animation, deploy)
@@ -142,6 +162,112 @@ end
 function svc.openInterface(msg, isLocal, info)
   if type(info) ~= "table" then info = {config = info} end
   player.interact(info.interactionType or "ScriptPane", info.config or "/sys/stardust/tablet/tablet.ui.config")
+end
+
+local patternMatch
+patternMatch = function(match, tbl)
+  for k, v in pairs(match) do
+    local o = tbl[k]
+    if type(o) ~= type(v) then return false
+    elseif type(v) == "table" then
+      if not patternMatch(v, o) then return false end
+    elseif tbl[k] ~= v then return false
+    end
+  end
+  return true
+end
+
+-- read/write equipped items, generally meant to be used synchronously (from techs, etc.)
+function svc.getEquip(msg, isLocal, slot)
+  if slot == "cursor" then return player.swapSlotItem() end
+  return player.equippedItem(slot)
+end
+function svc.setEquip(msg, isLocal, slot, item)
+  if slot == "cursor" then return player.setSwapSlotItem(item) end
+  return player.setEquippedItem(slot, item)
+end
+function svc.updateEquip(msg, isLocal, slot, match, item)
+  local cur = player.equippedItem(slot)
+  if not cur and not match then
+  elseif type(match) ~= "table" then return false else
+    if not patternMatch(match, item) then return false end
+  end
+  player.setEquippedItem(slot, item)
+  return true
+end
+
+-- ...
+function svci.assertTechs()
+  internal.techRestore = internal.techRestore or { }
+  if internal.techStubScript then
+    -- save tech equips
+    local pfx = "stardustlib:stub"
+    for _, slot in pairs{"head", "body", "legs"} do
+      local t = player.equippedTech(slot)
+      if not t or t:sub(1, #pfx) ~= pfx then internal.techRestore[slot] = t end
+    end
+    
+    -- force stubs
+    player.makeTechAvailable("stardustlib:stubbody")
+    player.enableTech("stardustlib:stubbody")
+    player.equipTech("stardustlib:stubbody")
+    player.makeTechAvailable("stardustlib:stublegs")
+    player.enableTech("stardustlib:stublegs")
+    player.equipTech("stardustlib:stublegs")
+    local sa, si = "stardustlib:stub1", "stardustlib:stub2"
+    if internal.techStubSwap then sa, si = si, sa end
+    player.makeTechAvailable(sa)
+    player.enableTech(sa)
+    player.equipTech(sa)
+    player.makeTechUnavailable(si)
+  else
+    -- hide stubs
+    player.makeTechUnavailable("stardustlib:stub1")
+    player.makeTechUnavailable("stardustlib:stub2")
+    player.makeTechUnavailable("stardustlib:stubbody")
+    player.makeTechUnavailable("stardustlib:stublegs")
+    -- restore techs
+    
+    if internal.techRestore.head then player.equipTech(internal.techRestore.head) end
+    if internal.techRestore.body then player.equipTech(internal.techRestore.body) end
+    if internal.techRestore.legs then player.equipTech(internal.techRestore.legs) end
+    internal.techRestore = nil
+  end
+end
+
+function svc.getTechOverride(msg, isLocal) return internal.techStubScript end
+function svc.overrideTech(msg, isLocal, script)
+  if script then
+    internal.techStubScript = script
+    internal.techStubSwap = not internal.techStubSwap
+  end
+  svci.assertTechs()
+end
+
+function svc.restoreTech(msg, isLocal)
+  internal.techStubScript = nil
+  svci.assertTechs()
+end
+
+local function deployAlone()
+  for _, slot in pairs{"chest", "back", "legs", "head"} do
+    local itm = player.equippedItem(slot) or { }
+    if itm.count == 1 and itemutil.property(itm, "deployAlone") then return true end
+  end
+  return false
+end
+
+local _canDeploy = canDeploy
+function canDeploy()
+  if deployAlone() then return true end
+  return _canDeploy()
+end
+
+local _deploy = deploy
+function deploy()
+  if deployAlone() then
+    -- hmm. do something to signal deployment mode to equipment
+  else _deploy() end
 end
 
 

@@ -1,0 +1,12 @@
+{ // -*- grammar-ext: json -*-
+  "name" : "stardustlib:stubbody",
+  "type" : "body",
+
+  "shortDescription" : "^gray;(override enabled)",
+  "description" : "^red;Tech is currently locked by equipment",
+  "rarity" : "Essential",
+  "icon" : "/interface/statuses/x.png",
+  
+  "scripts" : ["techstub.lua"],
+  "active" : false
+}

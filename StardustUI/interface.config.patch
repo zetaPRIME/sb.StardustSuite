@@ -1,0 +1,17 @@
+[ // -*- grammar-ext: json -*-
+  { "op": "replace", "path": "/mainBar/size", "value": [42, 45] },
+  
+  { "op": "replace", "path": "/mainBar/collections/pos", "value": [99999, 99999] },
+  { "op": "replace", "path": "/mainBar/collections/poly", "value": [ [99999, 99999], [99999, 99999], [99999, 99999], [99999, 99999] ] },
+  
+  { "op": "replace", "path": "/mainBar/mmUpgrade/pos", "value": [0, 20] },
+  { "op": "replace", "path": "/mainBar/mmUpgrade/poly", "value": [ [0, 20], [17, 20], [17, 37], [0, 37] ] },
+  
+  { "op": "replace", "path": "/mainBar/deploy/pos", "value": [20, 20] },
+  { "op": "replace", "path": "/mainBar/deploy/poly", "value": [ [20, 20], [37, 20], [37, 37], [20, 37] ] },
+  
+  { "op": "replace", "path": "/mainBar/beam/pos", "value": [20, 0] },
+  { "op": "replace", "path": "/mainBar/beam/poly", "value": [ [20, 0], [37, 0], [37, 17], [20, 17] ] },
+  
+  { "op" : "replace", "path" : "/cursorTooltip/mmUpgradeText", "value" : "Things" }
+]

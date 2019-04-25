@@ -18,7 +18,7 @@ function init()
   
   local p = { gui = { } }
   p.containerId = cId
-  --p.openWithInventory = true
+  --p.openWithInventory = "fleg" --true
   p.gui.panefeature = {
     type = "panefeature",
     --anchor = "CenterBottom"

@@ -136,6 +136,7 @@ function damageEntities(p1, p2, dmg)
       numHit = numHit + 1
       -- okay, guess this is the only way to actually "directly" damage an entity...
       -- TODO: put this in a library
+      -- "plasma" or "IgnoresDef"?
       world.spawnProjectile("invisibleprojectile", world.entityPosition(id), owner, {0,0}, false, { power = dmg, damageKind = "plasma", timeToLive = 0.001 })
     end
   end

@@ -1,0 +1,6 @@
+{ // -*- grammar-ext: json -*-
+  "name" : "stardustlib:techoverride",
+  "effectConfig" : { },
+
+  "scripts" : [ "techoverride.lua" ]
+}

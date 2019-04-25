@@ -1,0 +1,15 @@
+{ // -*- grammar-ext: json -*-
+  "itemName" : "startech:nanofieldstatichead",
+  "shortdescription" : "^gray;Nanofield Static",
+  "description" : "Your Nanofield is interfering with your head slot.",
+  "inventoryIcon" : "/interface/statuses/x.png",
+  "rarity" : "Common",
+  "maxStack" : 1,
+  "category" : "Ephemera",
+  
+  "statusEffects" : [ ],
+  
+  "maleFrames" : "/sys/stardust/nothing.png",
+  "femaleFrames" : "/sys/stardust/nothing.png",
+  "mask" : "nullmask.png"
+}

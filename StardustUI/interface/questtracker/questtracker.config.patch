@@ -1,0 +1,4 @@
+[ // -*- grammar-ext: json -*-
+  { "op": "replace", "path": "/paneLayout/panefeature/anchor", "value": "bottomRight" },
+  { "op": "replace", "path": "/paneLayout/panefeature/offset", "value": [-5, 32] }
+]

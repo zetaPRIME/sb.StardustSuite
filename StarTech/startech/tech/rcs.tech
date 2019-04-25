@@ -9,6 +9,7 @@
   "shortDescription" : "RCS Pack",
   "rarity" : "Uncommon",
   "icon" : "/tech/distortionsphere.png",
+  "hidden" : true,
 
   "chipCost" : 0, // 16? 24?
 

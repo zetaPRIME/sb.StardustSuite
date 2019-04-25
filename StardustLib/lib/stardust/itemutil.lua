@@ -66,9 +66,30 @@ do
     return deepCompare(i1.parameters, i2.parameters) -- I don't think anything outside of parameters has any bearing
   end
   
+  local function dive(tbl, path)
+    local res = tbl
+    for tk in path:gmatch("[^/]+") do
+      if type(res) ~= "table" then return nil end
+      res = res[tk]
+    end
+    return res
+    --return tbl[path]
+  end
+
+  --[[function itemutil.getValue(item, path)
+    item = root.itemConfig(item)
+    local res = item.parameters and dive(item.parameters, path) or nil
+    if res == nil then res = dive(item.config, path) end
+    return res
+  end]]
+  
   -- returns a given property of an item, overridden where applicable
-  function itemutil.property(itm, prop)
-    return (itm.parameters and itm.parameters[prop]) or itemutil.getCachedConfig(itm).config[prop]
+  function itemutil.property(itm, path)
+    --return (itm.parameters and itm.parameters[prop]) or itemutil.getCachedConfig(itm).config[prop]
+    local res = nil
+    if itm.parameters then res = dive(itm.parameters, path) end
+    if res == nil then res = dive(itemutil.getCachedConfig(itm).config, path) end
+    return res
   end
   
   -- normalize item descriptor

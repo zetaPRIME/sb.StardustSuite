@@ -1,0 +1,1319 @@
+{ // -*- grammar-ext: json -*-
+  "globalTagDefaults" : {
+    "partImage" : "/sys/stardust/nothing.png",
+    "animFrame" : "",
+    "directives" : ""
+  },
+  
+  "animatedParts" : {
+    "parts" : {
+      
+      // background layers
+      
+      "layer-1prop1" : {
+        "properties" : {
+          "transformationGroups" : [ "layer-1prop1" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "zLevel" : -1
+        }
+      },
+      "layer-1prop1f" : {
+        "properties" : {
+          "transformationGroups" : [ "layer-1prop1" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "fullbright" : true,
+          "zLevel" : -1
+        }
+      },
+      "layer-1prop2" : {
+        "properties" : {
+          "transformationGroups" : [ "layer-1prop2" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "zLevel" : -1
+        }
+      },
+      "layer-1prop2f" : {
+        "properties" : {
+          "transformationGroups" : [ "layer-1prop2" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "fullbright" : true,
+          "zLevel" : -1
+        }
+      },
+      "layer-1prop3" : {
+        "properties" : {
+          "transformationGroups" : [ "layer-1prop3" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "zLevel" : -1
+        }
+      },
+      "layer-1prop3f" : {
+        "properties" : {
+          "transformationGroups" : [ "layer-1prop3" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "fullbright" : true,
+          "zLevel" : -1
+        }
+      },
+      "layer-1prop4" : {
+        "properties" : {
+          "transformationGroups" : [ "layer-1prop4" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "zLevel" : -1
+        }
+      },
+      "layer-1prop4f" : {
+        "properties" : {
+          "transformationGroups" : [ "layer-1prop4" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "fullbright" : true,
+          "zLevel" : -1
+        }
+      },
+      "layer-1prop5" : {
+        "properties" : {
+          "transformationGroups" : [ "layer-1prop5" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "zLevel" : -1
+        }
+      },
+      "layer-1prop5f" : {
+        "properties" : {
+          "transformationGroups" : [ "layer-1prop5" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "fullbright" : true,
+          "zLevel" : -1
+        }
+      },
+      "layer-1prop6" : {
+        "properties" : {
+          "transformationGroups" : [ "layer-1prop6" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "zLevel" : -1
+        }
+      },
+      "layer-1prop6f" : {
+        "properties" : {
+          "transformationGroups" : [ "layer-1prop6" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "fullbright" : true,
+          "zLevel" : -1
+        }
+      },
+      "layer-1prop7" : {
+        "properties" : {
+          "transformationGroups" : [ "layer-1prop7" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "zLevel" : -1
+        }
+      },
+      "layer-1prop7f" : {
+        "properties" : {
+          "transformationGroups" : [ "layer-1prop7" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "fullbright" : true,
+          "zLevel" : -1
+        }
+      },
+      "layer-1prop8" : {
+        "properties" : {
+          "transformationGroups" : [ "layer-1prop8" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "zLevel" : -1
+        }
+      },
+      "layer-1prop8f" : {
+        "properties" : {
+          "transformationGroups" : [ "layer-1prop8" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "fullbright" : true,
+          "zLevel" : -1
+        }
+      },
+
+      "layer-2prop1" : {
+        "properties" : {
+          "transformationGroups" : [ "layer-2prop1" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "zLevel" : -2
+        }
+      },
+      "layer-2prop1f" : {
+        "properties" : {
+          "transformationGroups" : [ "layer-2prop1" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "fullbright" : true,
+          "zLevel" : -2
+        }
+      },
+      "layer-2prop2" : {
+        "properties" : {
+          "transformationGroups" : [ "layer-2prop2" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "zLevel" : -2
+        }
+      },
+      "layer-2prop2f" : {
+        "properties" : {
+          "transformationGroups" : [ "layer-2prop2" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "fullbright" : true,
+          "zLevel" : -2
+        }
+      },
+      "layer-2prop3" : {
+        "properties" : {
+          "transformationGroups" : [ "layer-2prop3" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "zLevel" : -2
+        }
+      },
+      "layer-2prop3f" : {
+        "properties" : {
+          "transformationGroups" : [ "layer-2prop3" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "fullbright" : true,
+          "zLevel" : -2
+        }
+      },
+      "layer-2prop4" : {
+        "properties" : {
+          "transformationGroups" : [ "layer-2prop4" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "zLevel" : -2
+        }
+      },
+      "layer-2prop4f" : {
+        "properties" : {
+          "transformationGroups" : [ "layer-2prop4" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "fullbright" : true,
+          "zLevel" : -2
+        }
+      },
+      "layer-2prop5" : {
+        "properties" : {
+          "transformationGroups" : [ "layer-2prop5" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "zLevel" : -2
+        }
+      },
+      "layer-2prop5f" : {
+        "properties" : {
+          "transformationGroups" : [ "layer-2prop5" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "fullbright" : true,
+          "zLevel" : -2
+        }
+      },
+      "layer-2prop6" : {
+        "properties" : {
+          "transformationGroups" : [ "layer-2prop6" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "zLevel" : -2
+        }
+      },
+      "layer-2prop6f" : {
+        "properties" : {
+          "transformationGroups" : [ "layer-2prop6" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "fullbright" : true,
+          "zLevel" : -2
+        }
+      },
+      "layer-2prop7" : {
+        "properties" : {
+          "transformationGroups" : [ "layer-2prop7" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "zLevel" : -2
+        }
+      },
+      "layer-2prop7f" : {
+        "properties" : {
+          "transformationGroups" : [ "layer-2prop7" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "fullbright" : true,
+          "zLevel" : -2
+        }
+      },
+      "layer-2prop8" : {
+        "properties" : {
+          "transformationGroups" : [ "layer-2prop8" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "zLevel" : -2
+        }
+      },
+      "layer-2prop8f" : {
+        "properties" : {
+          "transformationGroups" : [ "layer-2prop8" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "fullbright" : true,
+          "zLevel" : -2
+        }
+      },
+
+      "layer-3prop1" : {
+        "properties" : {
+          "transformationGroups" : [ "layer-3prop1" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "zLevel" : -3
+        }
+      },
+      "layer-3prop1f" : {
+        "properties" : {
+          "transformationGroups" : [ "layer-3prop1" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "fullbright" : true,
+          "zLevel" : -3
+        }
+      },
+      "layer-3prop2" : {
+        "properties" : {
+          "transformationGroups" : [ "layer-3prop2" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "zLevel" : -3
+        }
+      },
+      "layer-3prop2f" : {
+        "properties" : {
+          "transformationGroups" : [ "layer-3prop2" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "fullbright" : true,
+          "zLevel" : -3
+        }
+      },
+      "layer-3prop3" : {
+        "properties" : {
+          "transformationGroups" : [ "layer-3prop3" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "zLevel" : -3
+        }
+      },
+      "layer-3prop3f" : {
+        "properties" : {
+          "transformationGroups" : [ "layer-3prop3" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "fullbright" : true,
+          "zLevel" : -3
+        }
+      },
+      "layer-3prop4" : {
+        "properties" : {
+          "transformationGroups" : [ "layer-3prop4" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "zLevel" : -3
+        }
+      },
+      "layer-3prop4f" : {
+        "properties" : {
+          "transformationGroups" : [ "layer-3prop4" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "fullbright" : true,
+          "zLevel" : -3
+        }
+      },
+      "layer-3prop5" : {
+        "properties" : {
+          "transformationGroups" : [ "layer-3prop5" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "zLevel" : -3
+        }
+      },
+      "layer-3prop5f" : {
+        "properties" : {
+          "transformationGroups" : [ "layer-3prop5" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "fullbright" : true,
+          "zLevel" : -3
+        }
+      },
+      "layer-3prop6" : {
+        "properties" : {
+          "transformationGroups" : [ "layer-3prop6" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "zLevel" : -3
+        }
+      },
+      "layer-3prop6f" : {
+        "properties" : {
+          "transformationGroups" : [ "layer-3prop6" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "fullbright" : true,
+          "zLevel" : -3
+        }
+      },
+      "layer-3prop7" : {
+        "properties" : {
+          "transformationGroups" : [ "layer-3prop7" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "zLevel" : -3
+        }
+      },
+      "layer-3prop7f" : {
+        "properties" : {
+          "transformationGroups" : [ "layer-3prop7" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "fullbright" : true,
+          "zLevel" : -3
+        }
+      },
+      "layer-3prop8" : {
+        "properties" : {
+          "transformationGroups" : [ "layer-3prop8" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "zLevel" : -3
+        }
+      },
+      "layer-3prop8f" : {
+        "properties" : {
+          "transformationGroups" : [ "layer-3prop8" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "fullbright" : true,
+          "zLevel" : -3
+        }
+      },
+
+      "layer-4prop1" : {
+        "properties" : {
+          "transformationGroups" : [ "layer-4prop1" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "zLevel" : -4
+        }
+      },
+      "layer-4prop1f" : {
+        "properties" : {
+          "transformationGroups" : [ "layer-4prop1" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "fullbright" : true,
+          "zLevel" : -4
+        }
+      },
+      "layer-4prop2" : {
+        "properties" : {
+          "transformationGroups" : [ "layer-4prop2" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "zLevel" : -4
+        }
+      },
+      "layer-4prop2f" : {
+        "properties" : {
+          "transformationGroups" : [ "layer-4prop2" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "fullbright" : true,
+          "zLevel" : -4
+        }
+      },
+      "layer-4prop3" : {
+        "properties" : {
+          "transformationGroups" : [ "layer-4prop3" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "zLevel" : -4
+        }
+      },
+      "layer-4prop3f" : {
+        "properties" : {
+          "transformationGroups" : [ "layer-4prop3" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "fullbright" : true,
+          "zLevel" : -4
+        }
+      },
+      "layer-4prop4" : {
+        "properties" : {
+          "transformationGroups" : [ "layer-4prop4" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "zLevel" : -4
+        }
+      },
+      "layer-4prop4f" : {
+        "properties" : {
+          "transformationGroups" : [ "layer-4prop4" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "fullbright" : true,
+          "zLevel" : -4
+        }
+      },
+      "layer-4prop5" : {
+        "properties" : {
+          "transformationGroups" : [ "layer-4prop5" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "zLevel" : -4
+        }
+      },
+      "layer-4prop5f" : {
+        "properties" : {
+          "transformationGroups" : [ "layer-4prop5" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "fullbright" : true,
+          "zLevel" : -4
+        }
+      },
+      "layer-4prop6" : {
+        "properties" : {
+          "transformationGroups" : [ "layer-4prop6" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "zLevel" : -4
+        }
+      },
+      "layer-4prop6f" : {
+        "properties" : {
+          "transformationGroups" : [ "layer-4prop6" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "fullbright" : true,
+          "zLevel" : -4
+        }
+      },
+      "layer-4prop7" : {
+        "properties" : {
+          "transformationGroups" : [ "layer-4prop7" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "zLevel" : -4
+        }
+      },
+      "layer-4prop7f" : {
+        "properties" : {
+          "transformationGroups" : [ "layer-4prop7" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "fullbright" : true,
+          "zLevel" : -4
+        }
+      },
+      "layer-4prop8" : {
+        "properties" : {
+          "transformationGroups" : [ "layer-4prop8" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "zLevel" : -4
+        }
+      },
+      "layer-4prop8f" : {
+        "properties" : {
+          "transformationGroups" : [ "layer-4prop8" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "fullbright" : true,
+          "zLevel" : -4
+        }
+      },
+
+      "layer-5prop1" : {
+        "properties" : {
+          "transformationGroups" : [ "layer-5prop1" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "zLevel" : -5
+        }
+      },
+      "layer-5prop1f" : {
+        "properties" : {
+          "transformationGroups" : [ "layer-5prop1" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "fullbright" : true,
+          "zLevel" : -5
+        }
+      },
+      "layer-5prop2" : {
+        "properties" : {
+          "transformationGroups" : [ "layer-5prop2" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "zLevel" : -5
+        }
+      },
+      "layer-5prop2f" : {
+        "properties" : {
+          "transformationGroups" : [ "layer-5prop2" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "fullbright" : true,
+          "zLevel" : -5
+        }
+      },
+      "layer-5prop3" : {
+        "properties" : {
+          "transformationGroups" : [ "layer-5prop3" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "zLevel" : -5
+        }
+      },
+      "layer-5prop3f" : {
+        "properties" : {
+          "transformationGroups" : [ "layer-5prop3" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "fullbright" : true,
+          "zLevel" : -5
+        }
+      },
+      "layer-5prop4" : {
+        "properties" : {
+          "transformationGroups" : [ "layer-5prop4" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "zLevel" : -5
+        }
+      },
+      "layer-5prop4f" : {
+        "properties" : {
+          "transformationGroups" : [ "layer-5prop4" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "fullbright" : true,
+          "zLevel" : -5
+        }
+      },
+      "layer-5prop5" : {
+        "properties" : {
+          "transformationGroups" : [ "layer-5prop5" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "zLevel" : -5
+        }
+      },
+      "layer-5prop5f" : {
+        "properties" : {
+          "transformationGroups" : [ "layer-5prop5" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "fullbright" : true,
+          "zLevel" : -5
+        }
+      },
+      "layer-5prop6" : {
+        "properties" : {
+          "transformationGroups" : [ "layer-5prop6" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "zLevel" : -5
+        }
+      },
+      "layer-5prop6f" : {
+        "properties" : {
+          "transformationGroups" : [ "layer-5prop6" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "fullbright" : true,
+          "zLevel" : -5
+        }
+      },
+      "layer-5prop7" : {
+        "properties" : {
+          "transformationGroups" : [ "layer-5prop7" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "zLevel" : -5
+        }
+      },
+      "layer-5prop7f" : {
+        "properties" : {
+          "transformationGroups" : [ "layer-5prop7" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "fullbright" : true,
+          "zLevel" : -5
+        }
+      },
+      "layer-5prop8" : {
+        "properties" : {
+          "transformationGroups" : [ "layer-5prop8" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "zLevel" : -5
+        }
+      },
+      "layer-5prop8f" : {
+        "properties" : {
+          "transformationGroups" : [ "layer-5prop8" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "fullbright" : true,
+          "zLevel" : -5
+        }
+      },
+      
+      // foreground layers
+      
+      "layer1prop1" : {
+        "properties" : {
+          "transformationGroups" : [ "layer1prop1" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "zLevel" : 1
+        }
+      },
+      "layer1prop1f" : {
+        "properties" : {
+          "transformationGroups" : [ "layer1prop1" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "fullbright" : true,
+          "zLevel" : 1
+        }
+      },
+      "layer1prop2" : {
+        "properties" : {
+          "transformationGroups" : [ "layer1prop2" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "zLevel" : 1
+        }
+      },
+      "layer1prop2f" : {
+        "properties" : {
+          "transformationGroups" : [ "layer1prop2" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "fullbright" : true,
+          "zLevel" : 1
+        }
+      },
+      "layer1prop3" : {
+        "properties" : {
+          "transformationGroups" : [ "layer1prop3" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "zLevel" : 1
+        }
+      },
+      "layer1prop3f" : {
+        "properties" : {
+          "transformationGroups" : [ "layer1prop3" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "fullbright" : true,
+          "zLevel" : 1
+        }
+      },
+      "layer1prop4" : {
+        "properties" : {
+          "transformationGroups" : [ "layer1prop4" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "zLevel" : 1
+        }
+      },
+      "layer1prop4f" : {
+        "properties" : {
+          "transformationGroups" : [ "layer1prop4" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "fullbright" : true,
+          "zLevel" : 1
+        }
+      },
+      "layer1prop5" : {
+        "properties" : {
+          "transformationGroups" : [ "layer1prop5" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "zLevel" : 1
+        }
+      },
+      "layer1prop5f" : {
+        "properties" : {
+          "transformationGroups" : [ "layer1prop5" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "fullbright" : true,
+          "zLevel" : 1
+        }
+      },
+      "layer1prop6" : {
+        "properties" : {
+          "transformationGroups" : [ "layer1prop6" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "zLevel" : 1
+        }
+      },
+      "layer1prop6f" : {
+        "properties" : {
+          "transformationGroups" : [ "layer1prop6" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "fullbright" : true,
+          "zLevel" : 1
+        }
+      },
+      "layer1prop7" : {
+        "properties" : {
+          "transformationGroups" : [ "layer1prop7" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "zLevel" : 1
+        }
+      },
+      "layer1prop7f" : {
+        "properties" : {
+          "transformationGroups" : [ "layer1prop7" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "fullbright" : true,
+          "zLevel" : 1
+        }
+      },
+      "layer1prop8" : {
+        "properties" : {
+          "transformationGroups" : [ "layer1prop8" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "zLevel" : 1
+        }
+      },
+      "layer1prop8f" : {
+        "properties" : {
+          "transformationGroups" : [ "layer1prop8" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "fullbright" : true,
+          "zLevel" : 1
+        }
+      },
+      
+      "layer2prop1" : {
+        "properties" : {
+          "transformationGroups" : [ "layer2prop1" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "zLevel" : 2
+        }
+      },
+      "layer2prop1f" : {
+        "properties" : {
+          "transformationGroups" : [ "layer2prop1" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "fullbright" : true,
+          "zLevel" : 2
+        }
+      },
+      "layer2prop2" : {
+        "properties" : {
+          "transformationGroups" : [ "layer2prop2" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "zLevel" : 2
+        }
+      },
+      "layer2prop2f" : {
+        "properties" : {
+          "transformationGroups" : [ "layer2prop2" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "fullbright" : true,
+          "zLevel" : 2
+        }
+      },
+      "layer2prop3" : {
+        "properties" : {
+          "transformationGroups" : [ "layer2prop3" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "zLevel" : 2
+        }
+      },
+      "layer2prop3f" : {
+        "properties" : {
+          "transformationGroups" : [ "layer2prop3" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "fullbright" : true,
+          "zLevel" : 2
+        }
+      },
+      "layer2prop4" : {
+        "properties" : {
+          "transformationGroups" : [ "layer2prop4" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "zLevel" : 2
+        }
+      },
+      "layer2prop4f" : {
+        "properties" : {
+          "transformationGroups" : [ "layer2prop4" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "fullbright" : true,
+          "zLevel" : 2
+        }
+      },
+      "layer2prop5" : {
+        "properties" : {
+          "transformationGroups" : [ "layer2prop5" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "zLevel" : 2
+        }
+      },
+      "layer2prop5f" : {
+        "properties" : {
+          "transformationGroups" : [ "layer2prop5" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "fullbright" : true,
+          "zLevel" : 2
+        }
+      },
+      "layer2prop6" : {
+        "properties" : {
+          "transformationGroups" : [ "layer2prop6" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "zLevel" : 2
+        }
+      },
+      "layer2prop6f" : {
+        "properties" : {
+          "transformationGroups" : [ "layer2prop6" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "fullbright" : true,
+          "zLevel" : 2
+        }
+      },
+      "layer2prop7" : {
+        "properties" : {
+          "transformationGroups" : [ "layer2prop7" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "zLevel" : 2
+        }
+      },
+      "layer2prop7f" : {
+        "properties" : {
+          "transformationGroups" : [ "layer2prop7" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "fullbright" : true,
+          "zLevel" : 2
+        }
+      },
+      "layer2prop8" : {
+        "properties" : {
+          "transformationGroups" : [ "layer2prop8" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "zLevel" : 2
+        }
+      },
+      "layer2prop8f" : {
+        "properties" : {
+          "transformationGroups" : [ "layer2prop8" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "fullbright" : true,
+          "zLevel" : 2
+        }
+      },
+      
+      "layer3prop1" : {
+        "properties" : {
+          "transformationGroups" : [ "layer3prop1" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "zLevel" : 3
+        }
+      },
+      "layer3prop1f" : {
+        "properties" : {
+          "transformationGroups" : [ "layer3prop1" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "fullbright" : true,
+          "zLevel" : 3
+        }
+      },
+      "layer3prop2" : {
+        "properties" : {
+          "transformationGroups" : [ "layer3prop2" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "zLevel" : 3
+        }
+      },
+      "layer3prop2f" : {
+        "properties" : {
+          "transformationGroups" : [ "layer3prop2" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "fullbright" : true,
+          "zLevel" : 3
+        }
+      },
+      "layer3prop3" : {
+        "properties" : {
+          "transformationGroups" : [ "layer3prop3" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "zLevel" : 3
+        }
+      },
+      "layer3prop3f" : {
+        "properties" : {
+          "transformationGroups" : [ "layer3prop3" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "fullbright" : true,
+          "zLevel" : 3
+        }
+      },
+      "layer3prop4" : {
+        "properties" : {
+          "transformationGroups" : [ "layer3prop4" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "zLevel" : 3
+        }
+      },
+      "layer3prop4f" : {
+        "properties" : {
+          "transformationGroups" : [ "layer3prop4" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "fullbright" : true,
+          "zLevel" : 3
+        }
+      },
+      "layer3prop5" : {
+        "properties" : {
+          "transformationGroups" : [ "layer3prop5" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "zLevel" : 3
+        }
+      },
+      "layer3prop5f" : {
+        "properties" : {
+          "transformationGroups" : [ "layer3prop5" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "fullbright" : true,
+          "zLevel" : 3
+        }
+      },
+      "layer3prop6" : {
+        "properties" : {
+          "transformationGroups" : [ "layer3prop6" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "zLevel" : 3
+        }
+      },
+      "layer3prop6f" : {
+        "properties" : {
+          "transformationGroups" : [ "layer3prop6" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "fullbright" : true,
+          "zLevel" : 3
+        }
+      },
+      "layer3prop7" : {
+        "properties" : {
+          "transformationGroups" : [ "layer3prop7" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "zLevel" : 3
+        }
+      },
+      "layer3prop7f" : {
+        "properties" : {
+          "transformationGroups" : [ "layer3prop7" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "fullbright" : true,
+          "zLevel" : 3
+        }
+      },
+      "layer3prop8" : {
+        "properties" : {
+          "transformationGroups" : [ "layer3prop8" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "zLevel" : 3
+        }
+      },
+      "layer3prop8f" : {
+        "properties" : {
+          "transformationGroups" : [ "layer3prop8" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "fullbright" : true,
+          "zLevel" : 3
+        }
+      },
+      
+      "layer4prop1" : {
+        "properties" : {
+          "transformationGroups" : [ "layer4prop1" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "zLevel" : 4
+        }
+      },
+      "layer4prop1f" : {
+        "properties" : {
+          "transformationGroups" : [ "layer4prop1" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "fullbright" : true,
+          "zLevel" : 4
+        }
+      },
+      "layer4prop2" : {
+        "properties" : {
+          "transformationGroups" : [ "layer4prop2" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "zLevel" : 4
+        }
+      },
+      "layer4prop2f" : {
+        "properties" : {
+          "transformationGroups" : [ "layer4prop2" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "fullbright" : true,
+          "zLevel" : 4
+        }
+      },
+      "layer4prop3" : {
+        "properties" : {
+          "transformationGroups" : [ "layer4prop3" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "zLevel" : 4
+        }
+      },
+      "layer4prop3f" : {
+        "properties" : {
+          "transformationGroups" : [ "layer4prop3" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "fullbright" : true,
+          "zLevel" : 4
+        }
+      },
+      "layer4prop4" : {
+        "properties" : {
+          "transformationGroups" : [ "layer4prop4" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "zLevel" : 4
+        }
+      },
+      "layer4prop4f" : {
+        "properties" : {
+          "transformationGroups" : [ "layer4prop4" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "fullbright" : true,
+          "zLevel" : 4
+        }
+      },
+      "layer4prop5" : {
+        "properties" : {
+          "transformationGroups" : [ "layer4prop5" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "zLevel" : 4
+        }
+      },
+      "layer4prop5f" : {
+        "properties" : {
+          "transformationGroups" : [ "layer4prop5" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "fullbright" : true,
+          "zLevel" : 4
+        }
+      },
+      "layer4prop6" : {
+        "properties" : {
+          "transformationGroups" : [ "layer4prop6" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "zLevel" : 4
+        }
+      },
+      "layer4prop6f" : {
+        "properties" : {
+          "transformationGroups" : [ "layer4prop6" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "fullbright" : true,
+          "zLevel" : 4
+        }
+      },
+      "layer4prop7" : {
+        "properties" : {
+          "transformationGroups" : [ "layer4prop7" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "zLevel" : 4
+        }
+      },
+      "layer4prop7f" : {
+        "properties" : {
+          "transformationGroups" : [ "layer4prop7" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "fullbright" : true,
+          "zLevel" : 4
+        }
+      },
+      "layer4prop8" : {
+        "properties" : {
+          "transformationGroups" : [ "layer4prop8" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "zLevel" : 4
+        }
+      },
+      "layer4prop8f" : {
+        "properties" : {
+          "transformationGroups" : [ "layer4prop8" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "fullbright" : true,
+          "zLevel" : 4
+        }
+      },
+      
+      "layer5prop1" : {
+        "properties" : {
+          "transformationGroups" : [ "layer5prop1" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "zLevel" : 5
+        }
+      },
+      "layer5prop1f" : {
+        "properties" : {
+          "transformationGroups" : [ "layer5prop1" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "fullbright" : true,
+          "zLevel" : 5
+        }
+      },
+      "layer5prop2" : {
+        "properties" : {
+          "transformationGroups" : [ "layer5prop2" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "zLevel" : 5
+        }
+      },
+      "layer5prop2f" : {
+        "properties" : {
+          "transformationGroups" : [ "layer5prop2" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "fullbright" : true,
+          "zLevel" : 5
+        }
+      },
+      "layer5prop3" : {
+        "properties" : {
+          "transformationGroups" : [ "layer5prop3" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "zLevel" : 5
+        }
+      },
+      "layer5prop3f" : {
+        "properties" : {
+          "transformationGroups" : [ "layer5prop3" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "fullbright" : true,
+          "zLevel" : 5
+        }
+      },
+      "layer5prop4" : {
+        "properties" : {
+          "transformationGroups" : [ "layer5prop4" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "zLevel" : 5
+        }
+      },
+      "layer5prop4f" : {
+        "properties" : {
+          "transformationGroups" : [ "layer5prop4" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "fullbright" : true,
+          "zLevel" : 5
+        }
+      },
+      "layer5prop5" : {
+        "properties" : {
+          "transformationGroups" : [ "layer5prop5" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "zLevel" : 5
+        }
+      },
+      "layer5prop5f" : {
+        "properties" : {
+          "transformationGroups" : [ "layer5prop5" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "fullbright" : true,
+          "zLevel" : 5
+        }
+      },
+      "layer5prop6" : {
+        "properties" : {
+          "transformationGroups" : [ "layer5prop6" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "zLevel" : 5
+        }
+      },
+      "layer5prop6f" : {
+        "properties" : {
+          "transformationGroups" : [ "layer5prop6" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "fullbright" : true,
+          "zLevel" : 5
+        }
+      },
+      "layer5prop7" : {
+        "properties" : {
+          "transformationGroups" : [ "layer5prop7" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "zLevel" : 5
+        }
+      },
+      "layer5prop7f" : {
+        "properties" : {
+          "transformationGroups" : [ "layer5prop7" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "fullbright" : true,
+          "zLevel" : 5
+        }
+      },
+      "layer5prop8" : {
+        "properties" : {
+          "transformationGroups" : [ "layer5prop8" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "zLevel" : 5
+        }
+      },
+      "layer5prop8f" : {
+        "properties" : {
+          "transformationGroups" : [ "layer5prop8" ],
+          "image" : "<partImage>:<animFrame><directives>",
+          "fullbright" : true,
+          "zLevel" : 5
+        }
+      }
+      
+    }    
+  },
+  
+  "transformationGroups" : {
+    "layer-1prop1" : { },
+    "layer-1prop2" : { },
+    "layer-1prop3" : { },
+    "layer-1prop4" : { },
+    "layer-1prop5" : { },
+    "layer-1prop6" : { },
+    "layer-1prop7" : { },
+    "layer-1prop8" : { },
+    
+    "layer-2prop1" : { },
+    "layer-2prop2" : { },
+    "layer-2prop3" : { },
+    "layer-2prop4" : { },
+    "layer-2prop5" : { },
+    "layer-2prop6" : { },
+    "layer-2prop7" : { },
+    "layer-2prop8" : { },
+    
+    "layer-3prop1" : { },
+    "layer-3prop2" : { },
+    "layer-3prop3" : { },
+    "layer-3prop4" : { },
+    "layer-3prop5" : { },
+    "layer-3prop6" : { },
+    "layer-3prop7" : { },
+    "layer-3prop8" : { },
+    
+    "layer-4prop1" : { },
+    "layer-4prop2" : { },
+    "layer-4prop3" : { },
+    "layer-4prop4" : { },
+    "layer-4prop5" : { },
+    "layer-4prop6" : { },
+    "layer-4prop7" : { },
+    "layer-4prop8" : { },
+    
+    "layer-5prop1" : { },
+    "layer-5prop2" : { },
+    "layer-5prop3" : { },
+    "layer-5prop4" : { },
+    "layer-5prop5" : { },
+    "layer-5prop6" : { },
+    "layer-5prop7" : { },
+    "layer-5prop8" : { },
+    
+    "layer1prop1" : { },
+    "layer1prop2" : { },
+    "layer1prop3" : { },
+    "layer1prop4" : { },
+    "layer1prop5" : { },
+    "layer1prop6" : { },
+    "layer1prop7" : { },
+    "layer1prop8" : { },
+    
+    "layer2prop1" : { },
+    "layer2prop2" : { },
+    "layer2prop3" : { },
+    "layer2prop4" : { },
+    "layer2prop5" : { },
+    "layer2prop6" : { },
+    "layer2prop7" : { },
+    "layer2prop8" : { },
+    
+    "layer3prop1" : { },
+    "layer3prop2" : { },
+    "layer3prop3" : { },
+    "layer3prop4" : { },
+    "layer3prop5" : { },
+    "layer3prop6" : { },
+    "layer3prop7" : { },
+    "layer3prop8" : { },
+    
+    "layer4prop1" : { },
+    "layer4prop2" : { },
+    "layer4prop3" : { },
+    "layer4prop4" : { },
+    "layer4prop5" : { },
+    "layer4prop6" : { },
+    "layer4prop7" : { },
+    "layer4prop8" : { },
+    
+    "layer5prop1" : { },
+    "layer5prop2" : { },
+    "layer5prop3" : { },
+    "layer5prop4" : { },
+    "layer5prop5" : { },
+    "layer5prop6" : { },
+    "layer5prop7" : { },
+    "layer5prop8" : { }
+  }
+}

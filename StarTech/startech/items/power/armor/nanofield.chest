@@ -13,7 +13,8 @@
   "statusEffects" : [
     "stardustlib:techoverride",
     
-    //{ "stat" : "protection", "amount" : 100.0 },
+    { "stat" : "protection", "amount" : -256 },
+    { "stat" : "protectionOverride", "amount" : 0.01 },
     
     { "stat" : "breathProtection", "amount" : 1.0 }
   ],

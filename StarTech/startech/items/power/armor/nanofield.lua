@@ -116,19 +116,39 @@ function modes.ground:update(p)
     end
   end
   
-  if mcontroller.zeroG() then setMode("wing") end
+  if world.gravity(mcontroller.position()) == 0 then setMode("wing") end
 end
 
 ------------------
 -- skywing mode --
 ------------------
+local wingFront = Prop.new(2)
+local wingBack = Prop.new(-2)
 function modes.wing:init(_, _, summoned)
-  self.summoned = summoned
+  if summoned then
+    self.summoned = true
+    if mcontroller.onGround() then -- lift off ground a bit
+      mcontroller.controlApproachYVelocity(12, 65536)
+    end
+  end
+  
+  wingFront:setImage("elytra.png")
+  wingBack:setImage("elytra.png")
+  wingBack:setDirectives("?brightness=-40")
+  wingFront:scale({0, 0})
+  wingBack:scale({0, 0})
 end
 
 function modes.wing:update(p)
-  local zeroG = mcontroller.zeroG()
-  mcontroller.controlParameters({ gravityMultiplier = 0.0001 })
+  mcontroller.clearControls()
+  local zeroG = world.gravity(mcontroller.position()) == 0
+  mcontroller.controlParameters{
+    --gravityMultiplier = 0.0001,
+    gravityEnabled = false,
+    normalGroundFriction = 0,
+    ambulatingGroundFriction = 0,
+    groundForce = 0, airForce = 0, liquidForce = 0, -- disable default movement entirely
+  }
   mcontroller.controlDown()
   if self.summoned and p.keyDown.special1 then return setMode("ground") end
   
@@ -148,6 +168,12 @@ function modes.wing:update(p)
     boostForce = boostForce * 1.2 -- greater braking force
   end
   
+  -- don't drag across the ground
+  if mcontroller.onGround() then
+    --mcontroller.addMomentum({0, 3})
+    --mcontroller.controlMove(vx, true)
+  end
+  
   if (vx ~= 0 or vy ~= 0) and p.key.sprint then
     boost = 55
     boostForce = boostForce * 1.5 + vmag(mcontroller.velocity()) * 2.5
@@ -156,9 +182,36 @@ function modes.wing:update(p)
   mcontroller.controlApproachVelocity({vx*boost, vy*boost}, boostForce * 60 * p.dt)
   
   tech.setParentState("fly")
-  local rot = math.max(-1.0, math.min(mcontroller.velocity()[1] / -55, 1.0))
+  local rot = util.clamp(mcontroller.velocity()[1] / -55, -1.0, 1.0)
   rot = math.sin(rot * math.pi * .45) / (.45*2)
   mcontroller.setRotation(rot * math.pi * .09)
+  
+  local rot2 = rot * mcontroller.facingDirection()
+  if rot2 < 0 then -- less extra rotation when moving forwards
+    rot2 = rot2 * 0.32
+  else -- and a wing flare
+    rot2 = rot2 * 1.7
+  end
+  rot2 = rot2 + util.clamp(mcontroller.velocity()[2] / 55, -1.0, 1.0) * 0.5
+  
+  -- handle props
+  local offset = {-5 / 16, -15 / 16}
+  wingFront:resetTransform()
+  wingBack:resetTransform()
+  
+  -- rotate wings relative to attachment
+  wingFront:rotate(rot2 * math.pi * .14)
+  wingBack:rotate(rot2 * math.pi * .07)
+  wingBack:rotate(-0.11)
+  
+  -- then handle attachment sync
+  wingFront:translate(offset)
+  wingFront:rotate(rot * math.pi * .09 * mcontroller.facingDirection())
+  wingBack:translate(offset)
+  wingBack:translate({3 / 16, 0 / 16})
+  wingBack:rotate(rot * math.pi * .09 * mcontroller.facingDirection())
+  wingFront:scale({mcontroller.facingDirection(), 1.0}, {0.0, 0.0})
+  wingBack:scale({mcontroller.facingDirection(), 1.0}, {0.0, 0.0})
   
   if not self.summoned and not zeroG then setMode("ground") end
   if zeroG then self.summoned = false end
@@ -167,6 +220,10 @@ end
 function modes.wing:uninit()
   tech.setParentState()
   mcontroller.setRotation(0)
+  mcontroller.clearControls()
+  
+  wingFront:reset()
+  wingBack:reset()
 end
 
 

@@ -48,8 +48,13 @@ power stuffs {
     machine that powers warp core via fluxpulse (world property "ship.fuel")
     wireless charger
     
-    powersuit {
-        hijack tech? how much?
+    nanofield {
+        action states?
+        
+        elytra {
+            - tween rotation and implement rez/derez animation
+            - autoswitch only when environment gravity changes
+        }
     }
 
     fluxsaber (fluxpulse-charged beamsword)

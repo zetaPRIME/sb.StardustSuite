@@ -12,6 +12,7 @@ function init()
     require("/scripts/util.lua")
     
     -- library time!
+    sound = { }
     local propManager = { }
     Prop = { }
     local valid = { } -- keyed
@@ -31,15 +32,77 @@ function init()
       [5] = { }
     }
     local basePath = util.pathDirectory(ovr)
+    local maxSounds = 16
+    local lastSound = 0
+    local soundLoops = { }
+    local SoundLoop = { }
     
     local function getFile(inp)
       if type(inp) ~= "string" then return "" end
-      if inp[1] == "/" then return inp end
+      if inp:sub(1, 1) == "/" then return inp end
       return basePath .. inp
     end
     
+    function sound.play(file, vol, pitch, pos)
+      lastSound = (lastSound % maxSounds) + 1
+      local n = "eph" .. lastSound
+      animator.setSoundPool(n, { getFile(file) })
+      animator.setSoundVolume(n, vol or 1.0, 0)
+      animator.setSoundPitch(n, pitch or 1.0, 0)
+      animator.setSoundPosition(n, pos or {0, 0})
+      animator.playSound(n)
+    end
+    
+    function sound.newLoop(file, vol, pitch, pos)
+      local l = { }
+      for i = 1, maxSounds do
+        if not soundLoops[i] then
+          l.id = i
+          l.n = "loop" .. i
+          break
+        end
+      end
+      if not l.n then return nil end
+      soundLoops[l.id] = l
+      l[valid] = true
+      setmetatable(l, { __index = SoundLoop})
+      l:restart(file, vol, pitch, pos)
+      return l
+    end
+    
+    function SoundLoop:restart(file, vol, pitch, pos)
+      if not self[valid] then return nil end
+      animator.setSoundPool(self.n, { getFile(file) })
+      animator.setSoundVolume(self.n, vol or 0, 0)
+      animator.setSoundPitch(self.n, math.max(pitch or 0.1, 0.1), 0)
+      animator.setSoundPosition(self.n, pos or {0, 0})
+      animator.playSound(self.n, -1)
+    end
+    
+    function SoundLoop:discard()
+      if not self[valid] then return nil end
+      animator.stopAllSounds(self.n)
+      self[valid] = false
+      soundLoops[self.id] = nil
+    end
+    
+    function SoundLoop:setVolume(vol, ramp)
+      if not self[valid] then return nil end
+      animator.setSoundVolume(self.n, vol or 1.0, ramp or 0)
+    end
+    
+    function SoundLoop:setPitch(pitch, ramp)
+      if not self[valid] then return nil end
+      animator.setSoundPitch(self.n, math.max(pitch or 0.1, 0.1), ramp or 0)
+    end
+    
+    function SoundLoop:setPosition(pos)
+      if not self[valid] then return nil end
+      animator.setSoundPosition(self.n, pos or {0, 0})
+    end
+    
     function Prop.new(layer)
-      sb.logInfo("prop requested on layer " .. layer)
+      --sb.logInfo("prop requested on layer " .. layer)
       if not layer or not propManager.map[layer] then return nil end
       local p = { }
       for i = 1, propManager.propsPerLayer do
@@ -53,7 +116,7 @@ function init()
       
       propManager.map[p.layer][p.id] = p
       p.str = "layer" .. p.layer .. "prop" .. p.id
-      sb.logInfo("succesfully instantiated "..p.str)
+      --sb.logInfo("succesfully instantiated "..p.str)
       p[valid] = true
       setmetatable(p, {__index = Prop})
       p:reset()

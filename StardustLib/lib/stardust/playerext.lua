@@ -41,6 +41,9 @@ if not playerext then
     "setEquip",
     "updateEquip",
     
+    "fillEquipEnergy",
+    "drawEquipEnergy",
+    
     "getTechOverride",
     "overrideTech",
     "restoreTech",

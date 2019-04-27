@@ -1,3 +1,63 @@
+--
+
+require("/lib/stardust/itemutil.lua")
+
+-- armor value works differently from normal armors
+-- mult = .5^(armor/100); or, every 100 points is a 50% damage reduction
+
+-- put this here for now
+-- probably quadruple until module system is implemented
+local tierBaseStats = {
+  { -- T1 (Iron)
+    armor = 5,
+    health = 110,
+    energy = 110,
+    damageMult = 1.5,
+  },
+  { -- T2 (Tungsten) (default)
+    armor = 10,
+    health = 120,
+    energy = 120,
+    damageMult = 2.0,
+  },
+  { -- T3 (Titanium)
+    armor = 30,
+    health = 130,
+    energy = 130,
+    damageMult = 2.5,
+  },
+  { -- T4 (Durasteel)
+    armor = 40,
+    health = 140,
+    energy = 140,
+    damageMult = 3.0,
+  },
+  { -- T5 (Violium/Ferozium/Aegisalt)
+    armor = 50,
+    health = 150,
+    energy = 150,
+    damageMult = 3.5,
+  },
+  { -- T6 (Solarium)
+    armor = 60,
+    health = 160,
+    energy = 160,
+    damageMult = 4.0,
+  },
+}
+
+local item
+local itemModified = false
+local statsNeedUpdate = true
+local effectiveStatsNeedUpdate = false
+
+local stats = {
+  armor = 0,
+  health = 100,
+  energy = 100,
+  damageMult = 1.0,
+}
+
 local modes = {
   ground = { },
   wing = { }
@@ -45,7 +105,25 @@ local function rotTowards(cur, target, max)
   return towards(cur, target, max)
 end
 
+function drawEnergy(amount, testOnly)
+  local res = playerext.drawEquipEnergy(amount, testOnly)
+  if not testOnly then -- update cached item's capacitor
+    item.parameters.batteryStats = playerext.getEquip("chest").parameters.batteryStats
+  end
+  return res
+end
+
+function modifyDamageTaken(msg, isLocal, damageRequest)
+  if damageRequest.damageType == "Damage" then
+    damageRequest.damageType = "IgnoresDef"
+    damageRequest.damage = damageRequest.damage * (.5 ^ (stats.armor / 100))
+    return damageRequest
+  end
+end
+
 function init()
+  message.setHandler("stardustlib:modifyDamageTaken", modifyDamageTaken)
+  message.setHandler("startech:nanofield.update", function() statsNeedUpdate = true end)
   --playerext.message("Nanofield online.")
   status.overConsumeResource("energy", 1.0) -- debug signal
   
@@ -73,9 +151,12 @@ local staticitm = "startech:nanofieldstatic"
 
 local _prevKeys = { }
 function update(p)
-  if (playerext.getEquip("chest") or { }).name ~= "startech:nanofield" then
+  item = playerext.getEquip("chest") or { }
+  itemModified = false
+  if item.name ~= "startech:nanofield" then
     return nil -- abort when no longer equipped
   end
+  if statsNeedUpdate then updateStats() end
   
   -- maintain other slots
   for _, slot in pairs{"head", "legs"} do
@@ -107,6 +188,10 @@ function update(p)
   for k, v in pairs(p.key) do p.keyDown[k] = v and not p.keyPrev[k] end
   callMode("update", p)
   
+  -- update the item's property-stats
+  if effectiveStatsNeedUpdate then updateEffectiveStats() end
+  if itemModified then playerext.setEquip("chest", item) end
+  
   -- handle wing directives
   local twv = callMode("wingVisibility") or 0
   if twv ~= wingVisibility then
@@ -134,6 +219,34 @@ function uninit()
       playerext.setEquip(slot, { name = "", count = 0 }) -- clear item
     end
   end
+end
+
+function updateStats()
+  local tierStats = tierBaseStats[itemutil.property(item, "/moduleSystem/tierCatalyst")]
+  stats.armor = tierStats.armor * 4
+  stats.health = tierStats.health
+  stats.energy = tierStats.energy
+  stats.damageMult = tierStats.damageMult
+  
+  statsNeedUpdate = false
+  effectiveStatsNeedUpdate = true
+end
+
+function updateEffectiveStats()  
+  item.parameters.statusEffects = {
+    "stardustlib:techoverride",
+    
+    { stat = "deployWithoutMech", amount = 1 },
+    { stat = "breathProtection", amount = 1 },
+    
+    { stat = "protection", amount = stats.armor },
+    { stat = "maxHealth", amount = stats.health - 100 },
+    { stat = "maxEnergy", amount = stats.energy - 100 },
+    { stat = "powerMultiplier", baseMultiplier = stats.damageMult },
+  }
+  
+  itemModified = true
+  effectiveStatsNeedUpdate = false
 end
 
 -- movement modes!
@@ -165,10 +278,10 @@ function modes.ground:update(p)
     end
     sb.logInfo("Moves: " .. c)
   end
-  if p.key["sprint"] then -- sprint instead of slow walk!
+  if p.key.sprint then -- sprint instead of slow walk!
     local v = 0
-    if p.key["left"] then v = v - 1 end
-    if p.key["right"] then v = v + 1 end
+    if p.key.left then v = v - 1 end
+    if p.key.right then v = v + 1 end
     if v ~= 0 then
       --mcontroller.controlApproachXVelocity(255 * v, 255)
       mcontroller.controlMove(v, true)
@@ -220,22 +333,16 @@ function modes.wing:update(p)
   local boostForce = 25*1.5
   
   local vx, vy = 0, 0  
-  if p.key["up"] then vy = vy + 1 end
-  if p.key["down"] then vy = vy - 1 end
-  if p.key["left"] then vx = vx - 1 end
-  if p.key["right"] then vx = vx + 1 end
+  if p.key.up then vy = vy + 1 end
+  if p.key.down then vy = vy - 1 end
+  if p.key.left then vx = vx - 1 end
+  if p.key.right then vx = vx + 1 end
   
   if vx ~= 0 and vy ~= 0 then
     vx = vx / sqrt2
     vy = vy / sqrt2
   elseif vx == 0 and vy == 0 then
     boostForce = boostForce * 1.2 -- greater braking force
-  end
-  
-  -- don't drag across the ground
-  if mcontroller.onGround() then
-    --mcontroller.addMomentum({0, 3})
-    --mcontroller.controlMove(vx, true)
   end
   
   if (vx ~= 0 or vy ~= 0) and p.key.sprint then
@@ -259,7 +366,7 @@ function modes.wing:update(p)
   else -- and a wing flare
     rot2 = rot2 * 1.7
   end
-  rot2 = rot2 + self.vEff * 0.5
+  rot2 = rot2 + self.vEff * 0.75
   
   -- sound
   self.thrustLoop:setVolume(wingStats.soundThrustVolume * util.clamp(vmag(mcontroller.velocity()) / 20, 0.0, 1.0))
@@ -288,8 +395,6 @@ function modes.wing:update(p)
   wingBack:translate({3 / 16, 0 / 16})
   wingBack:rotate(mcontroller.rotation() * mcontroller.facingDirection())
   wingEffDir = 1.0
-  --wingFront:scale({mcontroller.facingDirection(), 1.0}, {0.0, 0.0})
-  --wingBack:scale({mcontroller.facingDirection(), 1.0}, {0.0, 0.0})
   
   if not zeroG and zeroGPrev then setMode("ground") end
 end

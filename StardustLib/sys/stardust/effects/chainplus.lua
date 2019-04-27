@@ -7,6 +7,7 @@ function update()
   localAnimator.clearDrawables()
   localAnimator.clearLightSources()
   
+  local pRot = animationConfig.animationParameter("playerRotation") or 0
   self.chains = animationConfig.animationParameter("chains") or {}
   for _, chain in pairs(self.chains) do
     local continue = false
@@ -34,7 +35,7 @@ function update()
     
     if not continue and (not chain.targetEntityId or world.entityExists(chain.targetEntityId)) then
       -- sb.logInfo("Building drawables for chain %s", chain)
-      local startPosition = chain.startPosition or vec2.add(activeItemAnimation.ownerPosition(), activeItemAnimation.handPosition(chain.startOffset))
+      local startPosition = chain.startPosition or vec2.add(activeItemAnimation.ownerPosition(), vec2.rotate(activeItemAnimation.handPosition(chain.startOffset), pRot))
       local endPosition = chain.endPosition or vec2.add(activeItemAnimation.ownerPosition(), activeItemAnimation.handPosition(chain.endOffset))
       
       if chain.maxLength then

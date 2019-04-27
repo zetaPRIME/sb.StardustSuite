@@ -1,6 +1,7 @@
 -- stardustlib player extension
 
 require "/lib/stardust/itemutil.lua"
+require "/lib/stardust/power.item.lua"
 
 --[[setmetatable(_ENV, { __index = function(t,k)
   sb.logInfo("missing field "..k.." accessed")
@@ -177,6 +178,9 @@ patternMatch = function(match, tbl)
   return true
 end
 
+function svc.fillEquipEnergy(msg, isLocal, amount, testOnly) return power.fillEquipEnergy(amount, testOnly) end
+function svc.drawEquipEnergy(msg, isLocal, amount, testOnly) return power.drawEquipEnergy(amount, testOnly) end
+
 -- read/write equipped items, generally meant to be used synchronously (from techs, etc.)
 function svc.getEquip(msg, isLocal, slot)
   if slot == "cursor" then return player.swapSlotItem() end
@@ -249,23 +253,24 @@ function svc.restoreTech(msg, isLocal)
   svci.assertTechs()
 end
 
-local function deployAlone()
-  for _, slot in pairs{"chest", "back", "legs", "head"} do
+local function deployWithoutMech()
+  return status.statPositive("deployWithoutMech")
+  --[[for _, slot in pairs{"chest", "back", "legs", "head"} do
     local itm = player.equippedItem(slot) or { }
-    if itm.count == 1 and itemutil.property(itm, "deployAlone") then return true end
+    if itm.count == 1 and itemutil.property(itm, "deployWithoutMech") then return true end
   end
-  return false
+  return false]]
 end
 
 local _canDeploy = canDeploy
 function canDeploy()
-  if deployAlone() then return true end
+  if deployWithoutMech() then return true end
   return _canDeploy()
 end
 
 local _deploy = deploy
 function deploy()
-  if deployAlone() then
+  if deployWithoutMech() then
     -- hmm. do something to signal deployment mode to equipment
   else _deploy() end
 end

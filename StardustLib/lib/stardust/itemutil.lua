@@ -27,20 +27,21 @@ do
   end
   
   function itemutil.getCachedConfig(item)
+    local params = item.parameters or { }
     local cc = itemutil.ccache
     if item.name == "sapling" then -- because they otherwise break horribly
-      local cname = table.concat({ item.name, item.parameters.stemName or "none", item.parameters.stemHueShift or 0, item.parameters.foliageName or "none", item.parameters.foliageHueShift or 0 })
+      local cname = table.concat({ item.name, params.stemName or "none", params.stemHueShift or 0, params.foliageName or "none", params.foliageHueShift or 0 })
       local pc = cc[cname]
       if pc then return pc end
-      pc = root.itemConfig({name=item.name, parameters=item.parameters}) -- fully generic version, please
+      pc = root.itemConfig({name=item.name, parameters=params}) -- fully generic version, please
       cc[cname] = pc
       cc.__c = cc.__c + 1
       return pc
     end
-    local cname = item.name .. (item.parameters.seed or "")
+    local cname = item.name .. (params.seed or "")
     local pc = cc[cname]
     if pc then return pc end
-    pc = zpcall(root.itemConfig, {name=item.name, parameters={seed = item.parameters.seed}}) -- fully generic version, please
+    pc = zpcall(root.itemConfig, {name=item.name, parameters={seed = params.seed}}) -- fully generic version, please
       or itemutil.getCachedConfig({name="perfectlygenericitem", parameters={}}) -- no itemexception pls
     cc[cname] = pc
     cc.__c = cc.__c + 1

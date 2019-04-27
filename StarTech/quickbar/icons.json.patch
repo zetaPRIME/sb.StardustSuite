@@ -1,6 +1,7 @@
-[
+[ // -*- grammar-ext: json -*-
   // TODO: switch this back to admin once configurator exists inworld
   { "op" : "add", "path" : "/normal/-", "value" : { "label" : "Configurator", "pane" : "/startech/interface/configurator/configurator.config", "icon" : "/items/generic/other/techcard.png" } },
+  { "op" : "add", "path" : "/normal/-", "value" : { "label" : "Upgrade Nanofield (WIP)", "scriptAction" : "startech-normal:upgradeNanofield", "icon" : "/startech/items/ores/resonitebar.png" } },
   
   { "op" : "add", "path" : "/admin/-", "value" : { "label" : "Recharge worn items", "scriptAction" : "startech-admin:recharge", "icon" : "/startech/objects/power/generator.creative.png" } }
 ]

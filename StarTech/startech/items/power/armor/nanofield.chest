@@ -1,17 +1,20 @@
 { // -*- grammar-ext: json -*-
   "itemName" : "startech:nanofield",
   "shortdescription" : "Nanofield Resonator",
-  "description" : "stuff!",
+  "description" : "A high-tech alternative to a normal suit of armor. Install Module Cards to enhance its functionality. (early WIP)",
   "inventoryIcon" : "/interface/deployhover.png",
   "rarity" : "Essential",
   "maxStack" : 1,
   //"price" : 68000,
-  "category" : "chestarmour",
+  "category" : "Modular Gear",
   "tooltipKind" : "stardustlib.power.wearable",
+  "builder" : "/sys/stardust/builders/powered.lua",
   
   "techScript" : "/startech/items/power/armor/nanofield.lua",
   "statusEffects" : [
     "stardustlib:techoverride",
+    
+    { "stat" : "deployWithoutMech", "amount" : 1.0 },
     
     { "stat" : "protection", "amount" : -256 },
     { "stat" : "protectionOverride", "amount" : 0.01 },
@@ -19,7 +22,14 @@
     { "stat" : "breathProtection", "amount" : 1.0 }
   ],
   
-  "deployAlone" : true,
+  "batteryStats" : {
+    "capacity" : 320000,
+    "ioRate" : 250
+  },
+  
+  "moduleSystem" : {
+    "tierCatalyst" : 2
+  },
   
   "maleFrames" : {
     "body" : "/sys/stardust/nothing.png",

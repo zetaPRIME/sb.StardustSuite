@@ -20,6 +20,7 @@
     "startech:relay.t4",
     
     "startech:augpack",
+    "startech:nanofield",
     "startech:autosmelter",
     "startech:chargingbench"
   ],

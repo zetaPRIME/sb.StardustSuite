@@ -9,7 +9,7 @@
     (consume item drops, consume from containers within reach, consume from player inventory)
 }
 
-lib frontend for playerextender, to make things a bit more convenient (also polymorphism in case playerext needs to change)
+- lib frontend for playerextender, to make things a bit more convenient (also polymorphism in case playerext needs to change)
 see if activeitems can store data into themselves; if so, give phase drill its own battery?
 alternative, tip-glow-only effect for phase drill when cursor is too close to player
 ^ actually, just add particles to beam tip and snap them to the lens if too close
@@ -50,14 +50,25 @@ power stuffs {
     
     nanofield {
         action states?
+        fall damage immunity?
+        
+        - some temporary means of giving the thing actual armor stats
+        
+        power draw for stuff
         
         elytra {
             - tween rotation and implement rez/derez animation
             - autoswitch only when environment gravity changes
+            speed/thrust stats
         }
     }
+    
+    - fix phase drill aim compensation (beam start)
+    (...and flashlight)
 
     fluxsaber (fluxpulse-charged beamsword)
+    pulse rifle (machine gun), vector rifle (railgun)
+    fluxpulse weapons get a damage bonus when wielded in elytra in a zero-g environment
     
     intermediary pulse-battery component?
     
@@ -66,8 +77,8 @@ power stuffs {
     more smelter-type machines
     ^ chance bias stat (inverse exponent to random number)
     
-    - power categories
-    (move to stardustlib?)
+    prefix and move power categories to stardustlib
+    modular gear category
     
     eventually make transmatter network require power (after rewrite)
 }
@@ -82,7 +93,7 @@ actual configurator object instead of having it in the quickbar for non-admins
 some item transport for automation (and library to make use of input/output configuration)
 networked wire I/O ports
 
-make RCS tech obtainable; balance energy use
+# make RCS tech obtainable; balance energy use
 
 clean up tinkertable categories
 

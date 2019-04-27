@@ -102,6 +102,7 @@ function setBeam(endPoint, width, opacity)
   
 
   activeItem.setScriptedAnimationParameter("chains", {chain})
+  activeItem.setScriptedAnimationParameter("playerRotation", mcontroller.rotation())
 end
 
 function collectItems(pt, radius)
@@ -227,6 +228,7 @@ states.fire = {
         end
         processLiquidAccumulation()
         bw = bw * 0.64
+        aec = aec + damageEntities(origin, pt, dmg) * pwr.hitEnemy
         collectItems(pt, rad * 1.25 * 1.25)
       elseif fireMode == "primary" then
         if world.damageTileArea(pt, rad, "foreground", origin, "beamish", 1, 99999) then aec = aec + pwr.hitTilesPrimary end

@@ -7,6 +7,7 @@
   "description" : "An advanced fluxpulse pack that can take augments and EPP modules.\n\n^darkgray;-(install using Configurator)-^reset;",
   "shortdescription" : "Pulse Augpack",
   "tooltipKind" : "stardustlib.power.wearable",
+  "builder" : "/sys/stardust/builders/powered.lua",
   
   "learnBlueprintsOnPickup" : [
     "startech:phasedrill"
@@ -26,10 +27,6 @@
   },
   
   "configuratorLayout" : "augpack",
-  
-  "tooltipFields" : {
-    "batteryStatsLabel" : "0^gray;/^reset;320000^gray;FP^reset;"
-  },
 
   "colorOptions" : [
     // DEFAULT

@@ -263,16 +263,16 @@ local function deployWithoutMech()
 end
 
 local _canDeploy = canDeploy
-function canDeploy()
+function canDeploy(...)
   if deployWithoutMech() then return true end
-  return _canDeploy()
+  return _canDeploy(...)
 end
 
 local _deploy = deploy
-function deploy()
+function deploy(...)
   if deployWithoutMech() then
     -- hmm. do something to signal deployment mode to equipment
-  else _deploy() end
+  else _deploy(...) end
 end
 
 

@@ -84,6 +84,7 @@ local wingDefaults = {
 -- flags
 local zeroG = false
 local zeroGPrev = false
+local prevVelocity = {0, 0}
 
 local function towards(cur, target, max)
   max = math.abs(max)
@@ -177,8 +178,11 @@ function update(p)
   end
   
   zeroGPrev = zeroG
-  zeroG = world.gravity(mcontroller.position()) == 0
+  zeroG = world.gravity(mcontroller.position()) == 0 or status.statusProperty("fu_byosnogravity", false)
   
+  if status.statusProperty("fu_byosnogravity", false) and not zeroGPrev then
+    mcontroller.setVelocity(prevVelocity) -- override FU's BYOS system stopping you when it turns off gravity
+  end
   --
   p.key = p.moves p.moves = nil
   p.key.sprint = not p.key.run
@@ -187,6 +191,8 @@ function update(p)
   p.keyDown = { }
   for k, v in pairs(p.key) do p.keyDown[k] = v and not p.keyPrev[k] end
   callMode("update", p)
+  
+  prevVelocity = mcontroller.velocity()
   
   -- update the item's property-stats
   if effectiveStatsNeedUpdate then updateEffectiveStats() end

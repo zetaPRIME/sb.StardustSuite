@@ -1,7 +1,7 @@
 -
 
 ! TRADING SYSTEM {
-    basically Path of Exile's trade UI
+    part of stardustlib; basically Path of Exile's trade UI
     quickbar button puts an item in cursor; clicking on a player prompts them to accept/reject trade, via playerext
     right click dismisses without trading, and emits a sound effect to the player (might need UI shenanigans for local sfx?)
     cursor item should make it look like a trade-icon cursor, if that's achievable
@@ -43,16 +43,18 @@ lots of shiny new ship components, especially animating ones that match their st
 }
 
 power stuffs {
-    - pure conduits to route power further and more neatly
-    
-    machine that powers warp core via fluxpulse (world property "ship.fuel")
-    wireless charger
+    machine that powers warp core via fluxpulse (world property "ship.fuel", "ship.maxFuel")
+    ! wireless charger ! {
+        
+    }
     
     nanofield {
         action states?
-        fall damage immunity?
+        - fall damage immunity
+        hard-fall effect of some sort
         
         - some temporary means of giving the thing actual armor stats
+        figure out what to do for sphere mode
         
         power draw for stuff
         
@@ -62,6 +64,12 @@ power stuffs {
             speed/thrust stats
         }
     }
+    
+    phase drill: drop to 5 phase matter, add resonite crystal
+    
+    add some way to get resonite at at least durasteel tier other than prism shards
+    
+    Resonite Reactor!
     
     - fix phase drill aim compensation (beam start)
     (...and flashlight)

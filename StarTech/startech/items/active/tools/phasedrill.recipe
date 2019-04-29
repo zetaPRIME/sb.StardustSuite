@@ -3,12 +3,13 @@
     { "item" : "durasteelbar", "count" : 25 },
     { "item" : "goldbar", "count" : 15 },
     { "item" : "silverbar", "count" : 5 },
+    { "item" : "startech:resonitebar", "count" : 1 },
     { "item" : "manipulatormodule", "count" : 5 },
     { "item" : "salvagetier4", "count" : 5 },
     { "item" : "salvagearm", "count" : 10 },
     { "item" : "siliconboard", "count" : 3 },
-    { "item" : "liquidfuel", "count" : 250 },
-    { "item" : "phasematter", "count" : 25 }
+    { "item" : "phasematter", "count" : 5 },
+    { "item" : "liquidfuel", "count" : 250 }
   ],
   "output" : { "item" : "startech:phasedrill", "count" : 1 },
   "groups" : [ "startech:tinkertable", "tools", "all" ]

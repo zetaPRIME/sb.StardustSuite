@@ -115,7 +115,11 @@ function drawEnergy(amount, testOnly)
 end
 
 function modifyDamageTaken(msg, isLocal, damageRequest)
-  if damageRequest.damageType == "Damage" then
+  if damageRequest.damageSourceKind == "falling" then
+    damageRequest.damageSourceKind = "applystatus" -- cancel fall damage
+    -- TODO: do something special on hard fall
+    return damageRequest
+  elseif damageRequest.damageType == "Damage" then
     damageRequest.damageType = "IgnoresDef"
     damageRequest.damage = damageRequest.damage * (.5 ^ (stats.armor / 100))
     return damageRequest
@@ -328,6 +332,7 @@ function modes.wing:update(p)
   mcontroller.controlParameters{
     --gravityMultiplier = 0.0001,
     gravityEnabled = false,
+    liquidFriction = 0, -- full speed in water
     normalGroundFriction = 0,
     ambulatingGroundFriction = 0,
     groundForce = 0, airForce = 0, liquidForce = 0, -- disable default movement entirely

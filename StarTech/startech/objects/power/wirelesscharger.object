@@ -3,7 +3,7 @@
   "rarity" : "Legendary",
   
   "shortdescription" : "Resonite Transmitter",
-  "description" : "Charges nearby players' worn fluxpulse equipment wirelessly, in a radius of ^green;25m^reset;.",
+  "description" : "Charges nearby players' worn fluxpulse equipment wirelessly in a radius of ^green;25m^reset;.",
   "category" : "power.transport",
   "price" : 500,
   "health" : 5.73,

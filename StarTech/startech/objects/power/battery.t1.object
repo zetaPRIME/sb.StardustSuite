@@ -22,7 +22,9 @@
     "startech:augpack",
     "startech:nanofield",
     "startech:autosmelter",
-    "startech:chargingbench"
+    "startech:chargingbench",
+    "startech:wirelesscharger",
+    "startech:ftlplug"
   ],
   
   "iconBaseImage" : "battery.frame.png",

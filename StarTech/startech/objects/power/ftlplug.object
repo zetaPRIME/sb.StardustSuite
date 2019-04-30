@@ -1,0 +1,31 @@
+{ // -*- grammar-ext: json -*-
+  "objectName" : "startech:ftlplug",
+  "rarity" : "Legendary",
+  
+  "shortdescription" : "Erchius Resonator",
+  "description" : "Fuels a ship's FTL drive with fluxpulse. ^yellow;Power hungry.^reset;",
+  "category" : "power.transport",
+  "price" : 500,
+  "health" : 5.73,
+  
+  "inventoryIcon" : [
+    { "image" : "ftlplug.png" }
+  ],
+  
+  "orientations" : [
+    {
+      "image" : "ftlplug.png",
+      "imagePosition" : [-8, -8],
+
+      "spaces" : [ [0, 0], [-1, 0], [1, 0], [0, -1], [0, 1] ],
+      "anchors" : [ "background" ]
+    }
+  ],
+  
+  "scripts" : [ "ftlplug.lua" ],
+  "scriptDelta" : 0,
+  
+  "conversionRate" : 5000, // FP per fuel unit
+  
+  "inputNodes" : [ [0, 0] ]
+}

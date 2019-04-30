@@ -1,0 +1,35 @@
+{ // -*- grammar-ext: json -*-
+  "objectName" : "startech:wirelesscharger",
+  "rarity" : "Legendary",
+  
+  "shortdescription" : "Resonite Transmitter",
+  "description" : "Charges nearby players' worn fluxpulse equipment wirelessly, in a radius of ^green;25m^reset;.",
+  "category" : "power.transport",
+  "price" : 500,
+  "health" : 5.73,
+  
+  "inventoryIcon" : [
+    { "image" : "wirelesscharger.png" }
+  ],
+  
+  "orientations" : [
+    {
+      "image" : "wirelesscharger.png",
+      "imagePosition" : [-8, -8],
+
+      "spaces" : [ [0, 0], [-1, 0], [1, 0], [0, -1], [0, 1] ],
+      "anchors" : [ "background" ]
+    }
+  ],
+  
+  "scripts" : [ "wirelesscharger.lua" ],
+  "scriptDelta" : 5,
+  
+  "batteryStats" : {
+    "capacity" : 25000,
+    "ioRate" : 1000
+  },
+  "tileRange" : 50,
+  
+  "inputNodes" : [ [0, 0] ]
+}

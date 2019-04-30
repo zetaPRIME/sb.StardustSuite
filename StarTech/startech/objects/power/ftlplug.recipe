@@ -1,0 +1,12 @@
+{ // -*- grammar-ext: json -*-
+  "input" : [
+    { "item" : "durasteelbar", "count" : 15 },
+    { "item" : "silverbar", "count" : 5 },
+    { "item" : "startech:resonitebar", "count" : 1 },
+    { "item" : "supermatter", "count" : 5 },
+    { "item" : "liquidfuel", "count" : 250 }
+  ],
+  "output" : { "item" : "startech:ftlplug", "count" : 1 },
+  "duration" : 1,
+  "groups" : [ "startech:tinkertable", "power", "all" ]
+}

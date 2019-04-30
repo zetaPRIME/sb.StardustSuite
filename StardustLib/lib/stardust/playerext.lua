@@ -43,6 +43,7 @@ if not playerext then
     
     "fillEquipEnergy",
     "drawEquipEnergy",
+    "fillEquipEnergyAsync",
     
     "getTechOverride",
     "overrideTech",

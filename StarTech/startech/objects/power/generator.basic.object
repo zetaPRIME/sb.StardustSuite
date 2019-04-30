@@ -52,7 +52,7 @@
       "burnTime" : 250,
       "powerPerTick" : 10
     },
-    "darkwoodmaterial" : { // planks are 1/5 the material as logs, but burn at 1.5x heat - 750FP
+    "darkwoodmaterial" : { // planks are 1/5 the material of logs, but burn at 1.5x heat - 750FP
       "burnTime" : 50,
       "powerPerTick" : 15
     },
@@ -60,6 +60,9 @@
       "burnTime" : 250,
       "powerPerTick" : 5
     },
+    
+    "liquidoil" : { "burnTime" : 25, "powerPerTick" : 25 }, // temporary until liquid gen, but f a s t e
+    "corefragmentore" : { "burnTime" : 250, "powerPerTick" : 30 }, // also maybe temporary pending another generator?
     
     // junk burnables
     "rottenfood" : { "burnTime" : 100, "powerPerTick" : 11 }, // decent fuel for being otherwise worthless, I guess

@@ -10,6 +10,10 @@
   "tooltipKind" : "stardustlib.power.wearable",
   "builder" : "/sys/stardust/builders/powered.lua",
   
+  "learnBlueprintsOnPickup" : [
+    "startech:phasedrill"
+  ],
+  
   "techScript" : "/startech/items/power/armor/nanofield.lua",
   "statusEffects" : [
     "stardustlib:techoverride",

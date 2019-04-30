@@ -229,16 +229,16 @@ states.fire = {
         processLiquidAccumulation()
         bw = bw * 0.64
         aec = aec + damageEntities(origin, pt, dmg) * pwr.hitEnemy
-        collectItems(pt, rad * 1.25 * 1.25)
+        collectItems(pt, rad * 1.25 + 2)
       elseif fireMode == "primary" then
         if world.damageTileArea(pt, rad, "foreground", origin, "beamish", 1, 99999) then aec = aec + pwr.hitTilesPrimary end
         aec = aec + damageEntities(origin, pt, dmg) * pwr.hitEnemy
-        collectItems(pt, rad * 1.25)
+        collectItems(pt, rad + 2)
       else
         if world.damageTileArea(pt, rad * 0.64, "foreground", origin, "beamish", 1, 99999) then aec = aec + pwr.hitTilesSecondary end
         if world.damageTileArea(pt, rad * 0.64, "background", origin, "beamish", 1, 99999) then aec = aec + pwr.hitTilesSecondary end
         aec = aec + damageEntities(origin, pt, dmg) * pwr.hitEnemy
-        collectItems(pt, rad * 0.64 * 1.25)
+        collectItems(pt, rad * 0.64 + 2)
       end
     else enterState("release") end
     

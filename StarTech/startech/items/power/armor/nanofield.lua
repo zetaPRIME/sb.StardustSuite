@@ -58,10 +58,7 @@ local stats = {
   damageMult = 1.0,
 }
 
-local modes = {
-  ground = { },
-  wing = { }
-}
+local modes = { }
 local currentMode = { }
 local modeState = { }
 
@@ -74,12 +71,21 @@ local wingEffDir = 1.0
 local wingStats
 local wingDefaults = {
   energyColor = "ff0354",
+  baseRotation = 0.0,
   soundActivate = "/sfx/objects/ancientlightplatform_on.ogg",
   soundDeactivate = "/sfx/objects/ancientlightplatform_off.ogg",
   soundThrust = "/sfx/npc/boss/kluexboss_vortex_windy.ogg",--"/sfx/objects/steel_elevator_loop.ogg",--"/sfx/tech/tech_sonicsphere_charge1.ogg",
-  soundThrustVolume = 1,
+  soundThrustVolume = 1.0,
+  soundThrustPitch = 1.0,
   soundThrustBoostPitch = 1.22,
 }
+--[[ testing: Poptra
+wingDefaults.baseRotation = 0.3
+wingDefaults.soundThrust = "nyan.ogg"
+wingDefaults.soundThrustVolume = 0.45
+wingDefaults.soundThrustPitch = 0.9
+wingDefaults.soundThrustBoostPitch = 1.0
+--]]
 
 -- flags
 local zeroG = false
@@ -116,10 +122,25 @@ end
 
 function modifyDamageTaken(msg, isLocal, damageRequest)
   if damageRequest.damageSourceKind == "falling" then
+    if damageRequest.damage >= 50 then -- WIP: do something special on hard fall
+      local vol = 1.0
+      sound.play("/sfx/melee/hammer_hit_ground1.ogg", vol * 1.5, 1) -- impact low
+      sound.play("/sfx/gun/grenadeblast_small_electric2.ogg", vol * 1.125, 0.75) -- impact mid
+      sound.play("/sfx/objects/essencechest_open1.ogg", vol * 0.75, 1) -- impact high
+      -- zoops
+      --sound.play("/sfx/gun/erchiuseyebeam_start.ogg", vol * 1.5, 0.333)
+      sound.play("/sfx/gun/erchiuseyebeam_start.ogg", vol * 1.0, 1)
+      callMode("hardFall")
+    else -- only a bit of a fall
+      --playerext.message("dmg: " .. damageRequest.damage)
+      local vol = 0.75
+      sound.play("/sfx/melee/hammer_hit_ground1.ogg", vol * 1.15, 1) -- impact low
+      sound.play("/sfx/gun/grenadeblast_small_electric2.ogg", vol * 0.5, 0.75) -- impact mid
+      sound.play("/sfx/objects/essencechest_open1.ogg", vol * 0.75, 2) -- impact high
+    end
     damageRequest.damageSourceKind = "applystatus" -- cancel fall damage
-    -- TODO: do something special on hard fall
     return damageRequest
-  elseif damageRequest.damageType == "Damage" then
+  elseif damageRequest.damageType == "Damage" then -- normal damage, apply DR
     damageRequest.damageType = "IgnoresDef"
     damageRequest.damage = damageRequest.damage * (.5 ^ (stats.armor / 100))
     return damageRequest
@@ -270,6 +291,7 @@ end
 -- ground mode --
 -----------------
 
+modes.ground = { }
 function modes.ground:init()
   tech.setParentState()
   mcontroller.setRotation(0)
@@ -278,10 +300,14 @@ end
 
 function modes.ground:update(p)
   --
-  if p.keyDown["special1"] then
-    setMode("wing", true)
+  if p.keyDown.special1 then
+    if p.key.down and not zeroG then
+      setMode("sphere")
+    else
+      setMode("wing", true)
+    end
   end
-  if p.keyDown["shutup"] then
+  if p.keyDown.shutup then
     local c = ""
     for k,v in pairs(p.key) do
       if v then c = c .. k .. ", " end
@@ -298,15 +324,99 @@ function modes.ground:update(p)
       mcontroller.controlModifiers({ speedModifier = 1.75 })
       --tech.setParentState("running")
     end
+    if p.keyDown.jump and mcontroller.onGround() then -- slight bunnyhop effect
+      mcontroller.setXVelocity(mcontroller.velocity()[1] * 1.5)
+    end
   end
   
   if zeroG and not zeroGPrev then setMode("wing") end
+end
+
+function modes.ground:hardFall()
+  setMode("hardFall")
+end
+
+-- fall recovery
+modes.hardFall = { }
+function modes.hardFall:init()
+  self.time = 0
+  self.startingVelocity = prevVelocity[1]
+end
+
+function modes.hardFall:uninit()
+  mcontroller.clearControls()
+  tech.setParentState()
+end
+
+function modes.hardFall:update(p)
+  mcontroller.controlModifiers({ speedModifier = 0, normalGroundFriction = 0, ambulatingGroundFriction = 0 }) -- just a tiny bit of slide
+  mcontroller.setXVelocity(prevVelocity[1] * (1.0 - 5.0 * p.dt))
+  tech.setParentState("duck")
+  self.time = self.time + p.dt
+  if self.time >= 0.333 or not mcontroller.onGround() then
+    setMode("ground")
+  elseif p.keyDown.jump then
+    mcontroller.controlJump(5)
+    mcontroller.setVelocity({self.startingVelocity * 2.5, -5})
+  end
+end
+
+-----------------
+-- sphere mode --
+-----------------
+
+modes.sphere = { }
+function modes.sphere:init()
+  self.collisionPoly = { {-0.85, -0.45}, {-0.45, -0.85}, {0.45, -0.85}, {0.85, -0.45}, {0.85, 0.45}, {0.45, 0.85}, {-0.45, 0.85}, {-0.85, 0.45} }
+  mcontroller.controlParameters({ collisionPoly = self.collisionPoly })
+  mcontroller.setYPosition(mcontroller.position()[2]-(29/16))
+  
+  tech.setToolUsageSuppressed(true)
+  tech.setParentHidden(true)
+  self.ball = Prop.new(0)
+  self.ball:setImage("/tech/distortionsphere/distortionsphere.png", "/tech/distortionsphere/distortionsphereglow.png")
+  self.ball:setFrame(0)
+  self.rot = 0.5
+  sound.play("/sfx/tech/tech_sphere_transform.ogg")
+end
+
+function modes.sphere:uninit()
+  self.ball:discard()
+  tech.setParentHidden(false)
+  tech.setToolUsageSuppressed(false)
+  sound.play("/sfx/tech/tech_sphere_transform.ogg")
+  mcontroller.setYPosition(mcontroller.position()[2]+(29/16))
+  mcontroller.clearControls()
+end
+
+function modes.sphere:update(p)
+  if p.keyDown.special1 then -- unmorph
+    return setMode("ground")
+  end
+  mcontroller.clearControls()
+  mcontroller.controlParameters({
+    collisionPoly = self.collisionPoly,
+    groundForce = 450,
+    runSpeed = 25, walkSpeed = 25,
+    normalGroundFriction = 0.75,
+    ambulatingGroundFriction = 0.2,
+    slopeSlidingFactor = 3.0,
+  })
+  self.rot = self.rot + mcontroller.xVelocity() * p.dt * -2.0
+  while self.rot < 0 do self.rot = self.rot + 8 end
+  while self.rot >= 8 do self.rot = self.rot - 8 end
+  self.ball:setFrame(math.floor(self.rot))
+end
+
+function modes.sphere:hardFall()
+  mcontroller.setXVelocity(prevVelocity[1] * 2)
 end
 
 -----------------
 -- elytra mode --
 -----------------
 
+modes.wing = { }
 function modes.wing:init(_, _, summoned)
   self.hEff = 0
   self.vEff = 0
@@ -383,9 +493,9 @@ function modes.wing:update(p)
   self.thrustLoop:setVolume(wingStats.soundThrustVolume * util.clamp(vmag(mcontroller.velocity()) / 20, 0.0, 1.0))
   local pitch = vmag(mcontroller.velocity())
   if pitch <= 25 then
-    pitch = util.lerp(util.clamp(pitch / 20, 0.0, 1.0), 0.25, 1.0)
+    pitch = util.lerp(util.clamp(pitch / 20, 0.0, wingStats.soundThrustPitch), 0.25, 1.0)
   else
-    pitch = util.lerp(util.clamp((pitch - 25) / (45-25), 0.0, 1.0), 1.0, wingStats.soundThrustBoostPitch)
+    pitch = util.lerp(util.clamp((pitch - 25) / (45-25), 0.0, 1.0), wingStats.soundThrustPitch, wingStats.soundThrustBoostPitch)
   end
   self.thrustLoop:setPitch(pitch)
   
@@ -393,6 +503,10 @@ function modes.wing:update(p)
   local offset = {-5 / 16, -15 / 16}
   wingFront:resetTransform()
   wingBack:resetTransform()
+  
+  -- base rotation first
+  wingFront:rotate(wingStats.baseRotation)
+  wingBack:rotate(wingStats.baseRotation)
   
   -- rotate wings relative to attachment
   wingFront:rotate(rot2 * math.pi * .14)

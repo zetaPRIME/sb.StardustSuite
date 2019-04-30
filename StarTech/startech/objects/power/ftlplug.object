@@ -25,7 +25,7 @@
   "scripts" : [ "ftlplug.lua" ],
   "scriptDelta" : 0,
   
-  "conversionRate" : 5000, // FP per fuel unit
+  "conversionRate" : 1000, // FP per fuel unit
   
   "inputNodes" : [ [0, 0] ]
 }

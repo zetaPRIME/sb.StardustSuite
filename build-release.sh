@@ -73,7 +73,7 @@ function pack {
     # get the easy stuff out of the way
     printf "\"workshopitem\"{\"appid\"\"211820\"\"publishedfileid\"\"$cid\"\"title\"\"$title\"\"contentfolder\"\"$(realpath ./_release/tmp/upload)\"" >> $vdf
     # add preview image if present
-    if [ -f "./$1/_previewimage" ] ; then printf "\"previewfile\"\"$(reaplath ./$1/_previewimage)\"" >> $vdf ; fi
+    if [ -f "./$1/_previewimage" ] ; then printf "\"previewfile\"\"$(realpath ./$1/_previewimage)\"" >> $vdf ; fi
     # handle hidden parameter
     if jq -re '.hidden' $md > /dev/null ; then printf "\"visibility\"\"2\"" >> $vdf ; else printf "\"visibility\"\"0\"" >> $vdf ; fi
     # description!

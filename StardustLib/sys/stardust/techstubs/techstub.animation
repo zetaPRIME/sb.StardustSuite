@@ -621,7 +621,7 @@
         "properties" : {
           "transformationGroups" : [ "layer0prop1" ],
           "image" : "<partImage>:<animFrame><directives>",
-          "zLevel" : 1
+          "zLevel" : 0.010
         }
       },
       "layer0prop1f" : {
@@ -629,14 +629,14 @@
           "transformationGroups" : [ "layer0prop1" ],
           "image" : "<partImage>:<animFrame><directives>",
           "fullbright" : true,
-          "zLevel" : 1
+          "zLevel" : 0.011
         }
       },
       "layer0prop2" : {
         "properties" : {
           "transformationGroups" : [ "layer0prop2" ],
           "image" : "<partImage>:<animFrame><directives>",
-          "zLevel" : 1
+          "zLevel" : 0.020
         }
       },
       "layer0prop2f" : {
@@ -644,14 +644,14 @@
           "transformationGroups" : [ "layer0prop2" ],
           "image" : "<partImage>:<animFrame><directives>",
           "fullbright" : true,
-          "zLevel" : 1
+          "zLevel" : 0.021
         }
       },
       "layer0prop3" : {
         "properties" : {
           "transformationGroups" : [ "layer0prop3" ],
           "image" : "<partImage>:<animFrame><directives>",
-          "zLevel" : 1
+          "zLevel" : 0.030
         }
       },
       "layer0prop3f" : {
@@ -659,14 +659,14 @@
           "transformationGroups" : [ "layer0prop3" ],
           "image" : "<partImage>:<animFrame><directives>",
           "fullbright" : true,
-          "zLevel" : 1
+          "zLevel" : 0.031
         }
       },
       "layer0prop4" : {
         "properties" : {
           "transformationGroups" : [ "layer0prop4" ],
           "image" : "<partImage>:<animFrame><directives>",
-          "zLevel" : 1
+          "zLevel" : 0.040
         }
       },
       "layer0prop4f" : {
@@ -674,14 +674,14 @@
           "transformationGroups" : [ "layer0prop4" ],
           "image" : "<partImage>:<animFrame><directives>",
           "fullbright" : true,
-          "zLevel" : 1
+          "zLevel" : 0.041
         }
       },
       "layer0prop5" : {
         "properties" : {
           "transformationGroups" : [ "layer0prop5" ],
           "image" : "<partImage>:<animFrame><directives>",
-          "zLevel" : 1
+          "zLevel" : 0.050
         }
       },
       "layer0prop5f" : {
@@ -689,14 +689,14 @@
           "transformationGroups" : [ "layer0prop5" ],
           "image" : "<partImage>:<animFrame><directives>",
           "fullbright" : true,
-          "zLevel" : 1
+          "zLevel" : 0.051
         }
       },
       "layer0prop6" : {
         "properties" : {
           "transformationGroups" : [ "layer0prop6" ],
           "image" : "<partImage>:<animFrame><directives>",
-          "zLevel" : 1
+          "zLevel" : 0.060
         }
       },
       "layer0prop6f" : {
@@ -704,14 +704,14 @@
           "transformationGroups" : [ "layer0prop6" ],
           "image" : "<partImage>:<animFrame><directives>",
           "fullbright" : true,
-          "zLevel" : 1
+          "zLevel" : 0.061
         }
       },
       "layer0prop7" : {
         "properties" : {
           "transformationGroups" : [ "layer0prop7" ],
           "image" : "<partImage>:<animFrame><directives>",
-          "zLevel" : 1
+          "zLevel" : 0.070
         }
       },
       "layer0prop7f" : {
@@ -719,14 +719,14 @@
           "transformationGroups" : [ "layer0prop7" ],
           "image" : "<partImage>:<animFrame><directives>",
           "fullbright" : true,
-          "zLevel" : 1
+          "zLevel" : 0.071
         }
       },
       "layer0prop8" : {
         "properties" : {
           "transformationGroups" : [ "layer0prop8" ],
           "image" : "<partImage>:<animFrame><directives>",
-          "zLevel" : 1
+          "zLevel" : 0.080
         }
       },
       "layer0prop8f" : {
@@ -734,7 +734,7 @@
           "transformationGroups" : [ "layer0prop8" ],
           "image" : "<partImage>:<animFrame><directives>",
           "fullbright" : true,
-          "zLevel" : 1
+          "zLevel" : 0.081
         }
       },
       
@@ -742,7 +742,7 @@
         "properties" : {
           "transformationGroups" : [ "layer1prop1" ],
           "image" : "<partImage>:<animFrame><directives>",
-          "zLevel" : 1
+          "zLevel" : 1.010
         }
       },
       "layer1prop1f" : {
@@ -750,14 +750,14 @@
           "transformationGroups" : [ "layer1prop1" ],
           "image" : "<partImage>:<animFrame><directives>",
           "fullbright" : true,
-          "zLevel" : 1
+          "zLevel" : 1.011
         }
       },
       "layer1prop2" : {
         "properties" : {
           "transformationGroups" : [ "layer1prop2" ],
           "image" : "<partImage>:<animFrame><directives>",
-          "zLevel" : 1
+          "zLevel" : 1.020
         }
       },
       "layer1prop2f" : {
@@ -765,14 +765,14 @@
           "transformationGroups" : [ "layer1prop2" ],
           "image" : "<partImage>:<animFrame><directives>",
           "fullbright" : true,
-          "zLevel" : 1
+          "zLevel" : 1.021
         }
       },
       "layer1prop3" : {
         "properties" : {
           "transformationGroups" : [ "layer1prop3" ],
           "image" : "<partImage>:<animFrame><directives>",
-          "zLevel" : 1
+          "zLevel" : 1.030
         }
       },
       "layer1prop3f" : {
@@ -780,14 +780,14 @@
           "transformationGroups" : [ "layer1prop3" ],
           "image" : "<partImage>:<animFrame><directives>",
           "fullbright" : true,
-          "zLevel" : 1
+          "zLevel" : 1.031
         }
       },
       "layer1prop4" : {
         "properties" : {
           "transformationGroups" : [ "layer1prop4" ],
           "image" : "<partImage>:<animFrame><directives>",
-          "zLevel" : 1
+          "zLevel" : 1.040
         }
       },
       "layer1prop4f" : {
@@ -795,14 +795,14 @@
           "transformationGroups" : [ "layer1prop4" ],
           "image" : "<partImage>:<animFrame><directives>",
           "fullbright" : true,
-          "zLevel" : 1
+          "zLevel" : 1.041
         }
       },
       "layer1prop5" : {
         "properties" : {
           "transformationGroups" : [ "layer1prop5" ],
           "image" : "<partImage>:<animFrame><directives>",
-          "zLevel" : 1
+          "zLevel" : 1.050
         }
       },
       "layer1prop5f" : {
@@ -810,14 +810,14 @@
           "transformationGroups" : [ "layer1prop5" ],
           "image" : "<partImage>:<animFrame><directives>",
           "fullbright" : true,
-          "zLevel" : 1
+          "zLevel" : 1.051
         }
       },
       "layer1prop6" : {
         "properties" : {
           "transformationGroups" : [ "layer1prop6" ],
           "image" : "<partImage>:<animFrame><directives>",
-          "zLevel" : 1
+          "zLevel" : 1.060
         }
       },
       "layer1prop6f" : {
@@ -825,14 +825,14 @@
           "transformationGroups" : [ "layer1prop6" ],
           "image" : "<partImage>:<animFrame><directives>",
           "fullbright" : true,
-          "zLevel" : 1
+          "zLevel" : 1.061
         }
       },
       "layer1prop7" : {
         "properties" : {
           "transformationGroups" : [ "layer1prop7" ],
           "image" : "<partImage>:<animFrame><directives>",
-          "zLevel" : 1
+          "zLevel" : 1.070
         }
       },
       "layer1prop7f" : {
@@ -840,14 +840,14 @@
           "transformationGroups" : [ "layer1prop7" ],
           "image" : "<partImage>:<animFrame><directives>",
           "fullbright" : true,
-          "zLevel" : 1
+          "zLevel" : 1.071
         }
       },
       "layer1prop8" : {
         "properties" : {
           "transformationGroups" : [ "layer1prop8" ],
           "image" : "<partImage>:<animFrame><directives>",
-          "zLevel" : 1
+          "zLevel" : 1.080
         }
       },
       "layer1prop8f" : {
@@ -855,7 +855,7 @@
           "transformationGroups" : [ "layer1prop8" ],
           "image" : "<partImage>:<animFrame><directives>",
           "fullbright" : true,
-          "zLevel" : 1
+          "zLevel" : 1.081
         }
       },
       
@@ -863,7 +863,7 @@
         "properties" : {
           "transformationGroups" : [ "layer2prop1" ],
           "image" : "<partImage>:<animFrame><directives>",
-          "zLevel" : 2
+          "zLevel" : 2.010
         }
       },
       "layer2prop1f" : {
@@ -871,14 +871,14 @@
           "transformationGroups" : [ "layer2prop1" ],
           "image" : "<partImage>:<animFrame><directives>",
           "fullbright" : true,
-          "zLevel" : 2
+          "zLevel" : 2.011
         }
       },
       "layer2prop2" : {
         "properties" : {
           "transformationGroups" : [ "layer2prop2" ],
           "image" : "<partImage>:<animFrame><directives>",
-          "zLevel" : 2
+          "zLevel" : 2.020
         }
       },
       "layer2prop2f" : {
@@ -886,14 +886,14 @@
           "transformationGroups" : [ "layer2prop2" ],
           "image" : "<partImage>:<animFrame><directives>",
           "fullbright" : true,
-          "zLevel" : 2
+          "zLevel" : 2.021
         }
       },
       "layer2prop3" : {
         "properties" : {
           "transformationGroups" : [ "layer2prop3" ],
           "image" : "<partImage>:<animFrame><directives>",
-          "zLevel" : 2
+          "zLevel" : 2.030
         }
       },
       "layer2prop3f" : {
@@ -901,14 +901,14 @@
           "transformationGroups" : [ "layer2prop3" ],
           "image" : "<partImage>:<animFrame><directives>",
           "fullbright" : true,
-          "zLevel" : 2
+          "zLevel" : 2.031
         }
       },
       "layer2prop4" : {
         "properties" : {
           "transformationGroups" : [ "layer2prop4" ],
           "image" : "<partImage>:<animFrame><directives>",
-          "zLevel" : 2
+          "zLevel" : 2.040
         }
       },
       "layer2prop4f" : {
@@ -916,14 +916,14 @@
           "transformationGroups" : [ "layer2prop4" ],
           "image" : "<partImage>:<animFrame><directives>",
           "fullbright" : true,
-          "zLevel" : 2
+          "zLevel" : 2.041
         }
       },
       "layer2prop5" : {
         "properties" : {
           "transformationGroups" : [ "layer2prop5" ],
           "image" : "<partImage>:<animFrame><directives>",
-          "zLevel" : 2
+          "zLevel" : 2.050
         }
       },
       "layer2prop5f" : {
@@ -931,14 +931,14 @@
           "transformationGroups" : [ "layer2prop5" ],
           "image" : "<partImage>:<animFrame><directives>",
           "fullbright" : true,
-          "zLevel" : 2
+          "zLevel" : 2.051
         }
       },
       "layer2prop6" : {
         "properties" : {
           "transformationGroups" : [ "layer2prop6" ],
           "image" : "<partImage>:<animFrame><directives>",
-          "zLevel" : 2
+          "zLevel" : 2.060
         }
       },
       "layer2prop6f" : {
@@ -946,14 +946,14 @@
           "transformationGroups" : [ "layer2prop6" ],
           "image" : "<partImage>:<animFrame><directives>",
           "fullbright" : true,
-          "zLevel" : 2
+          "zLevel" : 2.061
         }
       },
       "layer2prop7" : {
         "properties" : {
           "transformationGroups" : [ "layer2prop7" ],
           "image" : "<partImage>:<animFrame><directives>",
-          "zLevel" : 2
+          "zLevel" : 2.070
         }
       },
       "layer2prop7f" : {
@@ -961,14 +961,14 @@
           "transformationGroups" : [ "layer2prop7" ],
           "image" : "<partImage>:<animFrame><directives>",
           "fullbright" : true,
-          "zLevel" : 2
+          "zLevel" : 2.071
         }
       },
       "layer2prop8" : {
         "properties" : {
           "transformationGroups" : [ "layer2prop8" ],
           "image" : "<partImage>:<animFrame><directives>",
-          "zLevel" : 2
+          "zLevel" : 2.080
         }
       },
       "layer2prop8f" : {
@@ -976,7 +976,7 @@
           "transformationGroups" : [ "layer2prop8" ],
           "image" : "<partImage>:<animFrame><directives>",
           "fullbright" : true,
-          "zLevel" : 2
+          "zLevel" : 2.081
         }
       },
       
@@ -984,7 +984,7 @@
         "properties" : {
           "transformationGroups" : [ "layer3prop1" ],
           "image" : "<partImage>:<animFrame><directives>",
-          "zLevel" : 3
+          "zLevel" : 3.010
         }
       },
       "layer3prop1f" : {
@@ -992,14 +992,14 @@
           "transformationGroups" : [ "layer3prop1" ],
           "image" : "<partImage>:<animFrame><directives>",
           "fullbright" : true,
-          "zLevel" : 3
+          "zLevel" : 3.011
         }
       },
       "layer3prop2" : {
         "properties" : {
           "transformationGroups" : [ "layer3prop2" ],
           "image" : "<partImage>:<animFrame><directives>",
-          "zLevel" : 3
+          "zLevel" : 3.020
         }
       },
       "layer3prop2f" : {
@@ -1007,14 +1007,14 @@
           "transformationGroups" : [ "layer3prop2" ],
           "image" : "<partImage>:<animFrame><directives>",
           "fullbright" : true,
-          "zLevel" : 3
+          "zLevel" : 3.021
         }
       },
       "layer3prop3" : {
         "properties" : {
           "transformationGroups" : [ "layer3prop3" ],
           "image" : "<partImage>:<animFrame><directives>",
-          "zLevel" : 3
+          "zLevel" : 3.030
         }
       },
       "layer3prop3f" : {
@@ -1022,14 +1022,14 @@
           "transformationGroups" : [ "layer3prop3" ],
           "image" : "<partImage>:<animFrame><directives>",
           "fullbright" : true,
-          "zLevel" : 3
+          "zLevel" : 3.031
         }
       },
       "layer3prop4" : {
         "properties" : {
           "transformationGroups" : [ "layer3prop4" ],
           "image" : "<partImage>:<animFrame><directives>",
-          "zLevel" : 3
+          "zLevel" : 3.040
         }
       },
       "layer3prop4f" : {
@@ -1037,14 +1037,14 @@
           "transformationGroups" : [ "layer3prop4" ],
           "image" : "<partImage>:<animFrame><directives>",
           "fullbright" : true,
-          "zLevel" : 3
+          "zLevel" : 3.041
         }
       },
       "layer3prop5" : {
         "properties" : {
           "transformationGroups" : [ "layer3prop5" ],
           "image" : "<partImage>:<animFrame><directives>",
-          "zLevel" : 3
+          "zLevel" : 3.050
         }
       },
       "layer3prop5f" : {
@@ -1052,14 +1052,14 @@
           "transformationGroups" : [ "layer3prop5" ],
           "image" : "<partImage>:<animFrame><directives>",
           "fullbright" : true,
-          "zLevel" : 3
+          "zLevel" : 3.051
         }
       },
       "layer3prop6" : {
         "properties" : {
           "transformationGroups" : [ "layer3prop6" ],
           "image" : "<partImage>:<animFrame><directives>",
-          "zLevel" : 3
+          "zLevel" : 3.060
         }
       },
       "layer3prop6f" : {
@@ -1067,14 +1067,14 @@
           "transformationGroups" : [ "layer3prop6" ],
           "image" : "<partImage>:<animFrame><directives>",
           "fullbright" : true,
-          "zLevel" : 3
+          "zLevel" : 3.061
         }
       },
       "layer3prop7" : {
         "properties" : {
           "transformationGroups" : [ "layer3prop7" ],
           "image" : "<partImage>:<animFrame><directives>",
-          "zLevel" : 3
+          "zLevel" : 3.070
         }
       },
       "layer3prop7f" : {
@@ -1082,14 +1082,14 @@
           "transformationGroups" : [ "layer3prop7" ],
           "image" : "<partImage>:<animFrame><directives>",
           "fullbright" : true,
-          "zLevel" : 3
+          "zLevel" : 3.071
         }
       },
       "layer3prop8" : {
         "properties" : {
           "transformationGroups" : [ "layer3prop8" ],
           "image" : "<partImage>:<animFrame><directives>",
-          "zLevel" : 3
+          "zLevel" : 3.080
         }
       },
       "layer3prop8f" : {
@@ -1097,7 +1097,7 @@
           "transformationGroups" : [ "layer3prop8" ],
           "image" : "<partImage>:<animFrame><directives>",
           "fullbright" : true,
-          "zLevel" : 3
+          "zLevel" : 3.081
         }
       },
       
@@ -1105,7 +1105,7 @@
         "properties" : {
           "transformationGroups" : [ "layer4prop1" ],
           "image" : "<partImage>:<animFrame><directives>",
-          "zLevel" : 4
+          "zLevel" : 4.010
         }
       },
       "layer4prop1f" : {
@@ -1113,14 +1113,14 @@
           "transformationGroups" : [ "layer4prop1" ],
           "image" : "<partImage>:<animFrame><directives>",
           "fullbright" : true,
-          "zLevel" : 4
+          "zLevel" : 4.011
         }
       },
       "layer4prop2" : {
         "properties" : {
           "transformationGroups" : [ "layer4prop2" ],
           "image" : "<partImage>:<animFrame><directives>",
-          "zLevel" : 4
+          "zLevel" : 4.020
         }
       },
       "layer4prop2f" : {
@@ -1128,14 +1128,14 @@
           "transformationGroups" : [ "layer4prop2" ],
           "image" : "<partImage>:<animFrame><directives>",
           "fullbright" : true,
-          "zLevel" : 4
+          "zLevel" : 4.021
         }
       },
       "layer4prop3" : {
         "properties" : {
           "transformationGroups" : [ "layer4prop3" ],
           "image" : "<partImage>:<animFrame><directives>",
-          "zLevel" : 4
+          "zLevel" : 4.030
         }
       },
       "layer4prop3f" : {
@@ -1143,14 +1143,14 @@
           "transformationGroups" : [ "layer4prop3" ],
           "image" : "<partImage>:<animFrame><directives>",
           "fullbright" : true,
-          "zLevel" : 4
+          "zLevel" : 4.031
         }
       },
       "layer4prop4" : {
         "properties" : {
           "transformationGroups" : [ "layer4prop4" ],
           "image" : "<partImage>:<animFrame><directives>",
-          "zLevel" : 4
+          "zLevel" : 4.040
         }
       },
       "layer4prop4f" : {
@@ -1158,14 +1158,14 @@
           "transformationGroups" : [ "layer4prop4" ],
           "image" : "<partImage>:<animFrame><directives>",
           "fullbright" : true,
-          "zLevel" : 4
+          "zLevel" : 4.041
         }
       },
       "layer4prop5" : {
         "properties" : {
           "transformationGroups" : [ "layer4prop5" ],
           "image" : "<partImage>:<animFrame><directives>",
-          "zLevel" : 4
+          "zLevel" : 4.050
         }
       },
       "layer4prop5f" : {
@@ -1173,14 +1173,14 @@
           "transformationGroups" : [ "layer4prop5" ],
           "image" : "<partImage>:<animFrame><directives>",
           "fullbright" : true,
-          "zLevel" : 4
+          "zLevel" : 4.051
         }
       },
       "layer4prop6" : {
         "properties" : {
           "transformationGroups" : [ "layer4prop6" ],
           "image" : "<partImage>:<animFrame><directives>",
-          "zLevel" : 4
+          "zLevel" : 4.060
         }
       },
       "layer4prop6f" : {
@@ -1188,14 +1188,14 @@
           "transformationGroups" : [ "layer4prop6" ],
           "image" : "<partImage>:<animFrame><directives>",
           "fullbright" : true,
-          "zLevel" : 4
+          "zLevel" : 4.061
         }
       },
       "layer4prop7" : {
         "properties" : {
           "transformationGroups" : [ "layer4prop7" ],
           "image" : "<partImage>:<animFrame><directives>",
-          "zLevel" : 4
+          "zLevel" : 4.070
         }
       },
       "layer4prop7f" : {
@@ -1203,14 +1203,14 @@
           "transformationGroups" : [ "layer4prop7" ],
           "image" : "<partImage>:<animFrame><directives>",
           "fullbright" : true,
-          "zLevel" : 4
+          "zLevel" : 4.071
         }
       },
       "layer4prop8" : {
         "properties" : {
           "transformationGroups" : [ "layer4prop8" ],
           "image" : "<partImage>:<animFrame><directives>",
-          "zLevel" : 4
+          "zLevel" : 4.080
         }
       },
       "layer4prop8f" : {
@@ -1218,7 +1218,7 @@
           "transformationGroups" : [ "layer4prop8" ],
           "image" : "<partImage>:<animFrame><directives>",
           "fullbright" : true,
-          "zLevel" : 4
+          "zLevel" : 4.081
         }
       },
       
@@ -1226,7 +1226,7 @@
         "properties" : {
           "transformationGroups" : [ "layer5prop1" ],
           "image" : "<partImage>:<animFrame><directives>",
-          "zLevel" : 5
+          "zLevel" : 5.010
         }
       },
       "layer5prop1f" : {
@@ -1234,14 +1234,14 @@
           "transformationGroups" : [ "layer5prop1" ],
           "image" : "<partImage>:<animFrame><directives>",
           "fullbright" : true,
-          "zLevel" : 5
+          "zLevel" : 5.011
         }
       },
       "layer5prop2" : {
         "properties" : {
           "transformationGroups" : [ "layer5prop2" ],
           "image" : "<partImage>:<animFrame><directives>",
-          "zLevel" : 5
+          "zLevel" : 5.020
         }
       },
       "layer5prop2f" : {
@@ -1249,14 +1249,14 @@
           "transformationGroups" : [ "layer5prop2" ],
           "image" : "<partImage>:<animFrame><directives>",
           "fullbright" : true,
-          "zLevel" : 5
+          "zLevel" : 5.021
         }
       },
       "layer5prop3" : {
         "properties" : {
           "transformationGroups" : [ "layer5prop3" ],
           "image" : "<partImage>:<animFrame><directives>",
-          "zLevel" : 5
+          "zLevel" : 5.030
         }
       },
       "layer5prop3f" : {
@@ -1264,14 +1264,14 @@
           "transformationGroups" : [ "layer5prop3" ],
           "image" : "<partImage>:<animFrame><directives>",
           "fullbright" : true,
-          "zLevel" : 5
+          "zLevel" : 5.031
         }
       },
       "layer5prop4" : {
         "properties" : {
           "transformationGroups" : [ "layer5prop4" ],
           "image" : "<partImage>:<animFrame><directives>",
-          "zLevel" : 5
+          "zLevel" : 5.040
         }
       },
       "layer5prop4f" : {
@@ -1279,14 +1279,14 @@
           "transformationGroups" : [ "layer5prop4" ],
           "image" : "<partImage>:<animFrame><directives>",
           "fullbright" : true,
-          "zLevel" : 5
+          "zLevel" : 5.041
         }
       },
       "layer5prop5" : {
         "properties" : {
           "transformationGroups" : [ "layer5prop5" ],
           "image" : "<partImage>:<animFrame><directives>",
-          "zLevel" : 5
+          "zLevel" : 5.050
         }
       },
       "layer5prop5f" : {
@@ -1294,14 +1294,14 @@
           "transformationGroups" : [ "layer5prop5" ],
           "image" : "<partImage>:<animFrame><directives>",
           "fullbright" : true,
-          "zLevel" : 5
+          "zLevel" : 5.051
         }
       },
       "layer5prop6" : {
         "properties" : {
           "transformationGroups" : [ "layer5prop6" ],
           "image" : "<partImage>:<animFrame><directives>",
-          "zLevel" : 5
+          "zLevel" : 5.060
         }
       },
       "layer5prop6f" : {
@@ -1309,14 +1309,14 @@
           "transformationGroups" : [ "layer5prop6" ],
           "image" : "<partImage>:<animFrame><directives>",
           "fullbright" : true,
-          "zLevel" : 5
+          "zLevel" : 5.061
         }
       },
       "layer5prop7" : {
         "properties" : {
           "transformationGroups" : [ "layer5prop7" ],
           "image" : "<partImage>:<animFrame><directives>",
-          "zLevel" : 5
+          "zLevel" : 5.070
         }
       },
       "layer5prop7f" : {
@@ -1324,14 +1324,14 @@
           "transformationGroups" : [ "layer5prop7" ],
           "image" : "<partImage>:<animFrame><directives>",
           "fullbright" : true,
-          "zLevel" : 5
+          "zLevel" : 5.071
         }
       },
       "layer5prop8" : {
         "properties" : {
           "transformationGroups" : [ "layer5prop8" ],
           "image" : "<partImage>:<animFrame><directives>",
-          "zLevel" : 5
+          "zLevel" : 5.080
         }
       },
       "layer5prop8f" : {
@@ -1339,7 +1339,7 @@
           "transformationGroups" : [ "layer5prop8" ],
           "image" : "<partImage>:<animFrame><directives>",
           "fullbright" : true,
-          "zLevel" : 5
+          "zLevel" : 5.081
         }
       }
       

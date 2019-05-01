@@ -13,11 +13,10 @@
   
   "inventoryIcon" : "phasedrill.png",
 
-  "animation" : "/items/active/weapons/ranged/gun.animation",
+  "animation" : "phasedrill.animation",
   "animationParts" : {
-    "butt" : "",
-    "middle" : "phasedrill.png",
-    "barrel" : "",
+    "body" : "phasedrill.png",
+    "glow" : "phasedrill.glow.png",
     "muzzleFlash" : ""
   },
   "animationCustom" : {

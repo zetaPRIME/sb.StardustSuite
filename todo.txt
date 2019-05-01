@@ -67,10 +67,6 @@ power stuffs {
         }
     }
     
-    phase drill: drop to 5 phase matter, add resonite crystal
-    
-    add some way to get resonite at at least durasteel tier other than prism shards
-    
     Resonite Reactor!
     
     - fix phase drill aim compensation (beam start)
@@ -81,6 +77,7 @@ power stuffs {
     fluxpulse weapons get a damage bonus when wielded in elytra in a zero-g environment
     
     intermediary pulse-battery component?
+    maybe a way to add a pulse battery to stock equipment
     
     powered lamp that fills a large region with full-bright light (basically volumetric lighting at the cost of fp)
     

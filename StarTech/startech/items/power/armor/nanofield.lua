@@ -205,7 +205,7 @@ function update(p)
   end
   
   zeroGPrev = zeroG
-  zeroG = world.gravity(mcontroller.position()) == 0 or status.statusProperty("fu_byosnogravity", false)
+  zeroG = (world.gravity(mcontroller.position()) == 0) or status.statusProperty("fu_byosnogravity", false)
   
   if status.statusProperty("fu_byosnogravity", false) and not zeroGPrev then
     mcontroller.setVelocity(prevVelocity) -- override FU's BYOS system stopping you when it turns off gravity
@@ -271,7 +271,6 @@ function updateEffectiveStats()
     itemModified = true
   end
   local sg = {
-    { stat = "deployWithoutMech", amount = 1 },
     { stat = "breathProtection", amount = 1 },
     
     { stat = "protection", amount = stats.armor },
@@ -400,7 +399,7 @@ end
 
 function modes.sphere:update(p)
   if p.keyDown.special1 then -- unmorph
-    return setMode("ground")
+    return setMode(zeroG and "wing" or "ground")
   end
   mcontroller.clearControls()
   mcontroller.controlParameters({

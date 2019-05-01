@@ -280,7 +280,7 @@ local _deploy = deploy
 function deploy(...)
   if deployWithoutMech() then
     -- hmm. do something to signal deployment mode to equipment
-  else _deploy(...) end
+  else pcall(_deploy, ...) end
 end
 
 

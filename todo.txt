@@ -51,12 +51,14 @@ power stuffs {
     nanofield {
         action states?
         - fall damage immunity
-        hard-fall effect of some sort
+        - hard-fall effect of some sort
         
         - some temporary means of giving the thing actual armor stats
-        figure out what to do for sphere mode
+        - figure out what to do for sphere mode
         
         power draw for stuff
+        
+        - lingering deploy error with FU if mech is incomplete
         
         elytra {
             - tween rotation and implement rez/derez animation

@@ -15,16 +15,7 @@
   ],
   
   "techScript" : "/startech/items/power/armor/nanofield.lua",
-  "statusEffects" : [
-    "stardustlib:techoverride",
-    
-    { "stat" : "deployWithoutMech", "amount" : 1.0 },
-    
-    { "stat" : "protection", "amount" : -256 },
-    { "stat" : "protectionOverride", "amount" : 0.01 },
-    
-    { "stat" : "breathProtection", "amount" : 1.0 }
-  ],
+  "statusEffects" : [ "stardustlib:techoverride" ],
   
   "batteryStats" : {
     "capacity" : 320000,

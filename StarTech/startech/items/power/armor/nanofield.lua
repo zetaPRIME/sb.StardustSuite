@@ -1,5 +1,6 @@
 --
 
+require("/scripts/vec2.lua")
 require("/lib/stardust/itemutil.lua")
 
 -- armor value works differently from normal armors
@@ -166,6 +167,7 @@ function setMode(mode, ...)
   local prevState = modeState
   currentMode = modes[mode]
   modeState = { }
+  effectiveStatsNeedUpdate = true
   callMode("init", prev, prevState, ...)
 end
 
@@ -264,9 +266,11 @@ function updateStats()
 end
 
 function updateEffectiveStats()  
-  item.parameters.statusEffects = {
-    "stardustlib:techoverride",
-    
+  if item.parameters.statusEffects then
+    item.parameters.statusEffects = nil
+    itemModified = true
+  end
+  local sg = {
     { stat = "deployWithoutMech", amount = 1 },
     { stat = "breathProtection", amount = 1 },
     
@@ -275,8 +279,9 @@ function updateEffectiveStats()
     { stat = "maxEnergy", amount = stats.energy - 100 },
     { stat = "powerMultiplier", baseMultiplier = stats.damageMult },
   }
+  callMode("updateEffectiveStats", sg)
+  tech.setStats(sg)
   
-  itemModified = true
   effectiveStatsNeedUpdate = false
 end
 
@@ -296,6 +301,10 @@ function modes.ground:init()
   tech.setParentState()
   mcontroller.setRotation(0)
   mcontroller.clearControls()
+end
+
+function modes.ground:uninit()
+  --
 end
 
 function modes.ground:update(p)
@@ -435,20 +444,44 @@ function modes.wing:init(_, _, summoned)
   --wingBack:setDirectives("?brightness=-40")
   sound.play(wingStats.soundActivate)
   self.thrustLoop = sound.newLoop(wingStats.soundThrust)
+  
+  -- temporarily kill problematic FR effects
+  status.removeEphemeralEffect("swimboost2")
+end
+
+function modes.wing:uninit()
+  tech.setParentState()
+  mcontroller.setRotation(0)
+  mcontroller.clearControls()
+  
+  self.thrustLoop:discard()
+  sound.play(wingStats.soundDeactivate)
+  
+  -- restore FR effects
+  world.sendEntityMessage(entity.id(), "playerext:reinstateFRStatus")
+end
+
+function modes.wing:updateEffectiveStats(sg)
+  util.appendLists(sg, {
+    -- glide effortlessly through most FU gases
+    { stat = "gasImmunity", amount = 1.0 },
+    { stat = "helium3Immunity", amount = 1.0 },
+  })
 end
 
 function modes.wing:update(p)
   mcontroller.clearControls()
   mcontroller.controlParameters{
-    --gravityMultiplier = 0.0001,
     gravityEnabled = false,
-    liquidFriction = 0, -- full speed in water
-    normalGroundFriction = 0,
-    ambulatingGroundFriction = 0,
+    frictionEnabled = false,
+    liquidImpedance = -100, -- full speed in water
+    liquidBuoyancy = -1000, -- same as above
     groundForce = 0, airForce = 0, liquidForce = 0, -- disable default movement entirely
   }
   mcontroller.controlDown()
   if p.keyDown.special1 then return setMode("ground") end
+  
+  local curSpeed = vec2.mag(mcontroller.velocity())
   
   local boost = 25
   local boostForce = 25*1.5
@@ -468,8 +501,11 @@ function modes.wing:update(p)
   
   if (vx ~= 0 or vy ~= 0) and p.key.sprint then
     boost = 55
-    boostForce = boostForce * 1.5 + vmag(mcontroller.velocity()) * 2.5
+    boostForce = boostForce * 1.5 + curSpeed * 2.5
   end
+  --boostForce = util.lerp(math.min(curSpeed / 10, 1), 500, boostForce) -- extra force when going slowly
+  --status.clearEphemeralEffects() -- ???
+  
   
   mcontroller.controlApproachVelocity({vx*boost, vy*boost}, boostForce * 60 * p.dt)
   
@@ -522,15 +558,6 @@ function modes.wing:update(p)
   wingEffDir = 1.0
   
   if not zeroG and zeroGPrev then setMode("ground") end
-end
-
-function modes.wing:uninit()
-  tech.setParentState()
-  mcontroller.setRotation(0)
-  mcontroller.clearControls()
-  
-  self.thrustLoop:discard()
-  sound.play(wingStats.soundDeactivate)
 end
 
 function modes.wing:wingVisibility() return 1 end

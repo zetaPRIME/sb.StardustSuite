@@ -2,6 +2,8 @@ require("/lib/stardust/playerext.lua")
 require("/lib/stardust/itemutil.lua")
 
 local scr -- variable containing the script path to take
+local modGroup -- stat modifier group!
+local movementParams = { }
 
 local function set()
   if scr then return nil end
@@ -20,8 +22,18 @@ function init()
 end
 
 function update(dt)
+  modGroup = effect.addStatModifierGroup({ })
+  message.setHandler("stardustlib:techoverride.setStats", function(msg, isLocal, data)
+    effect.setStatModifierGroup(modGroup, data or { })
+  end)
+  message.setHandler("stardustlib:techoverride.setMovementParams", function(msg, isLocal, data)
+    movementParams = data or { }
+  end)
   script.setUpdateDelta(0)
   set()
+  update = function(dt)
+    mcontroller.controlParameters(movementParams)
+  end update(dt)
 end
 
 function uninit()

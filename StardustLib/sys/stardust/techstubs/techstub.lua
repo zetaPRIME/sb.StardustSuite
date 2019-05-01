@@ -45,6 +45,16 @@ function init()
       return basePath .. inp
     end
     
+    function tech.setStats(data)
+      if type(data) ~= "table" then data = { } end
+      world.sendEntityMessage(entity.id(), "stardustlib:techoverride.setStats", data)
+    end
+    
+    function tech.overrideMovementParams(data)
+      if type(data) ~= "table" then data = { } end
+      world.sendEntityMessage(entity.id(), "stardustlib:techoverride.setMovementParams", data)
+    end
+    
     function sound.play(file, vol, pitch, pos)
       lastSound = (lastSound % maxSounds) + 1
       local n = "eph" .. lastSound

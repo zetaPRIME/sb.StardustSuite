@@ -19,6 +19,17 @@ if not _stardustlib then
     return resultOf(world.sendEntityMessage((player or entity).id(), cmd, ...))
   end
   
+  local _init = init
+  function init() _init()
+    message.setHandler("playerext:reinstateFRStatus", function()
+      if self.helper and self.helper.speciesConfig and self.helper.special then
+        for _, eff in pairs(self.helper.speciesConfig.special) do
+  				status.addEphemeralEffect(eff, math.huge)
+  			end
+      end
+    end)
+  end
+  
   local _applyDamageRequest = applyDamageRequest
   function applyDamageRequest(damageRequest)
     --playerext.message("damage request recieved: " .. damageRequest.damageType)

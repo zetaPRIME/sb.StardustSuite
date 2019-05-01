@@ -3,7 +3,7 @@ require("/lib/stardust/itemutil.lua")
 
 local scr -- variable containing the script path to take
 local modGroup -- stat modifier group!
-local movementParams = { }
+--local movementParams = { }
 
 local function set()
   if scr then return nil end
@@ -32,7 +32,7 @@ function update(dt)
   script.setUpdateDelta(0)
   set()
   update = function(dt)
-    mcontroller.controlParameters(movementParams)
+    --mcontroller.controlParameters(movementParams)
   end update(dt)
 end
 

@@ -148,6 +148,17 @@ function modifyDamageTaken(msg, isLocal, damageRequest)
   end
 end
 
+function renderHUD()
+  local hl = "foregroundEntity+3" -- HUD layer
+  
+  --[[ playerext.queueDrawable {
+    image = "/interface/lockicon.png",
+    position = { 0, -4 },
+    renderLayer = hl,
+    fullbright = true,
+  }]]
+end
+
 function init()
   message.setHandler("stardustlib:modifyDamageTaken", modifyDamageTaken)
   message.setHandler("startech:nanofield.update", function() statsNeedUpdate = true end)
@@ -240,6 +251,7 @@ function update(p)
   wingBack:scale({mcontroller.facingDirection() * wingEffDir, 1.0}, {0.0, 0.0})
   wingEffDir = mcontroller.facingDirection()
   
+  renderHUD()
 end
 
 function uninit()

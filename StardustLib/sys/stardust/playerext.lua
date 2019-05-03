@@ -293,7 +293,7 @@ function svc.playAudio(msg, isLocal, sound, loops, volume)
   if type(sound) ~= "string" then return nil end
   if type(loops) ~= "number" then loops = 1 end
   if type(volume) ~= "number" then volume = 1.0 end
-  localAnimator.playAudio(sound, math.floor(loops + 0.5), volume))
+  localAnimator.playAudio(sound, math.floor(loops + 0.5), volume)
 end
 
 local function deployWithoutMech()

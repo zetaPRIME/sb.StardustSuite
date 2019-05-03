@@ -54,9 +54,25 @@ local function _mightBeUsefulLater()
   
 end
 
+local drawableQueue = { }
+local lightQueue = { }
+local particleQueue = { }
+
 local _update = update or function() end
 function update(dt, ...)
+  localAnimator.clearLightSources()
   _update(dt, ...)
+  -- process localAnimator queues
+  for _, e in pairs(drawableQueue) do
+    localAnimator.addDrawable(e, e.renderLayer)
+  end drawableQueue = { }
+  for _, e in pairs(lightQueue) do
+    localAnimator.addLightSource(e)
+  end lightQueue = { }
+  for _, e in pairs(particleQueue) do
+    localAnimator.spawnParticle(e)
+  end particleQueue = { }
+  
   
   --[[ TODO: figure out a place to put this
   -- NaN protection for velocity
@@ -259,6 +275,25 @@ end
 function svc.restoreTech(msg, isLocal)
   internal.techStubScript = nil
   svci.assertTechs()
+end
+
+function svc.queueDrawable(msg, isLocal, ...)
+  util.appendLists(drawableQueue, { ... })
+end
+
+function svc.queueLight(msg, isLocal, ...)
+  util.appendLists(lightQueue, { ... })
+end
+
+function svc.queueParticle(msg, isLocal, ...)
+  util.appendLists(particleQueue, { ... })
+end
+
+function svc.playAudio(msg, isLocal, sound, loops, volume)
+  if type(sound) ~= "string" then return nil end
+  if type(loops) ~= "number" then loops = 1 end
+  if type(volume) ~= "number" then volume = 1.0 end
+  localAnimator.playAudio(sound, math.floor(loops + 0.5), volume))
 end
 
 local function deployWithoutMech()

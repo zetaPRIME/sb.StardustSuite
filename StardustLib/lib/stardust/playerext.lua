@@ -48,6 +48,11 @@ if not playerext then
     "getTechOverride",
     "overrideTech",
     "restoreTech",
+    
+    "queueDrawable",
+    "queueLight",
+    "queueParticle",
+    "playAudio",
   }
   
   for _, cmd in pairs(commands) do -- generate proxies automatically

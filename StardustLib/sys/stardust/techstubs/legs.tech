@@ -3,7 +3,7 @@
   "type" : "legs",
 
   "shortDescription" : "^gray;(override enabled)",
-  "description" : "^red;Tech is currently locked by equipment",
+  "description" : "^red;Tech slot unavailable",
   "rarity" : "Essential",
   "icon" : "/interface/statuses/x.png",
   

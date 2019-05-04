@@ -284,6 +284,7 @@ function updateEffectiveStats()
   end
   local sg = {
     { stat = "breathProtection", amount = 1 },
+    --{ stat = "nude", amount = -100 },
     
     { stat = "protection", amount = stats.armor },
     { stat = "maxHealth", amount = stats.health - 100 },

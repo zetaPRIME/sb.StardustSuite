@@ -73,7 +73,6 @@ function update(dt, ...)
     localAnimator.spawnParticle(e)
   end particleQueue = { }
   
-  
   --[[ TODO: figure out a place to put this
   -- NaN protection for velocity
   local v = mcontroller.velocity()

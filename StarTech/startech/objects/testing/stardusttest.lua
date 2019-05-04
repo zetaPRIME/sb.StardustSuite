@@ -32,6 +32,13 @@ function update(dt)
   blah2 = blah2 + 1
 end
 
+function onInteraction(args)
+  world.sendEntityMessage(args.sourceId, "playerext:message", "this is a message")
+  return {
+    interactAction = "OpenContainerInterface"
+  }
+end
+
 function AonInteraction(args)
   --object.setConfigParameter("slotCount", math.random(9))
   local items = world.containerTakeAll(entity.id())

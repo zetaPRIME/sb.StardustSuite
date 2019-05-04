@@ -1,4 +1,4 @@
----[[
+--[[
 setmetatable(_ENV, { __index = function(t,k)
   sb.logInfo("missing field "..k.." accessed")
   local f = function(...)
@@ -26,6 +26,7 @@ function init()
   cId = config.getParameter("containerId")
   --local d = widget.getData("paneFeature")
   --sb.logInfo("stuff:\n" .. dump(o))
+  --message.setHandler("closeGuest" .. cId, function() pane.dismiss() end)
 end
 
 function openWithInventory()
@@ -33,12 +34,16 @@ function openWithInventory()
 end
 
 function update()
-  local ccid = status.statusProperty("stardust.containerPaneSyncId")
+  --world.containerItems(cId)
+  --[[ccid = status.statusProperty("stardust.containerPaneSyncId")
   if ccid ~= cId then
     pane.dismiss(false)
-  end
+    --player.interact("OpenContainer", nil, ccid)
+end]]
 end
 
 function uninit()
-  if status.statusProperty("stardust.containerPaneSyncId") == cId then status.setStatusProperty("stardust.containerPaneSyncId", nil) end
+  --if status.statusProperty("stardust.containerPaneSyncId") == cId then status.setStatusProperty("stardust.containerPaneSyncId", nil) end
+  --player.interact("OpenContainer", nil, ccid)
+  world.sendEntityMessage(player.id(), "closeHost" .. cId)
 end

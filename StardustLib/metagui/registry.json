@@ -1,0 +1,9 @@
+{ 
+    "themes" : {
+        //"starbound" : "/metagui/themes/starbound/",
+        "carbon" : "/metagui/themes/carbon/"
+    },
+    "panes" : { // Registration optional; this is simply for ease of addressing
+        // "modname:pane" : "/path/to/pane.ui",
+    }
+}

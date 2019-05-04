@@ -1,0 +1,5 @@
+[ // -*- grammar-ext: json -*-
+  { "op" : "add", "path" : "/metaGUI", "value": {
+    "defaultTheme" : "starbound"
+  }}
+] 

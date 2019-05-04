@@ -16,9 +16,11 @@ function actions.pane(cfg)
   player.interact(cfg.type or "ScriptPane", cfg.config)
 end
 
-function actions.exec(script)
+function actions.exec(script, ...)
   if type(script) ~= "string" then return nil end
+  params = {...} -- pass any given parameters to the script
   _SBLOADED[script] = nil require(script) -- force execute every time
+  params = nil -- clear afterwards for cleanliness
 end
 
 ----------------

@@ -43,10 +43,7 @@ lots of shiny new ship components, especially animating ones that match their st
 }
 
 power stuffs {
-    machine that powers warp core via fluxpulse (world property "ship.fuel", "ship.maxFuel")
-    ! wireless charger ! {
-        
-    }
+    bump up the maximum charging rate (packet size) of Resonite Transmitter
     
     nanofield {
         action states?
@@ -113,6 +110,36 @@ Extend sync library {
     
     actually, response system with a proper response-message instead of just an RpcPromise
     generate responseID with makeuuid? register with an anonymous function for continuation of operation after response
+}
+
+Aetheri species mod {
+    Aetheri:
+    Lost souls touched by the void and reborn amongst the stars. These
+    stellar wanderers wield powerful innate abilities but find no use
+    for the armor or nanotech that would have aided their former selves.
+    
+    No (visible) base apparance; their actual appearance is part of their innate armor/cosmetic
+    If attempt to take it off, open pane with extra equip slots for actual cosmetics and special equips
+    "Focus" slot; an item held in the hand(s) while using Innates that modifies stats
+    
+    set "Nude" stat to -100 or so to prevent beds making them invisible
+    
+    Innates {
+        No matter manipulator; instead, essential slots are skill slots for Innate Skills
+        powered by a large, slowly-regenerating pool of secondary energy (Aether?)
+    }
+    
+    Skill tree {
+        Matter manipulator screen replaced with the Aethyrium, a set of skill trees
+        Passive tree akin to Path of Exile; replaces armor stats and techs
+        Active skill tree for unlocking and upgrading Innates
+        
+        xp gained from enemy kills, usable toward next passive point with slow ramping-up of cost
+        (Warframe focus-style) or active skill nodes with fixed costs
+        status effect that monkey-patches xp gains for nearby players on enemy death into their script context
+        
+        hmm. leave back slot open?
+    }
 }
 
 // Transmatter network reimplementation { // not sure if it's needed or if drive bays just need further fixing up

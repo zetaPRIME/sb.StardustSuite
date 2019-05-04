@@ -9,5 +9,15 @@
   ],
   "normal" : [
     
-  ]
+  ],
+  // new format
+  "items" : {
+    "starbound:mattermanipulator" : { 
+      "label" : "Matter Manipulator",
+      "icon" : "/items/tools/miningtools/beamaxe.png",
+      "weight" : -1150,
+      "action" : [ "pane", "/interface/scripted/mmupgrade/mmupgradegui.original.config" ],
+      "condition" : [ "statusNegative", "noMatterManipulator" ]
+    }
+  }
 }

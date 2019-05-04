@@ -283,6 +283,8 @@ function updateEffectiveStats()
     itemModified = true
   end
   local sg = {
+    { stat = "startech:wearingNanofield", amount = 1 },
+    
     { stat = "breathProtection", amount = 1 },
     --{ stat = "nude", amount = -100 },
     

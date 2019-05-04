@@ -9,7 +9,8 @@
     "label" : "Upgrade Nanofield (WIP)",
     "icon" : "/startech/items/ores/resonitebar.png",
     "weight" : 5,
-    "action" : [ "exec", "/startech/quickbar/upgradenanofield.lua" ]
+    "action" : [ "exec", "/startech/quickbar/upgradenanofield.lua" ],
+    "condition" : [ "statPositive", "startech:wearingNanofield" ]
   } },
   
   { "op" : "add", "path" : "/items/startech:recharge", "value" : {

@@ -62,7 +62,7 @@ local function buildList()
   -- and then translate legacy entries
   for _, i in pairs(c.priority) do
     table.insert(items, {
-      label = "^#ffb133;" .. i.label,
+      label = "^essential;" .. i.label,
       icon = i.icon,
       weight = -1100,
       action = { "pane", i.pane }
@@ -71,7 +71,7 @@ local function buildList()
   if player.isAdmin() then
     for _, i in pairs(c.admin) do
       table.insert(items, {
-        label = "^#bf7fff;" .. i.label,
+        label = "^admin;" .. i.label,
         icon = i.icon,
         weight = -1000,
         action = { "pane", i.pane }

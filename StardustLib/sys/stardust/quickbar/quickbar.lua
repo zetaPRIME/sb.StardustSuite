@@ -23,6 +23,14 @@ function actions.exec(script, ...)
   params = nil -- clear afterwards for cleanliness
 end
 
+function actions._legacy_module(s)
+  local m, e = (function() local it = string.gmatch(s, "[^:]+") return it(), it() end)()
+  local mf = string.format("/quickbar/%s.lua", m)
+  module = { }
+  _SBLOADED[mf] = nil require(mf) -- force execute
+  module[e]() module = nil -- run function and clean up
+end
+
 ----------------
 -- conditions --
 ----------------
@@ -50,6 +58,15 @@ local colorSub = { -- color tag substitutions
   ["^admin;"] = "^#bf7fff;",
 }
 
+local function legacyAction(i)
+  if i.pane then return { "pane", i.pane } end
+  if i.scriptAction then
+    sb.logInfo(string.format("Quickbar item \"%s\": scriptAction is deprecated, please use new entry format", i.label))
+    return { "_legacy_module", i.scriptAction }
+  end
+  return { "null" }
+end
+
 local function buildList()
   widget.clearListItems("scroll.list") -- clear out first
   local c = root.assetJson("/quickbar/icons.json")
@@ -67,7 +84,7 @@ local function buildList()
       label = "^essential;" .. i.label,
       icon = i.icon,
       weight = -1100,
-      action = { "pane", i.pane }
+      action = legacyAction(i)
     })
   end
   if player.isAdmin() then
@@ -76,7 +93,7 @@ local function buildList()
         label = "^admin;" .. i.label,
         icon = i.icon,
         weight = -1000,
-        action = { "pane", i.pane }
+        action = legacyAction(i)
       })
     end
   end
@@ -84,7 +101,7 @@ local function buildList()
     table.insert(items, {
       label = i.label,
       icon = i.icon,
-      action = { "pane", i.pane }
+      action = legacyAction(i)
     })
   end
   

@@ -3,8 +3,8 @@
   "colonyTags" : ["crafting","electronic"],
   "rarity" : "Legendary",
   "price" : 1250,
-  "interactAction" : "OpenCraftingInterface",
-  "interactData" : {
+  "interactAction" : /*"ScriptPane", "fallbackInteractAction" :*/ "OpenCraftingInterface",
+  "interactData" : /*"/metagui-common/proxy.config", "fallbackInteractData" :*/ {
     "config" : "/startech/interface/crafting/tinkertable.config",
     "paneLayoutOverride" : {
       "windowtitle" : {

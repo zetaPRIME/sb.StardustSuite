@@ -1,82 +1,98 @@
 --
 
+require("/scripts/util.lua")
 
+local actions, conditions = { }, { }
 
+-------------
+-- actions --
+-------------
 
-function openInterface(info)
-  if type(info) ~= "table" then info = {config = info} end
-  player.interact(info.interactionType or "ScriptPane", info.config or "/sys/stardust/tablet/tablet.ui.config")
+function actions.pane(cfg)
+  if type(cfg) ~= "table" then cfg = { config = cfg } end
+  player.interact(cfg.type or "ScriptPane", cfg.config)
 end
 
-
-
-
-modules = {}
-
-local function handleClick(itm)
-  if itm.scriptAction then -- scripted action specified
-    local ci = string.find(itm.scriptAction, ":")
-    local module = string.sub(itm.scriptAction, 1, ci-1)
-    local action = string.sub(itm.scriptAction, ci+1)
-    
-    if not modules[module] then
-      modules[module] = {} -- initialize module table and load in the appropriate script
-      _ENV.module = modules[module] -- allow code to be less dependent on filename
-      require(string.format("/quickbar/%s.lua", module))
-      _ENV.module = nil
-    end
-    
-    if modules[module][action] then
-      modules[module][action](itm) -- trigger script action, passing in the item table
-    end
-  elseif itm.pane then openInterface(itm.pane) end
+function actions.exec(script)
+  if type(script) ~= "string" then return nil end
+  _SBLOADED[script] = nil require(script) -- force execute every time
 end
 
-local lst = "scroll.list"
+----------------
+-- conditions --
+----------------
 
-local prefix = ""
+-- ...
 
-local function addItem(itm)
-  local li = lst .. "." .. widget.addListItem(lst)
-  widget.setText(li .. ".label", prefix .. itm.label)
-  widget.registerMemberCallback(li .. ".buttonContainer", "click", function()
-    handleClick(itm)
-  end)
-  local btn = li .. ".buttonContainer." .. widget.addListItem(li .. ".buttonContainer") .. ".button"
-  if itm.icon then
-    local icn = itm.icon
-    if icn:sub(1,1) ~= "/" then icn = "/quickbar/" .. icn end
-    widget.setButtonOverlayImage(btn, itm.icon)
-  end
-end
+---------------
+-- internals --
+---------------
 
-local items = {}
-local autoRefreshRate = 0
-local autoRefreshTimer = 0
-function init()
-  items = root.assetJson("/quickbar/icons.json") or {}
-  refresh()
+local function nullfunc() end
+local function action(id, ...) return (actions[id] or nullfunc)(...) end
+local function condition(id, ...) return (conditions[id] or nullfunc)(...) end
+
+local function buildList()
+  widget.clearListItems("scroll.list") -- clear out first
+  local c = root.assetJson("/quickbar/icons.json")
+  local items = { }
   
-  autoRefreshRate = config.getParameter("autoRefreshRate")
-  autoRefreshTimer = autoRefreshRate
-end
-
-function refresh()
-  widget.clearListItems(lst)
-  prefix = "^#7fff7f;"
-  for k,v in pairs(items.priority or {}) do addItem(v) end
+  for _, i in pairs(c.items) do -- dump in normal items
+    if not i.condition or condition(table.unpack(i.condition)) then
+      table.insert(items, i)
+    end
+  end
+    
+  -- and then translate legacy entries
+  for _, i in pairs(c.priority) do
+    table.insert(items, {
+      label = "^#ffb133;" .. i.label,
+      icon = i.icon,
+      weight = -1100,
+      action = { "pane", i.pane }
+    })
+  end
   if player.isAdmin() then
-    prefix = "^#bf7fff;"
-    for k,v in pairs(items.admin or {}) do addItem(v) end
+    for _, i in pairs(c.admin) do
+      table.insert(items, {
+        label = "^#bf7fff;" .. i.label,
+        icon = i.icon,
+        weight = -1000,
+        action = { "pane", i.pane }
+      })
+    end
   end
-  prefix = ""
-  for k,v in pairs(items.normal or {}) do addItem(v) end
+  for _, i in pairs(c.normal) do
+    table.insert(items, {
+      label = i.label,
+      icon = i.icon,
+      action = { "pane", i.pane }
+    })
+  end
+  
+  -- sort by weight then alphabetically, ignoring caps and tags
+  for _, i in pairs(items) do
+    i._sort = string.lower(string.gsub(i.label, "(%b\\^;)", ""))
+    i.weight = i.weight or 0
+  end
+  table.sort(items, function(a, b) return a.weight < b.weight or (a.weight == b.weight and a._sort < b._sort) end)
+  
+  -- and add items to pane list
+  for idx = 1, #items do
+    local i = items[idx]
+    local l = "scroll.list." .. widget.addListItem("scroll.list")
+    widget.setText(l .. ".label", i.label)
+    local bc = l .. ".buttonContainer"
+    widget.registerMemberCallback(bc, "click", function() action(table.unpack(i.action)) end)
+    local btn = bc .. "." .. widget.addListItem(bc) .. ".button"
+    widget.setButtonOverlayImage(btn, i.icon or "/items/currency/essence.png")
+  end
 end
 
-function update(dt)
-  autoRefreshTimer = math.max(0, autoRefreshTimer - dt)
-  if autoRefreshTimer == 0 then
-    autoRefreshTimer = autoRefreshRate
-    --refresh() -- whoops, that just kind of derps things up :(
-  end
+function init()
+  buildList()
+end
+
+function uninit()
+  widget.clearListItems("scroll.list")
 end

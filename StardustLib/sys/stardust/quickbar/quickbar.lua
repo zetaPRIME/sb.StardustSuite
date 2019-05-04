@@ -3,6 +3,9 @@
 require("/scripts/util.lua")
 
 local actions, conditions = { }, { }
+local function nullfunc() end
+local function action(id, ...) return (actions[id] or nullfunc)(...) end
+local function condition(id, ...) return (conditions[id] or nullfunc)(...) end
 
 -------------
 -- actions --
@@ -22,15 +25,23 @@ end
 -- conditions --
 ----------------
 
--- ...
+function conditions.any(...)
+  for _, c in pairs{...} do if condition(table.unpack(c)) then return true end end
+  return false
+end
+function conditions.all(...)
+  for _, c in pairs{...} do if not condition(table.unpack(c)) then return false end end
+  return true
+end
+
+function conditions.admin() return player.isAdmin() end
+function conditions.statPositive(stat) return status.statPositive(stat) end
+function conditions.statNegative(stat) return not status.statPositive(stat) end
+function conditions.species(species) return player.species() == species end
 
 ---------------
 -- internals --
 ---------------
-
-local function nullfunc() end
-local function action(id, ...) return (actions[id] or nullfunc)(...) end
-local function condition(id, ...) return (conditions[id] or nullfunc)(...) end
 
 local function buildList()
   widget.clearListItems("scroll.list") -- clear out first
@@ -72,8 +83,9 @@ local function buildList()
   
   -- sort by weight then alphabetically, ignoring caps and tags
   for _, i in pairs(items) do
-    i._sort = string.lower(string.gsub(i.label, "(%b\\^;)", ""))
+    i._sort = string.lower(string.gsub(i.label, "(%b^;)", ""))
     i.weight = i.weight or 0
+    --sb.logInfo("label: "..i.label.."\nsort: "..i._sort)
   end
   table.sort(items, function(a, b) return a.weight < b.weight or (a.weight == b.weight and a._sort < b._sort) end)
   

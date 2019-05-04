@@ -1,15 +1,7 @@
 {
-  "priority" : [
-    { "label" : "^#ffb133;Matter Manipulator", "pane" : "/interface/scripted/mmupgrade/mmupgradegui.original.config", "icon" : "/items/tools/miningtools/beamaxe.png" }
-  ],
-  "admin" : [
-    { "label" : "Ship Remote Control", "pane" : "/interface/cockpit/cockpit.config", "icon" : "/items/active/stationtransponder/stationtransponder.png" },
-    { "label" : "Tech Panel", "pane" : "/interface/scripted/techupgrade/techupgradegui.config", "icon" : "/items/generic/other/techcard.png" },
-    { "label" : "Mech Assembly", "pane" : "/interface/scripted/mechassembly/mechassemblygui.config", "icon" : "/items/generic/salvage/salvagetier5.png" }
-  ],
-  "normal" : [
-    
-  ],
+  // legacy sections (deprecated)
+  "priority" : [ ], "admin" : [ ], "normal" : [ ],
+  
   // new format
   "items" : {
     "starbound:mattermanipulator" : { 
@@ -17,7 +9,29 @@
       "icon" : "/items/tools/miningtools/beamaxe.png",
       "weight" : -1150,
       "action" : [ "pane", "/interface/scripted/mmupgrade/mmupgradegui.original.config" ],
-      "condition" : [ "statusNegative", "noMatterManipulator" ]
+      "condition" : [ "statNegative", "noMatterManipulator" ]
+    },
+    
+    "starbound:techpanel" : {
+      "label" : "^#bf7fff;Tech Panel",
+      "icon" : "/items/generic/other/techcard.png",
+      "weight" : -1000,
+      "action" : ["pane", "/interface/scripted/techupgrade/techupgradegui.config"],
+      "condition" : [ "admin" ]
+    },
+    "starbound:mechassembly" : {
+      "label" : "^#bf7fff;Mech Assembly",
+      "icon" : "/items/generic/salvage/salvagetier5.png",
+      "weight" : -1000,
+      "action" : [ "pane", "/interface/scripted/mechassembly/mechassemblygui.config" ],
+      "condition" : [ "admin" ]
+    },
+    "starbound:navigation" : {
+      "label" : "^#bf7fff;Navigation",
+      "icon" : "/items/active/stationtransponder/stationtransponder.png",
+      "weight" : -1000,
+      "action" : [ "pane", "/interface/cockpit/cockpit.config" ],
+      "condition" : [ "admin" ]
     }
   }
 }

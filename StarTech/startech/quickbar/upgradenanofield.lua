@@ -10,8 +10,7 @@ local tierReqs = {
   { name = "solariumstar", count = 20 },
 }
 
-function module.upgradeNanofield()
-  --while power.fillEquipEnergy(573000) > 0 do end -- max-fill until nothing can recharge further
+do
   local nf = player.equippedItem("chest") or { }
   if nf.name ~= "startech:nanofield" then
     playerext.message("Nanofield must be worn in order to upgrade.")

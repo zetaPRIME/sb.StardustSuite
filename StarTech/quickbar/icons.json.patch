@@ -1,7 +1,22 @@
 [ // -*- grammar-ext: json -*-
   // TODO: switch this back to admin once configurator exists inworld
-  { "op" : "add", "path" : "/normal/-", "value" : { "label" : "Configurator", "pane" : "/startech/interface/configurator/configurator.config", "icon" : "/items/generic/other/techcard.png" } },
-  { "op" : "add", "path" : "/normal/-", "value" : { "label" : "Upgrade Nanofield (WIP)", "scriptAction" : "startech-normal:upgradeNanofield", "icon" : "/startech/items/ores/resonitebar.png" } },
+  { "op" : "add", "path" : "/items/startech:configurator", "value" : {
+    "label" : "Configurator",
+    "icon" : "/items/generic/other/techcard.png",
+    "action" : [ "pane", "/startech/interface/configurator/configurator.config" ]
+  } },
+  { "op" : "add", "path" : "/items/startech:upgradenanofield", "value" : {
+    "label" : "Upgrade Nanofield (WIP)",
+    "icon" : "/startech/items/ores/resonitebar.png",
+    "weight" : 5,
+    "action" : [ "exec", "/startech/quickbar/upgradenanofield.lua" ]
+  } },
   
-  { "op" : "add", "path" : "/admin/-", "value" : { "label" : "Recharge worn items", "scriptAction" : "startech-admin:recharge", "icon" : "/startech/objects/power/generator.creative.png" } }
+  { "op" : "add", "path" : "/items/startech:recharge", "value" : {
+    "label" : "^admin;Recharge worn items",
+    "icon" : "/startech/objects/power/generator.creative.png",
+    "weight" : -995,
+    "action" : [ "exec", "/startech/quickbar/recharge.lua" ],
+    "condition" : [ "admin" ]
+  } }
 ]

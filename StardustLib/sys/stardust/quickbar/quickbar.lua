@@ -43,6 +43,11 @@ function conditions.species(species) return player.species() == species end
 -- internals --
 ---------------
 
+local colorSub = { -- color tag substitutions
+  ["^essential;"] = "^#ffb133;",
+  ["^admin;"] = "^#bf7fff;",
+}
+
 local function buildList()
   widget.clearListItems("scroll.list") -- clear out first
   local c = root.assetJson("/quickbar/icons.json")
@@ -81,9 +86,10 @@ local function buildList()
     })
   end
   
-  -- sort by weight then alphabetically, ignoring caps and tags
+  -- sort by weight then alphabetically, ignoring caps and tags (and doing tag substitutions while we're here)
   for _, i in pairs(items) do
     i._sort = string.lower(string.gsub(i.label, "(%b^;)", ""))
+    i.label = string.gsub(i.label, "(%b^;)", colorSub)
     i.weight = i.weight or 0
     --sb.logInfo("label: "..i.label.."\nsort: "..i._sort)
   end

@@ -5,7 +5,7 @@
   // new format
   "items" : {
     "starbound:mattermanipulator" : { 
-      "label" : "^#ffb133;Matter Manipulator",
+      "label" : "^essential;Matter Manipulator",
       "icon" : "/items/tools/miningtools/beamaxe.png",
       "weight" : -1150,
       "action" : [ "pane", "/interface/scripted/mmupgrade/mmupgradegui.original.config" ],
@@ -13,21 +13,21 @@
     },
     
     "starbound:techpanel" : {
-      "label" : "^#bf7fff;Tech Panel",
+      "label" : "^admin;Tech Panel",
       "icon" : "/items/generic/other/techcard.png",
       "weight" : -1000,
       "action" : ["pane", "/interface/scripted/techupgrade/techupgradegui.config"],
       "condition" : [ "admin" ]
     },
     "starbound:mechassembly" : {
-      "label" : "^#bf7fff;Mech Assembly",
+      "label" : "^admin;Mech Assembly",
       "icon" : "/items/generic/salvage/salvagetier5.png",
       "weight" : -1000,
       "action" : [ "pane", "/interface/scripted/mechassembly/mechassemblygui.config" ],
       "condition" : [ "admin" ]
     },
     "starbound:navigation" : {
-      "label" : "^#bf7fff;Navigation",
+      "label" : "^admin;Navigation",
       "icon" : "/items/active/stationtransponder/stationtransponder.png",
       "weight" : -1000,
       "action" : [ "pane", "/interface/cockpit/cockpit.config" ],

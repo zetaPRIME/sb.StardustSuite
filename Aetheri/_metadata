@@ -1,0 +1,8 @@
+{
+  "version" : "Alpha v0.-",
+  "friendlyName" : "Aetheri",
+  "name" : "Aetheri",
+  "author" : "zetaPRIME",
+  "description" : "Astral wanderers",
+  "requires" : [ "StardustLib" ]
+}

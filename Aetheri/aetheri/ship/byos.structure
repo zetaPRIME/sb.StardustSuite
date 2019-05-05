@@ -1,0 +1,24 @@
+{ // -*- grammar-ext: json -*-
+  "config" : {
+    "shipUpgrades" : {
+      "capabilities" : ["teleport", "planetTravel", "systemTravel"],
+      "maxFuel" : 1000,
+      "crewSize" : 0
+    }
+  },
+
+  "backgroundOverlays" : [
+    {
+      "image" : "/sys/stardust/nothing.png",
+      "position" : [8, 14],
+      "fullbright" : true
+    },
+    {
+      "image" : "/sys/stardust/nothing.png",
+      "position" : [8, 14]
+    }
+  ],
+
+  "blockKey" : "blockKey.config:blockKey",
+  "blockImage" : "byosblocks.png"
+}

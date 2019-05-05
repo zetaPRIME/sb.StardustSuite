@@ -1,0 +1,8 @@
+[ // -*- grammar-ext: json -*-
+	{ "op" : "add",
+		"path" : "/speciesShips/aetheri",
+		"value" : [
+		    "/aetheri/ship/byos.structure"
+		]
+	}
+]

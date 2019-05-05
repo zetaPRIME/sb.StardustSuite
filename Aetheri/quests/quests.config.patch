@@ -1,0 +1,15 @@
+[ // -*- grammar-ext: json -*-
+	{
+		"op": "add",
+		"path": "/initialquests/aetheri",
+		"value": [ ]
+	},
+	{
+		"op": "add",
+		"path": "/pronounGenders/aetheri",
+		"value": {
+			"male": "neutral",
+			"female": "neutral"
+		}
+	}
+]

@@ -1,0 +1,11 @@
+[ // -*- grammar-ext: json -*-
+	{
+		"op" : "add",
+		"path" : "/species/aetheri",
+		"value" : {
+			"aiFrames" : "AvianAIold.png",
+			"portraitFrames" : "portraits/alt/avianportrait.png",
+			"staticFrames" : "staticAvian.png"	
+		}
+	}
+]

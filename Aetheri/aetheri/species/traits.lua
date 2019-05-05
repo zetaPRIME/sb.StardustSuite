@@ -1,9 +1,7 @@
 require("/lib/stardust/playerext.lua")
 require("/lib/stardust/itemutil.lua")
 
-local scr -- variable containing the script path to take
-local modGroup -- stat modifier group!
---local movementParams = { }
+local modGroup -- stat modifier group
 
 local function set()
   if scr then return nil end
@@ -17,20 +15,27 @@ local function set()
 end
 
 function init()
-  --set()
-  script.setUpdateDelta(1)
-end
-
-function update(dt)
+  effect.addStatModifierGroup({ -- some basic stats
+    -- hide the matter manipulator when placing tiles, and don't show the quickbar entry
+    { stat = "noMatterManipulator", amount = 1 },
+    
+    { stat = "breathProtection", amount = 1 }, -- star-people don't need to breathe
+    { stat = "nude", amount = -1337 }, -- no strip!
+  })
+  -- high innate placement range, because telekinesis
+  status.setStatusProperty("bonusBeamGunRadius", 15)
+  
   modGroup = effect.addStatModifierGroup({ })
   message.setHandler("stardustlib:techoverride.setStats", function(msg, isLocal, data)
     effect.setStatModifierGroup(modGroup, data or { })
   end)
-  message.setHandler("stardustlib:techoverride.setMovementParams", function(msg, isLocal, data)
-    movementParams = data or { }
-  end)
+  
+  script.setUpdateDelta(1)
+end
+
+function update(dt)
   script.setUpdateDelta(0)
-  set()
+  --set()
   update = function(dt)
     --mcontroller.controlParameters(movementParams)
     --status.setPrimaryDirectives("?setcolor=BADA55")

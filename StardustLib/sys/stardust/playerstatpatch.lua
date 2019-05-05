@@ -32,10 +32,14 @@ if not _stardustlib then
     -- monkeypatch to allow hiding the matter manipulator when placing tiles
     local _spd = status.setPrimaryDirectives
     function status.setPrimaryDirectives(d)
+      local dir = { status.statusProperty("stardustlib:baseDirectives", "") }
       if status.statPositive("noMatterManipulator") then
-        d = "?replace;663b14fe=00000000;8d581cfe=00000000;c88b28fe=00000000;e7c474fe=00000000;404040fe=00000000;808080fe=00000000;6d0103fe=00000000;02da37fe=00000000;5786fffe=00000000" .. (d or "")
+        table.insert(dir,
+          "?replace;663b14fe=00000000;8d581cfe=00000000;c88b28fe=00000000;e7c474fe=00000000;404040fe=00000000;808080fe=00000000;6d0103fe=00000000;02da37fe=00000000;5786fffe=00000000" .. (d or "")
+        )
       end
-      return _spd(d)
+      table.insert(dir, d or "")
+      return _spd(table.concat(dir))
     end
   end
   

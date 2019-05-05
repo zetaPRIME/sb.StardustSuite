@@ -1,7 +1,7 @@
 {
   "version" : "Alpha v0.32",
-  "friendlyName" : "StardustUI",
-  "name" : "Stardust UI",
+  "friendlyName" : "Stardust UI",
+  "name" : "StardustUI",
   "author" : "zetaPRIME",
   "description" : "... Stuff!",
   "requires" : [ "StardustLib" ]

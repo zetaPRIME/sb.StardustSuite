@@ -59,7 +59,7 @@ function pack {
     mkdir -p ./_release/tmp/upload
     cp ./_release/$1.pak ./_release/tmp/upload/contents.pak
     if [ "$1" == "StardustLib" ] ; then
-      cp ./_release/StardustLibFixes.pak ./_release/tmp/upload/fixes.pak
+      cp ./_release/StardustLibPost.pak ./_release/tmp/upload/post.pak
     fi
     
     # gather info from metadata files
@@ -96,7 +96,7 @@ function pack {
 
 # mkdir -p ./_release/
 
-pack StardustLibFixes
+pack StardustLibPost
 pack StardustLib
 pack StardustTweaks
 pack StarTech

@@ -1,9 +1,10 @@
 {
   "version" : "Alpha v0.31",
-  "friendlyName" : "StardustLib Fixes",
-  "name" : "StardustLibFixes",
+  "friendlyName" : "StardustLib Post",
+  "name" : "StardustLibPost",
   "author" : "zetaPRIME",
   "description" : "Bundled fixes for other mods that may depend indirectly on StardustLib",
   "link" : "steam://url/CommunityFilePage/764887546",
+  "priority" : 9999,
   "includes" : [ "StardustLib", "Enhanced Storage" ]
 }

@@ -25,6 +25,8 @@ function init()
   -- high innate placement range, because telekinesis
   status.setStatusProperty("bonusBeamGunRadius", 15)
   
+  status.setStatusProperty("stardustlib:baseDirectives", "")
+  
   modGroup = effect.addStatModifierGroup({ })
   message.setHandler("stardustlib:techoverride.setStats", function(msg, isLocal, data)
     effect.setStatModifierGroup(modGroup, data or { })

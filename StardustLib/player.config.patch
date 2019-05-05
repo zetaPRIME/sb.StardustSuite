@@ -1,5 +1,8 @@
 [ // -*- grammar-ext: json -*-
   { "op" : "add", "path" : "/statusControllerSettings/primaryScriptSources/-", "value": "/sys/stardust/playerstatpatch.lua" },
   
-  { "op" : "add", "path" : "/deploymentConfig/scripts/-", "value" : "/sys/stardust/playerext.lua" }
+  { "op" : "add", "path" : "/deploymentConfig/scripts/-", "value" : "/sys/stardust/playerext.lua" },
+  
+  // make the placement MM imperceptibly less than fully opaque so that it can be hidden with status directives
+  { "op" : "replace", "path" : "/beamGunConfig/image", "value" : "/humanoid/any/gravgun1.png?multiply=fffffffe" }
 ] 

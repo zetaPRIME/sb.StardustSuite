@@ -4,5 +4,6 @@
   { "op": "replace", "path": "/mainBar/mmUpgrade/open", "value": "/sys/stardust/quickbar/openquickbar.png:open" },
   { "op": "replace", "path": "/mainBar/mmUpgrade/openHover", "value": "/sys/stardust/quickbar/openquickbar.png:openHover" },
   { "op": "replace", "path": "/mainBar/mmUpgrade/disabled", "value": "/sys/stardust/quickbar/openquickbar.png:disabled" },
+  { "op": "replace", "path": "/mainBar/mmUpgrade/pos/0", "value": -2 },
   { "op" : "replace", "path" : "/cursorTooltip/mmUpgradeText", "value" : "Quickbar" }
 ]

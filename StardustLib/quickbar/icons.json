@@ -6,7 +6,7 @@
   "items" : {
     "starbound:mattermanipulator" : { 
       "label" : "^essential;Matter Manipulator",
-      "icon" : "/items/tools/miningtools/beamaxe.png",
+      "icon" : "/items/tools/miningtools/beamaxe.png?border=1;000000;00000000",
       "weight" : -1150,
       "action" : [ "pane", "/interface/scripted/mmupgrade/mmupgradegui.original.config" ],
       "condition" : [ "statNegative", "noMatterManipulator" ]

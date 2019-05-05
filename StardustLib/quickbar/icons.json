@@ -11,6 +11,13 @@
       "action" : [ "pane", "/interface/scripted/mmupgrade/mmupgradegui.original.config" ],
       "condition" : [ "statNegative", "noMatterManipulator" ]
     },
+    "starbound:navigation" : {
+      "label" : "^essential;Navigation",
+      "icon" : "/interface/statuses/lowgrav.png",
+      "weight" : -1145,
+      "action" : [ "pane", "/interface/cockpit/cockpit.config" ],
+      "condition" : [ "any", [ "admin" ], [ "ownShip" ] ]
+    },
     
     "starbound:techpanel" : {
       "label" : "^admin;Tech Panel",
@@ -24,13 +31,6 @@
       "icon" : "/items/generic/salvage/salvagetier5.png",
       "weight" : -1000,
       "action" : [ "pane", "/interface/scripted/mechassembly/mechassemblygui.config" ],
-      "condition" : [ "admin" ]
-    },
-    "starbound:navigation" : {
-      "label" : "^admin;Navigation",
-      "icon" : "/items/active/stationtransponder/stationtransponder.png",
-      "weight" : -1000,
-      "action" : [ "pane", "/interface/cockpit/cockpit.config" ],
       "condition" : [ "admin" ]
     }
   }

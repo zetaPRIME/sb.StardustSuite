@@ -48,6 +48,7 @@ function conditions.admin() return player.isAdmin() end
 function conditions.statPositive(stat) return status.statPositive(stat) end
 function conditions.statNegative(stat) return not status.statPositive(stat) end
 function conditions.species(species) return player.species() == species end
+function conditions.ownShip() return player.worldId() == player.ownShipWorldId() end
 
 ---------------
 -- internals --

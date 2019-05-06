@@ -15,5 +15,10 @@
   
   "transformationGroups" : {
     "weapon" : { }
+  },
+  
+  "sounds" : {
+    "start" : [ "/sfx/npc/boss/cultistboss_shield.ogg" ],
+    "digging" : [ "/sfx/gun/aegisaltpistol_loop2.ogg" ]
   }
 }

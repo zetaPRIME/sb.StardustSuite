@@ -4,7 +4,7 @@ require "/lib/stardust/playerext.lua"
 
 --[[ TODO:
   liquids
-  sound
+  autocollect perk
 ]]
 
 local function squareVec(angle, size)
@@ -33,6 +33,8 @@ function init()
   range = root.assetJson("/player.config:initialBeamGunRadius") + status.statusProperty("bonusBeamGunRadius", 0)
   strength = config.getParameter("baseStrength", 5)
   maxSize = config.getParameter("baseSize", 3)
+  
+  animator.setSoundVolume("digging", 0.0, 0)
 end
 
 function uninit()
@@ -42,6 +44,7 @@ end
 local rot = 0.0
 
 local blockFire = true
+local active, wasActive
 local layer = { primary = "foreground", alt = "background" }
 local tileMark = "/aetheri/skills/tileMark.png?multiply=ffffff3f"
 local spark = "/aetheri/skills/spark.png?multiply=ffffffbf"
@@ -59,6 +62,20 @@ function update(dt, fireMode, shiftHeld)
   local centerPos = vec2.add(tilePos, {selSize * 0.5, selSize * 0.5})
   local tiles = { }
   
+  do
+    local rv = {vec2.mag(vec2.sub(centerPos, mcontroller.position())), 0} -- straight line since this is relative to the *arm* :|
+    --animator.setFlipped(mcontroller.facingDirection() < 0)
+    animator.setFlipped(false)
+    animator.setSoundPosition("digging", rv)
+    animator.setSoundPosition("start", rv)
+  end
+  
+  if active ~= wasActive then -- sound
+    animator.setSoundVolume("digging", active and 1.0 or 0.0, 0.1)
+    if active then animator.playSound("start") animator.stopAllSounds("digging") animator.playSound("digging", -1) end
+  end
+  wasActive = active active = false
+  
   if vec2.mag(vec2.sub(centerPos, mcontroller.position())) > range + 0.5 then return nil end
   
   for x = 0, selSize - 1 do for y = 0, selSize - 1 do
@@ -73,15 +90,7 @@ function update(dt, fireMode, shiftHeld)
       color = c,
       range = 1,
       pointLight = false,
-      --pointLight = true,
     }
-    --[[playerext.queueDrawable {
-      position = p,
-      absolute = true,
-      image = tileMark,
-      renderLayer = tileMarkLayer,
-      fullbright = true,
-    }]]
   end end
   
   -- draw sparks around outline
@@ -99,7 +108,7 @@ function update(dt, fireMode, shiftHeld)
   if fireMode == "none" then fireMode = nil end
   if fireMode and not blockFire then
     local sp = vec2.add(aimPos, vec2.mul(vec2.sub(aimPos, mcontroller.position()), 50)) -- particles *away* from user
-    world.damageTiles(tiles, layer[fireMode], sp, "blockish", strength * dt * (1 + maxSize - selSize)^2) -- does as much total damage to one tile as it would to the full square
+    active = world.damageTiles(tiles, layer[fireMode], sp, "blockish", strength * dt * (1 + maxSize - selSize)^2) -- does as much total damage to one tile as it would to the full square
   elseif not fireMode then
     blockFire = false
   end

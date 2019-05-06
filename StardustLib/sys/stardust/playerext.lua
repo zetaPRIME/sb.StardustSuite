@@ -58,12 +58,17 @@ local drawableQueue = { }
 local lightQueue = { }
 local particleQueue = { }
 
+local lastPos = { 0, 0 }
 local _update = update or function() end
 function update(dt, ...)
   localAnimator.clearLightSources()
   _update(dt, ...)
+  local pos = entity.position()
+  local pd = vec2.sub(pos, lastPos)
   -- process localAnimator queues
   for _, e in pairs(drawableQueue) do
+    if e.position then e.position = vec2.sub(e.position, pd) end
+    if e.absolute and e.position then e.position = vec2.sub(e.position, pos) end
     localAnimator.addDrawable(e, e.renderLayer)
   end drawableQueue = { }
   for _, e in pairs(lightQueue) do
@@ -72,6 +77,7 @@ function update(dt, ...)
   for _, e in pairs(particleQueue) do
     localAnimator.spawnParticle(e)
   end particleQueue = { }
+  lastPos = pos
   
   --[[ TODO: figure out a place to put this
   -- NaN protection for velocity

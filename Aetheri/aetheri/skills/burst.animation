@@ -1,0 +1,39 @@
+{ // -*- grammar-ext: json -*-
+  "globalTagDefaults" : {
+    "partImage" : "",
+    "animFrame" : "",
+    "directives" : ""
+  },
+  
+  "animatedParts" : {
+    "parts" : {
+      "burst" : {
+        "properties" : {
+          "zLevel" : 0,
+          "centered" : true,
+          "image" : "<partImage><directives>",
+          "fullbright" : true,
+          "offset" : [1.5, 0],
+          "transformationGroups" : ["weapon"]
+        }
+      }
+    }
+  },
+  
+  "transformationGroups" : {
+    "weapon" : { }
+  },
+  
+  "lights" : {
+    "muzzleFlash" : {
+      "active" : true,
+      "position" : [0, 0],
+      "color" : [0, 0, 0],
+      "pointLight" : true
+    }
+  },
+  
+  "sounds" : {
+    "fire" : [ "/sfx/gun/plasma_shotgun1.ogg" ]
+  }
+}

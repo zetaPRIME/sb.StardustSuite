@@ -3,13 +3,12 @@
   "maxStack" : 1,
   "rarity" : "Essential",
   "shortdescription" : "Excavate",
-  "description" : "Tear through most solid materials in a small area.",
+  "description" : "Tear through most solid materials in a small, precise area.",
   "category" : "aetheri:skill",
   "tooltipKind" : "mm",
   "twoHanded" : true,
   
   "inventoryIcon" : "/items/currency/essence.png",
-  "image" : "",
   "animation" : "dig.animation",
 
   "scripts" : ["dig.lua"],

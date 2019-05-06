@@ -1,0 +1,17 @@
+{ // -*- grammar-ext: json -*-
+  "itemName" : "aetheri:skill.burst",
+  "maxStack" : 1,
+  "rarity" : "Essential",
+  "shortdescription" : "Kinetic Burst",
+  "description" : "Blast through foes with a short-range burst of intense kinetic force.",
+  "category" : "aetheri:skill",
+  "tooltipKind" : "mm",
+  "twoHanded" : true,
+  
+  "inventoryIcon" : "/items/currency/essence.png",
+  "animation" : "burst.animation",
+
+  "scripts" : ["burst.lua"],
+  
+  "baseDamage" : 22
+}

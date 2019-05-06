@@ -4,7 +4,8 @@
   "charCreationTooltip" : {
       "title" : "Aetheri",
       "subTitle" : "Stardust",
-      "description" : "Lost souls touched by the void and reborn amongst the stars. These astral wanderers wield powerful innate abilities but find no use for the armor or nanotech that would have aided their former selves.\n^violet;Don't skip the intro on your first playthrough!^reset;"
+      "description" : "Lost souls touched by the void and reborn amongst the stars, the ^violet;Aetheri^reset; wield powerful innate abilities but find no use for the armor or nanotech that would have aided their former selves.\n^violet;Don't skip the intro on your first playthrough!^reset;"
+      //"description" : "Lost souls touched by the void and reborn amongst the stars. These astral wanderers wield powerful innate abilities but find no use for the armor or nanotech that would have aided their former selves.\n^violet;Don't skip the intro on your first playthrough!^reset;"
   },
 
   "statusEffects" : [ "aetheri:traits" ],

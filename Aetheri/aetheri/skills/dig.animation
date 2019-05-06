@@ -1,0 +1,19 @@
+{ // -*- grammar-ext: json -*-
+  "animatedParts" : {
+    "parts" : {
+      "body" : {
+        "properties" : {
+          "zLevel" : 0,
+          "centered" : true,
+          "image" : "<partImage><paletteSwaps>",
+          "offset" : [0.0625, 0.3125],
+          "transformationGroups" : ["weapon"]
+        }
+      }
+    }
+  },
+  
+  "transformationGroups" : {
+    "weapon" : { }
+  }
+}

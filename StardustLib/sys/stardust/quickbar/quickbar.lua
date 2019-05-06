@@ -94,7 +94,8 @@ local function buildList()
         label = "^admin;" .. i.label,
         icon = i.icon,
         weight = -1000,
-        action = legacyAction(i)
+        action = legacyAction(i),
+        condition = { "admin" }
       })
     end
   end
@@ -121,7 +122,10 @@ local function buildList()
     local l = "scroll.list." .. widget.addListItem("scroll.list")
     widget.setText(l .. ".label", i.label)
     local bc = l .. ".buttonContainer"
-    widget.registerMemberCallback(bc, "click", function() action(table.unpack(i.action)) end)
+    widget.registerMemberCallback(bc, "click", function()
+      if i.condition and not condition(table.unpack(i.condition)) then return nil end -- recheck condition on attempt
+      action(table.unpack(i.action))
+    end)
     local btn = bc .. "." .. widget.addListItem(bc) .. ".button"
     widget.setButtonOverlayImage(btn, i.icon or "/items/currency/essence.png")
   end

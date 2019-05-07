@@ -1,11 +1,16 @@
 require "/scripts/util.lua"
 require "/scripts/vec2.lua"
 require "/lib/stardust/playerext.lua"
+require "/lib/stardust/color.lua"
 
 --[[ TODO:
   move some of this into a clean library
   damage bonus from velocity
 ]]
+
+local burstReplace = {"fefffe", "d8d2ff", "b79bff", "8e71da"}
+local directives = ""
+local lightColor = burstReplace[2]
 
 local damage
 
@@ -18,6 +23,13 @@ function init()
   
   animator.setPartTag("burst", "partImage", "/aetheri/skills/burst.png")
   animator.setPartTag("burst", "directives", "?multiply=ffffff00")
+  
+  -- recolor to match user's core palette
+  local appearance = status.statusProperty("aetheri:appearance", { })
+  if appearance.palette then
+    directives = color.replaceDirective(burstReplace, appearance.palette)
+    lightColor = appearance.palette[2]
+  end
 end
 
 function uninit()
@@ -80,10 +92,10 @@ function update(dt, fireMode, shiftHeld)
   end
   
   local visMult = anim^3
-  animator.setPartTag("burst", "directives", string.format("?multiply=ffffff%02x", math.floor(0.5 + visMult * 255)))
+  animator.setPartTag("burst", "directives", string.format("%s?multiply=ffffff%02x", directives, math.floor(0.5 + visMult * 255)))
   animator.resetTransformationGroup("weapon")
   animator.scaleTransformationGroup("weapon", {1 + (1-anim) * -0.1, anim^2})
-  animator.setLightColor("muzzleFlash", { 216 * anim, 210 * anim, 255 * anim })
+  animator.setLightColor("muzzleFlash", color.lightColor(lightColor, anim))
   activeItem.setHoldingItem(anim > 0)
   activeItem.setFrontArmFrame((anim < 0.32) and "run.3" or "rotation")
   activeItem.setBackArmFrame((anim < 0.32) and "jump.3" or "rotation")

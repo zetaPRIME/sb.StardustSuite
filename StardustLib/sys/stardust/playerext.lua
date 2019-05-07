@@ -85,6 +85,8 @@ function update(dt, ...)
   if v[1] ~= v[1] or v[2] ~= v[2] then
     mcontroller.setVelocity({0, 0})
   end --]]
+  
+  --status.setPrimaryDirectives("?replace;663b14fe=00000000;8d581cfe=00000000;c88b28fe=00000000;e7c474fe=00000000;404040fe=00000000;808080fe=00000000;6d0103fe=00000000;02da37fe=00000000;5786fffe=00000000")
 end
 
 local cfg

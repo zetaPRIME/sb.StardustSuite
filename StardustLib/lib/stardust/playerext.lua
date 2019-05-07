@@ -53,6 +53,8 @@ if not playerext then
     "queueLight",
     "queueParticle",
     "playAudio",
+    
+    "setGlowColor",
   }
   
   for _, cmd in pairs(commands) do -- generate proxies automatically

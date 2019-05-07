@@ -1,6 +1,7 @@
 { // -*- grammar-ext: json -*-
   "name" : "stardustlib:techoverride",
   "effectConfig" : { },
+  "blockingStat" : "speciesTechOverride",
 
   "scripts" : [ "techoverride.lua" ]
 }

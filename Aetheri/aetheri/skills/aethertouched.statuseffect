@@ -1,0 +1,6 @@
+{ // -*- grammar-ext: json -*-
+  "name" : "aetheri:aethertouched",
+  "effectConfig" : { },
+
+  "scripts" : [ "aethertouched.lua" ]
+}

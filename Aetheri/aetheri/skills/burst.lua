@@ -36,7 +36,7 @@ local function offsetPoly(p)
   local r = { }
   local rot, scale = armAngle, {mcontroller.facingDirection(), 1}
   for _, pt in pairs(p) do
-    table.insert(r, vec2.mul( vec2.rotate(vec2.add(pt, handPos), rot), scale))
+    table.insert(r, vec2.add(vec2.mul( vec2.rotate(vec2.add(pt, handPos), rot), scale), {0, mcontroller.crouching() and -1 or 0}))
   end
   return r
 end
@@ -54,7 +54,7 @@ function update(dt, fireMode, shiftHeld)
   cooldown = math.max(cooldown - dt / cooldownTime, 0)
   anim = math.max(anim - dt / animTime, 0)
   
-  if cooldown <= 0.5 and fireMode == "primary" then buffered = true end
+  if cooldown <= 0.75 and fireMode == "primary" then buffered = true end
   if cooldown == 0 and buffered then
     buffered = false
     cooldown = 1

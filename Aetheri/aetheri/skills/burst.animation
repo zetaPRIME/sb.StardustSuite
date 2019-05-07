@@ -34,6 +34,6 @@
   },
   
   "sounds" : {
-    "fire" : [ "/sfx/gun/plasma_shotgun1.ogg" ]
+    "fire" : [ "/sfx/gun/mech_plasmadrone_fire1.ogg" ]
   }
 }

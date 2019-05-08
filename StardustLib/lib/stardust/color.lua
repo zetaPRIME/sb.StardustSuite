@@ -49,6 +49,12 @@ do
     return table.concat(l)
   end
   
+  function color.hideDirective(src, continue)
+    local l = continue and { } or { "?replace" }
+    for _, c in pairs(src) do table.insert(l, string.format(";%s=00000000", color.toHex(c))) end
+    return table.concat(l)
+  end
+  
   -- code borrowed from https://github.com/Wavalab/rgb-hsl-rgb/blob/master/rgbhsl.lua; license unknown :(
   local function hslToRgb(h, s, l)
     if s == 0 then return l, l, l end

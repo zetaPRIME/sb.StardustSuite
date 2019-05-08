@@ -33,7 +33,7 @@ function appearance.updateColors()
   a.glowColor = color.fromHsl {
     a.coreHsl[1],
     a.coreHsl[2],
-    (a.coreHsl[3] + a.coreHsl[4]) / 2
+    0.5 + (((a.coreHsl[3] + a.coreHsl[4]) / 2) - 0.5) * 0.5 -- average luma, pushed towards 0.5 (full vivid)
   }
   
   status.setStatusProperty("aetheri:appearance", a)
@@ -45,7 +45,7 @@ function appearance.updateColors()
   appearance.baseDirectives = table.concat(d)
   tech.setParentDirectives(appearance.baseDirectives)
   
-  playerext.setGlowColor(color.lightColor(a.glowColor, 0.64))
+  playerext.setGlowColor(color.lightColor(a.glowColor, 0.8))
   world.sendEntityMessage(entity.id(), "aetheri:paletteChanged")
   updateGlow = true
 end
@@ -54,7 +54,7 @@ function appearance.update(p)
   if updateGlow then
     updateGlow = false
     local a = appearance.settings
-    playerext.setGlowColor(color.lightColor(a.glowColor, 0.64))
+    playerext.setGlowColor(color.lightColor(a.glowColor, 0.8))
   end
 end
 

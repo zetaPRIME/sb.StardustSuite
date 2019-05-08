@@ -18,7 +18,8 @@
   },
   
   "sounds" : {
-    "start" : [ "/sfx/npc/boss/cultistboss_shield.ogg" ],
-    "digging" : [ "/sfx/gun/aegisaltpistol_loop2.ogg" ]
+    "start" : [ "/sfx/tools/energypickaxe_stop2.ogg" ],
+    "start2" : [ "/sfx/npc/boss/cultistboss_shield.ogg" ],
+    "digging" : [ "/sfx/npc/boss/crystalboss_hum.ogg" ]
   }
 }

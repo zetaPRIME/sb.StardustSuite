@@ -71,8 +71,8 @@ function update(dt, fireMode, shiftHeld)
   end
   
   if active ~= wasActive then -- sound
-    animator.setSoundVolume("digging", active and 1.0 or 0.0, 0.1)
-    if active then animator.playSound("start") animator.stopAllSounds("digging") animator.playSound("digging", -1) end
+    animator.setSoundVolume("digging", active and 1.5 or 0.0, 0.1)
+    if active then animator.playSound("start") animator.playSound("start2") animator.stopAllSounds("digging") animator.playSound("digging", -1) end
   end
   wasActive = active active = false
   

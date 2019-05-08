@@ -33,6 +33,10 @@ function init()
   animator.setPartTag("burst", "partImage", "/aetheri/skills/burst.png")
   animator.setPartTag("burst", "directives", "?multiply=ffffff00")
   
+  animator.setSoundPitch("fireHum", 1.0, 0)
+  animator.setSoundVolume("fireHum", 0.75, 0)
+  animator.setSoundPosition("fireHum", { 9, 0 }) -- near the tip of the burst
+  
   updateColors()
   message.setHandler("aetheri:paletteChanged", updateColors)
 end
@@ -79,6 +83,7 @@ function update(dt, fireMode, shiftHeld)
     activeItem.setFacingDirection(dir)
     activeItem.setArmAngle(angle - mcontroller.rotation() * dir) armAngle = angle
     animator.playSound("fire")
+    animator.playSound("fireHum")
     local dmg = damage * status.stat("powerMultiplier", 1.0)
     activeItem.setDamageSources({{
       poly = offsetPoly{ {0, -1.5}, {-1.5, 0}, {0, 1.5}, {10, 0} },

@@ -34,6 +34,7 @@
   },
   
   "sounds" : {
-    "fire" : [ "/sfx/gun/mech_plasmadrone_fire1.ogg" ]
+    "fire" : [ "/sfx/gun/mech_plasmadrone_fire1.ogg" ],
+    "fireHum" : [ "/sfx/tools/energypickaxe_stop2.ogg" ]//[ "/sfx/melee/laser_weapon_swing1.ogg", "/sfx/melee/laser_weapon_swing2.ogg", "/sfx/melee/laser_weapon_swing3.ogg" ]
   }
 }

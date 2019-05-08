@@ -22,7 +22,7 @@ do
   local _die = die or function() end
   function die(...)
     -- first calculate granted xp
-    local experience = math.floor(0.5 + world.entityHealth(entity.id())[2]) * 10)
+    local experience = math.floor(0.5 + world.entityHealth(entity.id())[2] * 10)
     
     -- then loop through and send
     for p in pairs(contributors) do

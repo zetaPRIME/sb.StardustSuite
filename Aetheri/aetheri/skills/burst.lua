@@ -12,6 +12,15 @@ local burstReplace = {"fefffe", "d8d2ff", "b79bff", "8e71da"}
 local directives = ""
 local lightColor = burstReplace[2]
 
+function updateColors()
+  -- recolor to match user's core palette
+  local appearance = status.statusProperty("aetheri:appearance", { })
+  if appearance.palette then
+    directives = color.replaceDirective(burstReplace, appearance.palette)
+    lightColor = appearance.glowColor or appearance.palette[2]
+  end
+end
+
 local damage
 
 function init()
@@ -24,12 +33,8 @@ function init()
   animator.setPartTag("burst", "partImage", "/aetheri/skills/burst.png")
   animator.setPartTag("burst", "directives", "?multiply=ffffff00")
   
-  -- recolor to match user's core palette
-  local appearance = status.statusProperty("aetheri:appearance", { })
-  if appearance.palette then
-    directives = color.replaceDirective(burstReplace, appearance.palette)
-    lightColor = appearance.palette[2]
-  end
+  updateColors()
+  message.setHandler("aetheri:paletteChanged", updateColors)
 end
 
 function uninit()

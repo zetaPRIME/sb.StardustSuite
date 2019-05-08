@@ -26,6 +26,16 @@ do
     }
   end
   
+  function color.brighterOf(a, b)
+    local ca, cb = color.toRgb(a), color.toRgb(b)
+    return ( (ca[1] + ca[2] + ca[3]) * (ca[4] or 1) >= (cb[1] + cb[2] + cb[3]) * (cb[4] or 1) ) and a or b
+  end
+  
+  function color.darkerOf(a, b)
+    local ca, cb = color.toRgb(a), color.toRgb(b)
+    return ( (ca[1] + ca[2] + ca[3]) * (ca[4] or 1) >= (cb[1] + cb[2] + cb[3]) * (cb[4] or 1) ) and b or a
+  end
+  
   function color.lightColor(c, brightness)
     c = color.toRgb(c)
     local m = (brightness or c[4] or 1.0) * 255

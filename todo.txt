@@ -116,11 +116,12 @@ Aetheri species mod {
     
     Androgynous, fullbright "core" (novakid male minus chest definition, with Avian-ish talons) with crystalline plates on top
     (part of innate armor); hue and brightness sliders for core, fine-grained control over what plates you have
+    Make the belly line (beyond female outline) a different color so it can be hidden when wearing contoured stuff
     # "Focus" slot; an item held in the hand(s) while using Innates that modifies stats
     
     Innate flight in zero-g, similar controls to Elytra
     
-    set "Nude" stat to -100 or so to prevent beds taking off their crystal plating
+    - set "Nude" stat to -100 or so to prevent beds taking off their crystal plating
     
     Innates {
         No matter manipulator; instead, essential slots are skill slots for Innate Skills

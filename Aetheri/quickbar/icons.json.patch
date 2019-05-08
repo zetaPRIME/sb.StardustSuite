@@ -1,0 +1,9 @@
+[ // -*- grammar-ext: json -*-
+  { "op" : "add", "path" : "/items/aetheri:skilltree", "value" : {
+    "label" : "^essential;Aethyrium",
+    "icon" : "/items/currency/essence.png",
+    "weight" : -1150,
+    "action" : [ "pane", "/aetheri/interface/temp-appearance.config" ],
+    "condition" : [ "species", "aetheri" ]
+  } }
+]

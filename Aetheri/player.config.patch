@@ -1,1 +1,8 @@
-[ { "op" : "add", "path" : "/defaultCodexes/aetheri", "value" : [ ] } ]
+[ // -*- grammar-ext: json -*-
+  { "op" : "add", "path" : "/defaultCodexes/aetheri", "value" : [ ] },
+  { "op" : "add", "path" : "/statusControllerSettings/resources/aetheri:mana", "value" : {
+    "maxStat" : "aetheri:maxMana",
+    "deltaStat" : "aetheri:manaRegen",
+    "initialPercentage" : 1.0
+  } }
+]

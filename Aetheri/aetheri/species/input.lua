@@ -4,12 +4,13 @@ input = {
   key = { },
   keyLast = { },
   keyDown = { },
-  keyUp = { }
+  keyUp = { },
+  dir = {0, 0},
+  dirN = {0, 0},
 }
 
 function input.update(p)
-  local m = p.moves
-  --sb.logInfo(util.tableToString(m))
+  local m = p.moves -- alias
   input.keyLast = input.key -- push back
   input.key = { -- assemble keys
     up = m.up, down = m.down, left = m.left, right = m.right,
@@ -21,5 +22,8 @@ function input.update(p)
     input.keyDown[k] = input.key[k] and not input.keyLast[k]
     input.keyUp[k] = input.keyLast[k] and not input.key[k]
   end
-  -- I think that's everything
+  input.dir = { -- and provide both raw and normalized directional input vectors
+    (input.key.right and 1 or 0) - (input.key.left and 1 or 0),
+    (input.key.up and 1 or 0) - (input.key.down and 1 or 0)
+  } input.dirN = vec2.norm(input.dir)
 end

@@ -13,6 +13,10 @@ function init()
   loaded = true
 end
 
+function update()
+  widget.setText("ap", string.format("%dAP", math.floor(status.statusProperty("aetheri:AP", 0))))
+end
+
 function changed()
   if not loaded then return nil end -- don't try to fudge this while still loading in the existing values!
   appearance.coreHsl = {

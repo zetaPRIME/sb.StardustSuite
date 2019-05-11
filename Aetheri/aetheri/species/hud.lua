@@ -44,5 +44,5 @@ end
 function hud.gainAP(amt)
   apGainColor = color.toHex(color.fromHsl{ appearance.settings.coreHsl[1], appearance.settings.coreHsl[2], 0.85 })
   apGainAmt = amt + (apGainTime > 0 and apGainAmt or 0)
-  apGainTime = 1
+  if amt >= 10 then apGainTime = 1 end
 end

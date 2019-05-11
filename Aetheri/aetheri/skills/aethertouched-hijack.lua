@@ -27,7 +27,8 @@ do
     -- then loop through and send
     for p in pairs(contributors) do
       if world.entitySpecies(p) == "aetheri" then
-        world.sendEntityMessage(p, "playerext:message", string.format("Killed %s; %d experience gained", world.entityTypeName(entity.id()), experience))
+        --world.sendEntityMessage(p, "playerext:message", string.format("Killed %s; %d experience gained", world.entityTypeName(entity.id()), experience))
+        world.sendEntityMessage(p, "aetheri:gainAP", experience)
       end
     end
     _die(...)

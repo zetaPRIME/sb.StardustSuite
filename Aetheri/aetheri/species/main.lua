@@ -6,20 +6,26 @@ require "/scripts/vec2.lua"
 require "/lib/stardust/playerext.lua"
 
 -- and modules
+require "/aetheri/species/stats.lua"
 require "/aetheri/species/input.lua"
 require "/aetheri/species/movement.lua"
 require "/aetheri/species/appearance.lua"
---require "/aetheri/species/hud.lua"
+require "/aetheri/species/hud.lua"
 
 function init()
   appearance.updateColors()
   movement.enterState("ground")
 end
 
+function uninit()
+  movement.callState("uninit")
+end
+
 function update(p)
   input.update(p)
   movement.update(p)
   appearance.update(p)
+  hud.update(p)
 end
 
 

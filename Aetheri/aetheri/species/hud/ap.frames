@@ -1,0 +1,12 @@
+{
+  "frameGrid" : {
+    "size" : [8, 8],
+    "dimensions" : [3, 4],
+    "names" : [
+      [ "num1", "num2", "num3" ],
+      [ "num4", "num5", "num6" ],
+      [ "num7", "num8", "num9" ],
+      [ "num0", "num+", "numA" ]
+    ]
+  }
+}

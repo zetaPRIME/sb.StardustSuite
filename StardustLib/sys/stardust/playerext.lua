@@ -67,8 +67,9 @@ function update(dt, ...)
   local pd = vec2.sub(pos, lastPos)
   -- process localAnimator queues
   for _, e in pairs(drawableQueue) do
-    if e.absolute and e.position then e.position = vec2.sub(e.position, pos)
-    elseif e.position then e.position = vec2.sub(e.position, pd) end
+    if e.absolute and e.position then e.position = vec2.sub(e.position, pos) end
+    --elseif e.position then e.position = vec2.sub(e.position, pd) end
+    --if e.compensate then e.position = {math.floor(0.5+e.position[1]*16)/16, math.floor(0.5+e.position[2]*16)/16} end
     localAnimator.addDrawable(e, e.renderLayer)
   end drawableQueue = { }
   for _, e in pairs(lightQueue) do

@@ -27,22 +27,24 @@ do
   end
   
   function itemutil.getCachedConfig(item)
+    if type(item) ~= "table" then item = { } end
+    local name = item.name or "perfectlygenericitem"
     local params = item.parameters or { }
     local cc = itemutil.ccache
-    if item.name == "sapling" then -- because they otherwise break horribly
-      local cname = table.concat({ item.name, params.stemName or "none", params.stemHueShift or 0, params.foliageName or "none", params.foliageHueShift or 0 })
+    if name == "sapling" then -- because they otherwise break horribly
+      local cname = table.concat({ name, params.stemName or "none", params.stemHueShift or 0, params.foliageName or "none", params.foliageHueShift or 0 })
       local pc = cc[cname]
       if pc then return pc end
-      pc = root.itemConfig({name=item.name, parameters=params}) -- fully generic version, please
+      pc = root.itemConfig({ name=name, parameters=params }) -- fully generic version, please
       cc[cname] = pc
       cc.__c = cc.__c + 1
       return pc
     end
-    local cname = item.name .. (params.seed or "")
+    local cname = name .. (params.seed or "")
     local pc = cc[cname]
     if pc then return pc end
-    pc = zpcall(root.itemConfig, {name=item.name, parameters={seed = params.seed}}) -- fully generic version, please
-      or itemutil.getCachedConfig({name="perfectlygenericitem", parameters={}}) -- no itemexception pls
+    pc = zpcall(root.itemConfig, { name = name, parameters = { seed = params.seed } }) -- fully generic version, please
+      or itemutil.getCachedConfig({ name = "perfectlygenericitem", parameters = { } }) -- no itemexception pls
     cc[cname] = pc
     cc.__c = cc.__c + 1
     return pc
@@ -86,6 +88,7 @@ do
   
   -- returns a given property of an item, overridden where applicable
   function itemutil.property(itm, path)
+    if not itm or not path then return nil end
     --return (itm.parameters and itm.parameters[prop]) or itemutil.getCachedConfig(itm).config[prop]
     local res = nil
     if itm.parameters then res = dive(itm.parameters, path) end

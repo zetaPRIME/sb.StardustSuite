@@ -213,13 +213,16 @@ function svc.fillEquipEnergyAsync(msg, isLocal, amount, iterations)
   return acc
 end
 
+local essentialSlots = { beamaxe = true, wiretool = true, painttool = true, inspectiontool = true }
 -- read/write equipped items, generally meant to be used synchronously (from techs, etc.)
 function svc.getEquip(msg, isLocal, slot)
   if slot == "cursor" then return player.swapSlotItem() end
+  if essentialSlots[slot] then return player.essentialItem(slot) end
   return player.equippedItem(slot)
 end
 function svc.setEquip(msg, isLocal, slot, item)
   if slot == "cursor" then return player.setSwapSlotItem(item) end
+  if essentialSlots[slot] then return player.giveEssentialItem(slot, item) end
   return player.setEquippedItem(slot, item)
 end
 function svc.updateEquip(msg, isLocal, slot, match, item)

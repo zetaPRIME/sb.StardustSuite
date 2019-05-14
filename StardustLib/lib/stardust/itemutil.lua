@@ -5,6 +5,8 @@ do
   itemutil = {}
   itemutil.ccache = {__c = 0}
   
+  itemutil.blankItem = { name = "perfectlygenericitem", count = 0 }
+  
   function itemutil.getIU() return itemutil end -- facilitate merging
   
   local function mergeCCache(iu1, iu2)

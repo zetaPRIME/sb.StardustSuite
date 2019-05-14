@@ -1,0 +1,16 @@
+{ // -*- grammar-ext: json -*-
+  "itemName" : "aetheri:innatehead",
+  "shortdescription" : "Innate Armor",
+  "description" : "Your ^violet;innate defenses^reset; render traditional armor unnecessary.",
+  "inventoryIcon" : "/interface/lockicon.png",
+  "rarity" : "Essential",
+  "maxStack" : 1,
+  "category" : "???",
+  "tooltipKind" : "stardustlib.simple.256",
+  
+  "statusEffects" : [ ],
+  
+  "maleFrames" : "blank.png",
+  "femaleFrames" : "blank.png",
+  "mask" : "nullmask.png"
+}

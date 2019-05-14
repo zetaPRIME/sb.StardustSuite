@@ -1,0 +1,23 @@
+{ // -*- grammar-ext: json -*-
+  "itemName" : "aetheri:innatechest",
+  "shortdescription" : "Innate Armor",
+  "description" : "Your ^violet;innate defenses^reset; render traditional armor unnecessary.",
+  "inventoryIcon" : "/interface/lockicon.png",
+  "rarity" : "Essential",
+  "maxStack" : 1,
+  "category" : "???",
+  "tooltipKind" : "stardustlib.simple.256",
+  
+  "statusEffects" : [ ],
+  
+  "maleFrames" : {
+    "body" : "blank.png",
+    "backSleeve" : "blank.png",
+    "frontSleeve" : "blank.png"
+  },
+  "femaleFrames" : {
+    "body" : "blank.png",
+    "backSleeve" : "blank.png",
+    "frontSleeve" : "blank.png"
+  }
+}

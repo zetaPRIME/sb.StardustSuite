@@ -26,14 +26,16 @@ function init()
   -- high innate placement range, because telekinesis
   status.setStatusProperty("bonusBeamGunRadius", 15)
   
-  status.setStatusProperty("stardustlib:baseDirectives", "")
+  --status.setStatusProperty("stardustlib:baseDirectives", "")
   --status.setPrimaryDirectives("?replace;663b14fe=00000000;8d581cfe=00000000;c88b28fe=00000000;e7c474fe=00000000;404040fe=00000000;808080fe=00000000;6d0103fe=00000000;02da37fe=00000000;5786fffe=00000000")
   
   modGroup = effect.addStatModifierGroup({ })
   message.setHandler("stardustlib:techoverride.setStats", function(msg, isLocal, data)
-    effect.setStatModifierGroup(modGroup, data or { })
+    data = data or { }
+    effect.setStatModifierGroup(modGroup, data)
   end)
   
+  --playerext.overrideTech("/aetheri/species/main.lua")
   --playerext.overrideTech("/aetheri/species/main.lua")
   script.setUpdateDelta(1)
 end
@@ -49,5 +51,5 @@ function update(dt)
 end
 
 function uninit()
-  if playerext.getTechOverride() == scr then playerext.restoreTech() end
+  --if playerext.getTechOverride() == scr then playerext.restoreTech() end
 end

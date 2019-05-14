@@ -4,6 +4,7 @@
 require "/scripts/util.lua"
 require "/scripts/vec2.lua"
 require "/lib/stardust/playerext.lua"
+require "/lib/stardust/itemutil.lua"
 
 -- and modules
 require "/aetheri/species/stats.lua"
@@ -19,9 +20,11 @@ end
 
 function uninit()
   movement.callState("uninit")
+  stats.uninit()
 end
 
 function update(p)
+  stats.update(p)
   input.update(p)
   movement.update(p)
   appearance.update(p)

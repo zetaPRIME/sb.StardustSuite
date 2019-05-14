@@ -125,6 +125,7 @@ local function buildList()
     widget.registerMemberCallback(bc, "click", function()
       if i.condition and not condition(table.unpack(i.condition)) then return nil end -- recheck condition on attempt
       action(table.unpack(i.action))
+      if i.dismissQuickbar then pane.dismiss() end
     end)
     local btn = bc .. "." .. widget.addListItem(bc) .. ".button"
     widget.setButtonOverlayImage(btn, i.icon or "/items/currency/essence.png")

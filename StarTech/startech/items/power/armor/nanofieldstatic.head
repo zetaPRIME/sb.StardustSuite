@@ -1,15 +1,16 @@
 { // -*- grammar-ext: json -*-
   "itemName" : "startech:nanofieldstatichead",
-  "shortdescription" : "^gray;Nanofield Static",
-  "description" : "Your Nanofield is interfering with your head slot.",
-  "inventoryIcon" : "/interface/statuses/x.png",
-  "rarity" : "Common",
+  "shortdescription" : "^gray;Nanofield Static^reset;",
+  "description" : "Locked; your ^yellow;Nanofield^reset; projects a kinetic field for protection.",
+  "inventoryIcon" : "/interface/lockicon.png",
+  "rarity" : "Essential",
   "maxStack" : 1,
   "category" : "Ephemera",
+  "tooltipKind" : "stardustlib.simple.256",
   
   "statusEffects" : [ ],
   
-  "maleFrames" : "/sys/stardust/nothing.png",
-  "femaleFrames" : "/sys/stardust/nothing.png",
+  "maleFrames" : "blank.png",
+  "femaleFrames" : "blank.png",
   "mask" : "nullmask.png"
 }

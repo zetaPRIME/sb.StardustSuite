@@ -125,11 +125,11 @@ Aetheri species mod {
     
     Innates {
         No matter manipulator; instead, essential slots are skill slots for Innate Skills
-        powered by a large, slowly-regenerating pool of secondary energy (Aether?)
+        - powered by a large, slowly-regenerating pool of secondary energy (Aether?)
         
         Kinetic Burst {
             - Aimed melee skill with some reach
-            Bonus damage based on velocity in the aiming direction
+            - Bonus damage based on velocity in the aiming direction
         }
     }
     
@@ -140,9 +140,11 @@ Aetheri species mod {
         
         xp gained from enemy kills, usable toward next passive point with slow ramping-up of cost
         (Warframe focus-style) or active skill nodes with fixed costs
-        status effect that monkey-patches xp gains for nearby players on enemy death into their script context
+        - status effect that monkey-patches xp gains for nearby players on enemy death into their script context
         
         hmm. leave back slot open?
+        
+        ! make some things (like sprint speed) work as the "increased" multiplier itself (since sprint speed is itself a multiplier)
     }
     
     Hunger system {

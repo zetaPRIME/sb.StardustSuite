@@ -30,15 +30,15 @@
   },
   
   "maleFrames" : {
-    "body" : "/sys/stardust/nothing.png",
-    "backSleeve" : "/sys/stardust/nothing.png",
-    "frontSleeve" : "/sys/stardust/nothing.png"
+    "body" : "blank.png",
+    "backSleeve" : "blank.png",
+    "frontSleeve" : "blank.png"
   },
   
   "femaleFrames" : {
-    "body" : "/sys/stardust/nothing.png",
-    "backSleeve" : "/sys/stardust/nothing.png",
-    "frontSleeve" : "/sys/stardust/nothing.png"
+    "body" : "blank.png",
+    "backSleeve" : "blank.png",
+    "frontSleeve" : "blank.png"
   },
   
   //"level" : 1,

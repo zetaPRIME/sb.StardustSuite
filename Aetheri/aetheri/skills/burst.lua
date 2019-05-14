@@ -75,8 +75,10 @@ function update(dt, fireMode, shiftHeld)
   cooldown = math.max(cooldown - dt / cooldownTime, 0)
   anim = math.max(anim - dt / animTime, 0)
   
-  if cooldown <= 0.75 and fireMode == "primary" then buffered = true end
-  if cooldown == 0 and buffered then
+  local cost = 10
+  
+  if cooldown <= 0.75 and fireMode == "primary" and status.resource("aetheri:mana") >= cost then buffered = true end
+  if cooldown == 0 and buffered and status.consumeResource("aetheri:mana", cost) then
     buffered = false
     cooldown = 1
     anim = 1
@@ -84,7 +86,8 @@ function update(dt, fireMode, shiftHeld)
     activeItem.setArmAngle(angle - mcontroller.rotation() * dir) armAngle = angle
     animator.playSound("fire")
     animator.playSound("fireHum")
-    local dmg = damage * status.stat("powerMultiplier", 1.0)
+    local velMult = 1 + util.clamp(vec2.dot(vec2.norm(vec2.sub(aimPos, mcontroller.position())), vec2.norm(mcontroller.velocity())), 0, 1) * util.clamp(vec2.mag(mcontroller.velocity()) / 100, 0, 1) * 1
+    local dmg = damage * velMult * status.stat("powerMultiplier", 1.0) * status.stat("aetheri:skillPowerMultiplier", 0.0)
     activeItem.setDamageSources({{
       poly = offsetPoly{ {0, -1.5}, {-1.5, 0}, {0, 1.5}, {10, 0} },
       damage = dmg,

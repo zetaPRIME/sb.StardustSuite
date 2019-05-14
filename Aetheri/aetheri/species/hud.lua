@@ -8,8 +8,32 @@ local apGainColor = ""
 
 local hudLayer = "foregroundEntity+5"
 
+local function safeFloor(num)
+  if (type(num) ~= "number") or (num ~= num) or (num + 1 == num) then return 0 end -- starbound has faulty NaN behavior??
+  return math.floor(num)
+end
+
 function hud.update(p)
   --
+  if itemutil.property(world.entityHandItemDescriptor(entity.id(), "primary"), "isAetherSkill") then
+    -- mana gauge
+    local numWidth = 5
+    local drw = { }
+    --local str = string.format("%d+%d", math.floor(0.5 + status.resource("aetheri:mana") or 0), math.floor(0.5 + status.resourceMax("aetheri:mana") or 0))
+    local str = string.format("%d", safeFloor(0.5 + status.resourcePercentage("aetheri:mana") * 100))
+    local off = ((str:len() - 1) * numWidth - 4) * -0.5
+    --local shadow = string.format("?multiply=000000%02x", math.floor(0.5 + apGainTime * 191))
+    local y = -25 * px
+    for i = 1, str:len() do
+      table.insert(drw, {
+        position = { (off + (i - 1) * numWidth) * px, y },
+        image = string.format("/aetheri/species/hud/ap.png:num%s", str:sub(i, i)),
+        fullbright = true,
+        renderLayer = hudLayer
+      })
+    end
+    playerext.queueDrawable(table.unpack(drw))
+  end
   
   if apGainTime > 0 then
     local numWidth = 5
@@ -26,13 +50,6 @@ function hud.update(p)
         fullbright = true,
         renderLayer = hudLayer
       })
-      --[[table.insert(drw, {
-        position = { (off + (i - 1) * numWidth) * px + px, y - px },
-        image = string.format("/aetheri/species/hud/ap.png:num%s%s", str:sub(i, i), shadow),
-        fullbright = true,
-        renderLayer = hudLayer,
-        zLevel = -1
-      })]]
     end
     playerext.queueDrawable(table.unpack(drw))
     apGainTime = apGainTime - p.dt / 0.75

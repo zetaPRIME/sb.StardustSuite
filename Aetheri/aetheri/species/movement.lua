@@ -47,9 +47,9 @@ function movement.states.ground:update(dt)
   end
   
   -- air jump!
-  if not mcontroller.onGround()
-  and not mcontroller.liquidMovement()
+  if not mcontroller.canJump()
   and not mcontroller.jumping()
+  and not mcontroller.liquidMovement()
   --and mcontroller.yVelocity() < 0
   and input.keyDown.jump and self.airJumps >= 1 then
     self.airJumps = self.airJumps - 1

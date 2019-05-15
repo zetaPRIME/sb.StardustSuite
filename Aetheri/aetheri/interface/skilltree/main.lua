@@ -1,4 +1,6 @@
---
+-- Aethyrium - skill tree(s) for the Aetheri
+
+-- TODO: decorations, raw status nodes
 
 require "/scripts/util.lua"
 require "/scripts/vec2.lua"
@@ -41,9 +43,9 @@ local function setNodeVisuals(node)
   -- icon
   if not node.icon then
     if node.type == "origin" then
-      node.icon = "/interface/statuses/glow.png"
+      node.icon = "book.png"
     else
-      node.icon = "/interface/statuses/hawkeye.png"
+      node.icon = "misc1.png"
     end
   end node.icon = util.absolutePath("/aetheri/interface/skilltree/icons/", node.icon)
   
@@ -154,7 +156,6 @@ function loadPlayerData()
   
   for _, t in pairs(trees) do
     playerData.nodesUnlocked[t.name] = playerData.nodesUnlocked[t.name] or { }
-    playerData.nodesUnlocked[t.name]["/origin"] = true
   end
   
   recalculateStats()
@@ -180,8 +181,8 @@ function recalculateStats()
     local count = 0
     for path, f in pairs(lst) do
       if f then
-        count = count + 1
         local node = trees[tn].nodes[path]
+        if node.type ~= "origin" then count = count + 1 end
         for _, g in pairs(node.grants or { }) do
           local mode, stat, amt = table.unpack(g)
           if mode == "flat" and stats[stat] then stats[stat][1] = stats[stat][1] + amt
@@ -212,11 +213,11 @@ end
 function nodeCost(node)
   if node.fixedCost then return node.fixedCost end
   local c = playerData.numNodesTaken[node.tree.name] or 0
-  c = c - 1 -- don't count the starting point
   return math.floor(0.5 + baseNodeCost * 2^(c/10) * (node.costMult or 1.0)) -- first node at 2500
 end
 
 function isNodeUnlocked(node)
+  if node.type == "origin" then return true end
   return not not playerData.nodesUnlocked[node.tree.name][node.path]
 end
 
@@ -224,7 +225,7 @@ function canUnlockNode(node)
   if isNodeUnlocked(node) then return false end -- already unlocked
   local connected = false
   for c in pairs(node.connections) do
-    if playerData.nodesUnlocked[node.tree.name][c.path] then
+    if isNodeUnlocked(c) then
       connected = true
       break
     end

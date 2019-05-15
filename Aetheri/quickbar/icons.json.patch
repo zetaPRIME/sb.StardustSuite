@@ -3,6 +3,14 @@
     "label" : "^essential;Aethyrium",
     "icon" : "/items/currency/essence.png",
     "weight" : -1150,
+    "action" : [ "pane", "/aetheri/interface/skilltree.ui.config" ],
+    "dismissQuickbar" : true,
+    "condition" : [ "species", "aetheri" ]
+  } },
+  { "op" : "add", "path" : "/items/aetheri:appearance", "value" : {
+    "label" : "^essential;Appearance",
+    "icon" : "/items/currency/essence.png",
+    "weight" : -1150,
     "action" : [ "pane", "/aetheri/interface/temp-appearance.config" ],
     "condition" : [ "species", "aetheri" ]
   } }

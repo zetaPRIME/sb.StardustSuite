@@ -26,6 +26,22 @@ do
     }
   end
   
+  function color.toRgb255(c)
+    if type(c) == "table" then return {
+      math.floor(0.5 + rgb[1] * 255),
+      math.floor(0.5 + rgb[2] * 255),
+      math.floor(0.5 + rgb[3] * 255),
+      rgb[4] and math.floor(0.5 + (rgb[4] or 1.0) * 255)
+    } elseif type(c) == "string" then
+      hex = c:gsub("#", "") -- strip hash if present
+      return {
+      tonumber(hex:sub(1, 2), 16),
+      tonumber(hex:sub(3, 4), 16),
+      tonumber(hex:sub(5, 6), 16),
+      (hex:len() == 8) and (tonumber(hex:sub(7, 8), 16))
+    } end
+  end
+  
   function color.brighterOf(a, b)
     local ca, cb = color.toRgb(a), color.toRgb(b)
     return ( (ca[1] + ca[2] + ca[3]) * (ca[4] or 1) >= (cb[1] + cb[2] + cb[3]) * (cb[4] or 1) ) and a or b

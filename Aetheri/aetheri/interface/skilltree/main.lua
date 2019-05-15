@@ -238,7 +238,7 @@ function currentAP()
 end
 
 function nodeCost(node)
-  if node.fixedCost then return node.fixedCost end
+  if node.fixedCost then return node.fixedCost, true end
   local c = playerData.numNodesTaken[node.tree.name] or 0
   local mult = node.costMult or 1
   local acc = 0
@@ -247,8 +247,7 @@ function nodeCost(node)
     acc = acc + math.floor(0.5 + baseNodeCost * 2^(c/10) * m)
     c = c + m
     mult = mult - 1
-  end
-  return acc
+  end return acc
 end
 
 function isNodeUnlocked(node)
@@ -397,7 +396,10 @@ function nodeView:redraw()
   if self.hover then -- tool tip!
     local ttPos = vec2.add(self:nodeDrawPos(self.hover), {12, 4})
     local tt = self.hover.toolTip
-    if not isNodeUnlocked(self.hover) then tt = string.format("%sCost: ^white;%d ^violet;AP^reset;", tt, nodeCost(self.hover)) end
+    if not isNodeUnlocked(self.hover) then
+      local cost, fixed = nodeCost(self.hover)
+      tt = string.format("%s%s: ^white;%d ^violet;AP^reset;\n", tt, fixed and "Fixed cost" or "Cost", cost)
+    end
     local btt = tt:gsub("(%b^;)", "") -- strip codes for border
     for _, off in pairs(border) do
       canvas:drawText(btt, { position = vec2.add(ttPos, off), horizontalAnchor = "left", verticalAnchor = "top" }, 8, {0, 0, 0, 222})

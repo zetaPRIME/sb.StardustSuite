@@ -46,7 +46,7 @@ function skillDrawer.open(slot)
   for _, skill in pairs(activeSkills) do
     if true or committedSkillsUnlocked[skill] then
       local sn = slotNum[slot]
-      widget.registerMemberCallback(skillList, "slotClick", function() drawer.setSkill(sn, skill) end)
+      widget.registerMemberCallback(skillList, "slotClick", function() skillDrawer.setSkill(sn, skill) end)
       local s = skillList .. "." .. widget.addListItem(skillList) .. ".s"
       widget.setItemSlotItem(s, { name = "aetheri:skill." .. skill, count = 1})
     end

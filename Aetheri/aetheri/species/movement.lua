@@ -29,6 +29,7 @@ end
 movement.states.ground = { }
 function movement.states.ground:init()
   self.airJumps = 0
+  self.airJumpTimer = 0
 end
 
 function movement.states.ground:uninit()
@@ -36,11 +37,13 @@ function movement.states.ground:uninit()
 end
 
 function movement.states.ground:update(dt)
+  tech.setParentState() -- clear
   mcontroller.clearControls()
   mcontroller.controlModifiers { speedModifier = stats.stat.moveSpeed }
   if mcontroller.onGround() then
     self.sprinting = input.key.sprint and input.dir[1] ~= 0
     self.airJumps = stats.stat.airJumps
+    self.airJumpTimer = 0
   end
   if self.sprinting then
     mcontroller.controlMove(input.dir[1], true) -- set running
@@ -61,5 +64,13 @@ function movement.states.ground:update(dt)
     self.sprinting = self.sprinting or (input.key.sprint and input.dir[1] ~= 0) -- allow starting a sprint from an air jump
     sound.play("/sfx/tech/tech_doublejump.ogg")
     -- TODO: particle/animation stuff
+    tech.setParentState("Fall") -- animate a bit even when already rising
+    self.airJumpTimer = 0.05
   end
+  
+  if self.airJumpTimer > 0 then 
+    -- ?
+    self.airJumpTimer = self.airJumpTimer - dt
+  end
+  
 end

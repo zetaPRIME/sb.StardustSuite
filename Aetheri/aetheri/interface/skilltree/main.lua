@@ -4,6 +4,17 @@ require "/scripts/util.lua"
 require "/scripts/vec2.lua"
 require "/scripts/rect.lua"
 require "/lib/stardust/playerext.lua"
+require "/lib/stardust/color.lua"
+
+sounds = {
+  unlock = "/sfx/objects/ancientenergy_chord.ogg",
+  cantUnlock = "/sfx/interface/clickon_error.ogg",
+}
+
+directives = {
+  nodeActive = "",
+  nodeInactive = "",
+}
 
 view = nil
 function nf() end
@@ -18,12 +29,30 @@ local function numStr(n) -- friendly string representation of number
   if fn == n then return tostring(fn) else return tostring(n) end
 end
 
+local function tableCount(t)
+  local c = 0
+  for _, v in pairs(t) do if v then c = c + 1 end end
+  return c
+end
+
 local function setNodeVisuals(node)
+  -- icon
+  if not node.icon then
+    if node.type == "origin" then
+      node.icon = "/interface/statuses/glow.png"
+    else
+      node.icon = "/interface/statuses/hawkeye.png"
+    end
+  end node.icon = util.absolutePath("/aetheri/interface/skilltree/icons/", node.icon)
+  
+  -- tool tip
   local tt = { }
   if node.name then table.insert(tt, string.format("^violet;%s^reset;\n", node.name)) end
   for _, g in pairs(node.grants or { }) do
     local mode, stat, amt = table.unpack(g)
-    if mode == "flat" then
+    if mode == "description" then
+      table.insert(tt, string.format("%s^reset;\n", stat))
+    elseif mode == "flat" then
       table.insert(tt, string.format("+^white;%s ^cyan;%s^reset;\n", numStr(amt), statNames[stat] or stat))
     elseif mode == "increased" then
       table.insert(tt, string.format("^white;%s%%^reset; increased ^cyan;%s^reset;\n", numStr(amt*100), statNames[stat] or stat))
@@ -44,6 +73,7 @@ function init()
     compatId = cfg.compatId
     statNames = cfg.statNames
     baseStats = cfg.baseStats
+    baseNodeCost = cfg.baseNodeCost
     
     local t
     -- recursive function for loading in node data
@@ -56,10 +86,11 @@ function init()
           iterateTree(n.children or { }, path, pos)
         else -- actual node
           local node = {
-            path = path,
-            position = pos,
-            name = n.name,
+            tree = t, path = path, type = type,
+            position = pos, connections = { },
+            name = n.name, icon = n.icon,
             grants = n.grants,
+            fixedCost = n.fixedCost, costMult = n.costMult,
           }
           t.nodes[path] = node
           setNodeVisuals(node)
@@ -81,8 +112,10 @@ function init()
       for k, v in pairs(t._conn) do
         local n1, n2 = t.nodes[v[1]], t.nodes[v[2]]
         if n1 and n2 then
-          sb.logInfo("connection: " .. util.tableToString(v))
+          --sb.logInfo("connection: " .. util.tableToString(v))
           t.connections[k] = {n1, n2}
+          n1.connections[n2] = true
+          n2.connections[n1] = true
         end
       end t._conn = nil -- and clear temporary data
     end
@@ -96,18 +129,26 @@ function init()
 end
 
 function loadPlayerData()
+  local reset = false
+  playerTmpData = {
+    apToSpend = 0
+  }
   playerData = status.statusProperty("aetheri:skillTreeData", nil)
   if not playerData or playerData.compatId ~= compatId then
     -- reset data
     if playerData then
-      -- TODO: give back AP - playerData.spentAP
+      -- refund all spent AP
+      status.setStatusProperty("aetheri:AP", status.statusProperty("aetheri:AP", 0) + (playerData.spentAP or 0))
     end
     playerData = {
       compatId = compatId,
+      spentAP = 0,
       nodesUnlocked = { }
     }
-    status.setStatusProperty("aetheri:skillTreeData", playerData) -- and save back
+    reset = true
+    --status.setStatusProperty("aetheri:skillTreeData", playerData) -- and save back
   end
+  playerData.spentAP = playerData.spentAP or 0
   
   for _, t in pairs(trees) do
     playerData.nodesUnlocked[t.name] = playerData.nodesUnlocked[t.name] or { }
@@ -115,8 +156,14 @@ function loadPlayerData()
   end
   
   recalculateStats()
+  
+  -- grab visuals
+  appearance = status.statusProperty("aetheri:appearance", { })
+  directives.nodeActive = string.format("?border=1;%s;00000000", color.toHex(color.fromHsl{ appearance.coreHsl[1], appearance.coreHsl[2], 0.75, 0.75 }))
+  
   -- refresh view on reload
   if view then view.needsRedraw = true end
+  if reset then commitPlayerData() end
 end
 
 function recalculateStats()
@@ -126,9 +173,12 @@ function recalculateStats()
     stats[stat] = {t[1] or 0, t[2] or 1, t[3] or 1}
   end
   
+  playerData.numNodesTaken = { }
   for tn, lst in pairs(playerData.nodesUnlocked) do
+    local count = 0
     for path, f in pairs(lst) do
       if f then
+        count = count + 1
         local node = trees[tn].nodes[path]
         for _, g in pairs(node.grants or { }) do
           local mode, stat, amt = table.unpack(g)
@@ -139,6 +189,7 @@ function recalculateStats()
         end
       end
     end
+    playerData.numNodesTaken[tn] = count
   end
   
   playerData.calculatedStats = stats
@@ -147,7 +198,37 @@ end
 function commitPlayerData()
   recalculateStats()
   status.setStatusProperty("aetheri:skillTreeData", playerData)
+  status.setStatusProperty("aetheri:AP", status.statusProperty("aetheri:AP", 0) - playerTmpData.apToSpend)
+  playerTmpData.apToSpend = 0
   world.sendEntityMessage(player.id(), "aetheri:refreshStats")
+end
+
+function currentAP()
+  return status.statusProperty("aetheri:AP", 0) - playerTmpData.apToSpend
+end
+
+function nodeCost(node)
+  if node.fixedCost then return node.fixedCost end
+  local c = playerData.numNodesTaken[node.tree.name] or 0
+  c = c - 1 -- don't count the starting point
+  return math.floor(0.5 + baseNodeCost * 2^(c/10) * (node.costMult or 1.0)) -- first node at 2500
+end
+
+function isNodeUnlocked(node)
+  return not not playerData.nodesUnlocked[node.tree.name][node.path]
+end
+
+function canUnlockNode(node)
+  if isNodeUnlocked(node) then return false end -- already unlocked
+  local connected = false
+  for c in pairs(node.connections) do
+    if playerData.nodesUnlocked[node.tree.name][c.path] then
+      connected = true
+      break
+    end
+  end
+  if not connected then return false end
+  return currentAP() >= nodeCost(node)
 end
 
 function update()
@@ -177,12 +258,19 @@ function canvasKeyEvent(key, isDown)
   end]]
 end
 
+function btnConfirm()
+  commitPlayerData()
+end
+function btnCancel()
+  loadPlayerData()
+end
+
 
 
 
 
 nodeView = { }
-nodeView.nodeSpacing = 16
+nodeView.nodeSpacing = 20
 
 function nodeView.new(...)
   local v = setmetatable({ }, { __index = nodeView })
@@ -220,10 +308,17 @@ function nodeView:clickEvent(pos, btn, down)
   if btn == 0 then -- left button
     if down then
       if self.hover then -- click on node
-        -- TEMP
-        playerData.nodesUnlocked[self.tree.name][self.hover.path] = not playerData.nodesUnlocked[self.tree.name][self.hover.path] or nil
-        commitPlayerData()
-        self.needsRedraw = true
+        -- try to unlock node
+        local cost = nodeCost(self.hover)
+        if canUnlockNode(self.hover) then
+          playerData.nodesUnlocked[self.tree.name][self.hover.path] = true
+          playerTmpData.apToSpend = playerTmpData.apToSpend + cost
+          recalculateStats()
+          self.needsRedraw = true
+          pane.playSound(sounds.unlock)
+        elseif not isNodeUnlocked(self.hover) then
+          pane.playSound(sounds.cantUnlock)
+        end
       else self.scrolling = true end -- or scroll
     else self.scrolling = false end
   end
@@ -232,7 +327,7 @@ end
 function nodeView:redraw()
   canvas:clear()
   --canvas:drawImage("/interface/lockicon.png", self.scroll, 1, {255, 255, 255}, true)
-  local lco = {-.5, -.5}
+  local lco = {0, 0}--{-.5, -.5}
   local lineColors = {
     {127, 63, 63, 63},
     {127, 127, 255, 127},
@@ -241,22 +336,30 @@ function nodeView:redraw()
   for _, c in pairs(self.tree.connections) do -- draw connection lines
     --sb.logInfo(string.format("drawing line \"%s\" between %s and %s", _, c[1].path, c[2].path))
     local lc = 1
-    if self:isNodeUnlocked(c[1]) then lc = lc + 1 end
-    if self:isNodeUnlocked(c[2]) then lc = lc + 1 end
+    if isNodeUnlocked(c[1]) then lc = lc + 1 end
+    if isNodeUnlocked(c[2]) then lc = lc + 1 end
     canvas:drawLine(vec2.add(self:nodeDrawPos(c[1]), lco), vec2.add(self:nodeDrawPos(c[2]), lco), lineColors[lc], 2)
   end
   
   for _, node in pairs(self.tree.nodes) do
-    --canvas:drawText(node.path, { position = vec2.add(self.scroll, vec2.mul(node.position, self.nodeSpacing)), horizontalAnchor = "mid", verticalAnchor = "mid" }, 8)
-    canvas:drawImage("/items/currency/essence.png", self:nodeDrawPos(node), 1, self:isNodeUnlocked(node) and {255, 255, 255} or {127, 127, 127}, true)
+    local pos = self:nodeDrawPos(node)
+    local active = isNodeUnlocked(node)
+    local nodeDirectives = active and directives.nodeActive or directives.nodeInactive
+    --canvas:drawImage("/aetheri/interface/skilltree/nodeBG.png:" .. (active and "active" or "inactive"), pos, 1, {255, 255, 255}, true)
+    canvas:drawImage(node.icon .. nodeDirectives, pos, 1, active and {255, 255, 255} or {191, 191, 191}, true)
   end
   if self.hover then -- tool tip!
-    canvas:drawText(self.hover.toolTip, { position = vec2.add(self:nodeDrawPos(self.hover), {12, 4}), horizontalAnchor = "left", verticalAnchor = "top" }, 8, {191, 191, 191})
+    local tt = self.hover.toolTip
+    if not isNodeUnlocked(self.hover) then tt = string.format("%sCost: ^white;%d ^violet;AP^reset;", tt, nodeCost(self.hover)) end
+    canvas:drawText(tt:gsub("(%b^;)", ""), { position = vec2.add(self:nodeDrawPos(self.hover), {13, 3}), horizontalAnchor = "left", verticalAnchor = "top" }, 8, {0, 0, 0, 222})
+    canvas:drawText(tt, { position = vec2.add(self:nodeDrawPos(self.hover), {12, 4}), horizontalAnchor = "left", verticalAnchor = "top" }, 8, {191, 191, 191})
   end
-end
-
-function nodeView:isNodeUnlocked(node)
-  return playerData.nodesUnlocked[self.tree.name][node.path]
+  
+  canvas:drawText(
+    string.format("^white;%d ^violet;AP^reset;", math.floor(currentAP())),
+    { position = {480.0, 506.0}, horizontalAnchor = "mid", verticalAnchor = "top" },
+    8, {191, 191, 191}
+  )
 end
 
 function nodeView:nodeDrawPos(node)
@@ -265,7 +368,7 @@ end
 
 function nodeView:nodeAt(pos)
   for _, node in pairs(self.tree.nodes) do
-    if vec2.mag(vec2.sub(pos, vec2.mul(node.position, self.nodeSpacing))) <= 8 then return node end
+    if vec2.mag(vec2.sub(pos, vec2.mul(node.position, self.nodeSpacing))) <= 10 then return node end
   end
   return nil
 end

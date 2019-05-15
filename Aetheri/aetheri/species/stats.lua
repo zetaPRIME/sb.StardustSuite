@@ -24,7 +24,10 @@ function stats.refresh()
   
   -- load in calculated stats if still valid, or base stats if not
   local skdata = status.statusProperty("aetheri:skillTreeData", nil)
-  if skdata and skdata.compatId ~= root.assetJson("/aetheri/species/skilltree.config:compatId") then skdata = nil end
+  if skdata and skdata.compatId ~= root.assetJson("/aetheri/species/skilltree.config:compatId") then -- if tree changed then reset and refund
+    status.setStatusProperty("aetheri:AP", status.statusProperty("aetheri:AP", 0) + (skdata.spentAP or 0))
+    skdata = nil
+  end
   if skdata and skdata.calculatedStats then cstats = skdata.calculatedStats
   else cstats = root.assetJson("/aetheri/species/skilltree.config:baseStats")
   end

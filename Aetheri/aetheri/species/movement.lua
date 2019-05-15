@@ -36,6 +36,8 @@ function movement.states.ground:uninit()
 end
 
 function movement.states.ground:update(dt)
+  mcontroller.clearControls()
+  mcontroller.controlModifiers { speedModifier = stats.stat.moveSpeed }
   if mcontroller.onGround() then
     self.sprinting = input.key.sprint and input.dir[1] ~= 0
     self.airJumps = stats.stat.airJumps
@@ -43,7 +45,7 @@ function movement.states.ground:update(dt)
   if self.sprinting then
     mcontroller.controlMove(input.dir[1], true) -- set running
     -- sprint speed and a bit of a jump boost
-    mcontroller.controlModifiers({ speedModifier = stats.stat.sprintSpeed, airJumpModifier = 1.35 })
+    mcontroller.controlModifiers { speedModifier = stats.stat.sprintSpeed, airJumpModifier = 1.35 }
   end
   
   -- air jump!

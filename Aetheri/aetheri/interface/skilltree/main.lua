@@ -18,11 +18,18 @@ require "/lib/stardust/color.lua"
 
 require "/sys/stardust/quickbar/conditions.lua"
 
+-- modules
+require "/aetheri/interface/skilltree/activeskills.lua"
+
 sounds = {
   unlock = "/sfx/objects/ancientenergy_chord.ogg",
   cantUnlock = "/sfx/interface/clickon_error.ogg",
   confirm = "/sfx/objects/essencechest_open3.ogg",
   cancel = "/sfx/interface/nav_insufficient_fuel.ogg",
+  
+  openSkillDrawer = "/sfx/objects/ancientenergy_pickup2.ogg",
+  closeSkillDrawer = "/sfx/objects/ancientenergy_pickup1.ogg",
+  selectSkill = "/sfx/objects/essencechest_open3.ogg",
 }
 
 directives = {
@@ -180,6 +187,7 @@ function loadPlayerData()
   end
   
   recalculateStats()
+  committedSkillsUnlocked = playerData.skillsUnlocked
   
   -- grab visuals
   appearance = status.statusProperty("aetheri:appearance", { })
@@ -188,6 +196,8 @@ function loadPlayerData()
   -- refresh view on reload
   if view then view.needsRedraw = true end
   if reset or true then commitPlayerData() end
+  
+  refreshSkillSlots()
 end
 
 function recalculateStats()
@@ -222,15 +232,25 @@ function recalculateStats()
     playerData.numNodesTaken[tn] = count
   end
   
+  playerData.selectedSkills = playerData.selectedSkills or { }
+  local unl = committedSkillsUnlocked or playerData.skillsUnlocked
+  for i = 1, 4 do
+    local skill = playerData.selectedSkills[i] or "none"
+    skill = unl[skill] and skill or "none"
+    playerData.selectedSkills[i] = skill
+  end
+  
   playerData.calculatedStats = stats
 end
 
 function commitPlayerData()
   recalculateStats()
+  committedSkillsUnlocked = playerData.skillsUnlocked
   status.setStatusProperty("aetheri:skillTreeData", playerData)
   status.setStatusProperty("aetheri:AP", status.statusProperty("aetheri:AP", 0) - playerTmpData.apToSpend)
   playerTmpData.apToSpend = 0
   world.sendEntityMessage(player.id(), "aetheri:refreshStats")
+  commitSkillSlots()
 end
 
 function currentAP()
@@ -296,10 +316,12 @@ function canvasKeyEvent(key, isDown)
 end
 
 function btnConfirm()
+  skillDrawer.close()
   commitPlayerData()
   pane.playSound(sounds.confirm)
 end
 function btnCancel()
+  skillDrawer.close()
   loadPlayerData()
   pane.playSound(sounds.cancel)
 end

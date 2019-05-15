@@ -1,0 +1,11 @@
+{ // -*- grammar-ext: json -*-
+  "itemName" : "aetheri:skill.none",
+  "maxStack" : 1,
+  "rarity" : "Legendary",
+  "shortdescription" : "(no skill)",
+  "description" : "^gray;Slot is empty.^reset;",
+  "category" : "aetheri:skill",
+  "tooltipKind" : "stardustlib.simple.64",
+  
+  "inventoryIcon" : "/interface/actionbar/actionbarcover.png?crop=1;1;17;17" // hide rarity with a bit of cleverness
+}

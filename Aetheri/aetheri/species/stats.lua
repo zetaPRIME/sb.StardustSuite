@@ -126,9 +126,17 @@ message.setHandler("stardustlib:modifyDamageTaken", function(_, _, damageRequest
   end
 end)
 
-do -- first startup stuff: open skill tree if no essential items present
+do -- first startup stuff: set active skills if no essential items present
   if not playerext.getEquip("beamaxe") then
-    playerext.openInterface("/aetheri/interface/skilltree.ui.config")
+    local ess = { "beamaxe", "wiretool", "painttool", "inspectiontool" }
+    
+    local pd = status.statusProperty("aetheri:skillTreeData", { })
+    pd.selectedSkills = { "dig", "burst", "none", "none" }
+    status.setStatusProperty("aetheri:skillTreeData", pd)
+    
+    for i = 1, 4 do
+      playerext.setEquip(ess[i], { name = "aetheri:skill." .. pd.selectedSkills[i], count = 1 })
+    end
   end
   
 end

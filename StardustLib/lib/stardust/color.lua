@@ -88,7 +88,9 @@ do
   end
   
   function color.fromHsl(hsl)
-    return { hslToRgb(table.unpack(hsl)) }
+    local c = { hslToRgb(table.unpack(hsl)) }
+    c[4] = hsl[4] -- add alpha if present
+    return c
   end
   
   --

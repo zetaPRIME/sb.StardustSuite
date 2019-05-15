@@ -9,6 +9,8 @@ require "/lib/stardust/color.lua"
 sounds = {
   unlock = "/sfx/objects/ancientenergy_chord.ogg",
   cantUnlock = "/sfx/interface/clickon_error.ogg",
+  confirm = "/sfx/objects/essencechest_open3.ogg",
+  cancel = "/sfx/interface/nav_insufficient_fuel.ogg",
 }
 
 directives = {
@@ -260,9 +262,11 @@ end
 
 function btnConfirm()
   commitPlayerData()
+  pane.playSound(sounds.confirm)
 end
 function btnCancel()
   loadPlayerData()
+  pane.playSound(sounds.cancel)
 end
 
 
@@ -324,6 +328,12 @@ function nodeView:clickEvent(pos, btn, down)
   end
 end
 
+local border = {
+  {-1, 0},
+  {1, 0},
+  {0, -1},
+  {0, 1},
+}
 function nodeView:redraw()
   canvas:clear()
   --canvas:drawImage("/interface/lockicon.png", self.scroll, 1, {255, 255, 255}, true)
@@ -349,10 +359,14 @@ function nodeView:redraw()
     canvas:drawImage(node.icon .. nodeDirectives, pos, 1, active and {255, 255, 255} or {191, 191, 191}, true)
   end
   if self.hover then -- tool tip!
+    local ttPos = vec2.add(self:nodeDrawPos(self.hover), {12, 4})
     local tt = self.hover.toolTip
     if not isNodeUnlocked(self.hover) then tt = string.format("%sCost: ^white;%d ^violet;AP^reset;", tt, nodeCost(self.hover)) end
-    canvas:drawText(tt:gsub("(%b^;)", ""), { position = vec2.add(self:nodeDrawPos(self.hover), {13, 3}), horizontalAnchor = "left", verticalAnchor = "top" }, 8, {0, 0, 0, 222})
-    canvas:drawText(tt, { position = vec2.add(self:nodeDrawPos(self.hover), {12, 4}), horizontalAnchor = "left", verticalAnchor = "top" }, 8, {191, 191, 191})
+    local btt = tt:gsub("(%b^;)", "") -- strip codes for border
+    for _, off in pairs(border) do
+      canvas:drawText(btt, { position = vec2.add(ttPos, off), horizontalAnchor = "left", verticalAnchor = "top" }, 8, {0, 0, 0, 222})
+    end
+    canvas:drawText(tt, { position = ttPos, horizontalAnchor = "left", verticalAnchor = "top" }, 8, {191, 191, 191})
   end
   
   canvas:drawText(

@@ -19,10 +19,18 @@ local baseStats = {
 local equipStatsUpdated
 function stats.forceEquipUpdate() equipStatsUpdated = true end
 function stats.refresh()
-  -- nothing for now
   stats.stat = { }
-  for k, v in pairs(baseStats) do
-    stats.stat[k] = v -- for now just set to base stats
+  local cstats
+  
+  -- load in calculated stats if still valid, or base stats if not
+  local skdata = status.statusProperty("aetheri:skillTreeData", nil)
+  if skdata and skdata.compatId ~= root.assetJson("/aetheri/species/skilltree.config:compatId") then skdata = nil end
+  if skdata and skdata.calculatedStats then cstats = skdata.calculatedStats
+  else cstats = root.assetJson("/aetheri/species/skilltree.config:baseStats")
+  end
+  
+  for k, v in pairs(cstats) do -- calculate final stat values
+    stats.stat[k] = (v[1] or 0) * (v[2] or 1.0) * (v[3] or 1.0)
   end
   
   tech.setStats { -- apply relevant stats

@@ -43,7 +43,7 @@ function movement.states.ground:update(dt)
   if self.sprinting then
     mcontroller.controlMove(input.dir[1], true) -- set running
     -- sprint speed and a bit of a jump boost
-    mcontroller.controlModifiers({ speedModifier = 1.5, airJumpModifier = 1.35 })
+    mcontroller.controlModifiers({ speedModifier = stats.stat.sprintSpeed, airJumpModifier = 1.35 })
   end
   
   -- air jump!

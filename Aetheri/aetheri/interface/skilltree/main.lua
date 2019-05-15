@@ -240,7 +240,15 @@ end
 function nodeCost(node)
   if node.fixedCost then return node.fixedCost end
   local c = playerData.numNodesTaken[node.tree.name] or 0
-  return math.floor(0.5 + baseNodeCost * 2^(c/10) * (node.costMult or 1.0)) -- first node at 2500
+  local mult = node.costMult or 1
+  local acc = 0
+  while mult > 0 do
+    local m = math.min(1, mult)
+    acc = acc + math.floor(0.5 + baseNodeCost * 2^(c/10) * m)
+    c = c + m
+    mult = mult - 1
+  end
+  return acc
 end
 
 function isNodeUnlocked(node)

@@ -398,7 +398,7 @@ function nodeView:redraw()
     local tt = self.hover.toolTip
     if not isNodeUnlocked(self.hover) then
       local cost, fixed = nodeCost(self.hover)
-      tt = string.format("%s%s: ^white;%d ^violet;AP^reset;\n", tt, fixed and "Fixed cost" or "Cost", cost)
+      tt = string.format("%s%s: %s%d ^violet;AP^reset;\n", tt, fixed and "Fixed cost" or "Cost", currentAP() >= cost and "^white;" or "^red;", cost)
     end
     local btt = tt:gsub("(%b^;)", "") -- strip codes for border
     for _, off in pairs(border) do

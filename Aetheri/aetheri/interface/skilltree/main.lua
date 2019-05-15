@@ -160,6 +160,12 @@ function init()
   redrawCanvas()
 end
 
+function uninit()
+  if playerTmpData and playerTmpData.apToSpend and playerTmpData.apToSpend > 0 then
+    pane.playSound(sounds.cancel)
+  end
+end
+
 function loadPlayerData()
   local reset = false
   playerTmpData = {

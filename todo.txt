@@ -134,17 +134,17 @@ Aetheri species mod {
     }
     
     Skill tree {
-        Matter manipulator screen replaced with the Aethyrium, a set of skill trees
-        Passive tree akin to Path of Exile; replaces armor stats and techs
+        - Matter manipulator screen replaced with the Aethyrium, a set of skill trees
+        - Passive tree akin to Path of Exile; replaces armor stats and techs
         Active skill tree for unlocking and upgrading Innates
         
-        xp gained from enemy kills, usable toward next passive point with slow ramping-up of cost
-        (Warframe focus-style) or active skill nodes with fixed costs
+        - xp gained from enemy kills, usable toward next passive point with slow ramping-up of cost (Warframe focus-style)
+          or active skill nodes with fixed costs
         - status effect that monkey-patches xp gains for nearby players on enemy death into their script context
         
         hmm. leave back slot open?
         
-        ! make some things (like sprint speed) work as the "increased" multiplier itself (since sprint speed is itself a multiplier)
+        - make some things (like sprint speed) work as the "increased" multiplier itself (since sprint speed is itself a multiplier)
     }
     
     Hunger system {

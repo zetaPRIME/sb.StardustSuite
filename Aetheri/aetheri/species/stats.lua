@@ -98,3 +98,30 @@ end)
 
 message.setHandler("aetheri:refreshStats", stats.refresh)
 stats.refresh() -- do this at the beginning
+
+-- and hook into damage!
+message.setHandler("stardustlib:modifyDamageTaken", function(_, _, damageRequest)
+  if damageRequest.damageSourceKind == "falling" then
+    if damageRequest.damage >= 50 then -- WIP: do something special on hard fall
+      --[[local vol = 1.0
+      sound.play("/sfx/melee/hammer_hit_ground1.ogg", vol * 1.5, 1) -- impact low
+      sound.play("/sfx/gun/grenadeblast_small_electric2.ogg", vol * 1.125, 0.75) -- impact mid
+      sound.play("/sfx/objects/essencechest_open1.ogg", vol * 0.75, 1) -- impact high
+      -- zoops
+      sound.play("/sfx/gun/erchiuseyebeam_start.ogg", vol * 1.0, 1)
+      --]]
+    else -- only a bit of a fall
+      --[[local vol = 0.75
+      sound.play("/sfx/melee/hammer_hit_ground1.ogg", vol * 1.15, 1) -- impact low
+      sound.play("/sfx/gun/grenadeblast_small_electric2.ogg", vol * 0.5, 0.75) -- impact mid
+      sound.play("/sfx/objects/essencechest_open1.ogg", vol * 0.75, 2) -- impact high
+      --]]
+    end
+    damageRequest.damageSourceKind = "applystatus" -- cancel fall damage
+    return damageRequest
+  elseif damageRequest.damageType == "Damage" then -- normal damage, apply DR
+    damageRequest.damageType = "IgnoresDef"
+    damageRequest.damage = damageRequest.damage * (.5 ^ (status.stat("protection") / 100))
+    return damageRequest
+  end
+end)

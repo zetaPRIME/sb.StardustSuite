@@ -1,12 +1,22 @@
 -- Aethyrium - skill tree(s) for the Aetheri
 
--- TODO: decorations, raw status nodes
+--[[ TODO:
+  ! ACTIVE SKILLS
+  decorations
+  raw status nodes
+  ship nodes (unlock FTL travel from skill tree?)
+  conditional groups (have a group for if FU is present, or such)
+  indicators for "more in this direction"; scroll bounds?
+  eventually sort things into BSP to make drawing and cursor checking less silly
+--]]
 
 require "/scripts/util.lua"
 require "/scripts/vec2.lua"
 require "/scripts/rect.lua"
 require "/lib/stardust/playerext.lua"
 require "/lib/stardust/color.lua"
+
+require "/sys/stardust/quickbar/conditions.lua"
 
 sounds = {
   unlock = "/sfx/objects/ancientenergy_chord.ogg",
@@ -20,8 +30,8 @@ directives = {
   nodeInactive = "",
 }
 
-view = nil
 function nf() end
+view = nil
 
 local function resolvePath(path, pfx)
   if path:sub(1, 1) == "/" then return path
@@ -69,6 +79,11 @@ end
 
 local trees = { }
 function init()
+  widget.setItemSlotItem("skillslot1", {name="aetheri:skill.dig", count=1})
+  widget.setItemSlotItem("skillslot2", {name="perfectlygenericitem", count=1})
+  widget.setItemSlotItem("skillslot3", {name="perfectlygenericitem", count=1})
+  widget.setItemSlotItem("skillslot4", {name="perfectlygenericitem", count=1})
+  
   canvas = widget.bindCanvas("viewCanvas")
   
   do -- load in skill data
@@ -79,6 +94,9 @@ function init()
     baseStats = cfg.baseStats
     baseNodeCost = cfg.baseNodeCost
     
+    startingSkills = cfg.startingSkills
+    activeSkills = cfg.activeSkills
+    
     local t
     -- recursive function for loading in node data
     local iterateTree iterateTree = function(tree, pfx, offset)
@@ -87,7 +105,10 @@ function init()
         local pos = vec2.add(n.position or {0, 0}, offset)
         local path = string.format("%s/%s", pfx, k)
         if type == "group" then
-          iterateTree(n.children or { }, path, pos)
+          -- group conditions; same format (and options) as quickbar ones!
+          if not n.condition or condition(table.unpack(n.condition)) then --
+            iterateTree(n.children or { }, path, pos)
+          end
         else -- actual node
           local node = {
             tree = t, path = path, type = type,
@@ -166,7 +187,7 @@ function loadPlayerData()
   
   -- refresh view on reload
   if view then view.needsRedraw = true end
-  if reset then commitPlayerData() end
+  if reset or true then commitPlayerData() end
 end
 
 function recalculateStats()
@@ -176,18 +197,24 @@ function recalculateStats()
     stats[stat] = {t[1] or 0, t[2] or 1, t[3] or 1}
   end
   
+  playerData.skillsUnlocked = { }
+  for _, skill in pairs(startingSkills) do playerData.skillsUnlocked[skill] = true end
+  
   playerData.numNodesTaken = { }
   for tn, lst in pairs(playerData.nodesUnlocked) do
     local count = 0
     for path, f in pairs(lst) do
       if f then
         local node = trees[tn].nodes[path]
-        if node.type ~= "origin" then count = count + 1 end
+        if node.type ~= "origin" and not node.fixedCost then 
+          count = count + (node.costMult or 1)
+        end
         for _, g in pairs(node.grants or { }) do
           local mode, stat, amt = table.unpack(g)
           if mode == "flat" and stats[stat] then stats[stat][1] = stats[stat][1] + amt
           elseif mode == "increased" and stats[stat] then stats[stat][2] = stats[stat][2] + amt
           elseif mode == "more" and stats[stat] then stats[stat][3] = stats[stat][3] * (1.0 + amt)
+          elseif mode == "unlockSkill" and stat then playerData.skillsUnlocked[stat] = true
           end --
         end
       end
@@ -382,7 +409,9 @@ function nodeView:nodeDrawPos(node)
 end
 
 function nodeView:nodeAt(pos)
-  for _, node in pairs(self.tree.nodes) do
+  -- short circuit: check if already hovering over something first
+  if self.hover and vec2.mag(vec2.sub(pos, vec2.mul(self.hover.position, self.nodeSpacing))) <= 10 then return self.hover end
+  for _, node in pairs(self.tree.nodes) do -- otherwise just iterate and check everything until something found
     if vec2.mag(vec2.sub(pos, vec2.mul(node.position, self.nodeSpacing))) <= 10 then return node end
   end
   return nil

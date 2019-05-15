@@ -28,7 +28,7 @@ function hud.update(p)
     --local str = string.format("%d", safeFloor(0.5 + status.resourcePercentage("aetheri:mana") * 100))
     local off = ((str:len() - 1) * numWidth - 4) * -0.5
     local mult = string.format("?multiply=ffffff%02x", math.floor(0.5 + manaShowTime * 255))
-    local y = -25 * px
+    local y = -28 * px
     for i = 1, str:len() do
       table.insert(drw, {
         position = { (off + (i - 1) * numWidth) * px, y },

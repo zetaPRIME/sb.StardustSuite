@@ -125,3 +125,24 @@ message.setHandler("stardustlib:modifyDamageTaken", function(_, _, damageRequest
     return damageRequest
   end
 end)
+
+do -- first startup stuff: open skill tree if no essential items present
+  if not playerext.getEquip("beamaxe") then
+    playerext.openInterface("/aetheri/interface/skilltree.ui.config")
+  end
+  
+end
+
+
+
+
+
+
+
+
+
+
+
+
+
+-- EOF --

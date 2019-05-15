@@ -181,7 +181,8 @@ function loadPlayerData()
     playerData = {
       compatId = compatId,
       spentAP = 0,
-      nodesUnlocked = { }
+      nodesUnlocked = { },
+      selectedSkills = { "dig", "burst", "none", "none" }
     }
     reset = true
     --status.setStatusProperty("aetheri:skillTreeData", playerData) -- and save back
@@ -252,6 +253,7 @@ end
 function commitPlayerData()
   recalculateStats()
   committedSkillsUnlocked = playerData.skillsUnlocked
+  playerData.spentAP = playerData.spentAP + playerTmpData.apToSpend
   status.setStatusProperty("aetheri:skillTreeData", playerData)
   status.setStatusProperty("aetheri:AP", status.statusProperty("aetheri:AP", 0) - playerTmpData.apToSpend)
   playerTmpData.apToSpend = 0

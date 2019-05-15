@@ -1,11 +1,11 @@
 --
 
-require("/scripts/util.lua")
+require "/scripts/util.lua"
+require "/sys/stardust/quickbar/conditions.lua"
 
-local actions, conditions = { }, { }
+local actions = { }
 local function nullfunc() end
 local function action(id, ...) return (actions[id] or nullfunc)(...) end
-local function condition(id, ...) return (conditions[id] or nullfunc)(...) end
 
 -------------
 -- actions --
@@ -30,25 +30,6 @@ function actions._legacy_module(s)
   _SBLOADED[mf] = nil require(mf) -- force execute
   module[e]() module = nil -- run function and clean up
 end
-
-----------------
--- conditions --
-----------------
-
-function conditions.any(...)
-  for _, c in pairs{...} do if condition(table.unpack(c)) then return true end end
-  return false
-end
-function conditions.all(...)
-  for _, c in pairs{...} do if not condition(table.unpack(c)) then return false end end
-  return true
-end
-
-function conditions.admin() return player.isAdmin() end
-function conditions.statPositive(stat) return status.statPositive(stat) end
-function conditions.statNegative(stat) return not status.statPositive(stat) end
-function conditions.species(species) return player.species() == species end
-function conditions.ownShip() return player.worldId() == player.ownShipWorldId() end
 
 ---------------
 -- internals --

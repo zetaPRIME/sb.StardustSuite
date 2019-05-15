@@ -24,7 +24,7 @@ function hud.update(p)
     -- mana gauge
     local numWidth = 5
     local drw = { }
-    local str = string.format("%d+%d", math.floor(0.5 + status.resource("aetheri:mana") or 0), math.floor(0.5 + status.resourceMax("aetheri:mana") or 0))
+    local str = string.format("%d/%d", math.floor(0.5 + status.resource("aetheri:mana") or 0), math.floor(0.5 + status.resourceMax("aetheri:mana") or 0))
     --local str = string.format("%d", safeFloor(0.5 + status.resourcePercentage("aetheri:mana") * 100))
     local off = ((str:len() - 1) * numWidth - 4) * -0.5
     local mult = string.format("?multiply=ffffff%02x", math.floor(0.5 + manaShowTime * 255))

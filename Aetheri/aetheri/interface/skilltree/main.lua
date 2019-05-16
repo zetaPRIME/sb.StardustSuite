@@ -3,7 +3,6 @@
 --[[ TODO:
   decorations
   raw status nodes
-  gate nodes (always appear but can only be unlocked if condition is met)
   ship nodes (unlock FTL travel from skill tree?)
   indicators for "more in this direction"; scroll bounds?
   eventually sort things into BSP to make drawing and cursor checking less silly

@@ -1,19 +1,5 @@
 stats = { stat = { }, flags = { } }
 
-local baseStats = {
-  health = 100,
-  healthRegen = 0,
-  energy = 100,
-  energyRegen = 50,
-  mana = 250,
-  manaRegen = 5,
-  armor = 0,
-  damageMult = 1,
-  skillDamageMult = 1,
-  
-  airJumps = 1,
-}
-
 -- base, add, inc, more
 
 local equipStatsUpdated
@@ -29,11 +15,16 @@ function stats.refresh()
     skdata = nil
   end
   if skdata and skdata.calculatedStats then cstats = skdata.calculatedStats
-  else cstats = root.assetJson("/aetheri/species/skilltree.config:baseStats")
+  else cstats = { }
   end
   
   for k, v in pairs(cstats) do -- calculate final stat values
     stats.stat[k] = (v[1] or 0) * (v[2] or 1.0) * (v[3] or 1.0)
+  end
+  
+  local baseStats = root.assetJson("/aetheri/species/skilltree.config:baseStats")
+  for k, v in pairs(baseStats) do -- populate missing stats with base values
+    if not stats.stat[k] then stats.stat[k] = (v[1] or 0) * (v[2] or 1.0) * (v[3] or 1.0) end
   end
   
   tech.setStats { -- apply relevant stats
@@ -46,6 +37,8 @@ function stats.refresh()
     { stat = "protection", amount = stats.stat.armor },
     { stat = "powerMultiplier", baseMultiplier = stats.stat.damageMult },
     { stat = "aetheri:skillPowerMultiplier", amount = stats.stat.skillDamageMult },
+    
+    { stat = "aetheri:miningSpeed", amount = stats.stat.miningSpeed },
   } --equipStatsUpdated = true
   
   local sp = status.statusProperty("aetheri:statusPersist", nil)
@@ -82,12 +75,14 @@ function stats.update(p)
 end
 
 function stats.uninit()
-  -- save stuff
-  status.setStatusProperty("aetheri:statusPersist", {
-    health = status.resource("health"),
-    energy = status.resource("energy"),
-    mana = status.resource("aetheri:mana"),
-  })
+  if status.resource("health") > 0 then
+    -- save resource values on teleport (but not death)
+    status.setStatusProperty("aetheri:statusPersist", {
+      health = status.resource("health"),
+      energy = status.resource("energy"),
+      mana = status.resource("aetheri:mana"),
+    })
+  end
   
 end
 
@@ -125,10 +120,6 @@ message.setHandler("stardustlib:modifyDamageTaken", function(_, _, damageRequest
     return damageRequest
   end
 end)
-
-if status.resource("health") == 0 then -- fix death loop (!?)
-  status.setResourcePercentage("health", 1.0)
-end
 
 if not playerext.getEquip("beamaxe") then -- first startup stuff: set active skills if no essential items present
   local ess = { "beamaxe", "wiretool", "painttool", "inspectiontool" }

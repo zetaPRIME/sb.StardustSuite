@@ -108,7 +108,7 @@ function update(dt, fireMode, shiftHeld)
   if fireMode == "none" then fireMode = nil end
   if fireMode and not blockFire then
     local sp = vec2.add(aimPos, vec2.mul(vec2.sub(aimPos, mcontroller.position()), 50)) -- particles *away* from user
-    active = world.damageTiles(tiles, layer[fireMode], sp, "blockish", strength * dt * (1 + maxSize - selSize)^2) -- does as much total damage to one tile as it would to the full square
+    active = world.damageTiles(tiles, layer[fireMode], sp, "blockish", strength * status.stat("aetheri:miningSpeed") * dt * (1 + maxSize - selSize)^2) -- does as much total damage to one tile as it would to the full square
   elseif not fireMode then
     blockFire = false
   end

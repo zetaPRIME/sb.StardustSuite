@@ -1,0 +1,20 @@
+{ // -*- grammar-ext: json -*-
+  "itemName" : "stardustlib:cosplayhead",
+  "shortdescription" : "Costume Head",
+  "description" : "Costume Head",
+  "inventoryIcon" : [
+    { "image" : "/sys/stardust/itemSlotCover.png" },
+    { "image" : "icons.png:head" }
+  ],
+  "rarity" : "Essential",
+  "maxStack" : 1,
+  "category" : "???",
+  "tooltipKind" : "stardustlib.simple.128",
+  
+  "statusEffects" : [ ],
+  
+  "hideBody" : true,
+  "maleFrames" : "blank.png",
+  "femaleFrames" : "blank.png",
+  "mask" : "nullmask.png"
+}

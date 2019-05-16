@@ -1,0 +1,19 @@
+{ // -*- grammar-ext: json -*-
+  "itemName" : "stardustlib:cosplaylegs",
+  "shortdescription" : "Costume Legs",
+  "description" : "Costume Legs",
+  "inventoryIcon" : [
+    { "image" : "/sys/stardust/itemSlotCover.png" },
+    { "image" : "icons.png:pants" }
+  ],
+  "rarity" : "Essential",
+  "maxStack" : 1,
+  "category" : "???",
+  "tooltipKind" : "stardustlib.simple.128",
+  
+  "statusEffects" : [ ],
+  
+  "hideBody" : true,
+  "maleFrames" : "blank.png",
+  "femaleFrames" : "blank.png"
+}

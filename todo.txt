@@ -1,5 +1,10 @@
 -
 
+! hook engine {
+    included by replaced util.lua
+    hijacks the first setting of _ENV.init to hook into core tables (widget, player etc.)
+}
+
 ! TRADING SYSTEM {
     part of stardustlib; basically Path of Exile's trade UI
     quickbar button puts an item in cursor; clicking on a player prompts them to accept/reject trade, via playerext

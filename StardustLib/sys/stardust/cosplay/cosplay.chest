@@ -1,0 +1,27 @@
+{ // -*- grammar-ext: json -*-
+  "itemName" : "stardustlib:cosplaychest",
+  "shortdescription" : "Costume Chest",
+  "description" : "Costume Chest",
+  "inventoryIcon" : [
+    { "image" : "/sys/stardust/itemSlotCover.png" },
+    { "image" : "icons.png:chest" }
+  ],
+  "rarity" : "Essential",
+  "maxStack" : 1,
+  "category" : "???",
+  "tooltipKind" : "stardustlib.simple.128",
+  
+  "statusEffects" : [ ],
+  
+  "hideBody" : true,
+  "maleFrames" : {
+    "body" : "blank.png",
+    "backSleeve" : "blank.png",
+    "frontSleeve" : "blank.png"
+  },
+  "femaleFrames" : {
+    "body" : "blank.png",
+    "backSleeve" : "blank.png",
+    "frontSleeve" : "blank.png"
+  }
+}

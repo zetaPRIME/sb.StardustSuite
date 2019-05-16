@@ -426,6 +426,7 @@ function nodeView:update()
 end
 
 function nodeView:clickEvent(pos, btn, down)
+  self.btnDown = self.btnDown or { }
   -- 0-2: left, middle, right
   if btn == 0 then -- left button
     if down then
@@ -437,14 +438,24 @@ function nodeView:clickEvent(pos, btn, down)
         elseif not isNodeUnlocked(self.hover) then
           pane.playSound(sounds.cantUnlock)
         end
-      else self.scrolling = true end -- or scroll
-    else self.scrolling = false end
-  elseif btn == 1 then -- middle button
-    if down then -- recenter view
-      self.scroll = vec2.mul(vec2.sub(vec2.mul(self.tree.nodes["/origin"].position, self.nodeSpacing), canvas:mousePosition()), -1.0)
+      else self.scrolling = btn end -- or scroll
+    elseif self.scrolling == btn then self.scrolling = nil end
+  elseif btn == 1 then -- middle button - overview/jump
+    local c = vec2.mul(widget.getSize("viewCanvas"), 0.5)
+    local scaleFactor = 3
+    if down then
+      --self.scroll = vec2.mul(vec2.sub(vec2.mul(self.tree.nodes["/origin"].position, self.nodeSpacing), canvas:mousePosition()), -1.0)
+      self.scroll = vec2.add(vec2.mul(vec2.sub(self.scroll, pos), 1/scaleFactor), pos)
+      self.nodeSpacing = self.nodeSpacing / scaleFactor
       self.needsRedraw = true
+    elseif self.btnDown[btn] then
+      self.scroll = vec2.add(vec2.mul(vec2.sub(self.scroll, pos), scaleFactor), pos)
+      self.needsRedraw = true
+      self.nodeSpacing = self.nodeSpacing * scaleFactor
     end
   end
+  
+  self.btnDown[btn] = down
 end
 
 local border = {
@@ -473,10 +484,11 @@ function nodeView:redraw()
   for _, node in pairs(self.tree.nodes) do
     local pos = self:nodeDrawPos(node)
     local active = isNodeUnlocked(node)
+    local fb = active or node == self.hover
     local icon = active and node.unlockedIcon or node.icon
     local nodeDirectives = active and directives.nodeActive or directives.nodeInactive
     --canvas:drawImage("/aetheri/interface/skilltree/nodeBG.png:" .. (active and "active" or "inactive"), pos, 1, {255, 255, 255}, true)
-    canvas:drawImage(icon .. nodeDirectives, pos, 1, active and {255, 255, 255} or {191, 191, 191}, true)
+    canvas:drawImage(icon .. nodeDirectives, pos, 1, fb and {255, 255, 255} or {191, 191, 191}, true)
   end
   if self.hover then -- tool tip!
     local ttPos = vec2.add(self:nodeDrawPos(self.hover), {12, 4})

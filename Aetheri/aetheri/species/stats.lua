@@ -87,6 +87,7 @@ function stats.uninit()
 end
 
 message.setHandler("aetheri:gainAP", function(msg, isLocal, amt)
+  amt = math.floor(0.5 + amt * stats.stat.apGain)
   status.setStatusProperty("aetheri:AP", amt + status.statusProperty("aetheri:AP", 0))
   hud.gainAP(amt)
 end)

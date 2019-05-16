@@ -22,11 +22,19 @@ local function railCast(pos, dist)
         if railCheck(vec2.add(p, {1, 1})) and not railCheck(vec2.add(p, {1, 2})) then slope = -1
         elseif railCheck(vec2.add(p, {1, 0})) then slope = 0
         elseif railCheck(vec2.add(p, {1, -1})) then slope = 1
+        -- check back if blank edge
+        elseif railCheck(vec2.add(p, {-1, 0})) then slope = 0
+        elseif railCheck(vec2.add(p, {-1, -1})) then slope = -1
+        elseif railCheck(vec2.add(p, {-1, 1})) and not railCheck(vec2.add(p, {-1, 2})) then slope = 1
         end
       else -- on the left
         if railCheck(vec2.add(p, {-1, 1})) and not railCheck(vec2.add(p, {-1, 2})) then slope = 1
         elseif railCheck(vec2.add(p, {-1, 0})) then slope = 0
         elseif railCheck(vec2.add(p, {-1, -1})) then slope = -1
+        -- check back if blank edge
+        elseif railCheck(vec2.add(p, {1, 0})) then slope = 0
+        elseif railCheck(vec2.add(p, {1, -1})) then slope = 1
+        elseif railCheck(vec2.add(p, {1, 1})) and not railCheck(vec2.add(p, {1, 2})) then slope = -1
         end
       end
       y = y - relX * slope
@@ -86,8 +94,8 @@ function movement.states.ground:update(dt)
   
   -- check to initiate rail grind
   if input.key.sprint and input.key.down and mcontroller.yVelocity() <= 0 then
-    local rc = railCast(vec2.add(mcontroller.position(), {0, -2.51}), 0)
-    rc = rc or railCast(vec2.add(mcontroller.position(), {mcontroller.xVelocity() * dt, -2.51}), 0)
+    local rc = railCast(vec2.add(mcontroller.position(), {0, -1.51}), 1)
+    --rc = rc or railCast(vec2.add(mcontroller.position(), {mcontroller.xVelocity() * dt, -2.51}), 0)
     if rc then return movement.enterState("rail") end
   end
   
@@ -204,9 +212,9 @@ do
     --mcontroller.setYVelocity(mcontroller.yVelocity() + mcontroller.xVelocity() * self.lastSlope * -1)
     local vel = mcontroller.velocity()
     vel[2] = math.max(0, vel[2])
-    vel = vec2.mul(vec2.rotate(vel, mcontroller.rotation() --[[math.pi * self.lastSlope * -0.25]]), {1, 1})
+    vel = vec2.mul(vec2.rotate(vel, math.pi * self.lastSlope * -0.25), {1, 1})
     mcontroller.setVelocity(vel)
-    if vel[2] > 0 and not self.forceJump then mcontroller.controlJump(true) end
+    --if vel[2] > 0 and not self.forceJump then mcontroller.controlJump(true) end
   end
   
   function movement.states.rail:update(dt)
@@ -219,12 +227,15 @@ do
       return movement.enterState("ground", true, true)
     end
     
-    local rc = railCast(vec2.add(mcontroller.position(), {0, -2.51 - self.yOffset}), 2)
-    if not rc then rc = railCast(vec2.add(mcontroller.position(), {0, -1.51 - self.yOffset}), 3) end
+    local lift = math.abs(mcontroller.xVelocity()) > 10 and 0.2 or 0
+    lift = input.key.down and 0 or lift + math.abs(self.lastSlope)--util.clamp(math.abs(mcontroller.xVelocity() * self.lastSlope) * 10000, 0, 1)
+    local castLen = 1 + math.abs(lift) + math.abs(self.lastSlope)
+    local rc = railCast(vec2.add(mcontroller.position(), {-self.xOffset, lift - 2.51 - self.yOffset}), castLen)
+    if not rc then rc = railCast(vec2.add(mcontroller.position(), {-self.xOffset, lift - 0.51 - self.yOffset}), castLen) end
     if rc then
       tech.setParentState("Duck")
       mcontroller.setYVelocity(0)
-      mcontroller.setYPosition(rc.point[2] + 2.5 + self.yOffset)
+      mcontroller.setYPosition(rc.point[2] + 2.5 + 0*self.yOffset)
       mcontroller.addMomentum({rc.slope * dt * 75, 0})
       mcontroller.addMomentum({input.dir[1] * dt * 25, 0})
       local rslope = rc.slope

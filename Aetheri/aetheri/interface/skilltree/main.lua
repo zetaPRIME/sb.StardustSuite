@@ -63,7 +63,7 @@ local function setNodeVisuals(node)
       node.icon = "book.png"
     elseif node.type == "gate" then
       node.icon = "gate-locked.png"
-      node.unlockedIcon = "gate.unlocked.png"
+      node.unlockedIcon = "gate-unlocked.png"
     else
       node.icon = "misc1.png"
     end

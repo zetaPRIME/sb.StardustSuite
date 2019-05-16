@@ -92,16 +92,24 @@ function movement.states.ground:update(dt)
   mcontroller.clearControls()
   mcontroller.controlModifiers { speedModifier = stats.stat.moveSpeed }
   
+  if input.keyDown.t1 then
+    mcontroller.setPosition(tech.aimPosition())
+    mcontroller.setVelocity({0, 0})
+  end
+  
   -- check to initiate rail grind
   if input.key.sprint and input.key.down and mcontroller.yVelocity() <= 0 then
     local rc = railCast(vec2.add(mcontroller.position(), {0, -1.51}), 1)
     --rc = rc or railCast(vec2.add(mcontroller.position(), {mcontroller.xVelocity() * dt, -2.51}), 0)
-    if rc then return movement.enterState("rail") end
+    if rc then
+      mcontroller.setYPosition(2.5 + rc.point[2]) -- snap to rail
+      return movement.enterState("rail") -- and start grinding
+    end
   end
   
   if mcontroller.canJump() then self.groundTimer = 0.2 end
   if false and self.groundTimer > 0 and input.dir[1] == 0 and input.dir[2] == -1 then
-    tech.setParentState("Duck")
+    tech.setParentState(input.key.down and "Duck" or "Stand")
     mcontroller.controlParameters { 
       normalGroundFriction = 0.75,
       ambulatingGroundFriction = 0.2,
@@ -219,6 +227,10 @@ do
   
   function movement.states.rail:update(dt)
     mcontroller.clearControls()
+    mcontroller.controlDown() -- always slip through crossing platforms
+    mcontroller.controlParameters {
+      bounceFactor = 0.5, -- bounce off le walls
+    }
     
     if not input.key.sprint then return movement.enterState("ground", true, true) end
     if input.keyDown.jump then
@@ -227,7 +239,7 @@ do
       return movement.enterState("ground", true, true)
     end
     
-    local lift = math.abs(mcontroller.xVelocity()) > 10 and 0.2 or 0
+    local lift = math.abs(mcontroller.xVelocity()) * dt --math.abs(mcontroller.xVelocity()) > 10 and 0.2 or 0
     lift = input.key.down and 0 or lift + math.abs(self.lastSlope)--util.clamp(math.abs(mcontroller.xVelocity() * self.lastSlope) * 10000, 0, 1)
     local castLen = 1 + math.abs(lift) + math.abs(self.lastSlope)
     local rc = railCast(vec2.add(mcontroller.position(), {-self.xOffset, lift - 2.51 - self.yOffset}), castLen)
@@ -236,8 +248,8 @@ do
       tech.setParentState("Duck")
       mcontroller.setYVelocity(0)
       mcontroller.setYPosition(rc.point[2] + 2.5 + 0*self.yOffset)
-      mcontroller.addMomentum({rc.slope * dt * 75, 0})
-      mcontroller.addMomentum({input.dir[1] * dt * 25, 0})
+      mcontroller.addMomentum({rc.slope * dt * (input.key.down and 100 or 80), 0})
+      mcontroller.addMomentum({input.dir[1] * dt * (rc.slope == 0 and 30 or 15), 0})
       local rslope = rc.slope
       local rc2 = railCast(vec2.add(mcontroller.position(), {-self.xOffset * 2, -2.0}), 3)
       if rc2 and rc2.slope == 0 then rslope = 0 end

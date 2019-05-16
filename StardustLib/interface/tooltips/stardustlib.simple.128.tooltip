@@ -1,0 +1,26 @@
+{
+  "background" : {
+    "type" : "background",
+    "fileBody" : "/assetmissing.png?crop=0;0;1;1?multiply=0000?scalenearest=128;14"
+  },
+  "stretchBackground" : {
+    "type" : "imageStretch",
+    "position" : [0, 0],
+    "size" : [128, 14],
+    "zlevel" : -1,
+    "direction" : "horizontal",
+    "stretchSet" : {
+      "type" : "stretch",
+      "begin" : "/interface/tooltips/labelframe_left.png",
+      "inner" : "/interface/tooltips/labelframe_middle.png",
+      "end" : "/interface/tooltips/labelframe_right.png"
+    }
+  },
+
+  "descriptionLabel" : {
+    "type" : "label",
+    "position" : [64, 7],
+    "hAnchor" : "mid",
+    "vAnchor" : "mid"
+  }
+}

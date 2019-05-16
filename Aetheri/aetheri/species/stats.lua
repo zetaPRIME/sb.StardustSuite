@@ -126,19 +126,20 @@ message.setHandler("stardustlib:modifyDamageTaken", function(_, _, damageRequest
   end
 end)
 
-do -- first startup stuff: set active skills if no essential items present
-  if not playerext.getEquip("beamaxe") then
-    local ess = { "beamaxe", "wiretool", "painttool", "inspectiontool" }
-    
-    local pd = status.statusProperty("aetheri:skillTreeData", { })
-    pd.selectedSkills = { "dig", "burst", "none", "none" }
-    status.setStatusProperty("aetheri:skillTreeData", pd)
-    
-    for i = 1, 4 do
-      playerext.setEquip(ess[i], { name = "aetheri:skill." .. pd.selectedSkills[i], count = 1 })
-    end
-  end
+if status.resource("health") == 0 then -- fix death loop (!?)
+  status.setResourcePercentage("health", 1.0)
+end
+
+if not playerext.getEquip("beamaxe") then -- first startup stuff: set active skills if no essential items present
+  local ess = { "beamaxe", "wiretool", "painttool", "inspectiontool" }
   
+  local pd = status.statusProperty("aetheri:skillTreeData", { })
+  pd.selectedSkills = { "dig", "burst", "none", "none" }
+  status.setStatusProperty("aetheri:skillTreeData", pd)
+  
+  for i = 1, 4 do
+    playerext.setEquip(ess[i], { name = "aetheri:skill." .. pd.selectedSkills[i], count = 1 })
+  end
 end
 
 

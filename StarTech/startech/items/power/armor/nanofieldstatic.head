@@ -2,7 +2,10 @@
   "itemName" : "startech:nanofieldstatichead",
   "shortdescription" : "^gray;Nanofield Static^reset;",
   "description" : "Locked; your ^yellow;Nanofield^reset; projects a kinetic field for protection.",
-  "inventoryIcon" : "/interface/lockicon.png",
+  "inventoryIcon" : [
+    { "image" : "/sys/stardust/itemSlotCover-dark.png" },
+    { "image" : "/interface/lockicon.png" }
+  ],
   "rarity" : "Essential",
   "maxStack" : 1,
   "category" : "Ephemera",

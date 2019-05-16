@@ -8,7 +8,10 @@
   "tooltipKind" : "mm",
   "twoHanded" : true,
   
-  "inventoryIcon" : "/items/currency/essence.png",
+  "inventoryIcon" : [
+    { "image" : "skillSlotBG.png" },
+    { "image" : "noicon.png" }
+  ],
   "animation" : "burst.animation",
 
   "scripts" : ["burst.lua"],

@@ -8,7 +8,10 @@
   "tooltipKind" : "mm",
   "twoHanded" : true,
   
-  "inventoryIcon" : "dig.icon.png",
+  "inventoryIcon" : [
+    { "image" : "skillSlotBG.png" },
+    { "image" : "dig.icon.png" }
+  ],
   "animation" : "dig.animation",
 
   "scripts" : ["dig.lua"],

@@ -1,11 +1,9 @@
 -- Aethyrium - skill tree(s) for the Aetheri
 
 --[[ TODO:
-  ! ACTIVE SKILLS
   decorations
   raw status nodes
   ship nodes (unlock FTL travel from skill tree?)
-  conditional groups (have a group for if FU is present, or such)
   indicators for "more in this direction"; scroll bounds?
   eventually sort things into BSP to make drawing and cursor checking less silly
 --]]
@@ -74,11 +72,11 @@ local function setNodeVisuals(node)
     if mode == "description" then
       table.insert(tt, string.format("%s^reset;\n", stat))
     elseif mode == "flat" then
-      table.insert(tt, string.format("+^white;%s ^cyan;%s^reset;\n", numStr(amt), statNames[stat] or stat))
+      table.insert(tt, string.format("%s^white;%s ^cyan;%s^reset;\n", amt >= 0 and "+" or "-", numStr(math.abs(amt)), statNames[stat] or stat))
     elseif mode == "increased" then
-      table.insert(tt, string.format("^white;%s%%^reset; increased ^cyan;%s^reset;\n", numStr(amt*100), statNames[stat] or stat))
+      table.insert(tt, string.format("^white;%s%%^reset; %s ^cyan;%s^reset;\n", numStr(math.abs(amt)*100), amt >= 0 and "increased" or "decreased", statNames[stat] or stat))
     elseif mode == "more" then
-      table.insert(tt, string.format("^white;%s%%^reset; more ^cyan;%s^reset;\n", numStr(amt*100), statNames[stat] or stat))
+      table.insert(tt, string.format("^white;%s%%^reset; %s ^cyan;%s^reset;\n", numStr(math.abs(amt)*100), amt >= 0 and "more" or "less", statNames[stat] or stat))
     end
   end
   node.toolTip = table.concat(tt)
@@ -390,6 +388,11 @@ function nodeView:clickEvent(pos, btn, down)
         end
       else self.scrolling = true end -- or scroll
     else self.scrolling = false end
+  elseif btn == 1 then -- middle button
+    if down then -- recenter view
+      self.scroll = vec2.mul(vec2.sub(vec2.mul(self.tree.nodes["/origin"].position, self.nodeSpacing), canvas:mousePosition()), -1.0)
+      self.needsRedraw = true
+    end
   end
 end
 

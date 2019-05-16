@@ -3,6 +3,7 @@
 --[[ TODO:
   decorations
   raw status nodes
+  gate nodes (always appear but can only be unlocked if condition is met)
   ship nodes (unlock FTL travel from skill tree?)
   indicators for "more in this direction"; scroll bounds?
   eventually sort things into BSP to make drawing and cursor checking less silly
@@ -11,6 +12,7 @@
 require "/scripts/util.lua"
 require "/scripts/vec2.lua"
 require "/scripts/rect.lua"
+require "/lib/stardust/itemutil.lua"
 require "/lib/stardust/playerext.lua"
 require "/lib/stardust/color.lua"
 
@@ -59,10 +61,15 @@ local function setNodeVisuals(node)
   if not node.icon then
     if node.type == "origin" then
       node.icon = "book.png"
+    elseif node.type == "gate" then
+      node.icon = "gate-locked.png"
+      node.unlockedIcon = "gate.unlocked.png"
     else
       node.icon = "misc1.png"
     end
-  end node.icon = util.absolutePath("/aetheri/interface/skilltree/icons/", node.icon)
+  end
+  node.icon = util.absolutePath("/aetheri/interface/skilltree/icons/", node.icon)
+  node.unlockedIcon = node.unlockedIcon and util.absolutePath("/aetheri/interface/skilltree/icons/", node.unlockedIcon)
   
   -- tool tip
   local tt = { }
@@ -80,6 +87,15 @@ local function setNodeVisuals(node)
     end
   end
   node.toolTip = table.concat(tt)
+  if node.itemCost then -- assemble item requirement tooltips
+    tt = { }
+    table.insert(tt, "^white;Items required^reset;:\n")
+    for _, d in pairs(node.itemCost) do
+      table.insert(tt, string.format("- ^white;%d ^reset;%s^reset;\n", d.count, itemutil.property(d, "shortdescription")))
+    end
+    
+    node.costToolTip = table.concat(tt)
+  end
 end
 
 local trees = { }
@@ -118,9 +134,9 @@ function init()
           local node = {
             tree = t, path = path, type = type,
             position = pos, connections = { },
-            name = n.name, icon = n.icon,
+            name = n.name, icon = n.icon, unlockedIcon = n.unlockedIcon,
             grants = n.grants,
-            fixedCost = n.fixedCost, costMult = n.costMult,
+            fixedCost = n.fixedCost, costMult = n.costMult, itemCost = n.itemCost,
           }
           t.nodes[path] = node
           setNodeVisuals(node)
@@ -159,15 +175,26 @@ function init()
 end
 
 function uninit()
-  if playerTmpData and playerTmpData.apToSpend and playerTmpData.apToSpend > 0 then
+  if changesToCommit() then
     pane.playSound(sounds.cancel)
+    refundItemCosts()
+  end
+end
+
+function refundItemCosts()
+  if playerTmpData and playerTmpData.itemsToConsume then
+    -- refund consumed items
+    for _, d in pairs(playerTmpData.itemsToConsume) do player.giveItem(d) end
+    playerTmpData.itemsToConsume = { } -- and reset
   end
 end
 
 function loadPlayerData()
   local reset = false
+  refundItemCosts()
   playerTmpData = {
-    apToSpend = 0
+    apToSpend = 0,
+    itemsToConsume = { }
   }
   playerData = status.statusProperty("aetheri:skillTreeData", nil)
   if not playerData or playerData.compatId ~= compatId then
@@ -248,6 +275,8 @@ function recalculateStats()
   playerData.calculatedStats = stats
 end
 
+function changesToCommit() return not not playerTmpData.changed end
+
 function commitPlayerData()
   recalculateStats()
   committedSkillsUnlocked = playerData.skillsUnlocked
@@ -255,6 +284,8 @@ function commitPlayerData()
   status.setStatusProperty("aetheri:skillTreeData", playerData)
   status.setStatusProperty("aetheri:AP", status.statusProperty("aetheri:AP", 0) - playerTmpData.apToSpend)
   playerTmpData.apToSpend = 0
+  playerTmpData.itemsToConsume = { }
+  playerTmpData.changed = false
   world.sendEntityMessage(player.id(), "aetheri:refreshStats")
   commitSkillSlots()
 end
@@ -294,6 +325,29 @@ function canUnlockNode(node)
   return currentAP() >= nodeCost(node)
 end
 
+function tryItemCost(node, consume)
+  if not node.itemCost then return true end
+  for _, d in pairs(node.itemCost) do
+    if not (player.hasCountOfItem(d, true) >= d.count) then return false end
+  end
+  if consume then
+    for _, d in pairs(node.itemCost) do
+      table.insert(playerTmpData.itemsToConsume, player.consumeItem(d, false, true))
+    end
+  end
+  return true
+end
+
+function tryUnlockNode(node)
+  if not canUnlockNode(node) then return false end
+  if not tryItemCost(node, true) then return false end
+  playerData.nodesUnlocked[node.tree.name][node.path] = true
+  playerTmpData.apToSpend = playerTmpData.apToSpend + nodeCost(node)
+  playerTmpData.changed = true
+  recalculateStats()
+  return true -- success!
+end
+
 function update()
   (view and view.update or nf)(view)
   if view.needsRedraw then redrawCanvas() end
@@ -322,14 +376,14 @@ function canvasKeyEvent(key, isDown)
 end
 
 function btnConfirm()
+  if changesToCommit() then pane.playSound(sounds.confirm) end
   skillDrawer.close()
   commitPlayerData()
-  pane.playSound(sounds.confirm)
 end
 function btnCancel()
+  if changesToCommit() then pane.playSound(sounds.cancel) end
   skillDrawer.close()
   loadPlayerData()
-  pane.playSound(sounds.cancel)
 end
 
 
@@ -376,11 +430,7 @@ function nodeView:clickEvent(pos, btn, down)
     if down then
       if self.hover then -- click on node
         -- try to unlock node
-        local cost = nodeCost(self.hover)
-        if canUnlockNode(self.hover) then
-          playerData.nodesUnlocked[self.tree.name][self.hover.path] = true
-          playerTmpData.apToSpend = playerTmpData.apToSpend + cost
-          recalculateStats()
+        if tryUnlockNode(self.hover) then
           self.needsRedraw = true
           pane.playSound(sounds.unlock)
         elseif not isNodeUnlocked(self.hover) then
@@ -422,16 +472,20 @@ function nodeView:redraw()
   for _, node in pairs(self.tree.nodes) do
     local pos = self:nodeDrawPos(node)
     local active = isNodeUnlocked(node)
+    local icon = active and node.unlockedIcon or node.icon
     local nodeDirectives = active and directives.nodeActive or directives.nodeInactive
     --canvas:drawImage("/aetheri/interface/skilltree/nodeBG.png:" .. (active and "active" or "inactive"), pos, 1, {255, 255, 255}, true)
-    canvas:drawImage(node.icon .. nodeDirectives, pos, 1, active and {255, 255, 255} or {191, 191, 191}, true)
+    canvas:drawImage(icon .. nodeDirectives, pos, 1, active and {255, 255, 255} or {191, 191, 191}, true)
   end
   if self.hover then -- tool tip!
     local ttPos = vec2.add(self:nodeDrawPos(self.hover), {12, 4})
     local tt = self.hover.toolTip
     if not isNodeUnlocked(self.hover) then
+      tt = tt .. (self.hover.costToolTip or "")
       local cost, fixed = nodeCost(self.hover)
-      tt = string.format("%s%s: %s%d ^violet;AP^reset;\n", tt, fixed and "Fixed cost" or "Cost", currentAP() >= cost and "^white;" or "^red;", cost)
+      if cost > 0 then -- only display nonzero costs
+        tt = string.format("%s%s: %s%d ^violet;AP^reset;\n", tt, fixed and "Fixed cost" or "Cost", currentAP() >= cost and "^white;" or "^red;", cost)
+      end
     end
     local btt = tt:gsub("(%b^;)", "") -- strip codes for border
     for _, off in pairs(border) do

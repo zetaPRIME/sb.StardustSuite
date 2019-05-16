@@ -84,16 +84,11 @@ function movement.states.ground:update(dt)
   mcontroller.clearControls()
   mcontroller.controlModifiers { speedModifier = stats.stat.moveSpeed }
   
-  local rc = railCast(vec2.add(mcontroller.position(), {0, -2.51}), 0)
-  rc = rc or railCast(vec2.add(mcontroller.position(), {mcontroller.xVelocity() * dt, -2.51}), 0)
-  if rc and input.key.sprint and input.key.down and mcontroller.yVelocity() <= 0 then
-    return movement.enterState("rail")
-    --[[tech.setParentState("Duck")
-    mcontroller.setYVelocity(0)
-    mcontroller.setYPosition(rc.point[2] + 2.5)
-    mcontroller.addMomentum({rc.slope * dt * 75, 0})
-    --mcontroller.setRotation(math.pi * rc.slope * -0.25)
-    ]]
+  -- check to initiate rail grind
+  if input.key.sprint and input.key.down and mcontroller.yVelocity() <= 0 then
+    local rc = railCast(vec2.add(mcontroller.position(), {0, -2.51}), 0)
+    rc = rc or railCast(vec2.add(mcontroller.position(), {mcontroller.xVelocity() * dt, -2.51}), 0)
+    if rc then return movement.enterState("rail") end
   end
   
   if mcontroller.canJump() then self.groundTimer = 0.2 end

@@ -137,6 +137,7 @@ function init()
             name = n.name, icon = n.icon, unlockedIcon = n.unlockedIcon,
             grants = n.grants,
             fixedCost = n.fixedCost, costMult = n.costMult, itemCost = n.itemCost,
+            condition = n.condition,
           }
           t.nodes[path] = node
           setNodeVisuals(node)
@@ -341,6 +342,7 @@ end
 function tryUnlockNode(node)
   if not canUnlockNode(node) then return false end
   if not tryItemCost(node, true) then return false end
+  if node.condition and not condition(table.unpack(node.condition)) then return false end
   playerData.nodesUnlocked[node.tree.name][node.path] = true
   playerTmpData.apToSpend = playerTmpData.apToSpend + nodeCost(node)
   playerTmpData.changed = true

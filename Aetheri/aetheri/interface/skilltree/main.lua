@@ -410,6 +410,7 @@ function nodeView:update()
   local pos = canvas:mousePosition()
   
   if vec2.mag(vec2.sub(pos, self.lastPos)) > 0 then -- if mouse moved...
+    --self.needsRedraw = true
     if self.scrolling then
       self.scroll = vec2.add(self.scroll, vec2.sub(pos, self.lastPos))
       self.needsRedraw = true
@@ -466,7 +467,10 @@ local border = {
 }
 function nodeView:redraw()
   canvas:clear()
-  --canvas:drawImage("/interface/lockicon.png", self.scroll, 1, {255, 255, 255}, true)
+  
+  -- draw guiding line
+  --canvas:drawLine(canvas:mousePosition(), self.scroll, {255, 255, 255, 63}, 1)
+  
   local lco = {0, 0}--{-.5, -.5}
   local lineColors = {
     {127, 63, 63, 63},

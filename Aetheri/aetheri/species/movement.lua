@@ -1,5 +1,44 @@
 --
 
+local railTypes = root.assetJson("/rails.config")
+local function railCheck(pos)
+  return railTypes[world.material(pos, "foreground")]
+end
+local function railCast(pos, dist)
+  -- adjust starting position to center of tile
+  local sp = { math.floor(pos[1]) + 0.5, math.floor(pos[2]) + 0.5 }
+  for i = 0, math.ceil(dist) do
+    local p = vec2.add(sp, {0, -i})
+    local rail = railCheck(p)
+    if rail then
+      local res = { }
+      local relX = pos[1] - sp[1]
+      local y = math.ceil(p[2]) -- top of region
+      local slope = 0
+      if railCheck(vec2.add(p, {0, 1})) then
+        -- rail directly above; flat slope
+      elseif relX >= 0 then -- on the right
+        if railCheck(vec2.add(p, {1, 1})) and not railCheck(vec2.add(p, {1, 2})) then slope = -1
+        elseif railCheck(vec2.add(p, {1, 0})) then slope = 0
+        elseif railCheck(vec2.add(p, {1, -1})) then slope = 1
+        end
+      else -- on the left
+        if railCheck(vec2.add(p, {-1, 1})) and not railCheck(vec2.add(p, {-1, 2})) then slope = 1
+        elseif railCheck(vec2.add(p, {-1, 0})) then slope = 0
+        elseif railCheck(vec2.add(p, {-1, -1})) then slope = -1
+        end
+      end
+      y = y - relX * slope
+      res.slope = slope
+      res.point = {pos[1], y}
+      
+      return res
+      --return materialAt
+    end
+  end
+  return false
+end
+
 movement = {
   states = { },
 }
@@ -30,6 +69,7 @@ movement.states.ground = { }
 function movement.states.ground:init()
   self.airJumps = 0
   self.airJumpTimer = 0
+  self.groundTimer = 0
 end
 
 function movement.states.ground:uninit()
@@ -38,8 +78,47 @@ end
 
 function movement.states.ground:update(dt)
   tech.setParentState() -- clear
+  mcontroller.setRotation(0)
   mcontroller.clearControls()
   mcontroller.controlModifiers { speedModifier = stats.stat.moveSpeed }
+  
+  local rc = railCast(vec2.add(vec2.add(mcontroller.position(), vec2.mul(mcontroller.velocity(), dt)), {0, -2.51}), 1)
+  if rc and input.key.sprint then
+    tech.setParentState("Duck")
+    mcontroller.setYVelocity(0)
+    mcontroller.setYPosition(rc.point[2] + 2.5)
+    mcontroller.addMomentum({rc.slope * dt * 250, 0})
+    mcontroller.setRotation(math.pi * rc.slope * -0.25)
+  end
+  
+  if mcontroller.canJump() then self.groundTimer = 0.2 end
+  if false and self.groundTimer > 0 and input.dir[1] == 0 and input.dir[2] == -1 then
+    tech.setParentState("Duck")
+    mcontroller.controlParameters { 
+      normalGroundFriction = 0.75,
+      ambulatingGroundFriction = 0.2,
+      --slopeSlidingFactor = 500.0
+    }
+    local ck = { "Block", "Platform", "Dynamic" }
+    local rcp = mcontroller.position()--vec2.add(mcontroller.position(), vec2.mul(mcontroller.velocity(), {dt, 0}))
+    if world.lineCollision(vec2.add(rcp, {0, -1.5}), vec2.add(rcp, {0, -3}), {"Platform"}) then
+      -- rail grind??
+      self.groundTimer = 0.25
+      mcontroller.setYVelocity(0)
+    end
+    local lp = vec2.add(rcp, {-0.5, -1})
+    local rp = vec2.add(rcp, {0.5, -1})
+    local lc = world.lineCollision(lp, vec2.add(lp, {0, -5}), ck)
+    local rc = world.lineCollision(rp, vec2.add(rp, {0, -5}), ck)
+    if lc and rc then
+      local sf = (lc[2] - rc[2]) * 1.5
+      mcontroller.addMomentum({sf, math.abs(sf) * -0})
+      if sf * mcontroller.xVelocity() > -0.2 then -- if going downhill already...
+        mcontroller.setYPosition(util.lerp(0.5, lc[2], rc[2]) + 2.5) -- stick to the ground
+      end
+    end
+  end
+  
   if mcontroller.onGround() then
     self.sprinting = input.key.sprint and input.dir[1] ~= 0
     self.airJumps = stats.stat.airJumps
@@ -67,6 +146,8 @@ function movement.states.ground:update(dt)
     tech.setParentState("Fall") -- animate a bit even when already rising
     self.airJumpTimer = 0.05
   end
+  
+  if self.groundTimer > 0 then self.groundTimer = self.groundTimer - dt end
   
   if self.airJumpTimer > 0 then 
     -- ?

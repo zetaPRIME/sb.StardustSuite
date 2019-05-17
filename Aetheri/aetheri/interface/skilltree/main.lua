@@ -6,6 +6,11 @@
   ship nodes (unlock FTL travel from skill tree?)
   indicators for "more in this direction"; scroll bounds?
   eventually sort things into BSP to make drawing and cursor checking less silly
+  
+  jewel sockets; insert/remove jewel items to change what the socket does, PoE style
+  item config contains the "grants" array
+  (flag is replaced with the item descriptor if filled? or separate data for ease of refunding?)
+  ^ keep track of which nodes are Actually Unlocked
 --]]
 
 require "/scripts/util.lua"
@@ -25,6 +30,8 @@ sounds = {
   cantUnlock = "/sfx/interface/clickon_error.ogg",
   confirm = "/sfx/objects/essencechest_open3.ogg",
   cancel = "/sfx/interface/nav_insufficient_fuel.ogg",
+  
+  socketJewel = "/sfx/melee/sword_parry.ogg", --"/sfx/objects/essencechest_open1.ogg",
   
   openSkillDrawer = "/sfx/objects/ancientenergy_pickup2.ogg",
   closeSkillDrawer = "/sfx/objects/ancientenergy_pickup1.ogg",
@@ -56,6 +63,8 @@ local function tableCount(t)
 end
 
 local function setNodeVisuals(node)
+  if upkeepOnly then return nil end -- skip if it won't be shown anyway
+  
   -- icon
   if not node.icon then
     if node.type == "origin" then
@@ -110,8 +119,9 @@ function init()
     baseStats = cfg.baseStats
     baseNodeCost = cfg.baseNodeCost
     
-    startingSkills = cfg.startingSkills
     activeSkills = cfg.activeSkills
+    startingSkills = cfg.startingSkills
+    startingLoadout = cfg.startingLoadout
     
     local t
     -- recursive function for loading in node data
@@ -211,7 +221,8 @@ function loadPlayerData()
       compatId = compatId,
       spentAP = 0,
       nodesUnlocked = { },
-      selectedSkills = { "dig", "burst", "none", "none" }
+      -- keep anything still unlocked in its place
+      selectedSkills = playerData and playerData.selectedSkills or startingLoadout
     }
     reset = true
     --status.setStatusProperty("aetheri:skillTreeData", playerData) -- and save back
@@ -239,7 +250,7 @@ end
 
 function recalculateStats()
   --playerData.calculatedStats = { }
-  local stats = { }
+  local stats, flags = { }, { }
   for stat, t in pairs(baseStats) do -- populate base stat values
     stats[stat] = {t[1] or 0, t[2] or 1, t[3] or 1}
   end
@@ -261,6 +272,7 @@ function recalculateStats()
           if mode == "flat" and stats[stat] then stats[stat][1] = stats[stat][1] + amt
           elseif mode == "increased" and stats[stat] then stats[stat][2] = stats[stat][2] + amt
           elseif mode == "more" and stats[stat] then stats[stat][3] = stats[stat][3] * (1.0 + amt)
+          elseif mode == "flag" then flags[stat] = true
           elseif mode == "unlockSkill" and stat then playerData.skillsUnlocked[stat] = true
           end --
         end
@@ -278,6 +290,7 @@ function recalculateStats()
   end
   
   playerData.calculatedStats = stats
+  playerData.flags = flags
 end
 
 function changesToCommit() return not not playerTmpData.changed end

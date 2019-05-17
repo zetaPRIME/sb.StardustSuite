@@ -1,4 +1,4 @@
-stats = { stat = { }, flags = { } }
+stats = { stat = { }, flag = { } }
 
 -- base, add, inc, more
 
@@ -31,6 +31,8 @@ function stats.refresh()
   for k, v in pairs(baseStats) do -- populate missing stats with base values
     if not stats.stat[k] then stats.stat[k] = (v[1] or 0) * (v[2] or 1.0) * (v[3] or 1.0) end
   end
+  
+  stats.flag = skdata and skdata.flags or { }
   
   tech.setStats { -- apply relevant stats
     { stat = "maxHealth", amount = -100 + stats.stat.health },

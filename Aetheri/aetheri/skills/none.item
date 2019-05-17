@@ -3,9 +3,9 @@
   "maxStack" : 1,
   "rarity" : "Legendary",
   "shortdescription" : "(no skill)",
-  "description" : "^gray;Slot is empty.^reset;",
+  "description" : "^gray;No skill selected.^reset;",
   "category" : "aetheri:skill",
-  "tooltipKind" : "stardustlib.simple.64",
+  "tooltipKind" : "stardustlib.simple.80",
   
   "inventoryIcon" : "skillSlotBGEmpty.png"
 }

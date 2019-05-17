@@ -13,6 +13,7 @@
   
   "statusEffects" : [ ],
   
+  "builder" : "/sys/stardust/cosplay/build.lua",
   "maleFrames" : {
     "body" : "blank.png",
     "backSleeve" : "blank.png",

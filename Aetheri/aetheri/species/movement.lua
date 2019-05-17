@@ -5,6 +5,7 @@ local function railCheck(pos)
   return railTypes[world.material(pos, "foreground")]
 end
 local function railCast(pos, dist)
+  dist = dist or 0 -- allow single tile checks
   -- adjust starting position to center of tile
   local sp = { math.floor(pos[1]) + 0.5, math.floor(pos[2]) + 0.5 }
   for i = 0, math.ceil(dist) do
@@ -40,6 +41,7 @@ local function railCast(pos, dist)
       y = y - relX * slope
       res.slope = slope
       res.point = {pos[1], y}
+      res.tilePos = p
       
       return res
       --return materialAt
@@ -232,13 +234,18 @@ do
       bounceFactor = 0.75, -- bounce off le walls
     }
     
-    if not input.key.sprint then return movement.enterState("ground", true, true) end
-    if input.keyDown.jump then
+    if input.keyDown.jump then -- jump off
       mcontroller.addMomentum({0, 75})
       self.forceJump = true
       return movement.enterState("ground", true, true)
     end
+    -- drop off rail if you release sprint unless standing stationary on a flat rail
+    if mcontroller.xVelocity() == 0 and not input.key.down then --nop--
+    elseif not input.key.sprint then return movement.enterState("ground", true, true) end
     
+    -- TODO: avoid snapping to rails 2 blocks above when a horizontal rail ends(!?)
+    -- maybe use an iterative follow system (start with last rail stopped on, follow each tile space in its
+    -- direction until you arrive at current x position)
     local lift = math.abs(mcontroller.xVelocity()) * dt --math.abs(mcontroller.xVelocity()) > 10 and 0.2 or 0
     lift = input.key.down and 0 or lift + math.abs(self.lastSlope)--util.clamp(math.abs(mcontroller.xVelocity() * self.lastSlope) * 10000, 0, 1)
     local castLen = 1 + math.abs(lift) + math.abs(self.lastSlope)
@@ -247,7 +254,7 @@ do
     if rc then
       tech.setParentState("Duck")
       mcontroller.setYVelocity(0)
-      mcontroller.setYPosition(rc.point[2] + 2.5 + 0*self.yOffset)
+      mcontroller.setYPosition(rc.point[2] + 2.4 + (1/16)*self.yOffset)
       mcontroller.addMomentum({rc.slope * dt * (input.key.down and 100 or 80), 0})
       mcontroller.addMomentum({input.dir[1] * dt * (rc.slope == 0 and 30 or 15), 0})
       if rc.slope == 0 and input.dir[1] == 0 and math.abs(mcontroller.xVelocity()) <= 2.5 then

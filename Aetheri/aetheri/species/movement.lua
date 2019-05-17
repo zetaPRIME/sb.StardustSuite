@@ -4,8 +4,9 @@ local railTypes = root.assetJson("/rails.config")
 local function railCheck(pos)
   return railTypes[world.material(pos, "foreground")]
 end
-local function railCast(pos, dist)
+local function railCast(pos, dist, bias)
   dist = dist or 0 -- allow single tile checks
+  if bias ~= -1 then bias = 1 end -- up unless down
   -- adjust starting position to center of tile
   local sp = { math.floor(pos[1]) + 0.5, math.floor(pos[2]) + 0.5 }
   for i = 0, math.ceil(dist) do
@@ -13,35 +14,30 @@ local function railCast(pos, dist)
     local rail = railCheck(p)
     if rail then
       local relX = pos[1] - sp[1]
+      local dir = util.toDirection(relX)
+      local function chk(x, y)
+        return railCheck(vec2.add(p, { dir*x, y }))
+      end
+      
       local y = math.ceil(p[2]) -- top of region
       local slope = 0
-      if railCheck(vec2.add(p, {0, 1})) then -- rail directly above
+      if chk(0, bias) then -- rail directly above
         -- don't land on the middle of a vertical rail; count only the middle of a crossing
-        if railCheck(vec2.add(p, {-1, 0})) and railCheck(vec2.add(p, {1, 0})) then slope = 0
-        elseif railCheck(vec2.add(p, {-1, -1})) and railCheck(vec2.add(p, {1, 1})) then slope = -1
-        elseif railCheck(vec2.add(p, {-1, 1})) and railCheck(vec2.add(p, {1, -1})) then slope = 1
+        if chk(1, 0) and chk(-1, 0) then slope = 0
+        elseif chk(1, 1) and chk(-1, -1) then slope = 1
+        elseif chk(1, -1) and chk(-1, 1) then slope = -1
         else return false end
         --
       end
-      if relX >= 0 then -- on the right
-        if railCheck(vec2.add(p, {1, 1})) and not (railCheck(vec2.add(p, {1, 2})) and not railCheck(vec2.add(p, {2, 2}))) then slope = -1
-        elseif railCheck(vec2.add(p, {1, 0})) then slope = 0
-        elseif railCheck(vec2.add(p, {1, -1})) then slope = 1
+      if chk(1, bias) and not (chk(1, 2*bias) and not chk(2, 2*bias)) then slope = -bias
+      elseif chk(1, 0) then slope = 0
+      elseif chk(1, -bias) then slope = bias
         -- check back if blank edge
-        elseif railCheck(vec2.add(p, {-1, 0})) then slope = 0
-        elseif railCheck(vec2.add(p, {-1, -1})) then slope = -1
-        elseif railCheck(vec2.add(p, {-1, 1})) and not railCheck(vec2.add(p, {-1, 2})) then slope = 1
-        end
-      else -- on the left
-        if railCheck(vec2.add(p, {-1, 1})) and not (railCheck(vec2.add(p, {-1, 2})) and not railCheck(vec2.add(p, {-2, 2}))) then slope = 1
-        elseif railCheck(vec2.add(p, {-1, 0})) then slope = 0
-        elseif railCheck(vec2.add(p, {-1, -1})) then slope = -1
-        -- check back if blank edge
-        elseif railCheck(vec2.add(p, {1, 0})) then slope = 0
-        elseif railCheck(vec2.add(p, {1, -1})) then slope = 1
-        elseif railCheck(vec2.add(p, {1, 1})) and not railCheck(vec2.add(p, {1, 2})) then slope = -1
-        end
+      elseif chk(-1, 0) then slope = 0
+      elseif chk(-1, -1) then slope = -1
+      elseif chk(-1, 1) and not chk(-1, 2) then slope = 1
       end
+      slope = slope * dir
       y = y - relX * slope
       return {
         slope = slope,
@@ -104,7 +100,7 @@ function movement.states.ground:update(dt)
   
   -- check to initiate rail grind
   if not mcontroller.canJump() and input.key.sprint and input.key.down and mcontroller.yVelocity() <= 0 then
-    local rc = railCast(vec2.add(mcontroller.position(), {0, -1.51}), 1)
+    local rc = railCast(vec2.add(mcontroller.position(), {0, -1.51}), math.floor(-mcontroller.yVelocity() * dt))
     --rc = rc or railCast(vec2.add(mcontroller.position(), {mcontroller.xVelocity() * dt, -2.51}), 0)
     if rc then
       mcontroller.setPosition(vec2.add(rc.point, {0, 2.5})) -- snap to rail
@@ -206,8 +202,8 @@ do
     local newRot = towards(curRot, rot, limit)
     self.yOffset, self.xOffset = offsetForRot(newRot)
     mcontroller.setRotation(newRot)
-    mcontroller.setYPosition(mcontroller.yPosition() + self.yOffset - curYOffset)
-    mcontroller.setXPosition(mcontroller.xPosition() + self.xOffset - curXOffset)
+    mcontroller.setYPosition(mcontroller.yPosition() + (self.yOffset - curYOffset))
+    mcontroller.setXPosition(mcontroller.xPosition() + (self.xOffset - curXOffset))
     --
   end
   
@@ -215,14 +211,16 @@ do
   function movement.states.rail:init()
     self.xOffset = 0
     self.yOffset = 0
+    self.targetRot = 0
     
     -- check for rail hit
-    local rc = railCast(vec2.add(mcontroller.position(), {0, -2.51 - self.yOffset}), 2)
+    local rc = railCast(vec2.add(mcontroller.position(), {0, -2.51}), 2)
     if rc then
       mcontroller.setVelocity(vec2.rotate(mcontroller.velocity(), math.pi * rc.slope * 0.25))
-      rotateTowards(self, math.pi * rc.slope * -0.25, 10000)
+      --rotateTowards(self, math.pi * rc.slope * -0.25, 10000)
       self.lastSlope = rc.slope
       self.lastTile = rc.tilePos
+      self.lastDiffTile = self.lastTile--vec2.add(rc.tilePos, {util.toDirection(mcontroller.xVelocity()), 0})
       
       sound.play("/aetheri/sfx/railGrindHit.ogg", 0.64, 1.1)
       self.sfx = sound.newLoop("/aetheri/sfx/railGrindLoop.ogg")
@@ -253,7 +251,7 @@ do
       self.forceJump = true
       return movement.enterState("ground", true, true)
     end
-    -- drop off rail if you release sprint unless standing stationary on a flat rail
+    -- drop off rail if you release sprint... unless standing stationary on a flat rail
     if mcontroller.xVelocity() == 0 and not input.key.down then --nop--
     elseif not input.key.sprint then return movement.enterState("ground", true, true) end
     
@@ -261,29 +259,40 @@ do
     -- also take current gravity into account
     local x = mcontroller.xPosition() - self.xOffset
     local dir = util.toDirection(mcontroller.xVelocity())
-    local bias = dir * 0.1 -- slight bias for purposes of getting the right slope priority
-    local rc = railCast(vec2.add(self.lastTile, {bias, 0}))
+    local bias = dir*0.1 --util.toDirection(self.lastTile[1] - self.lastDiffTile[1]) * 0.1 -- slight bias for purposes of getting the right slope priority
+    local sb = input.key.down and -1 or 1
+    local rc = railCast(vec2.add(self.lastTile, {bias, 0}), 0, sb)
     if not rc then return movement.enterState("ground", true, true) end -- tile deleted since last tick, abort
     while not sameTile(rc.tilePos[1], x) do
-      rc = railCast(vec2.add(rc.tilePos, {dir * 1.1, dir * rc.slope * -1}))
-      if not rc then return movement.enterState("ground", true, true) end -- run out of rail
-      rc = input.key.down and (rc.slope * dir < 1) and railCast(vec2.add(rc.tilePos, {-bias, -1}), 1) or rc -- if holding down, take downwards rail path
-    end
-    rc = railCast({x, rc.tilePos[2]})
-    self.lastTile = rc.tilePos
+      self.lastDiffTile = self.lastTile
+      rc = railCast(vec2.add(rc.tilePos, {dir * 1.1, dir * rc.slope * -1}), 0, sb)
+      if not rc then return movement.enterState("ground", true, true) end -- we've run out of rail
+    end self.lastTile = rc.tilePos
+    
     tech.setParentState("Duck")
     mcontroller.setYVelocity(0)
-    mcontroller.setYPosition(rc.point[2] + 2.4 + (1/16)*self.yOffset)
-    mcontroller.addMomentum({rc.slope * dt * (input.key.down and 100 or 80), 0})
-    mcontroller.addMomentum({input.dir[1] * dt * (rc.slope == 0 and 30 or 15), 0})
-    if rc.slope == 0 and input.dir[1] == 0 and math.abs(mcontroller.xVelocity()) <= 2.5 then
+    
+    local relX = x - rc.tilePos[1]
+    local jdir = util.toDirection(self.lastTile[1] - self.lastDiffTile[1])
+    -- if still between tiles, go back where we came from
+    local slope = relX*jdir >= 0 and rc.slope or railCast(vec2.add(self.lastDiffTile, {jdir*0.1,0}), 0, sb).slope
+    local neutral = relX*jdir >= 0 and slope ~= 0 and rc.slope == railCast(vec2.add(rc.tilePos, {-bias, 0}), 0, self.lastDiffTile[2] - self.lastTile[2]).slope * -1
+    
+    local y = math.ceil(rc.tilePos[2]) - relX * slope
+    mcontroller.setYPosition(y + 2.4 + 0*(1/16)*self.yOffset)
+    if neutral then slope = slope * (math.abs(relX)*2) end
+    mcontroller.addMomentum({slope * dt * (input.key.down and 100 or 80), 0})
+    mcontroller.addMomentum({input.dir[1] * dt * (slope == 0 and 30 or 15), 0})
+    if (slope == 0 or neutral) and input.dir[1] == 0 and math.abs(mcontroller.xVelocity()) <= 2.5 then
+      slope = 0 -- allow full stall at the bottom of a 90 degree corner
       mcontroller.setXVelocity(0) -- help stop on flat rails
       if not input.key.down then tech.setParentState("Stand") end -- and allow standing up if stationary
     end
-    rotateTowards(self, math.pi * rc.slope * -0.25, dt)
-    self.lastSlope = rc.slope
+    self.lastSlope = slope
     
     local speed = math.abs(mcontroller.xVelocity())
+    if speed > -10 then self.targetRot = math.pi * slope * -0.25 end
+    rotateTowards(self, self.targetRot, dt)
     speed = math.min(1, speed / 25)
     self.sfx:setVolume(speed * 0.5)
     self.sfx:setPitch(1)

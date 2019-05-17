@@ -98,11 +98,11 @@ function movement.states.ground:update(dt)
   end
   
   -- check to initiate rail grind
-  if input.key.sprint and input.key.down and mcontroller.yVelocity() <= 0 then
+  if not mcontroller.canJump() and input.key.sprint and input.key.down and mcontroller.yVelocity() <= 0 then
     local rc = railCast(vec2.add(mcontroller.position(), {0, -1.51}), 1)
     --rc = rc or railCast(vec2.add(mcontroller.position(), {mcontroller.xVelocity() * dt, -2.51}), 0)
     if rc then
-      mcontroller.setYPosition(2.5 + rc.point[2]) -- snap to rail
+      mcontroller.setPosition(vec2.add(rc.point, {0, 2.5})) -- snap to rail
       return movement.enterState("rail") -- and start grinding
     end
   end
@@ -229,7 +229,7 @@ do
     mcontroller.clearControls()
     mcontroller.controlDown() -- always slip through crossing platforms
     mcontroller.controlParameters {
-      bounceFactor = 0.5, -- bounce off le walls
+      bounceFactor = 0.75, -- bounce off le walls
     }
     
     if not input.key.sprint then return movement.enterState("ground", true, true) end
@@ -250,6 +250,10 @@ do
       mcontroller.setYPosition(rc.point[2] + 2.5 + 0*self.yOffset)
       mcontroller.addMomentum({rc.slope * dt * (input.key.down and 100 or 80), 0})
       mcontroller.addMomentum({input.dir[1] * dt * (rc.slope == 0 and 30 or 15), 0})
+      if rc.slope == 0 and input.dir[1] == 0 and math.abs(mcontroller.xVelocity()) <= 2.5 then
+        mcontroller.setXVelocity(0) -- help stop on flat rails
+        if not input.key.down then tech.setParentState("Stand") end -- and allow standing up if stationary
+      end
       local rslope = rc.slope
       local rc2 = railCast(vec2.add(mcontroller.position(), {-self.xOffset * 2, -2.0}), 3)
       if rc2 and rc2.slope == 0 then rslope = 0 end

@@ -99,17 +99,13 @@ end
 
 local trees = { }
 function init()
-  widget.setItemSlotItem("skillslot1", {name="aetheri:skill.dig", count=1})
-  widget.setItemSlotItem("skillslot2", {name="perfectlygenericitem", count=1})
-  widget.setItemSlotItem("skillslot3", {name="perfectlygenericitem", count=1})
-  widget.setItemSlotItem("skillslot4", {name="perfectlygenericitem", count=1})
-  
-  canvas = widget.bindCanvas("viewCanvas")
-  
+  upkeepOnly = not not config.getParameter("upkeepOnly")
+  -- take care of data work first
   do -- load in skill data
     local cfg = root.assetJson("/aetheri/species/skilltree.config")
     -- global stuffs
     compatId = cfg.compatId
+    revId = cfg.revId
     statNames = cfg.statNames
     baseStats = cfg.baseStats
     baseNodeCost = cfg.baseNodeCost
@@ -170,6 +166,14 @@ function init()
   
   loadPlayerData()
   
+  if upkeepOnly then return pane.dismiss() end
+  
+  widget.setItemSlotItem("skillslot1", {name="aetheri:skill.dig", count=1})
+  widget.setItemSlotItem("skillslot2", {name="perfectlygenericitem", count=1})
+  widget.setItemSlotItem("skillslot3", {name="perfectlygenericitem", count=1})
+  widget.setItemSlotItem("skillslot4", {name="perfectlygenericitem", count=1})
+  
+  canvas = widget.bindCanvas("viewCanvas")
   view = nodeView.new(trees.passive)
   redrawCanvas()
 end
@@ -212,6 +216,7 @@ function loadPlayerData()
     reset = true
     --status.setStatusProperty("aetheri:skillTreeData", playerData) -- and save back
   end
+  playerData.revId = revId
   playerData.spentAP = playerData.spentAP or 0
   
   for _, t in pairs(trees) do

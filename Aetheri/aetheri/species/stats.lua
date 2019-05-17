@@ -5,15 +5,20 @@ stats = { stat = { }, flags = { } }
 local equipStatsUpdated
 function stats.forceEquipUpdate() equipStatsUpdated = true end
 function stats.refresh()
+  local dataChanged = false
   stats.stat = { }
   local cstats
   
   -- load in calculated stats if still valid, or base stats if not
   local skdata = status.statusProperty("aetheri:skillTreeData", nil)
-  if skdata and skdata.compatId ~= root.assetJson("/aetheri/species/skilltree.config:compatId") then -- if tree changed then reset and refund
+  if skdata and skdata.compatId ~= root.assetJson("/aetheri/species/skilltree.config:compatId") then
+    -- if tree changed in an incompatible way then reset and refund
     --status.setStatusProperty("aetheri:AP", status.statusProperty("aetheri:AP", 0) + (skdata.spentAP or 0))
+    dataChanged = true
     skdata = nil
   end
+  -- if the tree changed *revision* (stats rebalanced) then just update values
+  if skdata and skdata.revId ~= root.assetJson("/aetheri/species/skilltree.config:revId") then dataChanged = true end
   if skdata and skdata.calculatedStats then cstats = skdata.calculatedStats
   else cstats = { }
   end
@@ -49,6 +54,8 @@ function stats.refresh()
     -- then clear property when we're done
     status.setStatusProperty("aetheri:statusPersist", nil)
   end
+  
+  return not dataChanged
 end
 
 local equipSlots = { "head", "chest", "legs" }
@@ -93,7 +100,13 @@ message.setHandler("aetheri:gainAP", function(msg, isLocal, amt)
 end)
 
 message.setHandler("aetheri:refreshStats", stats.refresh)
-stats.refresh() -- do this at the beginning
+if not stats.refresh() then -- do this at the beginning
+  -- if skill tree was changed, force a recalculation c/o the skill tree script itself
+  playerext.openInterface { config = {
+    scripts = {"/aetheri/interface/skilltree/main.lua"}, upkeepOnly = true,
+    gui = { bg = { type = "background", fileBody = "/assetmissing.png?scalenearest=0;0" } }
+  } }
+end
 
 -- and hook into damage!
 message.setHandler("stardustlib:modifyDamageTaken", function(_, _, damageRequest)
@@ -121,18 +134,6 @@ message.setHandler("stardustlib:modifyDamageTaken", function(_, _, damageRequest
     return damageRequest
   end
 end)
-
-if not playerext.getEquip("beamaxe") then -- first startup stuff: set active skills if no essential items present
-  local ess = { "beamaxe", "wiretool", "painttool", "inspectiontool" }
-  
-  local pd = status.statusProperty("aetheri:skillTreeData", { })
-  pd.selectedSkills = { "dig", "burst", "none", "none" }
-  status.setStatusProperty("aetheri:skillTreeData", pd)
-  
-  for i = 1, 4 do
-    playerext.setEquip(ess[i], { name = "aetheri:skill." .. pd.selectedSkills[i], count = 1 })
-  end
-end
 
 
 

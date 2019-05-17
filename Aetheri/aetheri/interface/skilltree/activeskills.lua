@@ -12,6 +12,7 @@ local essSlots = { "beamaxe", "wiretool", "painttool", "inspectiontool" }
 skillDrawer = { }
 
 function refreshSkillSlots()
+  if upkeepOnly then return nil end -- don't try to set that up if we're only setting up data
   for slot, num in pairs(slotNum) do
     widget.setItemSlotItem(slot, playerext.getEquip(essSlots[num]))
   end

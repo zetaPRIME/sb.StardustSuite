@@ -254,10 +254,7 @@ do
         mcontroller.setXVelocity(0) -- help stop on flat rails
         if not input.key.down then tech.setParentState("Stand") end -- and allow standing up if stationary
       end
-      local rslope = rc.slope
-      local rc2 = railCast(vec2.add(mcontroller.position(), {-self.xOffset * 2, -2.0}), 3)
-      if rc2 and rc2.slope == 0 then rslope = 0 end
-      rotateTowards(self, math.pi * rslope * -0.25, dt)
+      rotateTowards(self, math.pi * rc.slope * -0.25, dt)
       self.lastSlope = rc.slope
     else -- no rail!
       return movement.enterState("ground", true, true)

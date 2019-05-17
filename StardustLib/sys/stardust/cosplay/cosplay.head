@@ -14,6 +14,7 @@
   "statusEffects" : [ ],
   
   "hideBody" : true,
+  "builder" : "/sys/stardust/cosplay/build.lua",
   "maleFrames" : "blank.png",
   "femaleFrames" : "blank.png",
   "mask" : "nullmask.png"

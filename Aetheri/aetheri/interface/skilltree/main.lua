@@ -163,7 +163,7 @@ function init()
           end
           t.nodes[path] = node
           setNodeVisuals(node)
-          if n.connectsTo then -- premake connections
+          if n.connectsTo and not upkeepOnly then -- premake connections (only when actually displaying)
             for _, cn in pairs(n.connectsTo) do
               local p1, p2 = path, resolvePath(cn, pfx)
               if p1 > p2 then p1, p2 = p2, p1 end -- sort

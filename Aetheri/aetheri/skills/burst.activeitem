@@ -3,7 +3,7 @@
   "maxStack" : 1,
   "rarity" : "Essential",
   "shortdescription" : "Kinetic Burst",
-  "description" : "Blast through foes with a short-range burst of intense kinetic force.",
+  "description" : "Blast through foes with a ^cyan;short-range burst^reset; of intense kinetic force.",
   "category" : "aetheri:skill",
   "tooltipKind" : "mm",
   "twoHanded" : true,

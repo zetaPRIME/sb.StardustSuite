@@ -3,7 +3,7 @@
   "maxStack" : 1,
   "rarity" : "Essential",
   "shortdescription" : "Excavate",
-  "description" : "Tear through most solid materials in a small, precise area.",
+  "description" : "^cyan;Tear through most materials^reset; in a small, precise area.",
   "category" : "aetheri:skill",
   "tooltipKind" : "mm",
   "twoHanded" : true,

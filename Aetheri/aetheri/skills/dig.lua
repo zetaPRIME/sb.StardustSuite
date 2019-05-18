@@ -49,7 +49,7 @@ end
 
 --
 
-local range, strength, maxSize, gatherLiquids, autoCollectItems
+local range, strength, maxSize, upgrades
 local activeTime = 0.55
 
 function init()
@@ -61,8 +61,7 @@ function init()
   strength = config.getParameter("baseStrength", 5)
   maxSize = config.getParameter("baseSize", 3)
   
-  gatherLiquids = true
-  autoCollectItems = true
+  upgrades = config.getParameter("skillUpgrades", { })
   
   animator.setSoundVolume("digging", 0.0, 0)
 end
@@ -141,9 +140,9 @@ function update(dt, fireMode, shiftHeld)
     if world.damageTiles(tiles, layer[fireMode], sp, "blockish", strength * status.stat("aetheri:miningSpeed") * dt * (1 + maxSize - selSize)^2) -- does as much total damage to one tile as it would to the full square
     then active = activeTime end
     
-    if autoCollectItems then collectItems(centerPos, selSize * 1.5) end
+    if upgrades.autoCollectItems then collectItems(centerPos, selSize * 1.5) end
     
-    if gatherLiquids and fireMode ~= "alt" then
+    if upgrades.gatherLiquids and fireMode ~= "alt" then
       for _, p in pairs(tiles) do
         if collectLiquid(p) then active = activeTime end
       end processLiquidAccumulation()

@@ -1,6 +1,8 @@
 -- Aethyrium - skill tree(s) for the Aetheri
 
 --[[ TODO:
+  keep track of, and refund on reset, material costs
+  
   decorations
   raw status nodes
   ship nodes (unlock FTL travel from skill tree?)
@@ -97,7 +99,7 @@ local function setNodeVisuals(node)
   node.toolTip = table.concat(tt)
   if node.itemCost then -- assemble item requirement tooltips
     tt = { }
-    table.insert(tt, "^white;Items required^reset;:\n")
+    table.insert(tt, "^white;Material cost^reset;:\n")
     for _, d in pairs(node.itemCost) do
       table.insert(tt, string.format("- ^white;%d ^reset;%s^reset;\n", d.count, itemutil.property(d, "shortdescription")))
     end
@@ -236,6 +238,7 @@ function loadPlayerData()
   
   recalculateStats()
   committedSkillsUnlocked = playerData.skillsUnlocked
+  committedSkillUpgrades = playerData.skillUpgrades
   
   -- grab visuals
   appearance = status.statusProperty("aetheri:appearance", { })
@@ -256,6 +259,7 @@ function recalculateStats()
   end
   
   playerData.skillsUnlocked = { }
+  playerData.skillUpgrades = { }
   for _, skill in pairs(startingSkills) do playerData.skillsUnlocked[skill] = true end
   
   playerData.numNodesTaken = { }
@@ -274,6 +278,9 @@ function recalculateStats()
           elseif mode == "more" and stats[stat] then stats[stat][3] = stats[stat][3] * (1.0 + amt)
           elseif mode == "flag" then flags[stat] = true
           elseif mode == "unlockSkill" and stat then playerData.skillsUnlocked[stat] = true
+          elseif mode == "skillUpgrade" and stat and amt then
+            playerData.skillUpgrades[stat] = playerData.skillUpgrades[stat] or { }
+            playerData.skillUpgrades[stat][amt] = (playerData.skillUpgrades[stat][amt] or 0) + (g[4] or 1)
           end --
         end
       end
@@ -298,6 +305,7 @@ function changesToCommit() return not not playerTmpData.changed end
 function commitPlayerData()
   recalculateStats()
   committedSkillsUnlocked = playerData.skillsUnlocked
+  committedSkillUpgrades = playerData.skillUpgrades
   playerData.spentAP = playerData.spentAP + playerTmpData.apToSpend
   status.setStatusProperty("aetheri:skillTreeData", playerData)
   status.setStatusProperty("aetheri:AP", status.statusProperty("aetheri:AP", 0) - playerTmpData.apToSpend)

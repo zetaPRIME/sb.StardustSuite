@@ -25,7 +25,7 @@ function commitSkillSlots()
   status.setStatusProperty("aetheri:skillTreeData", pd)
   for slot, num in pairs(slotNum) do
     local skill = playerData.selectedSkills[num]
-    playerext.setEquip(essSlots[num], { name = "aetheri:skill." .. skill, count = 1 })
+    playerext.setEquip(essSlots[num], { name = "aetheri:skill." .. skill, count = 1, parameters = { skillUpgrades = committedSkillUpgrades[skill] } })
   end
   refreshSkillSlots()
 end

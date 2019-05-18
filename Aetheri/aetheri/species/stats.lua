@@ -11,9 +11,8 @@ function stats.refresh()
   
   -- load in calculated stats if still valid, or base stats if not
   local skdata = status.statusProperty("aetheri:skillTreeData", nil)
-  if skdata and skdata.compatId ~= root.assetJson("/aetheri/species/skilltree.config:compatId") then
-    -- if tree changed in an incompatible way then reset and refund
-    --status.setStatusProperty("aetheri:AP", status.statusProperty("aetheri:AP", 0) + (skdata.spentAP or 0))
+  if not skdata or skdata.compatId ~= root.assetJson("/aetheri/species/skilltree.config:compatId") then
+    -- if no data or tree changed in an incompatible way then trigger a reset
     dataChanged = true
     skdata = nil
   end

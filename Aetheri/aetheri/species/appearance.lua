@@ -28,7 +28,16 @@ local updateGlow
 function appearance.updateColors()
   appearance.settings = status.statusProperty("aetheri:appearance", { })
   local a = appearance.settings
-  a.coreHsl = a.coreHsl or { 0.77, 1, 1.0, 0.64 }
+  if not a.coreHsl then
+    local name = world.entityName(entity.id())
+    a.coreHsl = { -- start with a randomized core color based on your name!
+      sb.staticRandomDoubleRange(0.0, 1.0, name, "core hue"), -- random hue
+      1.0 - sb.staticRandomDoubleRange(0.0, 1.0, name, "core saturation")^2, -- biased toward saturated
+      math.min(1, sb.staticRandomI32Range(0, 4, name, "bright or dark?")), -- 1 in 5 chance to start dark
+      sb.staticRandomDoubleRange(0.3, 0.7, name, "border brightness")
+    }
+    --playerext.message("generated values: " .. util.tableToString(a.coreHsl))
+  end
   a.palette = generatePalette(a.coreHsl)
   a.glowColor = color.fromHsl {
     a.coreHsl[1],

@@ -16,6 +16,8 @@
 
 sb.jsonQuery exists, adjust itemutil.property?
 
+turn the liquid accumulator (phase drill, excavate) into a prefab
+
 - lib frontend for playerextender, to make things a bit more convenient (also polymorphism in case playerext needs to change)
 see if activeitems can store data into themselves; if so, give phase drill its own battery?
 alternative, tip-glow-only effect for phase drill when cursor is too close to player

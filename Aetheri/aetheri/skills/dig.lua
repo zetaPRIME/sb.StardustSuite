@@ -21,9 +21,30 @@ local function lightBlockedAt(pos)
   return not mat.config.renderParameters.lightTransparent
 end
 
+local liquidAccumulator = {}
+local function collectLiquid(pos)
+  local ll = world.destroyLiquid(pos)
+  if not ll then return false end
+  -- add to accumulator, since level is floating-point
+  liquidAccumulator[ll[1]] = (liquidAccumulator[ll[1]] or 0) + ll[2]
+  return true
+end
+
+local function processLiquidAccumulation()
+  for id, lv in pairs(liquidAccumulator) do
+    local ct = math.floor(lv)
+    if ct >= 1 then -- give integer portion of accumulated liquid as its item
+      liquidAccumulator[id] = lv - ct
+      local cfg = root.liquidConfig(id).config
+      if cfg.itemDrop then player.giveItem({ name = cfg.itemDrop, count = ct, parameters = { } }) end
+    end
+  end
+end
+
 --
 
-local range, strength, maxSize
+local range, strength, maxSize, gatherLiquids
+local activeTime = 0.55
 
 function init()
   activeItem.setHoldingItem(true)
@@ -33,6 +54,8 @@ function init()
   range = root.assetJson("/player.config:initialBeamGunRadius") + status.statusProperty("bonusBeamGunRadius", 0)
   strength = config.getParameter("baseStrength", 5)
   maxSize = config.getParameter("baseSize", 3)
+  
+  gatherLiquids = true
   
   animator.setSoundVolume("digging", 0.0, 0)
 end
@@ -44,7 +67,7 @@ end
 local rot = 0.0
 
 local blockFire = true
-local active, wasActive
+local active = 0 local wasActive
 local layer = { primary = "foreground", alt = "background" }
 local tileMark = "/aetheri/skills/tileMark.png?multiply=ffffff3f"
 local spark = "/aetheri/skills/spark.png?multiply=ffffffbf"
@@ -70,11 +93,11 @@ function update(dt, fireMode, shiftHeld)
     animator.setSoundPosition("start", rv)
   end
   
-  if active ~= wasActive then -- sound
-    animator.setSoundVolume("digging", active and 1.5 or 0.0, 0.1)
-    if active then animator.playSound("start") animator.playSound("start2") animator.stopAllSounds("digging") animator.playSound("digging", -1) end
+  if (active > 0) ~= wasActive then -- sound
+    animator.setSoundVolume("digging", active > 0 and 1.5 or 0.0, 0.1)
+    if active > 0 then animator.playSound("start") animator.playSound("start2") animator.stopAllSounds("digging") animator.playSound("digging", -1) end
   end
-  wasActive = active active = false
+  wasActive = active > 0 active = active - dt
   
   if vec2.mag(vec2.sub(centerPos, mcontroller.position())) > range + 0.5 then return nil end
   
@@ -108,7 +131,13 @@ function update(dt, fireMode, shiftHeld)
   if fireMode == "none" then fireMode = nil end
   if fireMode and not blockFire then
     local sp = vec2.add(aimPos, vec2.mul(vec2.sub(aimPos, mcontroller.position()), 50)) -- particles *away* from user
-    active = world.damageTiles(tiles, layer[fireMode], sp, "blockish", strength * status.stat("aetheri:miningSpeed") * dt * (1 + maxSize - selSize)^2) -- does as much total damage to one tile as it would to the full square
+    if world.damageTiles(tiles, layer[fireMode], sp, "blockish", strength * status.stat("aetheri:miningSpeed") * dt * (1 + maxSize - selSize)^2) -- does as much total damage to one tile as it would to the full square
+    then active = activeTime end
+    if gatherLiquids and fireMode ~= "alt" then
+      for _, p in pairs(tiles) do
+        if collectLiquid(p) then active = activeTime end
+      end processLiquidAccumulation()
+    end
   elseif not fireMode then
     blockFire = false
   end

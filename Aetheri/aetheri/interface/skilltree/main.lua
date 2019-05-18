@@ -66,7 +66,7 @@ end
 local function populateSkillData(node)
   local itm = { name = "aetheri:skill." .. node.skill, count = 1 }
   local icon = itemutil.property(itm, "inventoryIcon")
-  node.icon = itemutil.relativePath(itm, icon[#icon].image)
+  node.icon = itemutil.relativePath(itm, type(icon) == "string" and icon or icon[#icon].image)
   node.name = itemutil.property(itm, "shortdescription")
   node.grants = node.grants or { }
   table.insert(node.grants, 1, {"description", itemutil.property(itm, "description")})

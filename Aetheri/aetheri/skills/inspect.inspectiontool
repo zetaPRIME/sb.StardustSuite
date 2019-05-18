@@ -1,0 +1,75 @@
+{ // -*- grammar-ext: json -*-
+  "itemName" : "aetheri:skill.inspect",
+  "maxStack" : 1,
+  "rarity" : "Essential",
+  "shortdescription" : "Examine",
+  "description" : "^cyan;Inspect objects^reset; in detail, memorizing their properties for later recreation.",
+  "category" : "aetheri:skill",
+  "tooltipKind" : "mm",
+  "twoHanded" : false,
+  
+  "inventoryIcon" : [
+    { "image" : "skillSlotBG.png" },
+    { "image" : "/items/tools/inspectiontool/inspectionmodeicon.png" }
+  ],
+  
+  "image" : "/items/tools/inspectiontool/inspectionmode.png", // image in hand
+  
+  // unlike the flashlight, these are measured in tiles
+  "handPosition" : [-0.4, -0.4],
+  "lightPosition" : [0.75, 0],
+
+  "lightColor" : [255, 255, 255],
+  "beamLevel" : 3,
+  "beamAmbience" : 0.2,
+
+  "showHighlights" : true,
+  "allowScanning" : true,
+
+  // tiles within the first angle are fully highlighted, tiles outside the second angle are not highlighted,
+  // and tiles between the two have partial highlight value
+  "inspectionAngles" : [0.3, 0.7],
+
+  // tiles within the first range are fully highlighted, tiles outside the second range are not highlighted,
+  // and tiles between the two have partial highlight value
+  "inspectionRanges" : [20, 30],
+
+  // tiles within this radius of the tool's source position will have partial highlight value based on proximity
+  "ambientInspectionRadius" : 0,
+
+  // if a large entity has at least this many spaces' worth of highlight, it will be fully highlighted
+  "fullInspectionSpaces" : 10,
+
+  // an entity or tile must have at least this overall highlight level to be inspectable
+  "minimumInspectionLevel" : 0.2,
+
+  // might be out of range, or might be out of line of sight
+  "outOfRangeText" : {
+    "aetheri" : [
+      "Wow, that's interesting! ...by which I mean I don't see anything.",
+      "It's a bird! It's a plane! It's too far away!",
+      "As powerful as I've become, I still can't see through walls.",
+      "I'm a little teapot, short and stout\nThis is my handle, this is me telling you I can't see anything there.",
+      "I can see my house from here! Wait, no, no I can't.",
+      "From here, I can almost see the slithy toves gyre and gimble in the wabe.",
+      "Why am I staring at a wall?",
+      "No matter how hard I try\nYou keep pushing me aside, and I can't break through\nThere's no looking at you",
+      "One thing\nI don't know why\nIt doesn't really matter how hard you try\nKeep that in mind\nI designed this rhyme\nTo remind myself how I can't see anything."
+    ]
+  },
+
+  // in range / line of sight, but nothing inspectable at the cursor position
+  "nothingThereText" : {
+    "aetheri" : [
+      "Pure, delicious nothing.",
+      "As I stare into the void, I ponder to myself: why am I wasting time looking at literally nothing?",
+      "Look at this hibiscus! It's a hibiscus.",
+      "Look at this photograph\nEvery time I do it makes me wonder why I'm staring into the abyss.",
+      "^red;R^orange;a^yellow;i^green;n^cyan;b^blue;o^violet;w^magenta;s^reset;!\n...\n...wait, no. It's just air.",
+      "Look, ^red;Air Zonk^reset;!\n\nWait, no, just air.",
+      "^red;LOOK BROTHERS!^reset; NOTHING! AH HAH HAH HAH HA!",
+      "Where did you learn to aim?",
+      "If I wanted to gaze into the stars, I'd just look at the ^violet;Aethyrium^reset;."
+    ]
+  }
+}

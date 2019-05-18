@@ -1,7 +1,7 @@
 -- cosplay system armor builder
 
 function build(directory, config, parameters, level, seed)
-  if parameters.frames then -- armor ignores parameters; need to modify effective config
+  if parameters.frames or parameters.hideBody ~= nil then -- armor ignores parameters; need to modify effective config
     require "/scripts/util.lua"
     config = util.mergeTable({ }, config) -- copy table, otherwise it'll just get reasserted
     
@@ -16,6 +16,7 @@ function build(directory, config, parameters, level, seed)
       frames.backSleeve = frames.backSleeve or blank
     end
     
+    config.hideBody = parameters.hideBody
     config.maleFrames = frames
     config.femaleFrames = frames
   end

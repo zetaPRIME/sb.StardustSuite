@@ -64,6 +64,15 @@ local function tableCount(t)
   return c
 end
 
+local function populateSkillData(node)
+  local itm = { name = "aetheri:skill." .. node.skill, count = 1 }
+  local icon = itemutil.property(itm, "inventoryIcon")
+  node.icon = itemutil.relativePath(itm, icon[#icon].image)
+  node.name = itemutil.property(itm, "shortdescription")
+  node.grants = node.grants or { }
+  table.insert(node.grants, 1, {"description", itemutil.property(itm, "description")})
+end
+
 local function setNodeVisuals(node)
   if upkeepOnly then return nil end -- skip if it won't be shown anyway
   
@@ -80,6 +89,8 @@ local function setNodeVisuals(node)
   end
   node.icon = util.absolutePath("/aetheri/interface/skilltree/icons/", node.icon)
   node.unlockedIcon = node.unlockedIcon and util.absolutePath("/aetheri/interface/skilltree/icons/", node.unlockedIcon)
+  
+  if node.skill then populateSkillData(node) end
   
   -- tool tip
   local tt = { }
@@ -142,10 +153,14 @@ function init()
             tree = t, path = path, type = type,
             position = pos, connections = { },
             name = n.name, icon = n.icon, unlockedIcon = n.unlockedIcon,
-            grants = n.grants,
+            grants = n.grants, skill = n.skill,
             fixedCost = n.fixedCost, costMult = n.costMult, itemCost = n.itemCost,
             condition = n.condition,
           }
+          if node.skill then -- automatic skill node shorthand
+            node.grants = node.grants or { }
+            table.insert(node.grants, { "unlockSkill", node.skill })
+          end
           t.nodes[path] = node
           setNodeVisuals(node)
           if n.connectsTo then -- premake connections
@@ -497,6 +512,8 @@ function nodeView:redraw()
   -- draw guiding line
   --canvas:drawLine(canvas:mousePosition(), self.scroll, {255, 255, 255, 63}, 1)
   
+  local toolTipWidth = 160
+  
   local lco = {0, 0}--{-.5, -.5}
   local lineColors = {
     {127, 63, 63, 63},
@@ -532,9 +549,9 @@ function nodeView:redraw()
     end
     local btt = tt:gsub("(%b^;)", "") -- strip codes for border
     for _, off in pairs(border) do
-      canvas:drawText(btt, { position = vec2.add(ttPos, off), horizontalAnchor = "left", verticalAnchor = "top" }, 8, {0, 0, 0, 222})
+      canvas:drawText(btt, { position = vec2.add(ttPos, off), horizontalAnchor = "left", verticalAnchor = "top", wrapWidth = toolTipWidth }, 8, {0, 0, 0, 222})
     end
-    canvas:drawText(tt, { position = ttPos, horizontalAnchor = "left", verticalAnchor = "top" }, 8, {191, 191, 191})
+    canvas:drawText(tt, { position = ttPos, horizontalAnchor = "left", verticalAnchor = "top", wrapWidth = toolTipWidth }, 8, {191, 191, 191})
   end
   
   canvas:drawText(

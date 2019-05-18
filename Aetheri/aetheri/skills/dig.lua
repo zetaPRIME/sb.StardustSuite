@@ -2,11 +2,6 @@ require "/scripts/util.lua"
 require "/scripts/vec2.lua"
 require "/lib/stardust/playerext.lua"
 
---[[ TODO:
-  liquids
-  autocollect perk
-]]
-
 local function squareVec(angle, size)
   local fa = angle / (math.pi * 2)
   local sa = math.floor(fa*4) * math.pi * 0.5

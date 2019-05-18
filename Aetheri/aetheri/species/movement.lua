@@ -100,7 +100,8 @@ function movement.states.ground:update(dt)
   
   -- check to initiate rail grind
   if not mcontroller.canJump() and input.key.sprint and input.key.down and mcontroller.yVelocity() <= 0 then
-    local rc = railCast(vec2.add(mcontroller.position(), {0, -1.51}), math.floor(-mcontroller.yVelocity() * dt))
+    local rc = railCast(vec2.add(mcontroller.position(), {0, -2.5}), math.max(0, math.floor(-mcontroller.yVelocity() * dt)))
+      or railCast(vec2.add(mcontroller.position(), {mcontroller.xVelocity() * dt, -2.5}), math.max(0, math.floor(-mcontroller.yVelocity() * dt)))
     --rc = rc or railCast(vec2.add(mcontroller.position(), {mcontroller.xVelocity() * dt, -2.51}), 0)
     if rc then
       mcontroller.setPosition(vec2.add(rc.point, {0, 2.5})) -- snap to rail
@@ -214,7 +215,7 @@ do
     self.targetRot = 0
     
     -- check for rail hit
-    local rc = railCast(vec2.add(mcontroller.position(), {0, -2.51}), 2)
+    local rc = railCast(vec2.add(mcontroller.position(), {0, -2.51}), 5)
     if rc then
       mcontroller.setVelocity(vec2.rotate(mcontroller.velocity(), math.pi * rc.slope * 0.25))
       --rotateTowards(self, math.pi * rc.slope * -0.25, 10000)

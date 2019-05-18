@@ -33,7 +33,7 @@ function stats.refresh()
   
   stats.flag = skdata and skdata.flags or { }
   
-  tech.setStats { -- apply relevant stats
+  local s = { -- apply relevant stats
     { stat = "maxHealth", amount = -100 + stats.stat.health },
     { stat = "healthRegen", amount = stats.stat.healthRegen },
     { stat = "maxEnergy", amount = -100 + stats.stat.energy },
@@ -45,7 +45,13 @@ function stats.refresh()
     { stat = "aetheri:skillPowerMultiplier", amount = stats.stat.skillDamageMult },
     
     { stat = "aetheri:miningSpeed", amount = stats.stat.miningSpeed },
-  } --equipStatsUpdated = true
+  } util.appendLists(s, skdata.rawStatus or { })
+  
+  tech.setStats(s)
+  
+  status.setPersistentEffects("aetheri:treeEffects", skdata.effects or { })
+  
+  status.setStatusProperty("bonusBeamGunRadius", stats.stat.tileReach - root.assetJson("/player.config:initialBeamGunRadius"))
   
   local sp = status.statusProperty("aetheri:statusPersist", nil)
   if sp then -- restore resource values after teleport or reload

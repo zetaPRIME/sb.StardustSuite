@@ -1,10 +1,10 @@
 -- Aethyrium - skill tree(s) for the Aetheri
 
 --[[ TODO:
-  keep track of, and refund on reset, material costs
+  ! keep track of, and refund on reset, material costs
   
   decorations
-  raw status nodes
+  ! automatic icon from stat grants
   ship nodes (unlock FTL travel from skill tree?)
   indicators for "more in this direction"; scroll bounds?
   eventually sort things into BSP to make drawing and cursor checking less silly
@@ -277,6 +277,8 @@ function recalculateStats()
   playerData.skillUpgrades = { }
   for _, skill in pairs(startingSkills) do playerData.skillsUnlocked[skill] = true end
   
+  playerData.rawStatus = { }
+  playerData.effects = { }
   playerData.numNodesTaken = { }
   for tn, lst in pairs(playerData.nodesUnlocked) do
     local count = 0
@@ -291,6 +293,8 @@ function recalculateStats()
           if mode == "flat" and stats[stat] then stats[stat][1] = stats[stat][1] + amt
           elseif mode == "increased" and stats[stat] then stats[stat][2] = stats[stat][2] + amt
           elseif mode == "more" and stats[stat] then stats[stat][3] = stats[stat][3] * (1.0 + amt)
+          elseif mode == "rawStatus" and stat then table.insert(playerData.rawStatus, stat)
+          elseif mode == "effect" and stat then table.insert(playerData.effects, stat)
           elseif mode == "flag" then flags[stat] = true
           elseif mode == "unlockSkill" and stat then playerData.skillsUnlocked[stat] = true
           elseif mode == "skillUpgrade" and stat and amt then

@@ -41,9 +41,15 @@ local function processLiquidAccumulation()
   end
 end
 
+function collectItems(pt, radius)
+  if world.itemDropQuery(pt, radius)[1] then -- only spawn stagehand if items are present in range, lest allocation lag occur for no reason
+    world.spawnStagehand(pt, "stardustlib:itemcollector", { radius = radius, target = activeItem.ownerEntityId() })
+  end
+end
+
 --
 
-local range, strength, maxSize, gatherLiquids
+local range, strength, maxSize, gatherLiquids, autoCollectItems
 local activeTime = 0.55
 
 function init()
@@ -56,6 +62,7 @@ function init()
   maxSize = config.getParameter("baseSize", 3)
   
   gatherLiquids = true
+  autoCollectItems = true
   
   animator.setSoundVolume("digging", 0.0, 0)
 end
@@ -133,6 +140,9 @@ function update(dt, fireMode, shiftHeld)
     local sp = vec2.add(aimPos, vec2.mul(vec2.sub(aimPos, mcontroller.position()), 50)) -- particles *away* from user
     if world.damageTiles(tiles, layer[fireMode], sp, "blockish", strength * status.stat("aetheri:miningSpeed") * dt * (1 + maxSize - selSize)^2) -- does as much total damage to one tile as it would to the full square
     then active = activeTime end
+    
+    if autoCollectItems then collectItems(centerPos, selSize * 1.5) end
+    
     if gatherLiquids and fireMode ~= "alt" then
       for _, p in pairs(tiles) do
         if collectLiquid(p) then active = activeTime end

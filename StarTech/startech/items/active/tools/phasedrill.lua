@@ -114,9 +114,10 @@ end
 liquidAccumulator = {}
 function collectLiquid(pos)
   local ll = world.destroyLiquid(pos)
-  if not ll then return nil end
+  if not ll then return false end
   -- add to accumulator, since level is floating-point
   liquidAccumulator[ll[1]] = (liquidAccumulator[ll[1]] or 0) + ll[2]
+  return true
 end
 
 function processLiquidAccumulation()
@@ -124,7 +125,8 @@ function processLiquidAccumulation()
     local ct = math.floor(lv)
     if ct >= 1 then -- give integer portion of accumulated liquid as its item
       liquidAccumulator[id] = lv - ct
-      player.giveItem({ name = root.liquidConfig(id).config.itemDrop, count = ct, parameters = { } })
+      local cfg = root.liquidConfig(id).config
+      if cfg.itemDrop then player.giveItem({ name = cfg.itemDrop, count = ct, parameters = { } }) end
     end
   end
 end

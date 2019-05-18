@@ -4,7 +4,6 @@
   ! keep track of, and refund on reset, material costs
   
   decorations
-  ! automatic icon from stat grants
   ship nodes (unlock FTL travel from skill tree?)
   indicators for "more in this direction"; scroll bounds?
   eventually sort things into BSP to make drawing and cursor checking less silly
@@ -73,6 +72,7 @@ local function populateSkillData(node)
   table.insert(node.grants, 1, {"description", itemutil.property(itm, "description")})
 end
 
+local modeHasIcon = { flat = true, increased = true, more = true }
 local function setNodeVisuals(node)
   if upkeepOnly then return nil end -- skip if it won't be shown anyway
   
@@ -83,8 +83,10 @@ local function setNodeVisuals(node)
     elseif node.type == "gate" then
       node.icon = "gate-locked.png"
       node.unlockedIcon = "gate-unlocked.png"
-    else
-      node.icon = "misc1.png"
+    else -- automatically populate icon from the stats it grants
+      local stat
+      for _, g in pairs(node.grants or { }) do if modeHasIcon[g[1]] then stat = g[2] break end end
+      node.icon = statIcons[stat] or "misc1.png"
     end
   end
   node.icon = util.absolutePath("/aetheri/interface/skilltree/icons/", node.icon)
@@ -129,6 +131,7 @@ function init()
     compatId = cfg.compatId
     revId = cfg.revId
     statNames = cfg.statNames
+    statIcons = cfg.statIcons
     baseStats = cfg.baseStats
     baseNodeCost = cfg.baseNodeCost
     

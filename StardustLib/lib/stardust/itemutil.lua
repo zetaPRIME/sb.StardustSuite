@@ -1,4 +1,6 @@
 -- StardustLib.ItemUtil
+
+require "/scripts/util.lua"
 require "/lib/stardust/interop.lua"
 
 do
@@ -96,6 +98,11 @@ do
     if itm.parameters then res = dive(itm.parameters, path) end
     if res == nil then res = dive(itemutil.getCachedConfig(itm).config, path) end
     return res
+  end
+  
+  -- resolve path relative to item
+  function itemutil.relativePath(itm, file)
+    return util.absolutePath(itemutil.getCachedConfig(itm).directory, file)
   end
   
   -- normalize item descriptor

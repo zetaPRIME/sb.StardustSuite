@@ -17,6 +17,7 @@
 require "/scripts/util.lua"
 require "/scripts/vec2.lua"
 require "/scripts/rect.lua"
+require "/scripts/interp.lua"
 require "/lib/stardust/itemutil.lua"
 require "/lib/stardust/playerext.lua"
 require "/lib/stardust/color.lua"
@@ -31,6 +32,8 @@ sounds = {
   cantUnlock = "/sfx/interface/clickon_error.ogg",
   confirm = "/sfx/objects/essencechest_open3.ogg",
   cancel = "/sfx/interface/nav_insufficient_fuel.ogg",
+  
+  jump = "/sfx/objects/ancientenergy_pickup1.ogg",
   
   socketJewel = "/sfx/melee/sword_parry.ogg", --"/sfx/objects/essencechest_open1.ogg",
   
@@ -93,6 +96,7 @@ local function setNodeVisuals(node)
   node.unlockedIcon = node.unlockedIcon and util.absolutePath("/aetheri/interface/skilltree/icons/", node.unlockedIcon)
   
   if node.skill then populateSkillData(node) end
+  if node.type == "link" then node.fixedCost = 0 end
   
   -- tool tip
   local tt = { }
@@ -156,7 +160,7 @@ function init()
             tree = t, path = path, type = type,
             position = pos, connections = { },
             name = n.name, icon = n.icon, unlockedIcon = n.unlockedIcon,
-            grants = n.grants, skill = n.skill,
+            grants = n.grants, skill = n.skill, target = n.target,
             fixedCost = n.fixedCost, costMult = n.costMult, itemCost = n.itemCost,
             condition = n.condition,
           }
@@ -451,11 +455,30 @@ end
 function nodeView:init(tree)
   self.tree = tree
   self.scroll = vec2.mul(widget.getSize("viewCanvas"), 0.5)
+  self.center = self.scroll
+end
+
+function nodeView:jumpTo(name)
+  local node = self.tree.nodes[name]
+  if not node then return nil end
+  self.jump = { from = self.scroll, to = vec2.sub(canvas:mousePosition(), vec2.mul(node.position, self.nodeSpacing)), time = 1.0 }
 end
 
 function nodeView:update()
   self.lastPos = self.lastPos or {0, 0}
   local pos = canvas:mousePosition()
+  
+  if self.scrolling then self.jump = nil end
+  if self.jump then
+    self.jump.time = self.jump.time - script.updateDt() * 5.0
+    local tween = interp.cos(util.clamp(self.jump.time, 0.0, 1.0), 1.0, 0.0)
+    self.scroll = vec2.add( vec2.mul(self.jump.from, tween), vec2.mul(self.jump.to, 1.0-tween) )
+    self.needsRedraw = true
+    if self.jump.time <= 0 then
+      self.jump = nil
+      self.lastPos = {0, 0} -- force tool tip/hover update
+    end
+  end
   
   if vec2.mag(vec2.sub(pos, self.lastPos)) > 0 then -- if mouse moved...
     --self.needsRedraw = true
@@ -480,12 +503,17 @@ function nodeView:clickEvent(pos, btn, down)
   if btn == 0 then -- left button
     if down then
       if self.hover then -- click on node
-        -- try to unlock node
-        if tryUnlockNode(self.hover) then
-          self.needsRedraw = true
-          pane.playSound(sounds.unlock)
-        elseif not isNodeUnlocked(self.hover) then
-          pane.playSound(sounds.cantUnlock)
+        if self.hover.type == "link" then
+          self:jumpTo(self.hover.target)
+          pane.playSound(sounds.jump)
+        else
+          -- try to unlock node
+          if tryUnlockNode(self.hover) then
+            self.needsRedraw = true
+            pane.playSound(sounds.unlock)
+          elseif not isNodeUnlocked(self.hover) then
+            pane.playSound(sounds.cantUnlock)
+          end
         end
       else self.scrolling = btn end -- or scroll
     elseif self.scrolling == btn then self.scrolling = nil end
@@ -493,6 +521,7 @@ function nodeView:clickEvent(pos, btn, down)
     local c = vec2.mul(widget.getSize("viewCanvas"), 0.5)
     local scaleFactor = 3
     if down then
+      self.jump = nil
       --self.scroll = vec2.mul(vec2.sub(vec2.mul(self.tree.nodes["/origin"].position, self.nodeSpacing), canvas:mousePosition()), -1.0)
       self.scroll = vec2.add(vec2.mul(vec2.sub(self.scroll, pos), 1/scaleFactor), pos)
       self.nodeSpacing = self.nodeSpacing / scaleFactor

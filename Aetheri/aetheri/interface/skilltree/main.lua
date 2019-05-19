@@ -33,7 +33,7 @@ sounds = {
   confirm = "/sfx/objects/essencechest_open3.ogg",
   cancel = "/sfx/interface/nav_insufficient_fuel.ogg",
   
-  jump = "/sfx/objects/ancientenergy_pickup1.ogg",
+  jump = { "/sfx/interface/stationtransponder_stationpulse.ogg", "/sfx/tech/tech_dash.ogg" },
   
   socketJewel = "/sfx/melee/sword_parry.ogg", --"/sfx/objects/essencechest_open1.ogg",
   
@@ -46,6 +46,11 @@ directives = {
   nodeActive = "",
   nodeInactive = "",
 }
+
+function playSound(s)
+  if type(s) == "string" then s = {s} end
+  for _, s in pairs(s) do pane.playSound(s) end
+end
 
 function nf() end
 view = nil
@@ -214,7 +219,7 @@ end
 
 function uninit()
   if changesToCommit() then
-    pane.playSound(sounds.cancel)
+    playSound(sounds.cancel)
     refundItemCosts()
   end
 end
@@ -437,12 +442,12 @@ function canvasKeyEvent(key, isDown)
 end
 
 function btnConfirm()
-  if changesToCommit() then pane.playSound(sounds.confirm) end
+  if changesToCommit() then playSound(sounds.confirm) end
   skillDrawer.close()
   commitPlayerData()
 end
 function btnCancel()
-  if changesToCommit() then pane.playSound(sounds.cancel) end
+  if changesToCommit() then playSound(sounds.cancel) end
   skillDrawer.close()
   loadPlayerData()
 end
@@ -520,15 +525,15 @@ function nodeView:clickEvent(pos, btn, down)
       if self.hover then -- click on node
         if self.hover.type == "link" then
           self:jumpTo(self.hover.target)
-          pane.playSound(sounds.jump)
+          playSound(sounds.jump)
           self.scrolling = btn
         else
           -- try to unlock node
           if tryUnlockNode(self.hover) then
             self.needsRedraw = true
-            pane.playSound(sounds.unlock)
+            playSound(sounds.unlock)
           elseif not isNodeUnlocked(self.hover) then
-            pane.playSound(sounds.cantUnlock)
+            playSound(sounds.cantUnlock)
           end
         end
       else self.scrolling = btn self.jump = nil end -- or scroll

@@ -81,8 +81,8 @@ local function setNodeVisuals(node)
   
   -- icon
   if not node.icon then
-    if node.type == "origin" then
-      node.icon = "book.png"
+    if node.type == "origin" then node.icon = "book.png"
+    elseif node.type == "link" then node.icon = "link.png"
     elseif node.type == "gate" then
       node.icon = "gate-locked.png"
       node.unlockedIcon = "gate-unlocked.png"
@@ -468,15 +468,23 @@ function nodeView:update()
   self.lastPos = self.lastPos or {0, 0}
   local pos = canvas:mousePosition()
   
-  if self.scrolling then self.jump = nil end
+  --if self.scrolling then self.jump = nil end
   if self.jump then
+    if self.scrolling then
+      self.jump.to = vec2.add(self.jump.to, vec2.sub(pos, self.lastPos))
+      self.lastPos = pos
+    end
     self.jump.time = self.jump.time - script.updateDt() * 5.0
     local tween = interp.cos(util.clamp(self.jump.time, 0.0, 1.0), 1.0, 0.0)
     self.scroll = vec2.add( vec2.mul(self.jump.from, tween), vec2.mul(self.jump.to, 1.0-tween) )
     self.needsRedraw = true
     if self.jump.time <= 0 then
       self.jump = nil
-      self.lastPos = {0, 0} -- force tool tip/hover update
+      if self.btnDown[0] then
+        self.scrolling = 0
+        self.scroll = vec2.add(self.scroll, {1, 0})
+        self.lastPos = vec2.add(self.lastPos, {1, 0})
+      else self.lastPos = {0, 0} end -- force tool tip/hover update
     end
   end
   
@@ -506,6 +514,7 @@ function nodeView:clickEvent(pos, btn, down)
         if self.hover.type == "link" then
           self:jumpTo(self.hover.target)
           pane.playSound(sounds.jump)
+          self.scrolling = btn
         else
           -- try to unlock node
           if tryUnlockNode(self.hover) then
@@ -515,7 +524,7 @@ function nodeView:clickEvent(pos, btn, down)
             pane.playSound(sounds.cantUnlock)
           end
         end
-      else self.scrolling = btn end -- or scroll
+      else self.scrolling = btn self.jump = nil end -- or scroll
     elseif self.scrolling == btn then self.scrolling = nil end
   elseif btn == 1 then -- middle button - overview/jump
     local c = vec2.mul(widget.getSize("viewCanvas"), 0.5)

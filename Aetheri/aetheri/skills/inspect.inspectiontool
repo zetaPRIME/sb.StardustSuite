@@ -35,7 +35,7 @@
   "inspectionRanges" : [20, 30],
 
   // tiles within this radius of the tool's source position will have partial highlight value based on proximity
-  "ambientInspectionRadius" : 0,
+  "ambientInspectionRadius" : 2,
 
   // if a large entity has at least this many spaces' worth of highlight, it will be fully highlighted
   "fullInspectionSpaces" : 10,

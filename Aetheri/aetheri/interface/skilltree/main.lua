@@ -474,33 +474,28 @@ end
 function nodeView:jumpTo(name)
   local node = self.tree.nodes[name]
   if not node then return nil end
-  self.jump = { from = self.scroll, to = vec2.sub(canvas:mousePosition(), vec2.mul(node.position, self.nodeSpacing)), time = 1.0 }
+  self.jump = { from = self.scroll, to = vec2.mul(node.position, self.nodeSpacing), time = 1.0 }
 end
 
 function nodeView:update()
   self.lastPos = self.lastPos or {0, 0}
   local pos = canvas:mousePosition()
+  local forceRedraw = false
   
   if self.jump then
-    if self.scrolling then -- scroll the target while dragging for a more fluid UX
-      self.jump.to = vec2.add(self.jump.to, vec2.sub(pos, self.lastPos))
-      self.lastPos = pos
-    end
+    if self.scrolling then self.lastPos = pos end -- no double-scroll
     self.jump.time = self.jump.time - script.updateDt() * 5.0
     local tween = interp.cos(util.clamp(self.jump.time, 0.0, 1.0), 1.0, 0.0)
-    self.scroll = vec2.add( vec2.mul(self.jump.from, tween), vec2.mul(self.jump.to, 1.0-tween) )
+    self.scroll = vec2.add( vec2.mul(self.jump.from, tween), vec2.mul(vec2.sub(pos, self.jump.to), 1.0-tween) )
     self.needsRedraw = true
     if self.jump.time <= 0 then
       self.jump = nil
-      if self.btnDown[0] then
-        self.scrolling = 0
-        self.scroll = vec2.add(self.scroll, {1, 0})
-        self.lastPos = vec2.add(self.lastPos, {1, 0})
-      else self.lastPos = {0, 0} end -- force tool tip/hover update
+      if self.btnDown[0] then self.scrolling = 0 end
+      forceRedraw = true -- force tool tip/hover update
     end
   end
   
-  if vec2.mag(vec2.sub(pos, self.lastPos)) > 0 then -- if mouse moved...
+  if forceRedraw or vec2.mag(vec2.sub(pos, self.lastPos)) > 0 then -- if mouse moved...
     --self.needsRedraw = true
     if self.scrolling then
       self.scroll = vec2.add(self.scroll, vec2.sub(pos, self.lastPos))
@@ -527,6 +522,7 @@ function nodeView:clickEvent(pos, btn, down)
           self:jumpTo(self.hover.target)
           playSound(sounds.jump)
           self.scrolling = btn
+          self.lastPos = pos --
         else
           -- try to unlock node
           if tryUnlockNode(self.hover) then

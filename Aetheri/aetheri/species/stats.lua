@@ -5,22 +5,14 @@ stats = { stat = { }, flag = { } }
 local equipStatsUpdated
 function stats.forceEquipUpdate() equipStatsUpdated = true end
 function stats.refresh()
-  local dataChanged = false
   stats.stat = { }
   local cstats
   
   -- load in calculated stats if still valid, or base stats if not
   local skdata = status.statusProperty("aetheri:skillTreeData", nil)
-  if not skdata or skdata.compatId ~= root.assetJson("/aetheri/species/skilltree.config:compatId") then
-    -- if no data or tree changed in an incompatible way then trigger a reset
-    dataChanged = true
-    skdata = nil
-  end
-  -- if the tree changed *revision* (stats rebalanced) then just update values
-  if skdata and skdata.revId ~= root.assetJson("/aetheri/species/skilltree.config:revId") then dataChanged = true end
-  if skdata and skdata.calculatedStats then cstats = skdata.calculatedStats
-  else cstats = { }
-  end
+  -- if no data or tree changed then early-out and trigger a recalculation
+  if not skdata or skdata.compatId ~= root.assetJson("/aetheri/species/skilltree.config:compatId") or skdata.revId ~= root.assetJson("/aetheri/species/skilltree.config:revId") then return false end
+  cstats = skdata.calculatedStats
   
   for k, v in pairs(cstats) do -- calculate final stat values
     stats.stat[k] = (v[1] or 0) * (v[2] or 1.0) * (v[3] or 1.0)
@@ -62,7 +54,7 @@ function stats.refresh()
     status.setStatusProperty("aetheri:statusPersist", nil)
   end
   
-  return not dataChanged
+  return true -- signal success
 end
 
 local equipSlots = { "head", "chest", "legs" }

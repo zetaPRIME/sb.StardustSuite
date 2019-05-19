@@ -468,9 +468,8 @@ function nodeView:update()
   self.lastPos = self.lastPos or {0, 0}
   local pos = canvas:mousePosition()
   
-  --if self.scrolling then self.jump = nil end
   if self.jump then
-    if self.scrolling then
+    if self.scrolling then -- scroll the target while dragging for a more fluid UX
       self.jump.to = vec2.add(self.jump.to, vec2.sub(pos, self.lastPos))
       self.lastPos = pos
     end

@@ -161,7 +161,7 @@ function init()
             tree = t, path = path, type = type,
             position = pos, connections = { },
             name = n.name, icon = n.icon, unlockedIcon = n.unlockedIcon,
-            grants = n.grants, skill = n.skill, target = n.target,
+            grants = n.grants, skill = n.skill, target = n.target or n.to,
             fixedCost = n.fixedCost, costMult = n.costMult, itemCost = n.itemCost,
             condition = n.condition,
           }

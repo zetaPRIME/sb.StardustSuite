@@ -1,8 +1,9 @@
 --
 
 do
-  local npc = monster or npc
-  --npc.say("lol internet")
+  local function nf() end
+  local nn = monster or npc
+  --nn.say("lol internet")
   
   local contributors = { }
   
@@ -12,23 +13,24 @@ do
   end
   
   -- add anyone who does damage after an aether skill to the contributor list
-  local _damage = damage or function() end
+  local _damage = damage or nf
   function damage(args)
     _aethertouched_addcontributor(args.sourceId)
     _damage(args)
   end
   
   -- grant experience to all (Aetheri) contributors when killed
-  local _die = die or function() end
+  local _die = die or nf
   function die(...)
-    -- first calculate granted xp
-    local experience = math.floor(0.5 + world.entityHealth(entity.id())[2] * 10)
+    -- first calculate granted AP
+    local ap = world.entityHealth(entity.id())[2] * 10 -- start based on max health
+    ap = ap * 1.1^(nn.level()-1) -- scale up in a gentle curve depending on tier
+    ap = math.floor(0.5 + ap) -- round to int
     
     -- then loop through and send
     for p in pairs(contributors) do
       if world.entitySpecies(p) == "aetheri" then
-        --world.sendEntityMessage(p, "playerext:message", string.format("Killed %s; %d experience gained", world.entityTypeName(entity.id()), experience))
-        world.sendEntityMessage(p, "aetheri:gainAP", experience)
+        world.sendEntityMessage(p, "aetheri:gainAP", ap)
       end
     end
     _die(...)

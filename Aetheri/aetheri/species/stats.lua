@@ -60,7 +60,7 @@ end
 local equipSlots = { "head", "chest", "legs" }
 function stats.update(p)
   for _, s in pairs(equipSlots) do -- maintain equipment slots
-    -- TODO: visual stuff; keep track of resource values to reinstate after the chestpiece is bumped out
+    -- TODO: visual stuff
     local lf = "aetheri:innate" .. s
     local si = playerext.getEquip(s) or itemutil.blankItem
     if equipStatsUpdated or si.name ~= lf then

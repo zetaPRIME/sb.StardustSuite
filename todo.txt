@@ -18,11 +18,9 @@ sb.jsonQuery exists, adjust itemutil.property?
 
 turn the liquid accumulator (phase drill, excavate) into a prefab
 
-- lib frontend for playerextender, to make things a bit more convenient (also polymorphism in case playerext needs to change)
-see if activeitems can store data into themselves; if so, give phase drill its own battery?
+maybe give phase drill its own battery?
 alternative, tip-glow-only effect for phase drill when cursor is too close to player
 ^ actually, just add particles to beam tip and snap them to the lens if too close
-- some sort of animation for the beam during phase drill hold to make it look like it's doing something and not just sitting there
 
 configurable tram stop {
   built-in player sensor
@@ -130,30 +128,20 @@ Aetheri species mod {
     
     Innate flight in zero-g, similar controls to Elytra
     
-    - set "Nude" stat to -100 or so to prevent beds taking off their crystal plating
-    
     Innates {
-        No matter manipulator; instead, essential slots are skill slots for Innate Skills
-        - powered by a large, slowly-regenerating pool of secondary energy (Aether?)
-        
         Kinetic Burst {
-            - Aimed melee skill with some reach
-            - Bonus damage based on velocity in the aiming direction
+            give it a secondary! shockwave on ground?
         }
     }
     
     Skill tree {
         - Matter manipulator screen replaced with the Aethyrium, a set of skill trees
         - Passive tree akin to Path of Exile; replaces armor stats and techs
-        Active skill tree for unlocking and upgrading Innates
+        - Active skill tree for unlocking and upgrading Innates
         
         - xp gained from enemy kills, usable toward next passive point with slow ramping-up of cost (Warframe focus-style)
           or active skill nodes with fixed costs
         - status effect that monkey-patches xp gains for nearby players on enemy death into their script context
-        
-        hmm. leave back slot open?
-        
-        - make some things (like sprint speed) work as the "increased" multiplier itself (since sprint speed is itself a multiplier)
     }
     
     Hunger system {

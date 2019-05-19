@@ -42,12 +42,13 @@ function hud.update(p)
   end
   
   if apGainTime > 0 then
+    local dispTime = util.clamp(apGainTime, 0, 1) -- limit display without limiting timing
     local numWidth = 5
     local drw = { }
     local str = string.format("+%dA", math.floor(0.5 + apGainAmt))
     local off = (str:len() - 1) * numWidth * -0.5
-    local mult = string.format("?multiply=%s?multiply=ffffff%02x", apGainColor, math.floor(0.5 + apGainTime * 255))
-    local y = (16 + math.floor((1 - apGainTime) * 40)) * px
+    local mult = string.format("?multiply=%s?multiply=ffffff%02x", apGainColor, math.floor(0.5 + dispTime * 255))
+    local y = (16 + math.floor((1 - dispTime) * 40)) * px
     for i = 1, str:len() do
       table.insert(drw, {
         position = { (off + (i - 1) * numWidth) * px, y },
@@ -66,5 +67,5 @@ end
 function hud.gainAP(amt)
   apGainColor = color.toHex(color.fromHsl{ appearance.settings.coreHsl[1], appearance.settings.coreHsl[2], 0.85 })
   apGainAmt = amt + (apGainTime > 0 and apGainAmt or 0)
-  if amt >= 10 then apGainTime = 1 end
+  if amt >= 10 then apGainTime = 1 + util.clamp((apGainAmt-100)/4900, 0, 1) end -- higher amounts/combos display for longer
 end

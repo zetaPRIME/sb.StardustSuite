@@ -93,7 +93,9 @@ local function setNodeVisuals(node)
       node.unlockedIcon = "gate-unlocked.png"
     else -- automatically populate icon from the stats it grants
       local stat
-      for _, g in pairs(node.grants or { }) do if modeHasIcon[g[1]] then stat = g[2] break end end
+      for _, g in pairs(node.grants or { }) do
+        if modeHasIcon[g[1]] and statIcons[g[2]] then stat = g[2] break end
+      end
       node.icon = statIcons[stat] or "misc1.png"
     end
   end

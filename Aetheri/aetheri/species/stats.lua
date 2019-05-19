@@ -96,6 +96,9 @@ message.setHandler("aetheri:gainAP", function(msg, isLocal, amt)
   amt = math.floor(0.5 + amt * stats.stat.apGain)
   status.setStatusProperty("aetheri:AP", amt + status.statusProperty("aetheri:AP", 0))
   hud.gainAP(amt)
+  -- this is only really called on kill (of an aethertouched enemy)
+  status.modifyResource("health", stats.stat.healthOnKill or 0)
+  status.modifyResource("aetheri:mana", stats.stat.manaOnKill or 0)
 end)
 
 message.setHandler("aetheri:refreshStats", stats.refresh)
@@ -130,6 +133,7 @@ message.setHandler("stardustlib:modifyDamageTaken", function(_, _, damageRequest
   elseif damageRequest.damageType == "Damage" then -- normal damage, apply DR
     damageRequest.damageType = "IgnoresDef"
     damageRequest.damage = damageRequest.damage * (.5 ^ (status.stat("protection") / 100))
+    damageRequest.damage = damageRequest.damage * (stats.stat.damageTaken or 1)
     return damageRequest
   end
 end)

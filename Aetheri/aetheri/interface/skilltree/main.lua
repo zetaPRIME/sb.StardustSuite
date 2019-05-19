@@ -1,7 +1,7 @@
 -- Aethyrium - skill tree(s) for the Aetheri
 
 --[[ TODO:
-  ! keep track of, and refund on reset, material costs
+  allow pulling currency items
   
   decorations
   ship nodes (unlock FTL travel from skill tree?)
@@ -228,7 +228,6 @@ function refundItemCosts()
 end
 
 function loadPlayerData()
-  local reset = false
   refundItemCosts()
   playerTmpData = {
     apToSpend = 0,
@@ -246,13 +245,15 @@ function loadPlayerData()
       spentAP = 0,
       nodesUnlocked = { },
       -- keep anything still unlocked in its place
-      selectedSkills = playerData and playerData.selectedSkills or startingLoadout
+      selectedSkills = playerData and playerData.selectedSkills or startingLoadout,
+      itemsSpent = { },
+      itemsPendingRefund = util.mergeLists(playerData.itemsPendingRefund or { }, playerData.itemsSpent or { })
     }
-    reset = true
-    --status.setStatusProperty("aetheri:skillTreeData", playerData) -- and save back
   end
   playerData.revId = revId
   playerData.spentAP = playerData.spentAP or 0
+  playerData.itemsSpent = playerData.itemsSpent or { }
+  playerData.itemsPendingRefund = playerData.itemsPendingRefund or { }
   
   for _, t in pairs(trees) do
     playerData.nodesUnlocked[t.name] = playerData.nodesUnlocked[t.name] or { }
@@ -266,9 +267,15 @@ function loadPlayerData()
   appearance = status.statusProperty("aetheri:appearance", { })
   directives.nodeActive = string.format("?border=1;%s;00000000", color.toHex(color.fromHsl{ appearance.coreHsl[1], appearance.coreHsl[2], 0.75, 0.75 }))
   
+  -- process pending refunds
+  for _, d in pairs(playerData.itemsPendingRefund) do
+    player.giveItem(d) -- TODO: give an item packet instead, where you can take out each item individually
+    -- or just pull back any items the player drops??
+  end playerData.itemsPendingRefund = { }
+  
   -- refresh view on reload
   if view then view.needsRedraw = true end
-  if reset or true then commitPlayerData() end
+  commitPlayerData() -- always update after load
   
   refreshSkillSlots()
 end
@@ -333,6 +340,7 @@ function commitPlayerData()
   committedSkillsUnlocked = playerData.skillsUnlocked
   committedSkillUpgrades = playerData.skillUpgrades
   playerData.spentAP = playerData.spentAP + playerTmpData.apToSpend
+  util.appendLists(playerData.itemsSpent, playerTmpData.itemsToConsume or { })
   status.setStatusProperty("aetheri:skillTreeData", playerData)
   status.setStatusProperty("aetheri:AP", status.statusProperty("aetheri:AP", 0) - playerTmpData.apToSpend)
   playerTmpData.apToSpend = 0

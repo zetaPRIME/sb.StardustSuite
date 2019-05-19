@@ -119,14 +119,10 @@ local function setNodeVisuals(node)
     end
   end
   node.toolTip = table.concat(tt)
-  if node.itemCost then -- assemble item requirement tooltips
-    tt = { }
-    table.insert(tt, "^white;Material cost^reset;:\n")
+  if node.itemCost then -- assemble information for item requirement tooltips
     for _, d in pairs(node.itemCost) do
-      table.insert(tt, string.format("- ^white;%d ^reset;%s^reset;\n", d.count, itemutil.property(d, "shortdescription")))
+      d.displayName, d.rarity = itemutil.property(d, "shortdescription"), itemutil.property(d, "rarity") or "Common"
     end
-    
-    node.costToolTip = table.concat(tt)
   end
 end
 
@@ -573,6 +569,13 @@ function nodeView:redraw()
     {127, 127, 255, 127},
     {255, 255, 255, 127},
   }
+  local rarityColors = {
+    common = "",
+    uncommon = "^#42c53e;",
+    rare = "^#3ea8c5;",
+    legendary = "^#893ec5;",
+    essential = "^#c3c53e;"
+  }
   for _, c in pairs(self.tree.connections) do -- draw connection lines
     --sb.logInfo(string.format("drawing line \"%s\" between %s and %s", _, c[1].path, c[2].path))
     local lc = 1
@@ -594,7 +597,17 @@ function nodeView:redraw()
     local ttPos = vec2.add(self:nodeDrawPos(self.hover), {12, 4})
     local tt = self.hover.toolTip
     if not isNodeUnlocked(self.hover) then
-      tt = tt .. (self.hover.costToolTip or "")
+      if self.hover.itemCost then
+        local ctt = { }
+        local hasAll = true
+        for _, d in pairs(self.hover.itemCost) do
+          local has = player.hasCountOfItem(d, true) >= d.count
+          hasAll = has and hasAll
+          table.insert(ctt, string.format("- %s%d ^reset;%s%s^reset;\n", has and "^white;" or "^red;", d.count, has and rarityColors[d.rarity:lower()] or "^red;", d.displayName))
+        end
+        table.insert(ctt, 1, string.format("%sMaterial cost^reset;:\n", hasAll and "" or "^red;"))
+        tt = tt .. table.concat(ctt)
+      end
       local cost, fixed = nodeCost(self.hover)
       if cost > 0 then -- only display nonzero costs
         tt = string.format("%s%s: %s%d ^violet;AP^reset;\n", tt, fixed and "Fixed cost" or "Cost", currentAP() >= cost and "^white;" or "^red;", cost)

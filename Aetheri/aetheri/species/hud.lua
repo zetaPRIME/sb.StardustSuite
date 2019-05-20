@@ -17,7 +17,7 @@ end
 
 function hud.update(p)
   --
-  if itemutil.property(world.entityHandItemDescriptor(entity.id(), "primary"), "isAetherSkill") then
+  if itemutil.property(world.entityHandItemDescriptor(entity.id(), "primary"), "isAetherSkill") and status.resourcePercentage("aetheri:mana") < 1.0 then
     manaShowTime = 1
   end
   if manaShowTime > 0 then

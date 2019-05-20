@@ -3,6 +3,15 @@
 --[[ TODO:
   allow pulling currency items
   
+  figure out how to work refunding a single node:
+  takes an item (picked up in cursor) to refund, a la Orb of Regret
+  to determine if refundable, check (recursively) if every connected taken node is connected to the others
+  or rather, take a list of connected taken nodes and follow the tree starting with the first to see if connects to all others (and an origin)
+  if not, check the remaining ones to see if they're connected to an origin
+  when refunding, only add to the list of nodes pending refund
+  
+  - change nodetaken flag from true to a table of information, including spent ap, items and socketed jewel
+  
   decorations
   ship nodes (unlock FTL travel from skill tree?)
   indicators for "more in this direction"; scroll bounds?
@@ -11,7 +20,7 @@
   jewel sockets; insert/remove jewel items to change what the socket does, PoE style
   item config contains the "grants" array
   (flag is replaced with the item descriptor if filled? or separate data for ease of refunding?)
-  ^ keep track of which nodes are Actually Unlocked
+  ^ keep track of which nodes are Actually Unlocked... or rather, switch over to a "nodes unconfirmed" system for cancelling (refundOnCancel, refundOnComplete)
 --]]
 
 require "/scripts/util.lua"
@@ -239,23 +248,29 @@ function loadPlayerData()
   playerData = status.statusProperty("aetheri:skillTreeData", nil)
   if not playerData or playerData.compatId ~= compatId then
     -- reset data
+    local refundItems = playerData and playerData.itemsPendingRefund or { }
     if playerData then
-      -- refund all spent AP
+      for _, tl in pairs(playerData.nodesUnlocked) do
+        for _, nd in pairs(tl) do
+          if type(nd) == "table" then
+            status.setStatusProperty("aetheri:AP", status.statusProperty("aetheri:AP", 0) + (nd.spentAP or 0))
+            util.appendLists(refundItems, nd.spentItems or { })
+            if nd.jewel then table.insert(refundItems, nd.jewel) end
+          end
+        end
+      end
+      -- refund all legacy spent AP
       status.setStatusProperty("aetheri:AP", status.statusProperty("aetheri:AP", 0) + (playerData.spentAP or 0))
     end
     playerData = {
       compatId = compatId,
-      spentAP = 0,
       nodesUnlocked = { },
       -- keep anything still unlocked in its place
       selectedSkills = playerData and playerData.selectedSkills or startingLoadout,
-      itemsSpent = { },
-      itemsPendingRefund = util.mergeLists(playerData.itemsPendingRefund or { }, playerData.itemsSpent or { })
+      itemsPendingRefund = util.mergeLists(refundItems, playerData.itemsSpent or { })
     }
   end
   playerData.revId = revId
-  playerData.spentAP = playerData.spentAP or 0
-  playerData.itemsSpent = playerData.itemsSpent or { }
   playerData.itemsPendingRefund = playerData.itemsPendingRefund or { }
   
   for _, t in pairs(trees) do
@@ -342,8 +357,6 @@ function commitPlayerData()
   recalculateStats()
   committedSkillsUnlocked = playerData.skillsUnlocked
   committedSkillUpgrades = playerData.skillUpgrades
-  playerData.spentAP = playerData.spentAP + playerTmpData.apToSpend
-  util.appendLists(playerData.itemsSpent, playerTmpData.itemsToConsume or { })
   status.setStatusProperty("aetheri:skillTreeData", playerData)
   status.setStatusProperty("aetheri:AP", status.statusProperty("aetheri:AP", 0) - playerTmpData.apToSpend)
   playerTmpData.apToSpend = 0
@@ -371,8 +384,8 @@ function nodeCost(node)
 end
 
 function isNodeUnlocked(node)
-  if node.type == "origin" then return true end
-  return not not playerData.nodesUnlocked[node.tree.name][node.path]
+  if node.type == "origin" then return { } end
+  return playerData.nodesUnlocked[node.tree.name][node.path]
 end
 
 function canUnlockNode(node)
@@ -405,8 +418,12 @@ function tryUnlockNode(node)
   if not canUnlockNode(node) then return false end
   if not tryItemCost(node, true) then return false end
   if node.condition and not condition(table.unpack(node.condition)) then return false end
-  playerData.nodesUnlocked[node.tree.name][node.path] = true
-  playerTmpData.apToSpend = playerTmpData.apToSpend + nodeCost(node)
+  local cost = nodeCost(node)
+  playerData.nodesUnlocked[node.tree.name][node.path] = {
+    spentAP = cost,
+    spentItems = node.itemCost,
+  }
+  playerTmpData.apToSpend = playerTmpData.apToSpend + cost
   playerTmpData.changed = true
   recalculateStats()
   return true -- success!

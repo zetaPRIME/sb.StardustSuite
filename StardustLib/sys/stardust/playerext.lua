@@ -54,6 +54,8 @@ local function _mightBeUsefulLater()
   
 end
 
+local screenMetricsUpdateTime = 0
+
 local drawableQueue = { }
 local lightQueue = { }
 local particleQueue = { }
@@ -61,6 +63,15 @@ local particleQueue = { }
 local lastPos = { 0, 0 }
 local _update = update or function() end
 function update(dt, ...)
+  --[[screenMetricsUpdateTime = screenMetricsUpdateTime - 1
+  if screenMetricsUpdateTime <= 0 then
+    screenMetricsUpdateTime = 60
+    player.interact("ScriptPane", {
+      gui = { pf = { type = "panefeature", positionLocked = true, anchor = "bottomLeft" }, bg = { type = "background", fileBody = "/assetmissing.png?crop=0;0;1;1?scalenearest=1920;1080" }, c = { type = "canvas", rect = {0, 0, 1920, 1080}, captureMouseEvents = true } },
+      scripts = {"/sys/stardust/playerext-screenmetrics.lua"}, scriptDelta = 1,
+    })
+  end--]]
+  
   localAnimator.clearLightSources()
   _update(dt, ...)
   local pos = entity.position()

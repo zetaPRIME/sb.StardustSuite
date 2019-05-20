@@ -199,6 +199,8 @@ function init()
       animator.setPartTag(self.str .. "f", "directives", fd)
     end
     
+    message.setHandler("stardustlib:getPlayerAimPosition", tech.aimPosition)
+    
     -- load the tech itself
     require(ovr)
     

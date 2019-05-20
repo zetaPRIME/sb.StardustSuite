@@ -20,7 +20,7 @@
   jewel sockets; insert/remove jewel items to change what the socket does, PoE style
   item config contains the "grants" array
   (flag is replaced with the item descriptor if filled? or separate data for ease of refunding?)
-  ^ keep track of which nodes are Actually Unlocked... or rather, switch over to a "nodes unconfirmed" system for cancelling (refundOnCancel, refundOnComplete)
+  ^ keep track of which nodes are Actually Unlocked... or rather, switch over to a "nodes unconfirmed" system for cancelling (refundOnCancel, refundOnCommit)
 --]]
 
 require "/scripts/util.lua"
@@ -34,6 +34,7 @@ require "/lib/stardust/color.lua"
 require "/sys/stardust/quickbar/conditions.lua"
 
 -- modules
+require "/aetheri/interface/skilltree/tooltip.lua"
 require "/aetheri/interface/skilltree/activeskills.lua"
 
 sounds = {
@@ -44,7 +45,7 @@ sounds = {
   
   jump = { "/sfx/interface/stationtransponder_stationpulse.ogg", "/sfx/tech/tech_dash.ogg" },
   
-  socketJewel = "/sfx/melee/sword_parry.ogg", --"/sfx/objects/essencechest_open1.ogg",
+  socketJewel = { "/sfx/melee/sword_parry.ogg", "/sfx/objects/essencechest_open2.ogg" },
   
   openSkillDrawer = "/sfx/objects/ancientenergy_pickup2.ogg",
   closeSkillDrawer = "/sfx/objects/ancientenergy_pickup1.ogg",
@@ -69,11 +70,6 @@ local function resolvePath(path, pfx)
   else return string.format("%s/%s", pfx, path) end
 end
 
-local function numStr(n) -- friendly string representation of number
-  local fn = math.floor(n)
-  if fn == n then return tostring(fn) else return tostring(n) end
-end
-
 local function tableCount(t)
   local c = 0
   for _, v in pairs(t) do if v then c = c + 1 end end
@@ -90,8 +86,19 @@ local function populateSkillData(node)
 end
 
 local modeHasIcon = { flat = true, increased = true, more = true }
-local function setNodeVisuals(node)
+local function setNodeVisuals(node, nodeData)
   if upkeepOnly then return nil end -- skip if it won't be shown anyway
+  
+  -- special handling for sockets
+  if node.type == "socket" then
+    node.icon = "jewelsocket.png"
+    node.contentsIcon = nil
+    node.name = "^#ab6524;Empty Jewel Socket"
+    if nodeData and nodeData.jewel then
+      node.name = "^#d77fff;" .. itemutil.property(nodeData.jewel, "shortdescription")
+      node.contentsIcon = itemutil.property(nodeData.jewel, "inventoryIcon")
+    end
+  end
   
   -- icon
   if not node.icon then
@@ -114,22 +121,7 @@ local function setNodeVisuals(node)
   if node.skill then populateSkillData(node) end
   if node.type == "link" then node.fixedCost = 0 end
   
-  -- tool tip
-  local tt = { }
-  if node.name then table.insert(tt, string.format("^violet;%s^reset;\n", node.name)) end
-  for _, g in pairs(node.grants or { }) do
-    local mode, stat, amt = table.unpack(g)
-    if mode == "description" then
-      table.insert(tt, string.format("%s^reset;\n", stat))
-    elseif mode == "flat" then
-      table.insert(tt, string.format("%s^white;%s ^cyan;%s^reset;\n", amt >= 0 and "+" or "-", numStr(math.abs(amt)), statNames[stat] or stat))
-    elseif mode == "increased" then
-      table.insert(tt, string.format("^white;%s%%^reset; %s ^cyan;%s^reset;\n", numStr(math.abs(amt)*100), amt >= 0 and "increased" or "decreased", statNames[stat] or stat))
-    elseif mode == "more" then
-      table.insert(tt, string.format("^white;%s%%^reset; %s ^cyan;%s^reset;\n", numStr(math.abs(amt)*100), amt >= 0 and "more" or "less", statNames[stat] or stat))
-    end
-  end
-  node.toolTip = table.concat(tt)
+  generateNodeToolTip(node) -- delegated to module so build scripts can reuse it
   if node.itemCost then -- assemble information for item requirement tooltips
     for _, d in pairs(node.itemCost) do
       d.displayName, d.rarity = itemutil.property(d, "shortdescription"), itemutil.property(d, "rarity") or "Common"
@@ -154,6 +146,8 @@ function init()
     activeSkills = cfg.activeSkills
     startingSkills = cfg.startingSkills
     startingLoadout = cfg.startingLoadout
+    
+    jewelSockets = { }
     
     local t
     -- recursive function for loading in node data
@@ -181,6 +175,7 @@ function init()
             table.insert(node.grants, { "unlockSkill", node.skill })
           end
           t.nodes[path] = node
+          if node.type == "socket" then jewelSockets[node] = true end
           setNodeVisuals(node)
           if n.connectsTo and not upkeepOnly then -- premake connections (only when actually displaying)
             for _, cn in pairs(n.connectsTo) do
@@ -225,17 +220,26 @@ function init()
 end
 
 function uninit()
+  if upkeepOnly then return nil end -- everything is handled by init if just running the update
   if changesToCommit() then
     playSound(sounds.cancel)
-    refundItemCosts()
+    --refundItemCosts()
   end
+  loadPlayerData() -- force update on exit so jewel stats take
 end
 
-function refundItemCosts()
-  if playerTmpData and playerTmpData.itemsToConsume then
-    -- refund consumed items
-    for _, d in pairs(playerTmpData.itemsToConsume) do player.giveItem(d) end
-    playerTmpData.itemsToConsume = { } -- and reset
+function refundItemCosts(committing)
+  if not playerTmpData then return nil end -- no data to process
+  if committing then
+    -- TODO
+  else -- cancelling
+    for n in pairs(playerTmpData.refundOnCancel or { }) do
+      local nd = isNodeUnlocked(n)
+      if nd then -- if data exists, refund items
+        for _, itm in pairs(nd.spentItems or { }) do player.giveItem(itm) end
+        if nd.jewel then player.giveItem(nd.jewel) end -- refund jewel from uncommitted socket
+      end
+    end playerTmpData.refundOnCancel = { } -- and reset
   end
 end
 
@@ -243,7 +247,8 @@ function loadPlayerData()
   refundItemCosts()
   playerTmpData = {
     apToSpend = 0,
-    itemsToConsume = { }
+    refundOnCommit = { },
+    refundOnCancel = { },
   }
   playerData = status.statusProperty("aetheri:skillTreeData", nil)
   if not playerData or playerData.compatId ~= compatId then
@@ -275,6 +280,14 @@ function loadPlayerData()
   
   for _, t in pairs(trees) do
     playerData.nodesUnlocked[t.name] = playerData.nodesUnlocked[t.name] or { }
+  end
+  
+  for n in pairs(jewelSockets) do -- update sockets
+    nd = isNodeUnlocked(n)
+    if nd and nd.jewel then
+      n.grants = itemutil.property(nd.jewel, "jewelGrants") or { }
+      setNodeVisuals(n, nd) -- update icon and tooltip
+    else n.grants = { } end
   end
   
   recalculateStats()
@@ -354,13 +367,13 @@ end
 function changesToCommit() return not not playerTmpData.changed end
 
 function commitPlayerData()
+  refundItemCosts(true)
   recalculateStats()
   committedSkillsUnlocked = playerData.skillsUnlocked
   committedSkillUpgrades = playerData.skillUpgrades
   status.setStatusProperty("aetheri:skillTreeData", playerData)
   status.setStatusProperty("aetheri:AP", status.statusProperty("aetheri:AP", 0) - playerTmpData.apToSpend)
   playerTmpData.apToSpend = 0
-  playerTmpData.itemsToConsume = { }
   playerTmpData.changed = false
   world.sendEntityMessage(player.id(), "aetheri:refreshStats")
   commitSkillSlots()
@@ -406,10 +419,8 @@ function tryItemCost(node, consume)
   for _, d in pairs(node.itemCost) do
     if not (player.hasCountOfItem(d, true) >= d.count) then return false end
   end
-  if consume then
-    for _, d in pairs(node.itemCost) do
-      table.insert(playerTmpData.itemsToConsume, player.consumeItem(d, false, true))
-    end
+  if consume then -- actually take items
+    for _, d in pairs(node.itemCost) do player.consumeItem(d, false, true) end
   end
   return true
 end
@@ -423,10 +434,33 @@ function tryUnlockNode(node)
     spentAP = cost,
     spentItems = node.itemCost,
   }
+  playerTmpData.refundOnCancel[node] = true
   playerTmpData.apToSpend = playerTmpData.apToSpend + cost
   playerTmpData.changed = true
   recalculateStats()
   return true -- success!
+end
+
+function socketJewel(node, itm) -- returns: success (bool), item swapped with
+  if not node or node.type ~= "socket" then return false end
+  local nd = isNodeUnlocked(node)
+  if not nd then return false end -- silly, don't try to socket something you don't even have
+  if not nd.jewel and not itm then return false end -- no item on either side, don't bother
+  local jewelGrants = itm and itemutil.property(itm, "jewelGrants")
+  if itm and not jewelGrants then return false end -- not a jewel
+  local itmOut = nd.jewel
+  nd.jewel = itm
+  node.grants = jewelGrants
+  setNodeVisuals(node, nd) -- refresh
+  recalculateStats()
+  -- save to player immediately if socket already committed
+  local pd = status.statusProperty("aetheri:skillTreeData", nil)
+  local snd = (((pd or { }).nodesUnlocked or { })[node.tree.name]or { })[node.path] -- super ridiculous inline guard
+  if snd then -- committed data present!
+    snd.jewel = nd.jewel
+    status.setStatusProperty("aetheri:skillTreeData", pd)
+  end
+  return true, itmOut
 end
 
 function update()
@@ -533,17 +567,26 @@ function nodeView:clickEvent(pos, btn, down)
   if btn == 0 then -- left button
     if down then
       if self.hover then -- click on node
+        local nd = isNodeUnlocked(self.hover)
         if self.hover.type == "link" then
           self:jumpTo(self.hover.target)
           playSound(sounds.jump)
           self.scrolling = btn
           self.lastPos = pos --
+        elseif self.hover.type == "socket" and nd then
+          local s, itmOut = socketJewel(self.hover, player.swapSlotItem())
+          if s then
+            player.setSwapSlotItem(itmOut)
+            playSound(sounds.socketJewel)
+            self.lastPos = {-1, -1} -- force tooltip update
+            self.needsRedraw = true
+          end
         else
           -- try to unlock node
           if tryUnlockNode(self.hover) then
             self.needsRedraw = true
             playSound(sounds.unlock)
-          elseif not isNodeUnlocked(self.hover) then
+          elseif not nd then
             playSound(sounds.cantUnlock)
           end
         end
@@ -611,6 +654,9 @@ function nodeView:redraw()
     local nodeDirectives = active and directives.nodeActive or directives.nodeInactive
     --canvas:drawImage("/aetheri/interface/skilltree/nodeBG.png:" .. (active and "active" or "inactive"), pos, 1, {255, 255, 255}, true)
     canvas:drawImage(icon .. nodeDirectives, pos, 1, fb and {255, 255, 255} or {191, 191, 191}, true)
+    if node.contentsIcon then
+      canvas:drawImage(node.contentsIcon, pos, 1, {255, 255, 255}, true)
+    end
   end
   if self.hover then -- tool tip!
     local ttPos = vec2.add(self:nodeDrawPos(self.hover), {12, 4})

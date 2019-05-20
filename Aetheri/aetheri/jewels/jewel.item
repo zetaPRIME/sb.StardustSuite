@@ -1,0 +1,10 @@
+{ // -*- grammar-ext: json -*-
+  "itemName" : "aetheri:jewel",
+  "maxStack" : 1,
+  "rarity" : "Legendary",
+  "shortdescription" : "Basic Jewel",
+  "tooltipKind" : "object",
+  "builder" : "/aetheri/jewels/buildjewel.lua",
+  
+  "inventoryIcon" : "/aetheri/skills/skillSlotBGEmpty.png"
+}

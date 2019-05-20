@@ -673,13 +673,13 @@ function nodeView:redraw()
     end
     local btt = tt:gsub("(%b^;)", "") -- strip codes for border
     for _, off in pairs(border) do
-      canvas:drawText(btt, { position = vec2.add(ttPos, off), horizontalAnchor = "left", verticalAnchor = "top", wrapWidth = toolTipWidth }, 8, {0, 0, 0, 222})
+      canvas:drawText(btt, { position = vec2.add(ttPos, off), horizontalAnchor = "left", verticalAnchor = "top", wrapWidth = toolTipWidth }, 8, {0, 0, 0, 200})
     end
     canvas:drawText(tt, { position = ttPos, horizontalAnchor = "left", verticalAnchor = "top", wrapWidth = toolTipWidth }, 8, {191, 191, 191})
   end
   
   canvas:drawText(
-    string.format("^white;%d ^violet;AP^reset;", math.floor(currentAP())),
+    string.format("^shadow;^white;%d ^violet;AP^reset;", math.floor(currentAP())),
     { position = {480.0, 506.0}, horizontalAnchor = "mid", verticalAnchor = "top" },
     8, {191, 191, 191}
   )

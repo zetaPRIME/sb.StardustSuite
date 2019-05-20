@@ -40,6 +40,12 @@
     "capacity" : 1500000,
     "ioRate" : 500
   },
+  
+  "jewelIcon" : "battery.frame.t3.png",
+  "jewelGrants" : [
+    ["flat", "fpCapacity", 1500000],
+    ["description", "This still defies all logic. WHY DOES THIS WORK."]
+  ],
     
   "inputNodes" : [ [0, 1] ],
   "outputNodes" : [ [0, 0] ]

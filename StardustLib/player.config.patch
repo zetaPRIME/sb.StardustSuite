@@ -4,5 +4,11 @@
   { "op" : "add", "path" : "/deploymentConfig/scripts/-", "value" : "/sys/stardust/playerext.lua" },
   
   // make the placement MM imperceptibly less than fully opaque so that it can be hidden with status directives
-  { "op" : "replace", "path" : "/beamGunConfig/image", "value" : "/humanoid/any/gravgun1.png?multiply=fffffffe" }
+  { "op" : "replace", "path" : "/beamGunConfig/image", "value" : "/humanoid/any/gravgun1.png?multiply=fffffffe" },
+  
+  // allow internal fluxpulse battery
+  { "op" : "add", "path" : "/statusControllerSettings/resources/stardustlib:fluxpulse", "value" : {
+    "maxStat" : "stardustlib:fluxpulseCapacity",
+    "initialPercentage" : 0.0
+  } }
 ] 

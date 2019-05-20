@@ -37,6 +37,7 @@ function stats.refresh()
     { stat = "aetheri:skillPowerMultiplier", amount = stats.stat.skillDamageMult },
     
     { stat = "aetheri:miningSpeed", amount = stats.stat.miningSpeed },
+    { stat = "stardustlib:fluxpulseCapacity", amount = stats.stat.fpCapacity },
   } util.appendLists(s, skdata.rawStatus or { })
   
   tech.setStats(s)
@@ -47,9 +48,12 @@ function stats.refresh()
   
   local sp = status.statusProperty("aetheri:statusPersist", nil)
   if sp then -- restore resource values after teleport or reload
-    status.setResource("health", sp.health)
-    status.setResource("energy", sp.energy)
-    status.setResource("aetheri:mana", sp.mana)
+    if sp.health then
+      status.setResource("health", sp.health)
+      status.setResource("energy", sp.energy)
+      status.setResource("aetheri:mana", sp.mana)
+    end
+    status.setResource("stardustlib:fluxpulse", sp.fluxpulse or 0)
     -- then clear property when we're done
     status.setStatusProperty("aetheri:statusPersist", nil)
   end
@@ -81,15 +85,15 @@ function stats.update(p)
 end
 
 function stats.uninit()
+  local rsave = { }
   if status.resource("health") > 0 then
     -- save resource values on teleport (but not death)
-    status.setStatusProperty("aetheri:statusPersist", {
-      health = status.resource("health"),
-      energy = status.resource("energy"),
-      mana = status.resource("aetheri:mana"),
-    })
+    rsave.health = status.resource("health")
+    rsave.energy = status.resource("energy")
+    rsave.mana = status.resource("aetheri:mana")
   end
-  
+  rsave.fluxpulse = status.resource("stardustlib:fluxpulse")
+  status.setStatusProperty("aetheri:statusPersist", rsave)
 end
 
 message.setHandler("aetheri:gainAP", function(msg, isLocal, amt)

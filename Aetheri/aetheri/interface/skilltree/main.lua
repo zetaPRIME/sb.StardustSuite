@@ -89,7 +89,7 @@ local function setNodeVisuals(node, nodeData)
     node.name = "^#ab6524;Empty Jewel Socket"
     if nodeData and nodeData.jewel then
       node.name = "^#d77fff;" .. itemutil.property(nodeData.jewel, "shortdescription")
-      node.contentsIcon = itemutil.property(nodeData.jewel, "inventoryIcon")
+      node.contentsIcon = itemutil.relativePath(nodeData.jewel, itemutil.property(nodeData.jewel, "jewelIcon") or itemutil.property(nodeData.jewel, "inventoryIcon"))
     end
   end
   
@@ -680,7 +680,7 @@ function nodeView:redraw()
   
   canvas:drawText(
     string.format("^shadow;^white;%d ^violet;AP^reset;", math.floor(currentAP())),
-    { position = {480.0, 506.0}, horizontalAnchor = "mid", verticalAnchor = "top" },
+    { position = {480.0, 508.0}, horizontalAnchor = "mid", verticalAnchor = "top" },
     8, {191, 191, 191}
   )
 end

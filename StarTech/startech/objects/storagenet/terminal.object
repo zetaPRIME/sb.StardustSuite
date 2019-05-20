@@ -8,6 +8,8 @@
 
   "category" : "storagenet",
   "price" : 500,
+  
+  "jewelGrants" : [["description", "I mean, that's clever and all, but how the ^violet;^reset; am I supposed to wire this thing up!?"]],
 
   "inventoryIcon" : "terminal.png",
   "orientations" : [

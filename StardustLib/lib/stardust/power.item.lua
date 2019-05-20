@@ -59,6 +59,13 @@ function power.fillEquipEnergy(amount, testOnly)
   if not player then return 0 end -- abort if player table is unavailable
   local acc = 0
   
+  if not status.resourceLocked("stardustlib:fluxpulse") then -- fill internal battery if present
+    local internal = math.min(amount, status.resourceMax("stardustlib:fluxpulse") - status.resource("stardustlib:fluxpulse"))
+    acc = acc + internal
+    if not testOnly then status.giveResource("stardustlib:fluxpulse", internal) end
+    if acc >= amount then return acc end
+  end
+  
   local slots = {
     "back",
     "chest",
@@ -81,6 +88,13 @@ end
 function power.drawEquipEnergy(amount, testOnly)
   if not player then return 0 end -- abort if player table is unavailable
   local acc = 0
+  
+  if not status.resourceLocked("stardustlib:fluxpulse") then -- draw from internal battery if present
+    local internal = math.min(amount, status.resource("stardustlib:fluxpulse"))
+    acc = acc + internal
+    if not testOnly then status.overConsumeResource("stardustlib:fluxpulse", internal) end
+    if acc >= amount then return acc end
+  end
   
   local slots = {
     "back",

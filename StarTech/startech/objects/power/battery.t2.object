@@ -40,6 +40,12 @@
     "capacity" : 500000,
     "ioRate" : 150
   },
+  
+  "jewelIcon" : "battery.frame.t2.png",
+  "jewelGrants" : [
+    ["flat", "fpCapacity", 500000],
+    ["description", "So... you're telling me my equipment can actually draw fluxpulse from a battery you shoved into a place that... doesn't actually physically exist. What."]
+  ],
     
   "inputNodes" : [ [0, 1] ],
   "outputNodes" : [ [0, 0] ]

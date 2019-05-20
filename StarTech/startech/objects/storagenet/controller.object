@@ -19,6 +19,8 @@
   "humanDescription" : "Ooh, cargo!",
   "hylotlDescription" : "A cargo crate of modern design.",
   "novakidDescription" : "A basic lookin' crate. Could hold valuable cargo...",*/
+  
+  "jewelGrants" : [["description", "I, uh, don't think it's supposed to go here...?"]],
 
   "inventoryIcon" : "controller.icon.png",
   "orientations" : [

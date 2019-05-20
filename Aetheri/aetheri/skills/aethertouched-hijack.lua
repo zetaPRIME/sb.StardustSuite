@@ -33,6 +33,17 @@ do
         world.sendEntityMessage(p, "aetheri:gainAP", ap)
       end
     end
+    
+    -- special drops
+    local pos = entity.position()
+    local dropSeed = sb.staticRandomI32(entity.id(), nn.level(), pos[1], pos[2], world.time(), world.day())
+    if nn.level() >= 3 then
+      if sb.staticRandomI32Range(1, 50, dropSeed, "random jewel drop chance") == 1 then
+        world.spawnItem({ name = "aetheri:jewel", count = 1 }, pos)
+      end
+      
+    end
+    
     _die(...)
   end
 end

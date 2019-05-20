@@ -1,7 +1,7 @@
 -- Aethyrium - skill tree(s) for the Aetheri
 
 --[[ TODO:
-  allow pulling currency items
+  allow pulling currency items as materials
   
   figure out how to work refunding a single node:
   takes an item (picked up in cursor) to refund, a la Orb of Regret
@@ -10,17 +10,10 @@
   if not, check the remaining ones to see if they're connected to an origin
   when refunding, only add to the list of nodes pending refund
   
-  - change nodetaken flag from true to a table of information, including spent ap, items and socketed jewel
-  
   decorations
   ship nodes (unlock FTL travel from skill tree?)
   indicators for "more in this direction"; scroll bounds?
   eventually sort things into BSP to make drawing and cursor checking less silly
-  
-  jewel sockets; insert/remove jewel items to change what the socket does, PoE style
-  item config contains the "grants" array
-  (flag is replaced with the item descriptor if filled? or separate data for ease of refunding?)
-  ^ keep track of which nodes are Actually Unlocked... or rather, switch over to a "nodes unconfirmed" system for cancelling (refundOnCancel, refundOnCommit)
 --]]
 
 require "/scripts/util.lua"

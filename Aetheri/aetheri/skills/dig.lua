@@ -1,6 +1,7 @@
 require "/scripts/util.lua"
 require "/scripts/vec2.lua"
 require "/lib/stardust/playerext.lua"
+require "/lib/stardust/color.lua"
 
 local function squareVec(angle, size)
   local fa = angle / (math.pi * 2)
@@ -47,6 +48,8 @@ end
 local range, strength, maxSize, upgrades
 local activeTime = 0.55
 
+local spark
+
 function init()
   activeItem.setHoldingItem(true)
   activeItem.setTwoHandedGrip(false)
@@ -57,6 +60,14 @@ function init()
   maxSize = config.getParameter("baseSize", 3)
   
   upgrades = config.getParameter("skillUpgrades", { })
+  
+  local appearance = status.statusProperty("aetheri:appearance", { })
+  local spcol = "ffffffbf"
+  if appearance.coreHsl then
+    local hsl = appearance.coreHsl
+    spcol = color.fromHsl { hsl[1], hsl[2], (hsl[3] + hsl[4])/2 } --appearance.glowColor
+  end
+  spark = string.format("/aetheri/skills/spark.png?multiply=%s", color.toHex(spcol))
   
   animator.setSoundVolume("digging", 0.0, 0)
 end
@@ -71,7 +82,7 @@ local blockFire = true
 local active = 0 local wasActive
 local layer = { primary = "foreground", alt = "background" }
 local tileMark = "/aetheri/skills/tileMark.png?multiply=ffffff3f"
-local spark = "/aetheri/skills/spark.png?multiply=ffffffbf"
+--local spark = "/aetheri/skills/spark.png?multiply=ffffffbf"
 local tileMarkLayer = "foregroundEntity+1"
 function update(dt, fireMode, shiftHeld)
   local aimPos = vec2.add(activeItem.ownerAimPosition(), vec2.mul(mcontroller.velocity(), dt))

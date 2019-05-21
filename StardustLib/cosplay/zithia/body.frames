@@ -13,8 +13,10 @@
     ]
   },
   "aliases" : {
-    "idle" : "idle.4",
+    "idle" : "idle.4", // assert specific idle pose
     "idle.1" : "idle", "idle.2" : "idle", "idle.3" : "idle", "idle.5" : "idle",
+    // no walk frames at the moment
+    "walk.1" : "run.1", "walk.2" : "run.2", "walk.3" : "run.3", "walk.4" : "run.4", "walk.5" : "run.5", "walk.6" : "run.6", "walk.7" : "run.7", "walk.8" : "run.8", 
     "swimIdle.2" : "swimIdle.1",
     "swim.5" : "swimIdle.1",
     "swim.6" : "swimIdle.1",

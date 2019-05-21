@@ -8,7 +8,7 @@
     "zetaprime:zithia" : { "sortAs" : "zetaprime:satazaki.zitha",
       "name" : "Zithia Satazaki", "baseDir" : "zithia/",
       "body" : "body.png", "head" : "head.png", "frontArm" : "frontarm.png", "backArm" : "backarm.png",
-      "description" : "Zithia Stelara Satazaki ^gray;(\"Stel\")^reset;\n^gray;Species:^reset; Fennec\n^gray;Occupation:^reset; ^cyan;Ma^pink;gi^white;cal ^pink;Gi^cyan;rl^reset;\n\nThe fluffiest lil cataclysm you'll ever see."
+      "description" : "Zithia Stelara Satazaki ^lightgray;(\"Stel\")^reset;\n^gray;Species:^reset; Fennec\n^gray;Occupation:^reset; ^cyan;Ma^pink;gi^white;cal ^pink;Gi^cyan;rl^reset;\n\nThe fluffiest lil cataclysm you'll ever see."
     }
   }
 }

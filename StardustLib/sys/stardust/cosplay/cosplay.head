@@ -4,7 +4,7 @@
   "description" : "Costume Head",
   "inventoryIcon" : [
     { "image" : "/sys/stardust/itemSlotCover.png" },
-    { "image" : "icons.png:head" }
+    { "image" : "quickbaricon.png" }
   ],
   "rarity" : "Essential",
   "maxStack" : 1,

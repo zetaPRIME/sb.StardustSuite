@@ -9,7 +9,7 @@
   "rarity" : "Essential",
   "maxStack" : 1,
   "category" : "???",
-  "tooltipKind" : "stardustlib.simple.128",
+  "tooltipKind" : "stardustlib.simple.192",
   
   "statusEffects" : [ ],
   

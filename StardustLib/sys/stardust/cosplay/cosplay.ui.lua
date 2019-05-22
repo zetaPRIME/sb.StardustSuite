@@ -1,6 +1,26 @@
 --
 
 require "/scripts/util.lua"
+require "/scripts/vec2.lua"
+
+function generatePreview(c)
+  local cv = widget.bindCanvas("body.preview")
+  cv:clear()
+  local center = vec2.mul(widget.getSize("body.preview"), 0.5)
+  local scaleFactor = 2.0
+  local white = {255, 255, 255}
+  
+  local pose = c.previewPose or "idle.1"
+  if type(pose) == "string" then pose = { pose, pose } end
+  
+  if c.backArm then cv:drawImage(c.backArm .. ":" .. pose[2], center, scaleFactor, white, true) end
+  if c.body then cv:drawImage(c.body .. ":" .. pose[1], center, scaleFactor, white, true) end
+  if c.dress then cv:drawImage(c.dress .. ":" .. pose[1]:sub(1, -3), center, scaleFactor, white, true) end
+  if c.head then cv:drawImage(c.head .. ":normal", center, scaleFactor, white, true) end
+  if c.frontArm then cv:drawImage(c.frontArm .. ":" .. pose[2], center, scaleFactor, white, true) end
+  
+  --
+end
 
 local costumes
 local selectedCostume
@@ -10,6 +30,7 @@ function selectCostume(id)
   selectedCostume = c
   
   widget.setText("body.description", c.description)
+  generatePreview(c)
 end
 
 local slots = { "head", "chest", "legs" }
@@ -26,7 +47,7 @@ function applyCostume(costume)
     if itm and itm.name ~= cn then player.giveItem(itm) end
     
     -- generate and apply item
-    itm = { name = cn, count = 1, parameters = { hideBody = true } }
+    itm = { name = cn, count = 1, parameters = { hideBody = true, costumeId = costume.id, description = string.format("^lightgray;Costume %s - ^white;%s^reset;", s:gsub("^%l", string.upper), costume.name) } }
     if s == "head" then
       itm.parameters.frames = costume.head or "/sys/stardust/cosplay/blank.png"
     elseif s == "chest" then
@@ -49,6 +70,7 @@ function init()
     c.sortAs = c.sortAs or c.id
     c.description = c.description or "(no description specified)"
     c.baseDir = util.absolutePath("/cosplay/", c.baseDir)
+    if c.baseDir:sub(-1, -1) ~= "/" then c.baseDir = c.baseDir .. "/" end
     c.body = c.body and util.absolutePath(c.baseDir, c.body)
     c.head = c.head and util.absolutePath(c.baseDir, c.head)
     c.frontArm = c.frontArm and util.absolutePath(c.baseDir, c.frontArm)
@@ -58,6 +80,19 @@ function init()
   end
   table.sort(cl, function(a, b) return a.sortAs < b.sortAs end)
   
+  local curId
+  for _, s in pairs(slots) do
+    local sn = s .. "Cosmetic"
+    local cn = "stardustlib:cosplay" .. s
+    local itm = player.equippedItem(sn)
+    if itm and itm.name == cn then
+      if itm.parameters and itm.parameters.costumeId then
+        curId = itm.parameters.costumeId
+        break
+      end
+    end
+  end
+  
   --
   selectedCostume = costumes["starbound:nuru"]
   
@@ -65,7 +100,7 @@ function init()
   widget.clearListItems("body.items.list")
   for _, c in pairs(cl) do
     local rce = widget.addListItem("body.items.list")
-    sce = sce or rce
+    sce = c.id == curId and rce or sce or rce
     local ce = "body.items.list." .. rce
     widget.setData(ce, c.id)
     widget.setText(ce .. ".label", c.name)
@@ -73,6 +108,9 @@ function init()
   
   --selectCostume("zetaprime:zithia")
   widget.setListSelected("body.items.list", sce)
+  
+  -- update automatically if already wearing something
+  if curId then applyCostume() end
 end
 
 function btnApply() applyCostume() end

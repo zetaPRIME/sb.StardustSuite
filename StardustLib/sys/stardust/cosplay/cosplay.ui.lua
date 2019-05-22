@@ -3,6 +3,11 @@
 require "/scripts/util.lua"
 require "/scripts/vec2.lua"
 
+local baseStatus = {
+  -- prevent beds (and trolls) from stripping off the player's costume
+  { stat = "nude", amount = -1337 },
+}
+
 function generatePreview(c)
   local cv = widget.bindCanvas("body.preview")
   cv:clear()
@@ -59,6 +64,8 @@ function applyCostume(costume)
     
   end
   
+  -- set up costume-related status
+  status.setPersistentEffects("stardustlib:cosplay", util.mergeLists(baseStatus, costume.status or { }))
 end
 
 function init()
@@ -110,6 +117,7 @@ function init()
   widget.setListSelected("body.items.list", sce)
   
   -- update automatically if already wearing something
+  status.clearPersistentEffects("stardustlib:cosplay")
   if curId then applyCostume() end
 end
 

@@ -1,8 +1,8 @@
 [ // -*- grammar-ext: json -*-
   // Add stardustlib-specific items as a patch to avoid polluting files also used by QuickbarMini
   { "op" : "add", "path" : "/items/stardustlib:cosplay", "value" : {
-    "label" : "Costumes",
-    "weight" : -99999, // temporary weight for testing purposes
+    "label" : "^violet;Costumes",
+    "weight" : 100, // guess shove this down in the bottom as fluff
     "icon" : "/sys/stardust/cosplay/quickbaricon.png",
     "action" : [ "pane", "/sys/stardust/cosplay/cosplay.ui.config" ]
   } }

@@ -3,8 +3,9 @@
 -- common libraries
 require "/scripts/util.lua"
 require "/scripts/vec2.lua"
-require "/lib/stardust/playerext.lua"
+require "/lib/stardust/tables.lua"
 require "/lib/stardust/itemutil.lua"
+require "/lib/stardust/playerext.lua"
 
 -- and modules
 require "/aetheri/species/stats.lua"

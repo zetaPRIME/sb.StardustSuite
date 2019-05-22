@@ -25,34 +25,29 @@ function stats.refresh()
   
   stats.flag = skdata and skdata.flags or { }
   
-  local s = { -- apply relevant stats
-    { stat = "maxHealth", amount = -100 + stats.stat.health },
-    { stat = "healthRegen", amount = stats.stat.healthRegen },
-    { stat = "maxEnergy", amount = -100 + stats.stat.energy },
-    --{ stat = "energyRegenPercentageRate", baseMultiplier = 0, asmount = stats.stat.energyRegen }, -- this one is... messy
-    { stat = "aetheri:maxMana", amount = stats.stat.mana },
-    { stat = "aetheri:manaRegen", amount = stats.stat.manaRegen },
-    { stat = "protection", amount = stats.stat.armor },
-    { stat = "powerMultiplier", baseMultiplier = stats.stat.damageMult },
-    { stat = "aetheri:skillPowerMultiplier", amount = stats.stat.skillDamageMult },
-    
-    { stat = "aetheri:miningSpeed", amount = stats.stat.miningSpeed },
-    { stat = "stardustlib:fluxpulseCapacity", amount = stats.stat.fpCapacity },
-  } util.appendLists(s, skdata.rawStatus or { })
-  
-  tech.setStats(s)
-  
-  status.setPersistentEffects("aetheri:treeEffects", skdata.effects or { })
+  status.setPersistentEffects("aetheri:innate", tables.append(
+    { -- apply relevant stats
+      { stat = "maxHealth", amount = -100 + stats.stat.health },
+      { stat = "healthRegen", amount = stats.stat.healthRegen },
+      { stat = "maxEnergy", amount = -100 + stats.stat.energy },
+      --{ stat = "energyRegenPercentageRate", baseMultiplier = 0, asmount = stats.stat.energyRegen }, -- this one is... messy
+      { stat = "aetheri:maxMana", amount = stats.stat.mana },
+      { stat = "aetheri:manaRegen", amount = stats.stat.manaRegen },
+      { stat = "protection", amount = stats.stat.armor },
+      { stat = "powerMultiplier", baseMultiplier = stats.stat.damageMult },
+      { stat = "aetheri:skillPowerMultiplier", amount = stats.stat.skillDamageMult },
+      
+      { stat = "aetheri:miningSpeed", amount = stats.stat.miningSpeed },
+      { stat = "stardustlib:fluxpulseCapacity", amount = stats.stat.fpCapacity },
+    }, skdata.rawStatus or { }, skdata.effects or { }
+  ))
+  -- clean up the old name for this
+  status.clearPersistentEffects("aetheri:treeEffects")
   
   status.setStatusProperty("bonusBeamGunRadius", stats.stat.tileReach - root.assetJson("/player.config:initialBeamGunRadius"))
   
   local sp = status.statusProperty("aetheri:statusPersist", nil)
-  if sp then -- restore resource values after teleport or reload
-    if sp.health then
-      status.setResource("health", sp.health)
-      status.setResource("energy", sp.energy)
-      status.setResource("aetheri:mana", sp.mana)
-    end
+  if sp then -- restore certain persistent resource values after death
     status.setResource("stardustlib:fluxpulse", sp.fluxpulse or 0)
     -- then clear property when we're done
     status.setStatusProperty("aetheri:statusPersist", nil)
@@ -85,15 +80,11 @@ function stats.update(p)
 end
 
 function stats.uninit()
-  local rsave = { }
-  if status.resource("health") > 0 then
-    -- save resource values on teleport (but not death)
-    rsave.health = status.resource("health")
-    rsave.energy = status.resource("energy")
-    rsave.mana = status.resource("aetheri:mana")
+  if status.resource("health") <= 0 then
+    local rsave = { } -- save some resource values on death
+    rsave.fluxpulse = status.resource("stardustlib:fluxpulse")
+    status.setStatusProperty("aetheri:statusPersist", rsave)
   end
-  rsave.fluxpulse = status.resource("stardustlib:fluxpulse")
-  status.setStatusProperty("aetheri:statusPersist", rsave)
 end
 
 message.setHandler("aetheri:gainAP", function(msg, isLocal, amt)

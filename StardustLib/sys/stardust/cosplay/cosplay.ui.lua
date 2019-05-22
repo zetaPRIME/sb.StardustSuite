@@ -56,7 +56,7 @@ function applyCostume(costume)
     if s == "head" then
       itm.parameters.frames = costume.head or "/sys/stardust/cosplay/blank.png"
     elseif s == "chest" then
-      itm.parameters.frames = { frontSleeve = costume.frontArm, backSleeve = costume.backArm }
+      itm.parameters.frames = { frontSleeve = costume.frontArm, backSleeve = costume.backArm, body = costume.dress }
     else -- legs
       itm.parameters.frames = costume.body or "/sys/stardust/cosplay/blank.png"
     end

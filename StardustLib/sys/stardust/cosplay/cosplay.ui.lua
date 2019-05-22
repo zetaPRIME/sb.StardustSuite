@@ -20,7 +20,7 @@ function generatePreview(c)
   
   if c.backArm then cv:drawImage(c.backArm .. ":" .. pose[2], center, scaleFactor, white, true) end
   if c.body then cv:drawImage(c.body .. ":" .. pose[1], center, scaleFactor, white, true) end
-  if c.dress then cv:drawImage(c.dress .. ":" .. pose[1]:sub(1, -3), center, scaleFactor, white, true) end
+  if c.dress then cv:drawImage(c.dress .. ":" .. pose[1], center, scaleFactor, white, true) end
   if c.head then cv:drawImage(c.head .. ":normal", center, scaleFactor, white, true) end
   if c.frontArm then cv:drawImage(c.frontArm .. ":" .. pose[2], center, scaleFactor, white, true) end
   

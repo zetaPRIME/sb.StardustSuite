@@ -17,8 +17,22 @@
     "idle.1" : "idle", "idle.2" : "idle", "idle.3" : "idle", "idle.5" : "idle",
     // no walk frames at the moment
     "walk.1" : "run.1", "walk.2" : "run.2", "walk.3" : "run.3", "walk.4" : "run.4", "walk.5" : "run.5", "walk.6" : "run.6", "walk.7" : "run.7", "walk.8" : "run.8", 
+    
+    // swimming animation runs back and forth through three frames before returning to idle
+    "swim.4" : "swim.2",
+    "swim.5" : "swim.1",
+    
+    /*"swimIdle.1" : "jump.1", // failed attempt at shortcutting swimming
+    "swim.1" : "run.8",
+    "swim.2" : "fall.2",
+    "swim.3" : "run.8",
+    "swim.4" : "jump.1",
+    "swim.5" : "jump.1",
+    "swim.6" : "jump.1",
+    "swim.7" : "jump.1",*/
+    
     "swimIdle.2" : "swimIdle.1",
-    "swim.5" : "swimIdle.1",
+    //"swim.5" : "swimIdle.1",
     "swim.6" : "swimIdle.1",
     "swim.7" : "swimIdle.1",
     "lay.1" : "run.8"

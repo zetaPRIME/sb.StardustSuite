@@ -45,7 +45,7 @@ function skillDrawer.open(slot)
   widget.clearListItems(skillList)
   skillSlotSelected = slotNum[slot]
   for _, skill in pairs(activeSkills) do
-    if true or committedSkillsUnlocked[skill] then
+    if committedSkillsUnlocked[skill] then
       local sn = slotNum[slot]
       widget.registerMemberCallback(skillList, "slotClick", function() skillDrawer.setSkill(sn, skill) end)
       local s = skillList .. "." .. widget.addListItem(skillList) .. ".s"

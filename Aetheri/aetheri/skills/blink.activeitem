@@ -1,0 +1,20 @@
+{ // -*- grammar-ext: json -*-
+  "itemName" : "aetheri:skill.blink",
+  "maxStack" : 1,
+  "rarity" : "Essential",
+  "shortdescription" : "[PH] Blink",
+  "description" : "Twinkle like the starlight you are.",
+  "category" : "aetheri:skill",
+  "tooltipKind" : "mm",
+  "twoHanded" : true,
+  
+  "inventoryIcon" : [
+    { "image" : "skillSlotBG.png" },
+    { "image" : "noicon.png" }
+  ],
+  //"animation" : "burst.animation",
+
+  "scripts" : ["blink.lua"],
+  
+  "isAetherSkill" : true
+}

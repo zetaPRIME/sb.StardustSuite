@@ -323,22 +323,24 @@ function recalculateStats()
     for path, f in pairs(lst) do
       if f then
         local node = trees[tn].nodes[path]
-        if node.type ~= "origin" and not node.fixedCost then 
-          count = count + (node.costMult or 1)
-        end
-        for _, g in pairs(node.grants or { }) do
-          local mode, stat, amt = table.unpack(g)
-          if mode == "flat" and stats[stat] then stats[stat][1] = stats[stat][1] + amt
-          elseif mode == "increased" and stats[stat] then stats[stat][2] = stats[stat][2] + amt
-          elseif mode == "more" and stats[stat] then stats[stat][3] = stats[stat][3] * (1.0 + amt)
-          elseif mode == "rawStatus" and stat then table.insert(playerData.rawStatus, stat)
-          elseif mode == "effect" and stat then table.insert(playerData.effects, stat)
-          elseif mode == "flag" then flags[stat] = true
-          elseif mode == "unlockSkill" and stat then playerData.skillsUnlocked[stat] = true
-          elseif mode == "skillUpgrade" and stat and amt then
-            playerData.skillUpgrades[stat] = playerData.skillUpgrades[stat] or { }
-            playerData.skillUpgrades[stat][amt] = (playerData.skillUpgrades[stat][amt] or 0) + (g[4] or 1)
-          end --
+        if node then -- nodes can just not exist after the tree's been modified
+          if node.type ~= "origin" and not node.fixedCost then 
+            count = count + (node.costMult or 1)
+          end
+          for _, g in pairs(node.grants or { }) do
+            local mode, stat, amt = table.unpack(g)
+            if mode == "flat" and stats[stat] then stats[stat][1] = stats[stat][1] + amt
+            elseif mode == "increased" and stats[stat] then stats[stat][2] = stats[stat][2] + amt
+            elseif mode == "more" and stats[stat] then stats[stat][3] = stats[stat][3] * (1.0 + amt)
+            elseif mode == "rawStatus" and stat then table.insert(playerData.rawStatus, stat)
+            elseif mode == "effect" and stat then table.insert(playerData.effects, stat)
+            elseif mode == "flag" then flags[stat] = true
+            elseif mode == "unlockSkill" and stat then playerData.skillsUnlocked[stat] = true
+            elseif mode == "skillUpgrade" and stat and amt then
+              playerData.skillUpgrades[stat] = playerData.skillUpgrades[stat] or { }
+              playerData.skillUpgrades[stat][amt] = (playerData.skillUpgrades[stat][amt] or 0) + (g[4] or 1)
+            end --
+          end
         end
       end
     end

@@ -81,6 +81,8 @@ function movement.states.ground:init(_, _, giveAirJumps, sprinting)
   self.airJumpTimer = 0
   self.groundTimer = 0
   self.sprinting = sprinting
+  
+  mcontroller.setRotation(0)
 end
 
 function movement.states.ground:uninit()
@@ -89,7 +91,6 @@ end
 
 function movement.states.ground:update(dt)
   tech.setParentState() -- clear
-  mcontroller.setRotation(0)
   mcontroller.clearControls()
   mcontroller.controlModifiers { speedModifier = stats.stat.moveSpeed }
   

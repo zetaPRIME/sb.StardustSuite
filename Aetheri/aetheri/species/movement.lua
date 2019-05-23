@@ -94,11 +94,6 @@ function movement.states.ground:update(dt)
   mcontroller.clearControls()
   mcontroller.controlModifiers { speedModifier = stats.stat.moveSpeed }
   
-  if input.keyDown.t1 then
-    mcontroller.setPosition(tech.aimPosition())
-    mcontroller.setVelocity({0, 0})
-  end
-  
   -- check to initiate rail grind
   if not mcontroller.canJump() and input.key.sprint and input.key.down and mcontroller.yVelocity() <= 0 then
     local rc = railCast(vec2.add(mcontroller.position(), {0, -2.5}), math.max(0, math.floor(-mcontroller.yVelocity() * dt)))

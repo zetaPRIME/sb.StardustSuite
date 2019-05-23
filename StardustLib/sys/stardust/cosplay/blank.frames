@@ -17,6 +17,10 @@
     "swim.5" : "swimIdle.1",
     "swim.6" : "swimIdle.2",
     "swim.7" : "swimIdle.2",
-    "lay.1" : "idle.1"
+    "lay.1" : "idle.1",
+    
+    "duck" : "duck.1",
+    
+    "run" : "idle.1", "chest.1" : "idle.1", "chest.2" : "idle.1", "chest.3" : "idle.1"
   }
 }

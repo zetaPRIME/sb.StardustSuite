@@ -9,6 +9,16 @@
       "name" : "Zithia Satazaki", "baseDir" : "zithia",
       "body" : "body.png", "head" : "head.png", "frontArm" : "frontarm.png", "backArm" : "backarm.png",
       "description" : "Zithia Stelara Satazaki ^darkgray;// ^lightgray;\"Stel\"^reset;\n^lightgray;Species ^darkgray;//^reset; Fennec\n^lightgray;Occupation ^darkgray;//^reset; ^cyan;Ma^pink;gi^white;cal ^pink;Gi^cyan;rl^reset;, Stardust Suite developer\n\nThe fluffiest lil cataclysm you'll ever see."
+    },
+    
+    "talkhaus:demo" : {
+      "name" : "Demo", "baseDir" : "demoiris", "body" : "demo.png", "frontArm" : "demoenergy.png", "backArm" : "demoenergy.png",
+      "description" : "Demo Roseclair\n^lightgray;Species ^darkgray;//^reset; ABCD\n     ^lightgray;(Armless Bipedal Cycloptic Demon)^reset;\n^lightgray;Occupation ^darkgray;//^reset; Platformer Heroine\n\nThat was a demo.\n\n^darkgray;original sprites by ^lightgray;Terry von Feleday\n^darkgray;arranged for Starbound by ^lightgray;Zithia Satazaki^reset;"
+    },
+    
+    "talkhaus:iris" : {
+      "name" : "Iris", "baseDir" : "demoiris", "body" : "iris.png", "frontArm" : "irisenergy.png", "backArm" : "irisenergy.png",
+      "description" : "Iris Roseclair\n^lightgray;Species ^darkgray;//^reset; ABCD\n     ^lightgray;(Armless Bipedal Cycloptic Demon)^reset;\n^lightgray;Occupation ^darkgray;//^reset; Platformer Deuteragonist\n\nEye see what you did there.\n\n^darkgray;original sprites by ^lightgray;Chaoxys\n^darkgray;arranged for Starbound by ^lightgray;Zithia Satazaki^reset;"
     }
   }
 }

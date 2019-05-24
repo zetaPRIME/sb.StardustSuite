@@ -2,14 +2,14 @@
 
 --[[ TODO:
   allow pulling currency items as materials
-  
+
   figure out how to work refunding a single node:
   takes an item (picked up in cursor) to refund, a la Orb of Regret
   to determine if refundable, check (recursively) if every connected taken node is connected to the others
   or rather, take a list of connected taken nodes and follow the tree starting with the first to see if connects to all others (and an origin)
   if not, check the remaining ones to see if they're connected to an origin
   when refunding, only add to the list of nodes pending refund
-  
+
   decorations
   ship nodes (unlock FTL travel from skill tree?)
   indicators for "more in this direction"; scroll bounds?
@@ -35,11 +35,11 @@ sounds = {
   cantUnlock = "/sfx/interface/clickon_error.ogg",
   confirm = "/sfx/objects/essencechest_open3.ogg",
   cancel = "/sfx/interface/nav_insufficient_fuel.ogg",
-  
+
   jump = { "/sfx/interface/stationtransponder_stationpulse.ogg", "/sfx/tech/tech_dash.ogg" },
-  
+
   socketJewel = { "/sfx/melee/sword_parry.ogg", "/sfx/objects/essencechest_open2.ogg" },
-  
+
   openSkillDrawer = "/sfx/objects/ancientenergy_pickup2.ogg",
   closeSkillDrawer = "/sfx/objects/ancientenergy_pickup1.ogg",
   selectSkill = "/sfx/objects/essencechest_open3.ogg",
@@ -81,7 +81,7 @@ end
 local modeHasIcon = { flat = true, increased = true, more = true }
 local function setNodeVisuals(node, nodeData)
   if upkeepOnly then return nil end -- skip if it won't be shown anyway
-  
+
   -- special handling for sockets
   if node.type == "socket" then
     node.icon = "jewelsocket.png"
@@ -92,7 +92,7 @@ local function setNodeVisuals(node, nodeData)
       node.contentsIcon = itemutil.relativePath(nodeData.jewel, itemutil.property(nodeData.jewel, "jewelIcon") or itemutil.property(nodeData.jewel, "inventoryIcon"))
     end
   end
-  
+
   -- icon
   if not node.icon then
     if node.type == "origin" then node.icon = "book.png"
@@ -110,10 +110,10 @@ local function setNodeVisuals(node, nodeData)
   end
   node.icon = util.absolutePath("/aetheri/interface/skilltree/icons/", node.icon)
   node.unlockedIcon = node.unlockedIcon and util.absolutePath("/aetheri/interface/skilltree/icons/", node.unlockedIcon)
-  
+
   if node.skill then populateSkillData(node) end
   if node.type == "link" then node.fixedCost = 0 end
-  
+
   generateNodeToolTip(node) -- delegated to module so build scripts can reuse it
   if node.itemCost then -- assemble information for item requirement tooltips
     for _, d in pairs(node.itemCost) do
@@ -135,13 +135,13 @@ function init()
     statIcons = cfg.statIcons
     baseStats = cfg.baseStats
     baseNodeCost = cfg.baseNodeCost
-    
+
     activeSkills = cfg.activeSkills
     startingSkills = cfg.startingSkills
     startingLoadout = cfg.startingLoadout
-    
+
     jewelSockets = { }
-    
+
     local t
     -- recursive function for loading in node data
     local iterateTree iterateTree = function(tree, pfx, offset)
@@ -180,7 +180,7 @@ function init()
         end
       end
     end
-    
+
     for name, c in pairs(cfg.trees) do
       t = { name = name, nodes = { }, _conn = { }, connections = { } }
       trees[name] = t
@@ -195,18 +195,18 @@ function init()
         end
       end t._conn = nil -- and clear temporary data
     end
-    
+
   end
-  
+
   loadPlayerData()
-  
+
   if upkeepOnly then return pane.dismiss() end
-  
+
   widget.setItemSlotItem("skillslot1", {name="aetheri:skill.dig", count=1})
   widget.setItemSlotItem("skillslot2", {name="perfectlygenericitem", count=1})
   widget.setItemSlotItem("skillslot3", {name="perfectlygenericitem", count=1})
   widget.setItemSlotItem("skillslot4", {name="perfectlygenericitem", count=1})
-  
+
   canvas = widget.bindCanvas("viewCanvas")
   view = nodeView.new(trees.passive)
   redrawCanvas()
@@ -260,6 +260,7 @@ function loadPlayerData()
       -- refund all legacy spent AP
       status.setStatusProperty("aetheri:AP", status.statusProperty("aetheri:AP", 0) + (playerData.spentAP or 0))
     end
+    playerData = playerData or { }
     playerData = {
       compatId = compatId,
       nodesUnlocked = { },
@@ -270,11 +271,11 @@ function loadPlayerData()
   end
   playerData.revId = revId
   playerData.itemsPendingRefund = playerData.itemsPendingRefund or { }
-  
+
   for _, t in pairs(trees) do
     playerData.nodesUnlocked[t.name] = playerData.nodesUnlocked[t.name] or { }
   end
-  
+
   for n in pairs(jewelSockets) do -- update sockets
     nd = isNodeUnlocked(n)
     if nd and nd.jewel then
@@ -282,25 +283,25 @@ function loadPlayerData()
       setNodeVisuals(n, nd) -- update icon and tooltip
     else n.grants = { } end
   end
-  
+
   recalculateStats()
   committedSkillsUnlocked = playerData.skillsUnlocked
   committedSkillUpgrades = playerData.skillUpgrades
-  
+
   -- grab visuals
   appearance = status.statusProperty("aetheri:appearance", { })
   directives.nodeActive = string.format("?border=1;%s;00000000", color.toHex(color.fromHsl{ appearance.coreHsl[1], appearance.coreHsl[2], 0.75, 0.75 }))
-  
+
   -- process pending refunds
   for _, d in pairs(playerData.itemsPendingRefund) do
     player.giveItem(d) -- TODO: give an item packet instead, where you can take out each item individually
     -- or just pull back any items the player drops??
   end playerData.itemsPendingRefund = { }
-  
+
   -- refresh view on reload
   if view then view.needsRedraw = true end
   commitPlayerData() -- always update after load
-  
+
   refreshSkillSlots()
 end
 
@@ -310,11 +311,11 @@ function recalculateStats()
   for stat, t in pairs(baseStats) do -- populate base stat values
     stats[stat] = {t[1] or 0, t[2] or 1, t[3] or 1}
   end
-  
+
   playerData.skillsUnlocked = { }
   playerData.skillUpgrades = { }
   for _, skill in pairs(startingSkills) do playerData.skillsUnlocked[skill] = true end
-  
+
   playerData.rawStatus = { }
   playerData.effects = { }
   playerData.numNodesTaken = { }
@@ -324,7 +325,7 @@ function recalculateStats()
       if f then
         local node = trees[tn].nodes[path]
         if node then -- nodes can just not exist after the tree's been modified
-          if node.type ~= "origin" and not node.fixedCost then 
+          if node.type ~= "origin" and not node.fixedCost then
             count = count + (node.costMult or 1)
           end
           for _, g in pairs(node.grants or { }) do
@@ -346,7 +347,7 @@ function recalculateStats()
     end
     playerData.numNodesTaken[tn] = count
   end
-  
+
   playerData.selectedSkills = playerData.selectedSkills or { }
   local unl = committedSkillsUnlocked or playerData.skillsUnlocked
   for i = 1, 4 do
@@ -354,7 +355,7 @@ function recalculateStats()
     skill = unl[skill] and skill or "none"
     playerData.selectedSkills[i] = skill
   end
-  
+
   playerData.calculatedStats = stats
   playerData.flags = flags
 end
@@ -525,7 +526,7 @@ function nodeView:update()
   self.lastPos = self.lastPos or {0, 0}
   local pos = canvas:mousePosition()
   local forceRedraw = false
-  
+
   if self.jump then
     if self.scrolling then self.lastPos = pos end -- no double-scroll
     self.jump.time = self.jump.time - script.updateDt() * 5.0
@@ -538,21 +539,21 @@ function nodeView:update()
       forceRedraw = true -- force tool tip/hover update
     end
   end
-  
+
   if forceRedraw or vec2.mag(vec2.sub(pos, self.lastPos)) > 0 then -- if mouse moved...
     --self.needsRedraw = true
     if self.scrolling then
       self.scroll = vec2.add(self.scroll, vec2.sub(pos, self.lastPos))
       self.needsRedraw = true
     end
-    
+
     local hover = self:nodeAt(vec2.sub(pos, self.scroll))
     if self.hover ~= hover then
       self.hover = hover
       self.needsRedraw = true
     end
   end
-  
+
   self.lastPos = pos
 end
 
@@ -602,7 +603,7 @@ function nodeView:clickEvent(pos, btn, down)
       self.nodeSpacing = self.nodeSpacing * scaleFactor
     end
   end
-  
+
   self.btnDown[btn] = down
 end
 
@@ -614,12 +615,12 @@ local border = {
 }
 function nodeView:redraw()
   canvas:clear()
-  
+
   -- draw guiding line
   --canvas:drawLine(canvas:mousePosition(), self.scroll, {255, 255, 255, 63}, 1)
-  
+
   local toolTipWidth = 160
-  
+
   local lco = {0, 0}--{-.5, -.5}
   local lineColors = {
     {127, 63, 63, 63},
@@ -640,7 +641,7 @@ function nodeView:redraw()
     if isNodeUnlocked(c[2]) then lc = lc + 1 end
     canvas:drawLine(vec2.add(self:nodeDrawPos(c[1]), lco), vec2.add(self:nodeDrawPos(c[2]), lco), lineColors[lc], 2)
   end
-  
+
   for _, node in pairs(self.tree.nodes) do
     local pos = self:nodeDrawPos(node)
     local active = isNodeUnlocked(node)
@@ -679,7 +680,7 @@ function nodeView:redraw()
     end
     canvas:drawText(tt, { position = ttPos, horizontalAnchor = "left", verticalAnchor = "top", wrapWidth = toolTipWidth }, 8, {191, 191, 191})
   end
-  
+
   canvas:drawText(
     string.format("^shadow;^white;%d ^violet;AP^reset;", math.floor(currentAP())),
     { position = {480.0, 508.0}, horizontalAnchor = "mid", verticalAnchor = "top" },

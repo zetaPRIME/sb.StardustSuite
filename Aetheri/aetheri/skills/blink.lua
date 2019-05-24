@@ -57,7 +57,7 @@ function update(dt, fireMode, shiftHeld)
     buffered = false
     
     local pos = mcontroller.position()
-    local target = vec2.add(pos, vec2.mul(aimVec, range))
+    local target = vec2.add(pos, vec2.mul(aimVec, range)) local ot = target
     local hit = world.lineCollision(pos, target)
     if hit then target = hit end
     local pol = mcontroller.collisionPoly()
@@ -79,7 +79,7 @@ function update(dt, fireMode, shiftHeld)
       
       playerext.playAudio("/sfx/tech/tech_dashftl.ogg", 0, 1)
       playerext.playAudio("/sfx/tech/tech_dash.ogg", 0, 1.75)
-      if hit then -- impact sound
+      if vec2.mag(vec2.sub(target, ot)) >= 0.5 then -- impact sound if adjusted by at least half a tile
         playerext.playAudio("/sfx/gun/grenadeblast_small_electric2.ogg", 0, 1.25)
       end
     end

@@ -583,7 +583,7 @@ function nodeView:clickEvent(pos, btn, down)
           if tryUnlockNode(self.hover) then
             self.needsRedraw = true
             playSound(sounds.unlock)
-            if self.hover.type == "gate" then playSound(sounds.unlockGate)
+            if self.hover.type == "gate" then playSound(sounds.unlockGate) end
           elseif not nd then
             playSound(sounds.cantUnlock)
           end

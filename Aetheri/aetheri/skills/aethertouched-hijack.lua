@@ -24,7 +24,9 @@ do
   function die(...)
     -- first calculate granted AP
     local ap = world.entityHealth(entity.id())[2] * 10 -- start based on max health
+    ap = ap * (1 + status.stat("protection")/100) -- bonus from armor (TODO exponential curve?)
     ap = ap * 1.1^(nn.level()-1) -- scale up in a gentle curve depending on tier
+    if npc then ap = ap * 1.25 end -- bonus for taking out NPCs
     ap = math.floor(0.5 + ap) -- round to int
     
     -- then loop through and send

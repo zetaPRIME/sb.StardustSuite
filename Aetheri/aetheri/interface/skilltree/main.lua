@@ -39,6 +39,7 @@ sounds = {
   jump = { "/sfx/interface/stationtransponder_stationpulse.ogg", "/sfx/tech/tech_dash.ogg" },
 
   socketJewel = { "/sfx/melee/sword_parry.ogg", "/sfx/objects/essencechest_open2.ogg" },
+  unlockGate = { },
 
   openSkillDrawer = "/sfx/objects/ancientenergy_pickup2.ogg",
   closeSkillDrawer = "/sfx/objects/ancientenergy_pickup1.ogg",
@@ -582,6 +583,7 @@ function nodeView:clickEvent(pos, btn, down)
           if tryUnlockNode(self.hover) then
             self.needsRedraw = true
             playSound(sounds.unlock)
+            if self.hover.type == "gate" then playSound(sounds.unlockGate)
           elseif not nd then
             playSound(sounds.cantUnlock)
           end

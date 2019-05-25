@@ -135,13 +135,9 @@ Aetheri species mod {
     }
     
     Skill tree {
-        - Matter manipulator screen replaced with the Aethyrium, a set of skill trees
-        - Passive tree akin to Path of Exile; replaces armor stats and techs
-        - Active skill tree for unlocking and upgrading Innates
-        
-        - xp gained from enemy kills, usable toward next passive point with slow ramping-up of cost (Warframe focus-style)
-          or active skill nodes with fixed costs
-        - status effect that monkey-patches xp gains for nearby players on enemy death into their script context
+        "node keys" (catalysts?) dropped rarely by mobs depending on level, used as gate costs
+        use a vault key to gate off some lategame clusters
+        item for refunding nodes (stone of reattunement?)
     }
     
     Hunger system {

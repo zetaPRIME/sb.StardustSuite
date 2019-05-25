@@ -23,10 +23,16 @@ do
   local _die = die or nf
   function die(...)
     -- first calculate granted AP
-    local ap = world.entityHealth(entity.id())[2] * 10 -- start based on max health
-    ap = ap * (1 + status.stat("protection")/100) -- bonus from armor (TODO exponential curve?)
-    ap = ap * 1.1^(nn.level()-1) -- scale up in a gentle curve depending on tier
-    if npc then ap = ap * 1.25 end -- bonus for taking out NPCs
+    local ap
+    local apConfig = monster and root.assetJson("/aetheri/species/ap.config:monsters")[monster.type()]
+    if apConfig then -- predefined AP gain from certain monsters
+      ap = apConfig.baseAmount
+    else -- calculate AP manually
+      ap = world.entityHealth(entity.id())[2] * 10 -- start based on max health
+      ap = ap * (1 + status.stat("protection")/100) -- bonus from armor (TODO exponential curve?)
+      ap = ap * 1.1^(nn.level()-1) -- scale up in a gentle curve depending on tier
+      if npc then ap = ap * 1.25 end -- bonus for taking out NPCs
+    end
     ap = math.floor(0.5 + ap) -- round to int
     
     -- then loop through and send

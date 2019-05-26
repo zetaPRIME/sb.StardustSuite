@@ -6,5 +6,7 @@
   "tooltipKind" : "object",
   "builder" : "/aetheri/jewels/buildjewel.lua",
   
+  "randomize" : true,
+  
   "inventoryIcon" : "/aetheri/skills/skillSlotBGEmpty.png"
 }

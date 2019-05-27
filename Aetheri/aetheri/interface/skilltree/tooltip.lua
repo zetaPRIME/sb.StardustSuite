@@ -2,7 +2,7 @@
 
 local function numStr(n) -- friendly string representation of number
   local fn = math.floor(n)
-  if fn == n then return tostring(fn) else return tostring(n) end
+  if math.abs(fn - n) < 0.05 then return tostring(fn) else return tostring(n) end
 end
 
 function generateGrantToolTip(gl, name)

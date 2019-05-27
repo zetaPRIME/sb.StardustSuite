@@ -3,7 +3,7 @@
   "maxStack" : 1,
   "rarity" : "Legendary",
   "shortdescription" : "Basic Jewel",
-  "tooltipKind" : "object",
+  "tooltipKind" : "stardustlib.longdescription",
   "builder" : "/aetheri/jewels/buildjewel.lua",
   
   "randomize" : true,

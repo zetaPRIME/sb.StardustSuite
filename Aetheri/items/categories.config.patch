@@ -1,4 +1,4 @@
 [ // -*- grammar-ext: json -*-
   { "op" : "add", "path" : "/labels/aetheri:skill", "value" : "Innate Skill" },
-  { "op" : "add", "path" : "/labels/aetheri:skilljewel", "value" : "Jewel" }
-] 
+  { "op" : "add", "path" : "/labels/aetheri:skilljewel", "value" : "Aether Jewel" }
+]

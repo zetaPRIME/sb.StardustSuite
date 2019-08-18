@@ -27,6 +27,7 @@ function init()
   updateColors()
   message.setHandler("aetheri:paletteChanged", updateColors)
   dynItem.install()
+  dynItem.setAutoAim(true)
 end
 
 function uninit()

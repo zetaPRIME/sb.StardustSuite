@@ -18,6 +18,8 @@ do
   
   function dynItem.aimAt(dir, angle)
     dynItem.dir, dynItem.armAngle = dir, angle
+    dir = dir or mcontroller.facingDirection()
+    angle = angle or 0
     activeItem.setFacingDirection(dir)
     activeItem.setArmAngle(angle - mcontroller.rotation() * dir)
   end

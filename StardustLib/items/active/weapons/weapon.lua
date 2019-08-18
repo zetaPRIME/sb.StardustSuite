@@ -364,6 +364,54 @@ if (true) then -- encapsulate
       return vec
     end
     
+    local function rotatePoly(p, rot, off)
+      --off = off or {0, 0}
+      if not p then return nil end
+      local np = { }
+      for k, v in pairs(p) do
+        if off then v = vec2.add(v, off) end
+        np[k] = vec2.rotate(v, rot)
+      end
+      return np
+    end
+    
+    --[[local setDamageSources = activeItem.setDamageSources
+    function activeItem.setDamageSources(lst)
+      local nl
+      if lst then
+        local rot = mcontroller.rotation()
+        sb.logInfo("setting damage sources with rotation of "..rot)
+        if rot == 0 then return setDamageSources(lst) end -- early out if not rotated
+        nl = { }
+        for _, s in pairs(lst) do
+          local ms = util.mergeTable({ }, s)
+          table.insert(nl, ms)
+          ms.poly = rotatePoly(ms.poly, rot)
+          ms.line = rotatePoly(ms.line, rot)
+        end
+      end
+      return setDamageSources(nl)
+    end
+    
+    local setItemDamageSources = activeItem.setItemDamageSources
+    function activeItem.setItemDamageSources(lst)
+      local nl
+      if lst then
+        local rot = mcontroller.rotation() + armAngle
+        --sb.logInfo("setting damage sources with rotation of "..rot)
+        --if rot == 0 then return setItemDamageSources(lst) end -- early out if not rotated
+        local off = handPosition()
+        nl = { }
+        for _, s in pairs(lst) do
+          local ms = util.mergeTable({ }, s)
+          table.insert(nl, ms)
+          ms.poly = rotatePoly(ms.poly, rot, off)
+          ms.line = rotatePoly(ms.line, rot, off)
+        end
+      end
+      return setDamageSources(nl)
+    end]]
+    
     Weapon.updateAim = _updAim
     return _updAim(...)
   end

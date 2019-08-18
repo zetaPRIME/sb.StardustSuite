@@ -46,6 +46,7 @@
   "sounds" : {
     "fire" : [ "/sfx/gun/grenadeblast_electric1.ogg" ],
     "charge" : [ "/sfx/gun/aegisaltpistol_loop2.ogg" ],
-    "bonus" : [ "/sfx/interface/sniper_mark_stop2.ogg" ]
+    "bonus" : [ "/sfx/interface/sniper_mark_stop2.ogg" ],
+    "bonusFire" : [ "/sfx/interface/energy_out1.ogg" ]
   }
 }

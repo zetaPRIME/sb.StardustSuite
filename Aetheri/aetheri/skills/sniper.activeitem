@@ -10,7 +10,7 @@
   
   "inventoryIcon" : [
     { "image" : "skillSlotBG.png" },
-    { "image" : "burst.icon.png" }
+    { "image" : "sniper.icon.png" }
   ],
   "animation" : "sniper.animation",
 

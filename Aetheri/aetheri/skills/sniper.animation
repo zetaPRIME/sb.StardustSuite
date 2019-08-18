@@ -1,0 +1,51 @@
+{ // -*- grammar-ext: json -*-
+  "globalTagDefaults" : {
+    "partImage" : "",
+    "animFrame" : "",
+    "directives" : ""
+  },
+  
+  "animatedParts" : {
+    "parts" : {
+      "beam" : {
+        "properties" : {
+          "zLevel" : 0,
+          "centered" : true,
+          "image" : "<partImage><directives>",
+          "fullbright" : true,
+          "offset" : [0, 0],
+          "transformationGroups" : ["beam"]
+        }
+      },
+      "flash" : {
+        "properties" : {
+          "zLevel" : 0,
+          "centered" : true,
+          "image" : "<partImage><directives>",
+          "fullbright" : true,
+          "offset" : [0, 0],
+          "transformationGroups" : ["flash"]
+        }
+      }
+    }
+  },
+  
+  "transformationGroups" : {
+    "beam" : { }, "flash" : { }
+  },
+  
+  "lights" : {
+    "muzzleFlash" : {
+      "active" : true,
+      "position" : [2, 0],
+      "color" : [0, 0, 0],
+      "pointLight" : true
+    }
+  },
+  
+  "sounds" : {
+    "fire" : [ "/sfx/gun/grenadeblast_electric1.ogg" ],
+    "charge" : [ "/sfx/gun/aegisaltpistol_loop2.ogg" ],
+    "bonus" : [ "/sfx/interface/sniper_mark_stop2.ogg" ]
+  }
+}

@@ -1,0 +1,22 @@
+{ // -*- grammar-ext: json -*-
+  "itemName" : "aetheri:skill.sniper",
+  "maxStack" : 1,
+  "rarity" : "Essential",
+  "shortdescription" : "[PH] Sniper Shot",
+  "description" : "Charge up a single, powerful shot that ^cyan;instantly pierces through enemies^reset;.",
+  "category" : "aetheri:skill",
+  "tooltipKind" : "mm",
+  "twoHanded" : true,
+  
+  "inventoryIcon" : [
+    { "image" : "skillSlotBG.png" },
+    { "image" : "burst.icon.png" }
+  ],
+  "animation" : "sniper.animation",
+
+  "scripts" : ["sniper.lua"],
+  
+  "isAetherSkill" : true,
+  
+  "baseDamage" : 7
+}

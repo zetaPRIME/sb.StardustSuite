@@ -375,12 +375,11 @@ if (true) then -- encapsulate
       return np
     end
     
-    --[[local setDamageSources = activeItem.setDamageSources
+    local setDamageSources = activeItem.setDamageSources
     function activeItem.setDamageSources(lst)
       local nl
       if lst then
         local rot = mcontroller.rotation()
-        sb.logInfo("setting damage sources with rotation of "..rot)
         if rot == 0 then return setDamageSources(lst) end -- early out if not rotated
         nl = { }
         for _, s in pairs(lst) do
@@ -397,10 +396,9 @@ if (true) then -- encapsulate
     function activeItem.setItemDamageSources(lst)
       local nl
       if lst then
-        local rot = mcontroller.rotation() + armAngle
-        --sb.logInfo("setting damage sources with rotation of "..rot)
-        --if rot == 0 then return setItemDamageSources(lst) end -- early out if not rotated
-        local off = handPosition()
+        local rot = mcontroller.rotation() * mcontroller.facingDirection()
+        if rot == 0 then return setItemDamageSources(lst) end -- early out if not rotated
+        --local off = handPosition()
         nl = { }
         for _, s in pairs(lst) do
           local ms = util.mergeTable({ }, s)
@@ -409,8 +407,8 @@ if (true) then -- encapsulate
           ms.line = rotatePoly(ms.line, rot, off)
         end
       end
-      return setDamageSources(nl)
-    end]]
+      return setItemDamageSources(nl)
+    end
     
     Weapon.updateAim = _updAim
     return _updAim(...)

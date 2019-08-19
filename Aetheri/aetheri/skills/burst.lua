@@ -75,7 +75,7 @@ function update(dt, fireMode, shiftHeld)
   cooldown = math.max(cooldown - dt / cooldownTime, 0)
   anim = math.max(anim - dt / animTime, 0)
   
-  local cost = 10
+  local cost = 5
   
   if cooldown <= 0.75 and fireMode == "primary" and status.resource("aetheri:mana") >= cost then buffered = true end
   if cooldown == 0 and buffered and status.consumeResource("aetheri:mana", cost) then

@@ -26,13 +26,14 @@ function init()
   
   updateColors()
   message.setHandler("aetheri:paletteChanged", updateColors)
-  dynItem.install()
-  dynItem.setAutoAim(true)
 end
 
 function uninit()
   --
 end
+
+dynItem.install()
+dynItem.setAutoAim(true)
 
 local cfg = {
   manaCost = 70,
@@ -45,6 +46,15 @@ local cfg = {
   
   chargeBonus = 1.5,
 }
+
+-- input task
+dynItem.addTask(function() while true do
+  activeItem.setHoldingItem(false)
+  activeItem.setCursor("/cursors/reticle5.cursor")
+  if dynItem.firePress then dynItem.addTask(fireTask) end
+  
+  coroutine.yield()
+end end)
 
 local busy = false
 function fireTask()
@@ -172,13 +182,6 @@ function fireTask()
   end
   
   busy = false
-end
-
-function update()
-  --sb.logInfo("tick")
-  activeItem.setHoldingItem(false)
-  activeItem.setCursor("/cursors/reticle5.cursor")
-  if dynItem.firePress then dynItem.addTask(fireTask) end
 end
 
 --status.consumeResource("aetheri:mana", cost)

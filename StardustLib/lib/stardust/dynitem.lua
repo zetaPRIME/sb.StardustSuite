@@ -25,12 +25,13 @@ do
   end
   
   function dynItem.setAutoAim(f)
-    if f and not dynItem.autoAim then dynItem.aimAt(dynItem.aimDir, dynItem.aimAngle)
-    elseif dynItem.autoAim and not f then dynItem.aimAt(dynItem.dir, 0) end
+    if mcontroller then -- adjust immediately if already init'd
+      if f and not dynItem.autoAim then dynItem.aimAt(dynItem.aimDir, dynItem.aimAngle) end
+      --elseif dynItem.autoAim and not f then dynItem.aimAt(dynItem.dir, 0) end
+    end
     dynItem.autoAim = f
   end
   
-  local handPos = {1, 0}
   function dynItem.offsetPoly(p)
     local r = { }
     local rot, scale = dynItem.armAngle, {mcontroller.facingDirection(), 1}
@@ -53,10 +54,11 @@ do
     local first = true
     return function()
       if coroutine.status(c) == "dead" then return nil end
+      local fst = first
       if first then first = false else coroutine.yield() end
       local f, v = coroutine.resume(c)
       if not f then sb.logError(v) return nil end
-      return v
+      return v, fst
     end
   end
   

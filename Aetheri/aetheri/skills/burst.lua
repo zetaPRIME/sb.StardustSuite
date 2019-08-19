@@ -1,5 +1,4 @@
-require "/scripts/util.lua"
-require "/scripts/vec2.lua"
+require "/lib/stardust/dynitem.lua"
 require "/lib/stardust/playerext.lua"
 require "/lib/stardust/color.lua"
 
@@ -24,7 +23,7 @@ end
 local damage
 
 function init()
-  activeItem.setHoldingItem(true)
+  activeItem.setHoldingItem(false)
   activeItem.setTwoHandedGrip(false)
   activeItem.setBackArmFrame("rotation")
   
@@ -45,6 +44,122 @@ function uninit()
   --
 end
 
+dynItem.install()
+dynItem.setAutoAim(true)
+
+local cfg = {
+  manaCost = 5,
+  baseDamage = 5,
+  
+  animTime = 1/6,
+  cooldownTime = 0.35,
+  
+  altManaCost = 7,
+}
+
+local buffered = false
+
+-- buffer task
+dynItem.addTask(function() while true do
+  if dynItem.firePress then buffered = 1 elseif dynItem.altFirePress then buffered = 2 end
+  
+  coroutine.yield()
+end end)
+
+-- fire task
+dynItem.addTask(function() while true do
+  if buffered == 1 and status.consumeResource("aetheri:mana", cfg.manaCost) then -- primary fire
+    -- set up for the actual burst
+    activeItem.setHoldingItem(true)
+    activeItem.setFrontArmFrame("run.3")
+    activeItem.setBackArmFrame("jump.3")
+    coroutine.yield() -- single frame delay because otherwise the hand position is incorrect (*W H Y*)
+    dynItem.setAutoAim(false) -- lock aim during animation
+    animator.playSound("fire")
+    animator.playSound("fireHum")
+    local aimVec = vec2.norm(vec2.sub(dynItem.aimPos, mcontroller.position()))
+    local up = vec2.dot(aimVec, {0, 1}) >= 0.9
+    local velMult = 1 + util.clamp(vec2.dot(aimVec, vec2.norm(mcontroller.velocity())), 0, 1) * util.clamp(vec2.mag(mcontroller.velocity()) / 100, 0, 1) * 1
+    local dmg = damage * velMult * status.stat("powerMultiplier", 1.0) * status.stat("aetheri:skillPowerMultiplier", 0.0)
+    activeItem.setDamageSources({{
+      poly = dynItem.offsetPoly{ {0, -1.5}, {-1.5, 0}, {0, 1.5}, {10, 0} },
+      damage = dmg,
+      trackSourceEntity = true,
+      sourceEntity = activeItem.ownerEntityId(),
+      team = activeItem.ownerTeam(),
+      damageSourceKind = "plasma",
+      statusEffects = { "aetheri:aethertouched" },
+      knockback = {up and 0 or dynItem.aimDir, 25},
+      rayCheck = true,
+      damageRepeatTimeout = 0,
+    }})
+    for anim, first in dynItem.tween(1.0, 0.0, cfg.animTime) do
+      if not first then activeItem.setDamageSources() end
+      
+      local visMult = anim^3
+      animator.setPartTag("burst", "directives", string.format("%s?multiply=ffffff%02x", directives, math.floor(0.5 + visMult * 255)))
+      animator.resetTransformationGroup("weapon")
+      animator.scaleTransformationGroup("weapon", {1 + (1-anim) * -0.1, anim^2})
+      animator.setLightColor("muzzleFlash", color.lightColor(lightColor, anim))
+      activeItem.setFrontArmFrame((anim < 0.32) and "run.3" or "rotation")
+      activeItem.setBackArmFrame((anim < 0.32) and "jump.3" or "rotation")
+    end
+    --util.wait(cfg.animTime)
+    
+    -- cooldown
+    activeItem.setHoldingItem(false)
+    dynItem.setAutoAim(true)
+    buffered = false
+    util.wait((cfg.cooldownTime - cfg.animTime) - script.updateDt())
+  elseif buffered == 2 and status.consumeResource("aetheri:mana", cfg.altManaCost) then -- alt fire, sweep straight up
+    dynItem.setAutoAim(false) -- lock aim during animation
+    dynItem.aimAt(nil, 0)
+    activeItem.setHoldingItem(true)
+    activeItem.setFrontArmFrame("run.3")
+    activeItem.setBackArmFrame("jump.3")
+    coroutine.yield()
+    
+    animator.playSound("fireHum")
+    
+    local drg = "aetheri:burst.sweepUp=" .. sb.nrand()
+    
+    for v in dynItem.tween(0, 1, cfg.animTime) do
+      activeItem.setFrontArmFrame("rotation")
+      activeItem.setBackArmFrame("rotation")
+      dynItem.aimAt(nil, util.easeInOutSin(v, -0.5, 1.5) * math.pi * 0.5)
+      activeItem.setDamageSources({{
+        poly = dynItem.offsetPoly{ {0, -1.5}, {-1.5, 0}, {0, 1.5}, {10, 0}, {7, -7} },
+        damage = 0,
+        sourceEntity = activeItem.ownerEntityId(),
+        team = activeItem.ownerTeam(),
+        damageSourceKind = "plasma",
+        statusEffects = { "aetheri:aethertouched" },
+        knockback = {0, 50},
+        rayCheck = true,
+        damageRepeatTimeout = 1,
+        damageRepeatGroup = drg,
+      }})
+      
+      local anim = math.sin(v*math.pi)
+      local visMult = anim^(1/3)
+      animator.setPartTag("burst", "directives", string.format("%s?multiply=ffffff%02x", directives, math.floor(0.5 + visMult * 255)))
+      animator.resetTransformationGroup("weapon")
+      animator.scaleTransformationGroup("weapon", {1 + (1-anim) * -0.1, anim^0.25})
+      animator.setLightColor("muzzleFlash", color.lightColor(lightColor, anim))
+    end
+    activeItem.setDamageSources()
+    --coroutine.yield()
+    
+    -- cooldown
+    activeItem.setHoldingItem(false)
+    dynItem.setAutoAim(true)
+    buffered = false
+    util.wait((cfg.cooldownTime - cfg.animTime) - script.updateDt())
+  else buffered = false end
+  
+  coroutine.yield()
+end end)
+
 local cooldown = 0
 local anim = 0
 
@@ -53,7 +168,7 @@ local animTime = 1/6
 
 local armAngle = 0
 local handPos = {1, 0}
-local function offsetPoly(p)
+local function offdsetPoly(p)
   local r = { }
   local rot, scale = armAngle, {mcontroller.facingDirection(), 1}
   for _, pt in pairs(p) do
@@ -64,7 +179,7 @@ end
 
 local lastFireMode
 local buffered
-function update(dt, fireMode, shiftHeld)
+function oupdate(dt, fireMode, shiftHeld)
   if fireMode == lastFireMode then fireMode = nil else lastFireMode = fireMode end
   local aimPos = vec2.add(activeItem.ownerAimPosition(), vec2.mul(mcontroller.velocity(), dt))
   local angle, dir = activeItem.aimAngleAndDirection(0, aimPos)
@@ -82,14 +197,15 @@ function update(dt, fireMode, shiftHeld)
     buffered = false
     cooldown = 1
     anim = 1
-    activeItem.setFacingDirection(dir)
-    activeItem.setArmAngle(angle - mcontroller.rotation() * dir) armAngle = angle
+    --activeItem.setFacingDirection(dir)
+    --activeItem.setArmAngle(angle - mcontroller.rotation() * dir) armAngle = angle
+    dynItem.aimAt(dir, angle)
     animator.playSound("fire")
     animator.playSound("fireHum")
     local velMult = 1 + util.clamp(vec2.dot(vec2.norm(vec2.sub(aimPos, mcontroller.position())), vec2.norm(mcontroller.velocity())), 0, 1) * util.clamp(vec2.mag(mcontroller.velocity()) / 100, 0, 1) * 1
     local dmg = damage * velMult * status.stat("powerMultiplier", 1.0) * status.stat("aetheri:skillPowerMultiplier", 0.0)
     activeItem.setDamageSources({{
-      poly = offsetPoly{ {0, -1.5}, {-1.5, 0}, {0, 1.5}, {10, 0} },
+      poly = dynItem.offsetPoly{ {0, -1.5}, {-1.5, 0}, {0, 1.5}, {10, 0} },
       damage = dmg,
       --trackSourceEntity = damageConfig.trackSourceEntity,
       sourceEntity = activeItem.ownerEntityId(),

@@ -87,9 +87,17 @@ function stats.uninit()
   end
 end
 
+local function verifyNumber(n)
+  if type(n) ~= "number" or n ~= n or n - 1 == n then return false end
+  return true
+end
+
 message.setHandler("aetheri:gainAP", function(msg, isLocal, amt)
+  if not verifyNumber(amt) then return nil end -- don't bother if given nonsense
   amt = math.floor(0.5 + amt * stats.stat.apGain)
-  status.setStatusProperty("aetheri:AP", amt + status.statusProperty("aetheri:AP", 0))
+  local ap = status.statusProperty("aetheri:AP", 0) + amt
+  if not verifyNumber(ap) then return nil end -- don't overflow integer precision pls
+  status.setStatusProperty("aetheri:AP", ap)
   hud.gainAP(amt)
   -- this is only really called on kill (of an aethertouched enemy)
   status.modifyResource("health", stats.stat.healthOnKill or 0)

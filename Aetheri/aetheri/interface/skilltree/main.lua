@@ -238,6 +238,13 @@ function refundItemCosts(committing)
 end
 
 function loadPlayerData()
+  do
+    local ap = status.statusProperty("aetheri:AP")
+    if type(ap) ~= "number" or ap ~= ap or ap - 1 == ap then
+      status.setStatusProperty("aetheri:AP", 0)
+      playerext.message("Invalid AP value found; resetting")
+    end
+  end
   refundItemCosts()
   playerTmpData = {
     apToSpend = 0,

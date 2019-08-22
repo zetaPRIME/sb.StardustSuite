@@ -36,6 +36,7 @@ function stats.refresh()
       { stat = "protection", amount = stats.stat.armor },
       { stat = "powerMultiplier", baseMultiplier = stats.stat.damageMult },
       { stat = "aetheri:skillPowerMultiplier", amount = stats.stat.skillDamageMult },
+      { stat = "aetheri:skillCritMultiplier", amount = stats.stat.skillCritMult },
       
       { stat = "aetheri:miningSpeed", amount = stats.stat.miningSpeed },
       { stat = "stardustlib:fluxpulseCapacity", amount = stats.stat.fpCapacity },
@@ -93,15 +94,16 @@ local function verifyNumber(n)
 end
 
 message.setHandler("aetheri:gainAP", function(msg, isLocal, amt)
+  -- this is only really called on kill (of an aethertouched enemy)
+  status.modifyResource("health", stats.stat.healthOnKill or 0)
+  status.modifyResource("aetheri:mana", stats.stat.manaOnKill or 0)
+  -- now for actual AP gain
   if not verifyNumber(amt) then return nil end -- don't bother if given nonsense
   amt = math.floor(0.5 + amt * stats.stat.apGain)
   local ap = status.statusProperty("aetheri:AP", 0) + amt
   if not verifyNumber(ap) then return nil end -- don't overflow integer precision pls
   status.setStatusProperty("aetheri:AP", ap)
   hud.gainAP(amt)
-  -- this is only really called on kill (of an aethertouched enemy)
-  status.modifyResource("health", stats.stat.healthOnKill or 0)
-  status.modifyResource("aetheri:mana", stats.stat.manaOnKill or 0)
 end)
 
 message.setHandler("aetheri:refreshStats", stats.refresh)

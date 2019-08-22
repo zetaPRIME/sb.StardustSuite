@@ -43,8 +43,6 @@ local cfg = {
   
   damageRange = {10, 90},
   damageCurve = 2.0,
-  
-  chargeBonus = 1.5,
 }
 
 -- input task
@@ -135,7 +133,7 @@ function fireTask()
     end
     
     local damage = util.lerp(((chargeLevel - cfg.minimumCharge) / (1.0 - cfg.minimumCharge)) ^ cfg.damageCurve, cfg.damageRange[1], cfg.damageRange[2])
-    if bns then damage = damage * cfg.chargeBonus end
+    if bns then damage = damage * status.stat("aetheri:skillCritMultiplier", 1.0) end
     local dmg = damage * status.stat("powerMultiplier", 1.0) * status.stat("aetheri:skillPowerMultiplier", 0.0)
     local line = dynItem.offsetPoly{ {0, 0}, {150, 0} }
     activeItem.setDamageSources({{

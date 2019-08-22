@@ -9,6 +9,7 @@ do
   local queue = { }
   
   dynItem.aimOffset = {0, 0}
+  dynItem.time = 0
   
   local function updateAim()
     dynItem.aimPos = vec2.add(vec2.add(activeItem.ownerAimPosition(), vec2.mul(mcontroller.velocity(), script.updateDt())), dynItem.aimOffset)
@@ -65,6 +66,8 @@ do
   function dynItem.addTask(f) table.insert(queue, coroutine.create(f)) end
   
   function dynItem.update(dt, fireMode, shiftHeld)
+    dynItem.time = dynItem.time + dt
+    
     do -- handle input
       dynItem.shift = shiftHeld
       local f, af = fireMode == "primary", fireMode == "alt"

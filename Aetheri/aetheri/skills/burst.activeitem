@@ -16,7 +16,5 @@
 
   "scripts" : ["burst.lua"],
   
-  "isAetherSkill" : true,
-  
-  "baseDamage" : 5
+  "isAetherSkill" : true
 }

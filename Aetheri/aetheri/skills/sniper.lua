@@ -36,12 +36,12 @@ dynItem.install()
 dynItem.setAutoAim(true)
 
 local cfg = {
-  manaCost = 70,
+  manaCost = 50,
   
-  chargeTime = 5.0,
-  minimumCharge = 0.1,
+  chargeTime = 3.0,
+  minimumCharge = 0.25,
   
-  damageRange = {10, 150},
+  damageRange = {10, 90},
   damageCurve = 2.0,
   
   chargeBonus = 1.5,
@@ -96,7 +96,7 @@ function fireTask()
       dynItem.addTask(function() util.wait(0.2) bonus = false end)
     end
     
-    animator.setSoundPitch("charge", util.lerp(chargeLevel^2, 0.5, 4.0), 0)
+    animator.setSoundPitch("charge", util.lerp(chargeLevel^2, 0.5, 4.0 + math.sin(dynItem.time * 20) * 0.075), 0)
     animator.setSoundVolume("charge", math.min(chargeLevel / cfg.minimumCharge, 1.0), 0)
     
     local out = math.min(chargeLevel / cfg.minimumCharge, 1) ^ 0.125

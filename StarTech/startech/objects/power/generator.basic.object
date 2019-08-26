@@ -61,6 +61,8 @@
       "powerPerTick" : 5
     },
     
+    "alienstripedwood" : { "burnTime" : 500, "powerPerTick" : 15 }, // alien wood is more potent
+    
     "liquidoil" : { "burnTime" : 25, "powerPerTick" : 25 }, // temporary until liquid gen, but f a s t e
     "corefragmentore" : { "burnTime" : 250, "powerPerTick" : 30 }, // also maybe temporary pending another generator?
     

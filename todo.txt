@@ -140,6 +140,7 @@ Aetheri species mod {
     Innates {
         Kinetic Burst {
             refine secondary, place after unlock?
+            different secondary in water and zero-g?
         }
         Sniper Shot {
             give it a final name!
@@ -147,6 +148,12 @@ Aetheri species mod {
         }
         Fireball
         Charge Cannon (roughly mega man X style; secondary could be a melee attack?)
+        PUNCHY PUNCH
+        Shield Spheres {
+            kind of like magnorbs meets Mega Man shield weapons (or Mei's tears from that BoI:A+ mod)
+            primary to fire them off, secondary to make them spin faster and deflect projectiles
+            maybe always active with knockback but not damage? takes yeeting them off to actually dps
+        }
     }
     
     Skill tree {

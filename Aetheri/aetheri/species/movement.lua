@@ -75,102 +75,172 @@ end
 
 -- for now, states are just part of the movement module; this may change... eventually
 
-movement.states.ground = { }
-function movement.states.ground:init(_, _, giveAirJumps, sprinting)
-  self.airJumps = giveAirJumps and stats.stat.airJumps or 0
-  self.airJumpTimer = 0
-  self.groundTimer = 0
-  self.sprinting = sprinting
-  
-  mcontroller.setRotation(0)
-end
-
-function movement.states.ground:uninit()
-  --
-end
-
-function movement.states.ground:update(dt)
-  tech.setParentState() -- clear
-  mcontroller.clearControls()
-  mcontroller.controlModifiers { speedModifier = stats.stat.moveSpeed }
-  
-  -- check to initiate rail grind
-  if not mcontroller.canJump() and input.key.sprint and input.key.down and mcontroller.yVelocity() <= 0 then
-    local rc = railCast(vec2.add(mcontroller.position(), {0, -2.5}), math.max(0, math.floor(-mcontroller.yVelocity() * dt)))
-      or railCast(vec2.add(mcontroller.position(), {mcontroller.xVelocity() * dt, -2.5}), math.max(0, math.floor(-mcontroller.yVelocity() * dt)))
-    --rc = rc or railCast(vec2.add(mcontroller.position(), {mcontroller.xVelocity() * dt, -2.51}), 0)
-    if rc then
-      mcontroller.setPosition(vec2.add(rc.point, {0, 2.5})) -- snap to rail
-      return movement.enterState("rail") -- and start grinding
-    end
+do movement.states.ground = { }
+  function movement.states.ground:init(_, _, giveAirJumps, sprinting)
+    self.airJumps = giveAirJumps and stats.stat.airJumps or 0
+    self.airJumpTimer = 0
+    self.groundTimer = 0
+    self.sprinting = sprinting
+    
+    mcontroller.setRotation(0)
   end
   
-  if mcontroller.canJump() then self.groundTimer = 0.2 end
-  if false and self.groundTimer > 0 and input.dir[1] == 0 and input.dir[2] == -1 then
-    tech.setParentState(input.key.down and "Duck" or "Stand")
-    mcontroller.controlParameters { 
-      normalGroundFriction = 0.75,
-      ambulatingGroundFriction = 0.2,
-      --slopeSlidingFactor = 500.0
-    }
-    local ck = { "Block", "Platform", "Dynamic" }
-    local rcp = mcontroller.position()--vec2.add(mcontroller.position(), vec2.mul(mcontroller.velocity(), {dt, 0}))
-    if world.lineCollision(vec2.add(rcp, {0, -1.5}), vec2.add(rcp, {0, -3}), {"Platform"}) then
-      -- rail grind??
-      self.groundTimer = 0.25
-      mcontroller.setYVelocity(0)
-    end
-    local lp = vec2.add(rcp, {-0.5, -1})
-    local rp = vec2.add(rcp, {0.5, -1})
-    local lc = world.lineCollision(lp, vec2.add(lp, {0, -5}), ck)
-    local rc = world.lineCollision(rp, vec2.add(rp, {0, -5}), ck)
-    if lc and rc then
-      local sf = (lc[2] - rc[2]) * 1.5
-      mcontroller.addMomentum({sf, math.abs(sf) * -0})
-      if sf * mcontroller.xVelocity() > -0.2 then -- if going downhill already...
-        mcontroller.setYPosition(util.lerp(0.5, lc[2], rc[2]) + 2.5) -- stick to the ground
+  function movement.states.ground:uninit()
+    --
+  end
+  
+  function movement.states.ground:update(dt)
+    tech.setParentState() -- clear
+    mcontroller.clearControls()
+    mcontroller.controlModifiers { speedModifier = stats.stat.moveSpeed }
+    
+    if self.canSwitch then
+      if input.keyDown.t1 then return movement.enterState("flight") end
+    else self.canSwitch = true end
+    
+    -- check to initiate rail grind
+    if not mcontroller.canJump() and input.key.sprint and input.key.down and mcontroller.yVelocity() <= 0 then
+      local rc = railCast(vec2.add(mcontroller.position(), {0, -2.5}), math.max(0, math.floor(-mcontroller.yVelocity() * dt)))
+      or railCast(vec2.add(mcontroller.position(), {mcontroller.xVelocity() * dt, -2.5}), math.max(0, math.floor(-mcontroller.yVelocity() * dt)))
+      --rc = rc or railCast(vec2.add(mcontroller.position(), {mcontroller.xVelocity() * dt, -2.51}), 0)
+      if rc then
+        mcontroller.setPosition(vec2.add(rc.point, {0, 2.5})) -- snap to rail
+        return movement.enterState("rail") -- and start grinding
       end
     end
+    
+    if mcontroller.canJump() then self.groundTimer = 0.2 end
+    if false and self.groundTimer > 0 and input.dir[1] == 0 and input.dir[2] == -1 then
+      tech.setParentState(input.key.down and "Duck" or "Stand")
+      mcontroller.controlParameters { 
+        normalGroundFriction = 0.75,
+        ambulatingGroundFriction = 0.2,
+        --slopeSlidingFactor = 500.0
+      }
+      local ck = { "Block", "Platform", "Dynamic" }
+      local rcp = mcontroller.position()--vec2.add(mcontroller.position(), vec2.mul(mcontroller.velocity(), {dt, 0}))
+      if world.lineCollision(vec2.add(rcp, {0, -1.5}), vec2.add(rcp, {0, -3}), {"Platform"}) then
+        -- rail grind??
+        self.groundTimer = 0.25
+        mcontroller.setYVelocity(0)
+      end
+      local lp = vec2.add(rcp, {-0.5, -1})
+      local rp = vec2.add(rcp, {0.5, -1})
+      local lc = world.lineCollision(lp, vec2.add(lp, {0, -5}), ck)
+      local rc = world.lineCollision(rp, vec2.add(rp, {0, -5}), ck)
+      if lc and rc then
+        local sf = (lc[2] - rc[2]) * 1.5
+        mcontroller.addMomentum({sf, math.abs(sf) * -0})
+        if sf * mcontroller.xVelocity() > -0.2 then -- if going downhill already...
+          mcontroller.setYPosition(util.lerp(0.5, lc[2], rc[2]) + 2.5) -- stick to the ground
+        end
+      end
+    end
+    
+    if mcontroller.onGround() then
+      self.sprinting = input.key.sprint and input.dir[1] ~= 0
+      self.airJumps = stats.stat.airJumps
+      self.airJumpTimer = 0
+    end
+    if self.sprinting then
+      mcontroller.controlMove(input.dir[1], true) -- set running
+      -- sprint speed and a bit of a jump boost
+      mcontroller.controlModifiers { speedModifier = stats.stat.sprintSpeed, airJumpModifier = 1.35 }
+    end
+    
+    -- air jump!
+    if not mcontroller.canJump()
+    and not mcontroller.jumping()
+    and not mcontroller.liquidMovement()
+    --and mcontroller.yVelocity() < 0
+    and input.keyDown.jump and self.airJumps >= 1 then
+      self.airJumps = self.airJumps - 1
+      mcontroller.controlJump(true)
+      mcontroller.setYVelocity(math.max(0, mcontroller.yVelocity()))
+      mcontroller.controlParameters({ airForce = 1750.0 }) -- allow easier direction control during jump
+      self.sprinting = self.sprinting or (input.key.sprint and input.dir[1] ~= 0) -- allow starting a sprint from an air jump
+      sound.play("/sfx/tech/tech_doublejump.ogg")
+      -- TODO: particle/animation stuff
+      tech.setParentState("Fall") -- animate a bit even when already rising
+      self.airJumpTimer = 0.05
+    end
+    
+    if self.groundTimer > 0 then self.groundTimer = self.groundTimer - dt end
+    
+    if self.airJumpTimer > 0 then 
+      -- ?
+      self.airJumpTimer = self.airJumpTimer - dt
+    end
+    
+  end
+end
+
+do movement.states.flight = { }
+  --
+  
+  function movement.states.flight:init(_, _)
+    
   end
   
-  if mcontroller.onGround() then
-    self.sprinting = input.key.sprint and input.dir[1] ~= 0
-    self.airJumps = stats.stat.airJumps
-    self.airJumpTimer = 0
-  end
-  if self.sprinting then
-    mcontroller.controlMove(input.dir[1], true) -- set running
-    -- sprint speed and a bit of a jump boost
-    mcontroller.controlModifiers { speedModifier = stats.stat.sprintSpeed, airJumpModifier = 1.35 }
-  end
+  function movement.states.flight:uninit() end
   
-  -- air jump!
-  if not mcontroller.canJump()
-  and not mcontroller.jumping()
-  and not mcontroller.liquidMovement()
-  --and mcontroller.yVelocity() < 0
-  and input.keyDown.jump and self.airJumps >= 1 then
-    self.airJumps = self.airJumps - 1
-    mcontroller.controlJump(true)
-    mcontroller.setYVelocity(math.max(0, mcontroller.yVelocity()))
-    mcontroller.controlParameters({ airForce = 1750.0 }) -- allow easier direction control during jump
-    self.sprinting = self.sprinting or (input.key.sprint and input.dir[1] ~= 0) -- allow starting a sprint from an air jump
-    sound.play("/sfx/tech/tech_doublejump.ogg")
-    -- TODO: particle/animation stuff
-    tech.setParentState("Fall") -- animate a bit even when already rising
-    self.airJumpTimer = 0.05
+  local aaa = coroutine.wrap(function()
+    while true do
+      tech.setParentState("stand")
+      coroutine.yield()
+      tech.setParentState("swim")
+      coroutine.yield()
+    end
+  end)
+  
+  local function forceFacing(f)
+    mcontroller.controlModifiers{movementSuppressed = false}
+    mcontroller.controlFace(f)
+    mcontroller.controlModifiers{movementSuppressed = true}
   end
   
-  if self.groundTimer > 0 then self.groundTimer = self.groundTimer - dt end
-  
-  if self.airJumpTimer > 0 then 
-    -- ?
-    self.airJumpTimer = self.airJumpTimer - dt
+  function movement.states.flight:update(dt)
+    
+    -- handle switching back to ground
+    if self.canSwitch then
+      if input.keyDown.t1 then return movement.enterState("ground") end
+    else self.canSwitch = true end
+    
+    -- set movement parameters
+    mcontroller.clearControls()
+    mcontroller.controlParameters{
+      gravityEnabled = false,
+      frictionEnabled = false,
+      liquidImpedance = -100, -- full speed in water
+      liquidBuoyancy = -1000, -- same as above
+      groundForce = 0, airForce = 0, liquidForce = 0, -- disable default movement entirely
+      maximumPlatformCorrection = 0.0,
+      maximumPlatformCorrectionVelocityFactor = 0.0,
+    }
+    mcontroller.controlModifiers{ movementSuppressed = true } -- disable harder, and also don't paddle at the air
+    mcontroller.controlDown() -- always fly through platforms
+    
+    local speed = ( 30.0 ) * stats.stat.moveSpeed * (input.key.sprint and stats.stat.sprintSpeed or 1.0)
+    local forceMult = util.lerp((1.0 - vec2.dot(input.dirN, vec2.norm(mcontroller.velocity()))) * 0.5, 0.5, 1.0)
+    if vec2.mag(input.dirN) < 0.25 then forceMult = 0.25 end
+    mcontroller.controlApproachVelocity(vec2.mul(input.dirN, speed), 12500 * forceMult * dt)
+    
+    -- manually allow changing direction
+    if input.keyDown.left then forceFacing(-1) end
+    if input.keyDown.right then forceFacing(1) end
+    
+    -- rotate with velocity (TODO rotate with horizontal force applied instead? TODO smooth out?)
+    mcontroller.setRotation(util.clamp(mcontroller.xVelocity() / -64.0, -1, 1) * 0.5)
+    
+    -- set animation
+    tech.setParentState()
+    if input.dir[1] * mcontroller.facingDirection() < 0 then tech.setParentState("fly") end
+    
   end
   
 end
 
-do
+do movement.states.rail = { }
   local function sameTile(a, b)
     if type(a) == "table" and type(b) == "table" then
       return math.floor(a[1]) == math.floor(b[1]) and math.floor(a[2]) == math.floor(b[2])
@@ -204,7 +274,6 @@ do
     --
   end
   
-  movement.states.rail = { }
   function movement.states.rail:init()
     self.xOffset = 0
     self.yOffset = 0
@@ -295,22 +364,5 @@ do
     self.sfx:setPitch(1)
   end
 end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 -- EOF --

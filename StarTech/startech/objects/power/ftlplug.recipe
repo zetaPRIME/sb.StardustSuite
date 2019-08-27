@@ -1,6 +1,6 @@
 { // -*- grammar-ext: json -*-
   "input" : [
-    { "item" : "durasteelbar", "count" : 15 },
+    { "item" : "startech:machineplating", "count" : 15 },
     { "item" : "silverbar", "count" : 5 },
     { "item" : "startech:resonitebar", "count" : 1 },
     { "item" : "supermatter", "count" : 5 },

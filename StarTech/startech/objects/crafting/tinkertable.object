@@ -22,6 +22,8 @@
   "shortdescription" : "^#bf7fff;Tinkerer's Workshop^reset;",
   "race" : "generic",
   "category" : "crafting",
+  
+  "learnBlueprintsOnPickup" : [ "startech:machineplating" ],
 
   /*"apexDescription" : "I can create equipment to use for wiring here.",
   "avianDescription" : "It's a workstation for crafting equipment to use for wiring.",

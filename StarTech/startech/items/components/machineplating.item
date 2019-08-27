@@ -1,0 +1,10 @@
+{ // -*- grammar-ext: json -*-
+  "itemName" : "startech:machineplating",
+  "price" : 200,
+  "rarity" : "Uncommon",
+  "category" : "craftingMaterial",
+  "inventoryIcon" : "machineplating.png",
+  "shortdescription" : "Machine Plating",
+  "description" : "A tough plating component for machinery.",
+  "itemTags" : [ "reagent" ]
+}

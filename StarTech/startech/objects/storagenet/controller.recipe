@@ -1,8 +1,8 @@
 { // -*- grammar-ext: json -*-
   "input" : [
-    { "item" : "tungstenbar", "count" : 15 },
-    { "item" : "silverbar", "count" : 5 },
-    { "item" : "corefragmentore", "count" : 32 },
+    { "item" : "startech:machineplating", "count" : 5 },
+    { "item" : "silverbar", "count" : 3 },
+    { "item" : "corefragmentore", "count" : 20 },
     { "item" : "liquidfuel", "count" : 50 },
     { "item" : "solidfuel", "count" : 25 },
     { "item" : "diamond", "count" : 1 }   

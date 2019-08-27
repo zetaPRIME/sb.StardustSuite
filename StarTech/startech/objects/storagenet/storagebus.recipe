@@ -1,7 +1,7 @@
 { // -*- grammar-ext: json -*-
   "input" : [
+    { "item" : "startech:machineplating", "count" : 3 },
     { "item" : "corefragmentore", "count" : 3 },
-    { "item" : "silverbar", "count" : 5 },
     { "item" : "solidfuel", "count" : 1 }
   ],
   "output" : { "item" : "startech:storagenet.storagebus", "count" : 1 },

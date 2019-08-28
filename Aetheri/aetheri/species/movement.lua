@@ -235,6 +235,7 @@ do movement.states.flight = { }
     -- set animation
     tech.setParentState()
     if input.dir[1] * mcontroller.facingDirection() < 0 then tech.setParentState("fly") end
+    if input.dir[2] < 0 and input.dir[1] * mcontroller.facingDirection() <= 0 then tech.setParentState("fly") end
     
   end
   

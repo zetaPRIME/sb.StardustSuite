@@ -1,0 +1,44 @@
+{ // -*- grammar-ext: json -*-
+  "objectName" : "startech:storagenet.drivebaytest",
+  "rarity" : "Rare",
+  //"objectType" : "container",
+  
+  "category" : "storagenet.storage",
+  "price" : 500,
+  "description" : "Not actually a drive bay.",
+  "shortdescription" : "Testing Drive Bay",
+  "health" : 5.73,
+
+  "inventoryIcon" : "drivebay.icon.png",
+  "orientations" : [
+    {
+      "dualImage" : "drivebay.png", //:<color>",
+      "imagePosition" : [-8, 0],
+
+      "spaceScan" : 0.1,
+      "anchors" : [ "bottom" ],
+      "collision" : "platform"
+    }
+  ],
+  
+  "scripts" : [ "drivebaytest.lua" ],
+  "scriptDelta" : 1,
+  
+  //"animationScripts" : [ "drivebay.render.lua" ],
+  
+  "inputNodes" : [ [0, 0] ],
+  
+  "networkTags" : {
+    "storageNet" : true,
+    "storageNet.storage" : true // HERP DERP
+  },
+
+  /*"openSounds" : [ "/sfx/objects/locker_open.ogg" ],
+  "closeSounds" : [ "/sfx/objects/locker_close.ogg" ],
+  "slotCount" : 8,
+  "uiConfig" : "/startech/interface/storagenet/drivebay.config",
+  "frameCooldown" : 5,
+  "autoCloseCooldown" : 3600,*/
+  
+  "learnBlueprintsOnPickup" : [ "startech:storagenet.drivecomponent" ]
+}

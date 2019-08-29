@@ -33,6 +33,15 @@ bottomBar:addWidget{
   end,
 }
 
+bottomBar:addWidget{
+  type = "button", base = "/interface/bookmarks/icons/beamdown.png",
+  toolTip = "Teleporter",
+  callback = function()
+    player.interact("OpenTeleportDialog", "/interface/warping/shipteleporter.config", player.id())
+    pane.dismiss()
+  end,
+}
+
 function speciesUpdate()
   
 end

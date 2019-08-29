@@ -4,7 +4,7 @@ local si = navExt.stockIcons
 
 local apPerFuel = 5
 
-bottomBar:addWidget{
+bottomBar:addWidget {
   type = "button", icon = "/items/currency/essence.png?crop=1;2;14;16",
   toolTip = function()
     if player.worldId() ~= player.ownShipWorldId() then return "^red;Cannot infuse outside of ship" end
@@ -25,6 +25,7 @@ bottomBar:addWidget{
   end,
 }
 
+bottomBar:separator()
 si.openSAIL()
 si.teleporter()
 

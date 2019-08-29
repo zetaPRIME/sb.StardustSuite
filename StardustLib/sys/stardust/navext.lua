@@ -75,10 +75,14 @@ function init(...)
     return fullName
   end
   
+  function barProto:separator()
+    self:addWidget { type = "image", file = "/sys/stardust/navext.separator.png" }
+  end
+  
   -- define stock actions
   navExt = { stockIcons = { } }
   function navExt.stockIcons.openSAIL()
-    bottomBar:addWidget{
+    bottomBar:addWidget {
       type = "button", icon = "/objects/ship/techstation/apexrecordplayericon.png?crop=2;2;14;16",
       toolTip = "Open SAIL interface",
       callback = function()
@@ -92,7 +96,7 @@ function init(...)
   end
   
   function navExt.stockIcons.teleporter()
-    bottomBar:addWidget{
+    bottomBar:addWidget {
       type = "button", icon = "/interface/bookmarks/icons/beamdown.png?crop=2;2;14;16",
       toolTip = "Teleporter",
       callback = function()

@@ -1,4 +1,4 @@
--- StardustLib cockpit extension
+-- StardustLib nav extension
 
 local _cb = { }
 function _callback(id, ...) return _cb[id](...) end
@@ -112,7 +112,8 @@ function init(...)
   bottomBar:addWidget({ type = "label", toolTip = fuelTip, vAnchor = "mid" }, "fuelGauge");
   
   -- species specific module code
-  local module = config.getParameter("stardustlib:speciesModules")[player.species()]
+  local modules = config.getParameter("stardustlib:speciesModules")
+  local module = modules[player.species()] or modules.default
   if type(module) == "string" then require(module) end
 end
 

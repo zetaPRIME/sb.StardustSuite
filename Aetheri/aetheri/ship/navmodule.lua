@@ -28,7 +28,9 @@ bottomBar:addWidget{
   caption = "Open SAIL",
   toolTip = "Open the SAIL interface (temporary!)",
   callback = function()
-    player.interact("OpenAiInterface")
+    -- use the actual SAIL panel interact data so SAIL replacements work
+    local ts = root.itemConfig({ name = "techstation", count = 1, parameters = { } }).config
+    player.interact(ts.interactAction, ts.interactData)
     pane.dismiss()
   end,
 }

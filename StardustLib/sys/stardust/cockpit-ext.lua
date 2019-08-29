@@ -58,6 +58,13 @@ function init(...)
       if not name then name = "btn" .. sb.nrand() end
       w.callback = "_callback"
       _cb[name] = func
+      
+      if w.icon then -- automatic formatting for icon
+        w.base = w.icon
+        w.hover = w.icon .. "?brightness=50?saturation=-20"
+        w.pressed = w.icon .. "?brightness=-50"
+        w.pressedOffset = {0, 0}
+      end
     end
     
     local tt = w.toolTip or w.tooltip
@@ -66,6 +73,34 @@ function init(...)
     local fullName = string.format("%s.%s", self.root, name)
     if tt then _tt["."..fullName] = tt end
     return fullName
+  end
+  
+  -- define stock actions
+  navExt = { stockIcons = { } }
+  function navExt.stockIcons.openSAIL()
+    bottomBar:addWidget{
+      type = "button", icon = "/objects/ship/techstation/apexrecordplayericon.png?crop=2;2;14;16",
+      toolTip = "Open SAIL interface",
+      callback = function()
+        -- use the actual SAIL panel interact data so SAIL replacements work
+        local ts = root.itemConfig({ name = "techstation", count = 1, parameters = { } }).config
+        player.interact(ts.interactAction, ts.interactData)
+        pane.dismiss()
+      end,
+    }
+    return navExt.stockIcons
+  end
+  
+  function navExt.stockIcons.teleporter()
+    bottomBar:addWidget{
+      type = "button", icon = "/interface/bookmarks/icons/beamdown.png?crop=2;2;14;16",
+      toolTip = "Teleporter",
+      callback = function()
+        player.interact("OpenTeleportDialog", "/interface/warping/shipteleporter.config", player.id())
+        pane.dismiss()
+      end,
+    }
+    return navExt.stockIcons
   end
   
   --widget.addChild("stardustlib:topBar", { type = "image", file = "/items/generic/other/solidfuel.png" }, "testIcon")

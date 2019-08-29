@@ -1,9 +1,11 @@
 -- Aetheri module for nav console
 
+local si = navExt.stockIcons
+
 local apPerFuel = 5
 
 bottomBar:addWidget{
-  type = "button", base = "/items/currency/essence.png",
+  type = "button", icon = "/items/currency/essence.png?crop=1;2;14;16",
   toolTip = function()
     if player.worldId() ~= player.ownShipWorldId() then return "^red;Cannot infuse outside of ship" end
     local fuelNeeded = world.getProperty("ship.maxFuel", 0) - world.getProperty("ship.fuel", 0)
@@ -23,26 +25,8 @@ bottomBar:addWidget{
   end,
 }
 
-bottomBar:addWidget{
-  type = "button", base = "/interface/button.png",
-  caption = "Open SAIL",
-  toolTip = "Open the SAIL interface (temporary!)",
-  callback = function()
-    -- use the actual SAIL panel interact data so SAIL replacements work
-    local ts = root.itemConfig({ name = "techstation", count = 1, parameters = { } }).config
-    player.interact(ts.interactAction, ts.interactData)
-    pane.dismiss()
-  end,
-}
-
-bottomBar:addWidget{
-  type = "button", base = "/interface/bookmarks/icons/beamdown.png",
-  toolTip = "Teleporter",
-  callback = function()
-    player.interact("OpenTeleportDialog", "/interface/warping/shipteleporter.config", player.id())
-    pane.dismiss()
-  end,
-}
+si.openSAIL()
+si.teleporter()
 
 function speciesUpdate()
   

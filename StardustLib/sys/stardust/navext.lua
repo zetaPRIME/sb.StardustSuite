@@ -1,5 +1,7 @@
 -- StardustLib nav extension
 
+navExt = { }
+
 local _cb = { }
 function _callback(id, ...) return _cb[id](...) end
 
@@ -23,6 +25,10 @@ end
 local _init = init or function() end
 function init(...)
   _init(...)
+  
+  -- find proper entity ID to bind future panes to
+  navExt.bindId = pane.sourceEntity()
+  if not navExt.bindId or navExt.bindId == 0 then navExt.bindId = player.id() end
   
   -- remove bars if present from before a reload
   pane.removeWidget("stardustlib:topBar")
@@ -80,7 +86,7 @@ function init(...)
   end
   
   -- define stock actions
-  navExt = { stockIcons = { } }
+  navExt.stockIcons = { }
   function navExt.stockIcons.openSAIL()
     bottomBar:addWidget {
       type = "button", icon = "/objects/ship/techstation/apexrecordplayericon.png?crop=2;2;14;16",
@@ -88,7 +94,7 @@ function init(...)
       callback = function()
         -- use the actual SAIL panel interact data so SAIL replacements work
         local ts = root.itemConfig({ name = "techstation", count = 1, parameters = { } }).config
-        player.interact(ts.interactAction, ts.interactData)
+        player.interact(ts.interactAction, ts.interactData, navExt.bindId)
         pane.dismiss()
       end,
     }
@@ -100,7 +106,7 @@ function init(...)
       type = "button", icon = "/interface/bookmarks/icons/beamdown.png?crop=2;2;14;16",
       toolTip = "Teleporter",
       callback = function()
-        player.interact("OpenTeleportDialog", "/interface/warping/shipteleporter.config", player.id())
+        player.interact("OpenTeleportDialog", "/interface/warping/shipteleporter.config", navExt.bindId)
         pane.dismiss()
       end,
     }

@@ -1,5 +1,14 @@
 --
 
+local function towards(cur, target, max)
+  max = math.abs(max)
+  if max == 0 then return cur end
+  if target == cur then return target end
+  local diff = target - cur
+  local sign = diff / math.abs(diff)
+  return cur + math.min(math.abs(diff), max) * sign
+end
+
 local railTypes = root.assetJson("/rails.config")
 local function railCheck(pos)
   return railTypes[world.material(pos, "foreground")]
@@ -70,6 +79,8 @@ function movement.callState(f, ...)
 end
 
 function movement.update(p)
+  movement.zeroGPrev = movement.zeroG
+  movement.zeroG = (world.gravity(mcontroller.position()) == 0) or status.statusProperty("fu_byosnogravity", false)
   movement.callState("update", p.dt) -- don't need to pass in p since input module exists
 end
 
@@ -81,6 +92,8 @@ do movement.states.ground = { }
     self.airJumpTimer = 0
     self.groundTimer = 0
     self.sprinting = sprinting
+    
+    self.noAutoSwim = mcontroller.liquidMovement() and 5 or 0
     
     mcontroller.setRotation(0)
   end
@@ -95,8 +108,14 @@ do movement.states.ground = { }
     mcontroller.controlModifiers { speedModifier = stats.stat.moveSpeed }
     
     if self.canSwitch then
-      if input.keyDown.t1 then return movement.enterState("flight") end
+      if movement.zeroG or (mcontroller.liquidMovement() and self.noAutoSwim <= 0) then
+        return movement.enterState("flight")
+      end
+      if input.keyDown.t1 then return movement.enterState("flight", true) end
     else self.canSwitch = true end
+    
+    if mcontroller.liquidMovement() then self.noAutoSwim = 5
+    else self.noAutoSwim = self.noAutoSwim - dt end
     
     -- check to initiate rail grind
     if not mcontroller.canJump() and input.key.sprint and input.key.down and mcontroller.yVelocity() <= 0 then
@@ -178,8 +197,8 @@ end
 do movement.states.flight = { }
   --
   
-  function movement.states.flight:init(_, _)
-    
+  function movement.states.flight:init(_, _, manual)
+    self.manual = manual
   end
   
   function movement.states.flight:uninit() end
@@ -203,7 +222,10 @@ do movement.states.flight = { }
     
     -- handle switching back to ground
     if self.canSwitch then
-      if input.keyDown.t1 then return movement.enterState("ground") end
+      if not self.manual and not (movement.zeroG or mcontroller.liquidMovement()) then
+        return movement.enterState("ground")
+      end  
+      if input.keyDown.t1 and not movement.zeroG then return movement.enterState("ground") end
     else self.canSwitch = true end
     
     -- set movement parameters
@@ -230,7 +252,7 @@ do movement.states.flight = { }
     if input.keyDown.right then forceFacing(1) end
     
     -- rotate with velocity (TODO rotate with horizontal force applied instead? TODO smooth out?)
-    mcontroller.setRotation(util.clamp(mcontroller.xVelocity() / -64.0, -1, 1) * 0.5)
+    mcontroller.setRotation(towards(mcontroller.rotation(), util.clamp(mcontroller.xVelocity() / -48.0, -1, 1) * 0.35, dt))
     
     -- set animation
     tech.setParentState()
@@ -251,15 +273,6 @@ do movement.states.rail = { }
   
   local function offsetForRot(rot)
     return (math.cos(rot) - 1) * -4, (math.sin(rot)) * -1.5
-  end
-  
-  local function towards(cur, target, max)
-    max = math.abs(max)
-    if max == 0 then return cur end
-    if target == cur then return target end
-    local diff = target - cur
-    local sign = diff / math.abs(diff)
-    return cur + math.min(math.abs(diff), max) * sign
   end
   
   local function rotateTowards(self, rot, dt)

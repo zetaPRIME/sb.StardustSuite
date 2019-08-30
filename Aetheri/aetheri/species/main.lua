@@ -16,7 +16,10 @@ require "/aetheri/species/hud.lua"
 
 function init()
   appearance.updateColors()
-  movement.enterState("ground")
+  -- figure out which state we want to start out in
+  if mcontroller.liquidMovement or (world.gravity(mcontroller.position()) == 0) or status.statusProperty("fu_byosnogravity", false) then
+    movement.enterState("flight")
+  else movement.enterState("ground") end
 end
 
 function uninit()

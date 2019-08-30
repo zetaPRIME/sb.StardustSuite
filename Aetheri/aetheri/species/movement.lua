@@ -218,15 +218,33 @@ do movement.states.flight = { }
     mcontroller.controlModifiers{movementSuppressed = true}
   end
   
+  local setPose = coroutine.wrap(function()
+    local threshold = 1/6
+    local t = 0.0
+    local f = false
+    while true do
+      local a = ((vec2.mag(input.dir) ~= 0 and vec2.dot(input.dirN, vec2.norm(mcontroller.velocity())) > 0) and 1.0 or -1.0) * script.updateDt()
+      t = util.clamp(t + a/threshold, 0.0, 1.0)
+      if t == 1.0 then f = true elseif t == 0.0 then f = false end
+      if f then tech.setParentState("fly") else tech.setParentState() end
+      coroutine.yield()
+    end
+  end)
+  
   function movement.states.flight:update(dt)
     
     -- handle switching back to ground
     if self.canSwitch then
       if not self.manual and not (movement.zeroG or mcontroller.liquidMovement()) then
-        return movement.enterState("ground")
+        if self.inLiquid and not mcontroller.liquidMovement() then -- dolphin breach
+          mcontroller.addMomentum(vec2.mul(input.dirN, mcontroller.mass() * (input.key.sprint and 25 or 10)))
+        end
+        return movement.enterState("ground", true, input.key.sprint) -- give back air jumps
       end  
-      if input.keyDown.t1 and not movement.zeroG then return movement.enterState("ground") end
+      if input.keyDown.t1 and not movement.zeroG then return movement.enterState("ground", false, input.key.sprint) end
     else self.canSwitch = true end
+    
+    self.inLiquid = mcontroller.liquidMovement()
     
     -- set movement parameters
     mcontroller.clearControls()
@@ -255,9 +273,11 @@ do movement.states.flight = { }
     mcontroller.setRotation(towards(mcontroller.rotation(), util.clamp(mcontroller.xVelocity() / -48.0, -1, 1) * 0.35, dt))
     
     -- set animation
-    tech.setParentState()
-    if input.dir[1] * mcontroller.facingDirection() < 0 then tech.setParentState("fly") end
-    if input.dir[2] < 0 and input.dir[1] * mcontroller.facingDirection() <= 0 then tech.setParentState("fly") end
+    setPose()
+    --tech.setParentState()
+    --if input.dir[1] * mcontroller.facingDirection() < 0 then tech.setParentState("fly") end
+    --if input.dir[2] < 0 and input.dir[1] * mcontroller.facingDirection() <= 0 then tech.setParentState("fly") end
+    --if vec2.mag(input.dir) ~= 0 and vec2.dot(input.dirN, vec2.norm(mcontroller.velocity())) > 0 then tech.setParentState("fly") end
     
   end
   

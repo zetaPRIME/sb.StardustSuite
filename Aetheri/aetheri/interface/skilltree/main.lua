@@ -129,6 +129,7 @@ function init()
   -- take care of data work first
   do -- load in skill data
     local cfg = root.assetJson("/aetheri/species/skilltree.config")
+    local nodeTemplates = cfg.nodeTemplates or { }
     -- global stuffs
     compatId = cfg.compatId
     revId = cfg.revId
@@ -150,6 +151,9 @@ function init()
         local type = n.type or "node"
         local pos = vec2.add(n.position or {0, 0}, offset)
         local path = string.format("%s/%s", pfx, k)
+        if nodeTemplates[type] then -- apply template
+          n = util.mergeTable(util.mergeTable({ }, nodeTemplates[type]), n)
+        end
         if type == "group" then
           -- group conditions; same format (and options) as quickbar ones!
           if not n.condition or condition(table.unpack(n.condition)) then --

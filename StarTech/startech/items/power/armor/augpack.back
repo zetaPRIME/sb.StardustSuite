@@ -25,6 +25,7 @@
     "ioRate" : 250
   },
   
+  "startech:configuratorUi" : "/startech/interface/configurator/configurator.config",
   "configuratorLayout" : "augpack",
 
   "colorOptions" : [

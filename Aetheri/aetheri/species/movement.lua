@@ -266,8 +266,7 @@ do movement.states.flight = { }
     mcontroller.controlApproachVelocity(vec2.mul(input.dirN, speed), 12500 * forceMult * dt)
     
     -- manually allow changing direction
-    if input.keyDown.left then forceFacing(-1) end
-    if input.keyDown.right then forceFacing(1) end
+    if input.dir[1] ~= 0 then forceFacing(input.dir[1]) end
     
     -- rotate with velocity (TODO rotate with horizontal force applied instead? TODO smooth out?)
     mcontroller.setRotation(towards(mcontroller.rotation(), util.clamp(mcontroller.xVelocity() / -48.0, -1, 1) * 0.35, dt))

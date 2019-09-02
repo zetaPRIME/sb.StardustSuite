@@ -1,11 +1,9 @@
 { // -*- grammar-ext: json -*-
   "input" : [
     { "item" : "startech:machineplating", "count" : 5 },
-    { "item" : "silverbar", "count" : 3 },
-    { "item" : "corefragmentore", "count" : 20 },
-    { "item" : "liquidfuel", "count" : 50 },
-    { "item" : "solidfuel", "count" : 25 },
-    { "item" : "diamond", "count" : 1 }   
+    { "item" : "siliconboard", "count" : 5 },
+    { "item" : "corefragmentore", "count" : 15 },
+    { "item" : "teleportercore", "count" : 1 }   
   ],
   "output" : { "item" : "startech:storagenet.controller", "count" : 1 },
   "duration" : 7,

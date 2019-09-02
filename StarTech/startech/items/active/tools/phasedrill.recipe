@@ -1,15 +1,12 @@
 { // -*- grammar-ext: json -*-
   "input" : [
-    { "item" : "durasteelbar", "count" : 25 },
+    { "item" : "startech:machineplating", "count" : 15 },
     { "item" : "goldbar", "count" : 15 },
     { "item" : "silverbar", "count" : 5 },
     { "item" : "startech:resonitebar", "count" : 1 },
     { "item" : "manipulatormodule", "count" : 5 },
-    { "item" : "salvagetier4", "count" : 5 },
-    { "item" : "salvagearm", "count" : 10 },
-    { "item" : "siliconboard", "count" : 3 },
-    { "item" : "phasematter", "count" : 5 },
-    { "item" : "liquidfuel", "count" : 250 }
+    { "item" : "phasematter", "count" : 3 },
+    { "item" : "salvagetier4", "count" : 1 }
   ],
   "output" : { "item" : "startech:phasedrill", "count" : 1 },
   "groups" : [ "startech:tinkertable", "tools", "all" ]

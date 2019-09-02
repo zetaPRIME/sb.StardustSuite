@@ -1,13 +1,11 @@
 { // -*- grammar-ext: json -*-
   "input" : [
-    { "item" : "tungstenbar", "count" : 25 },
-    { "item" : "goldbar", "count" : 15 },
-    { "item" : "silverbar", "count" : 5 },
-    //{ "item" : "startech:battery.t1", "count" : 3 },
+    { "item" : "startech:machineplating", "count" : 8 },
+    { "item" : "goldbar", "count" : 5 },
+    { "item" : "silverbar", "count" : 3 },
+    { "item" : "wire", "count" : 15 },
     { "item" : "techcard", "count" : 5 },
-    { "item" : "salvagetier4", "count" : 5 },
-    { "item" : "salvagearm", "count" : 3 },
-    { "item" : "liquidfuel", "count" : 250 },
+    { "item" : "salvagetier4", "count" : 3 },
     { "item" : "supermatter", "count" : 1 }
   ],
   "output" : {

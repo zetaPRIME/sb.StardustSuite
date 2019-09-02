@@ -86,9 +86,7 @@ power stuffs {
     !!! PRIORITY: !!!
     completely rework augpack (insert one EPP w/o augment, one augment, and one light (maybe just have it built in))
     ^ insert pulse cell to directly use its capacity instead of having a native capacitor?
-    completely rework configurator (click button while holding item open custom interface with it inside)
-    different wrench recipe for anvil and workshop (keep current for anvil, workshop makes it with three machine plating)
-    wire recipe for workshop (equivalent to FU)
+    completely rework configurator (click button while holding item open custom interface with it inside) - partially done
     
     powered lamp that fills a large region with full-bright light (basically volumetric lighting at the cost of fp)
     

@@ -1,0 +1,5 @@
+{ // -*- grammar-ext: json -*-
+  "input" : [ { "item" : "copperbar", "count" : 1 } ],
+  "output" : { "item" : "wire", "count" : 9 },
+  "groups" : [ "startech:tinkertable", "components", "all" ]
+}

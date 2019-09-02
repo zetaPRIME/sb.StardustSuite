@@ -23,7 +23,7 @@
   "race" : "generic",
   "category" : "crafting",
   
-  "learnBlueprintsOnPickup" : [ "startech:machineplating" ],
+  "learnBlueprintsOnPickup" : [ "startech:machineplating", "teleportercore" ],
 
   /*"apexDescription" : "I can create equipment to use for wiring here.",
   "avianDescription" : "It's a workstation for crafting equipment to use for wiring.",

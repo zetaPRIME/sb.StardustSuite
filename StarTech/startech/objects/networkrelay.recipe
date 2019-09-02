@@ -1,9 +1,8 @@
 { // -*- grammar-ext: json -*-
   "input" : [
-    { "item" : "silverbar", "count" : 5 },
-    { "item" : "copperbar", "count" : 3 }
+    { "item" : "startech:machineplating", "count" : 1 },
+    { "item" : "wire", "count" : 3 }
   ],
   "output" : { "item" : "startech:networkrelay", "count" : 1 },
-  "duration" : 0.7,
   "groups" : [ "startech:tinkertable", "storagenet", "craftingwiring", "logic", "all" ] // cratable in both the tinkerer's workshop and the wiring station
 }

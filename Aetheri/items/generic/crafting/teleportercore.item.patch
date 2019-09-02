@@ -1,0 +1,6 @@
+[ // -*- grammar-ext: json -*-
+  { "op" : "add", "path" : "/jewelGrants", "value" : [
+    ["description", "This seems useful...?"],
+    ["unlockSkill", "blink"]
+  ] }
+]

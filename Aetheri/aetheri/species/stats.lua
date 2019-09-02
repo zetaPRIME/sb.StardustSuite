@@ -139,6 +139,15 @@ message.setHandler("stardustlib:modifyDamageTaken", function(_, _, damageRequest
     damageRequest.damageType = "IgnoresDef"
     damageRequest.damage = damageRequest.damage * (.5 ^ (status.stat("protection") / 100))
     damageRequest.damage = damageRequest.damage * (stats.stat.damageTaken or 1)
+    
+    -- special effects
+    if stats.flag.takeDamageFromEnergy then
+      if status.overConsumeResource("energy", damageRequest.damage) then
+        damageRequest.damage = 0
+        --damageRequest.damageType = "Knockback"
+      else damageRequest.damage = status.resource("health") end
+    end
+    
     return damageRequest
   end
 end)

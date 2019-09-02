@@ -162,6 +162,8 @@ function init()
   
   chromeCanvas = widget.bindCanvas("chromeCanvas")
   --
+  
+  mainSlotLeft()
 end
 
 function uninit()
@@ -180,6 +182,7 @@ local function mainSlotSwap(rightClick)
   if not item.count or item.count == 0 then -- not trying to insert an item
     exitLayout()
     player.setSwapSlotItem(swapItem("mainSlot", item, rightClick))
+    pane.dismiss()
     return nil
   end
   local cfg = root.itemConfig(item)

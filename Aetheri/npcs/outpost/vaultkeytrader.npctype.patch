@@ -1,0 +1,12 @@
+[ // -*- grammar-ext: json -*-
+  [
+    { "op" : "test", "path" : "/scriptConfig/dialogMode", "inverse" : true },
+    { "op" : "add", "path" : "/scriptConfig/dialogMode", "value" : "random" }
+  ],
+  [
+    { "op" : "replace", "path" : "/scriptConfig/dialogMode", "value" : "random" }, // don't just pick one and stick with it!
+    { "op" : "add", "path" : "/scriptConfig/dialog/unavailable/default/aetheri", "value" : [ // Aetheri dialog lines
+      "...\nThere is much for you and your kin to do, Voidborn. Do not forget."
+    ] }
+  ]
+]

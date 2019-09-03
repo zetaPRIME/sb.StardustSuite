@@ -1,7 +1,7 @@
 { // -*- grammar-ext: json -*-
   "itemName" : "startech:augpack",
   "price" : 5000,
-  "inventoryIcon" : "/items/armors/backitems/xenonpack/xenonpackicon.png",
+  "inventoryIcon" : "augpack.icon.png",
   "rarity" : "Legendary",
   "category" : "backwear",
   "description" : "An advanced fluxpulse pack that can take augments and EPP modules.\n\n^darkgray;-(install using Configurator)-^reset;",
@@ -12,8 +12,8 @@
   "learnBlueprintsOnPickup" : [
     "startech:phasedrill"
   ],
-  "maleFrames" : "/items/armors/backitems/xenonpack/back.png",
-  "femaleFrames" : "/items/armors/backitems/xenonpack/back.png",
+  "maleFrames" : "blank.png",
+  "femaleFrames" : "blank.png",
   "maxStack" : 1,
 
   "statusEffects" : [

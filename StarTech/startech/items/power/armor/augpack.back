@@ -21,12 +21,11 @@
   ],
   
   "batteryStats" : {
-    "capacity" : 320000,
-    "ioRate" : 250
+    "capacity" : 0,
+    "ioRate" : 0
   },
   
-  "startech:configuratorUi" : "/startech/interface/configurator/configurator.config",
-  "configuratorLayout" : "augpack",
+  "startech:configuratorUi" : "augpackcfg.config",
 
   "colorOptions" : [
     // DEFAULT

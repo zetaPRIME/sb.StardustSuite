@@ -1,3 +1,4 @@
+require "/scripts/util.lua"
 require "/lib/stardust/itemutil.lua"
 require "/lib/stardust/playerext.lua"
 
@@ -19,7 +20,8 @@ do
     return nil
   end
   if type(uiDef) == "string" then
-    player.interact("ScriptPane", uiDef)
+    local dir = root.itemConfig(itm.name).directory
+    player.interact("ScriptPane", util.absolutePath(dir, uiDef))
   elseif type(uiDef) == "table" then
     player.interact(table.unpack(uiDef))
   end

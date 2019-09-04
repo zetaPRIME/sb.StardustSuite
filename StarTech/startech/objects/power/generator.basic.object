@@ -66,6 +66,10 @@
     "liquidoil" : { "burnTime" : 25, "powerPerTick" : 25 }, // temporary until liquid gen, but f a s t e
     "corefragmentore" : { "burnTime" : 250, "powerPerTick" : 30 }, // also maybe temporary pending another generator?
     
+    // temporary: can burn erchius until resonite reactor exists
+    "solidfuel" : { "burnTime" : 500, "powerPerTick" : 32 },
+    "liquidfuel" : { "burnTime" : 250, "powerPerTick" : 48 },
+    
     // junk burnables
     "rottenfood" : { "burnTime" : 100, "powerPerTick" : 11 }, // decent fuel for being otherwise worthless, I guess
     "cotton" : { "burnTime" : 1, "powerPerTick" : 25 }, // just kind of goes up in a flash

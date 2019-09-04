@@ -213,20 +213,20 @@ function init()
     -- build description
     local desc = { }
     if inv.cell then
-      table.insert(desc, "^gray;- ^lightgray;Cell: ^reset;")
+      table.insert(desc, "^darkgray;- ^gray;Cell: ^reset;")
       table.insert(desc, itemutil.property(inv.cell, "/shortdescription"))
       table.insert(desc, "\n")
-    else table.insert(desc, "^gray;- ^lightgray;(no cell)\n") end
+    else table.insert(desc, "^darkgray;- ^gray;(no cell)\n") end
     if inv.pack then
-      table.insert(desc, "^gray;- ^lightgray;EPP: ^reset;")
+      table.insert(desc, "^darkgray;- ^gray;EPP: ^reset;")
       table.insert(desc, itemutil.property(inv.pack, "/shortdescription"))
       table.insert(desc, "\n")
-    else table.insert(desc, "^gray;- ^lightgray;(no EPP)\n") end
+    else table.insert(desc, "^darkgray;- ^gray;(no EPP)\n") end
     if inv.augment then
-      table.insert(desc, "^gray;- ^lightgray;Augment: ^reset;")
+      table.insert(desc, "^darkgray;- ^gray;Augment: ^reset;")
       table.insert(desc, cfgItem.parameters.currentAugment.displayName or "(unknown)")
-    else table.insert(desc, "^gray;- ^lightgray;(no augment)") end
-    table.insert(desc, "\n^lightgray;Light: ")
+    else table.insert(desc, "^darkgray;- ^gray;(no augment)") end
+    table.insert(desc, "\n^gray;Light: ")
     table.insert(desc, cfgItem.parameters.lightEnabled and "^white;Enabled" or "^gray;Disabled")
     cfgItem.parameters.description = table.concat(desc)
     

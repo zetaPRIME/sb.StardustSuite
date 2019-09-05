@@ -67,8 +67,8 @@
     "corefragmentore" : { "burnTime" : 250, "powerPerTick" : 30 }, // also maybe temporary pending another generator?
     
     // temporary: can burn erchius until resonite reactor exists
-    "solidfuel" : { "burnTime" : 500, "powerPerTick" : 32 },
-    "liquidfuel" : { "burnTime" : 250, "powerPerTick" : 48 },
+    "solidfuel" : { "burnTime" : 60, "powerPerTick" : 32 },
+    "liquidfuel" : { "burnTime" : 30, "powerPerTick" : 48 },
     
     // junk burnables
     "rottenfood" : { "burnTime" : 100, "powerPerTick" : 11 }, // decent fuel for being otherwise worthless, I guess

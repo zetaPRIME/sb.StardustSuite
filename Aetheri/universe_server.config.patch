@@ -4,5 +4,6 @@
 		"value" : [
 		    "/aetheri/ship/byos.structure"
 		]
-	}
+	},
+	{ "op" : "add", "path" : "/introInstance/aetheri", "value" :  "outpost" }
 ]

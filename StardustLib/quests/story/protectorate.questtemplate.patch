@@ -1,0 +1,6 @@
+[ // -*- grammar-ext: json -*-
+  { "op" : "replace", "path" : "/script", "value": "/sys/stardust/introext.lua" },
+  { "op" : "add", "path" : "/scriptConfig/speciesIntroCinematics", "value" : {
+    "default" : "/cinematics/intro/introstart.cinematic"
+  } }
+] 

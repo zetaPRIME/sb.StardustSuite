@@ -1,0 +1,5 @@
+[ // -*- grammar-ext: json -*-
+  // use a null cinematic; the actual intro is now handled by the protectorate quest
+  // this is so that individual species can be given their own cinematic along with their intro mission
+  { "op" : "replace", "path" : "/introCinematic", "value": "/cinematics/apex/intro.cinematic" }
+] 

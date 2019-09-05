@@ -30,6 +30,8 @@ function init(...)
   navExt.bindId = pane.sourceEntity()
   if not navExt.bindId or navExt.bindId == 0 then navExt.bindId = player.id() end
   
+  local hasFU = not not config.getParameter("visitableTypeDescription.aethersea")
+  
   -- remove bars if present from before a reload
   pane.removeWidget("stardustlib:topBar")
   pane.removeWidget("stardustlib:bottomBar")
@@ -47,7 +49,7 @@ function init(...)
   pane.addWidget({
     type = "layout",
     layoutType = "flow",
-    position = {5, 9},
+    position = hasFU and {5, 1} or {5, 9},
     size = {386, 14},
     spacing = {2, 0},
     scissoring = false,

@@ -1,0 +1,29 @@
+{ // -*- grammar-ext: json -*-
+  "objectName" : "startech:networkrelay2",
+  "shortdescription" : "Network Relay ^gray;(Compact)^reset;",
+  "description" : "A wiring relay to keep networks organized.\n^gray;Compact form factor.^reset;",
+  "colonyTags" : ["wired"],
+  "printable" : false,
+  "rarity" : "Common",
+
+  "category" : "wire",
+  "price" : 10,
+
+  "inventoryIcon" : "networkrelay2.png",
+  "orientations" : [
+    {
+      "image" : "networkrelay2.png",
+      "imagePosition" : [0, 0],
+
+      "spaceScan" : 0.1,
+      "anchors" : [ "background" ]
+    }
+  ],
+  
+  "isNetworkRelay" : true,
+  
+  "inputNodes" : [ [0, 0] ],
+  "outputNodes" : [ [0, 1], [0, -1], [-1, 0], [1, 0] ]
+  
+  //
+}

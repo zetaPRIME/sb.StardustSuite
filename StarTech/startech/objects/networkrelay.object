@@ -1,11 +1,10 @@
 { // -*- grammar-ext: json -*-
   "objectName" : "startech:networkrelay",
+  "shortdescription" : "Network Relay ^gray;(Vertical)^reset;",
+  "description" : "A wiring relay to keep networks organized.\n^gray;Vertical form factor.^reset;",
   "colonyTags" : ["wired"],
   "printable" : false,
   "rarity" : "Common",
-  "description" : "A relay. Connects things together and keeps network wiring organized.",
-  "shortdescription" : "Network Relay",
-  "race" : "human",
 
   "category" : "wire",
   "price" : 10,
@@ -20,16 +19,6 @@
       "anchors" : [ "background" ]
     }
   ],
-
-  //"scripts" : [ "stardusttest.lua" ],
-  //"scriptDelta" : 1,
-
-  /* "animation" : "/objects/wired/logic/logic.animation",
-
-  "animationParts" : {
-    "switch" : "/objects/wired/logic/bulb.png"
-  },
-  "animationPosition" : [-8, -8], */
   
   "isNetworkRelay" : true,
   

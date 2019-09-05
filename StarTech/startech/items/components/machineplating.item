@@ -6,5 +6,10 @@
   "inventoryIcon" : "machineplating.png",
   "shortdescription" : "Machine Plating",
   "description" : "A tough plating component for machinery.",
-  "itemTags" : [ "reagent" ]
+  "itemTags" : [ "reagent" ],
+  
+  "jewelGrants" : [
+    ["flat", "armor", 5],
+    ["description", "Huh. I guess that works."]
+  ]
 }

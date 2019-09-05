@@ -83,11 +83,6 @@ power stuffs {
     intermediary pulse-battery component?
     maybe a way to add a pulse battery to stock equipment
     
-    !!! PRIORITY: !!!
-    completely rework augpack (insert one EPP w/o augment, one augment, and one light (maybe just have it built in))
-    ^ insert pulse cell to directly use its capacity instead of having a native capacitor?
-    completely rework configurator (click button while holding item open custom interface with it inside) - partially done
-    
     powered lamp that fills a large region with full-bright light (basically volumetric lighting at the cost of fp)
     
     more smelter-type machines
@@ -142,7 +137,6 @@ Aetheri species mod {
     !!! PRIORITY: !!!
     > Innate flight in zero-g, similar controls to Elytra
     make flight in air use aether; place behind unlock, add efficiency stat
-    - make exiting liquid propel you up enough to jump out
     
     Innates {
         Kinetic Burst {
@@ -153,6 +147,7 @@ Aetheri species mod {
             give it a final name!
             figure out a secondary; overheat shot?
         }
+        Shatterflurry? Shredflurry? rapid fire spread salvo similar to Terraria's Crystal Storm
         Fireball
         Charge Cannon (roughly mega man X style; secondary could be a melee attack?)
         PUNCHY PUNCH
@@ -161,6 +156,8 @@ Aetheri species mod {
             primary to fire them off, secondary to make them spin faster and deflect projectiles
             maybe always active with knockback but not damage? takes yeeting them off to actually dps
         }
+        Artemis Bow - both single (piercing?) and spread shots
+        Shatterpulse - wide radial pulse that cuts armor down but doesn't do much damage
     }
     
     Skill tree {

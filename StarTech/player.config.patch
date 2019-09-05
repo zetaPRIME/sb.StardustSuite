@@ -5,5 +5,10 @@
   { "op" : "add", "path" : "/defaultBlueprints/tier1/-", "value" : { "item" : "startech:battery.t1" } },
   { "op" : "add", "path" : "/defaultBlueprints/tier1/-", "value" : { "item" : "startech:storagenet.controller" } },
   { "op" : "add", "path" : "/defaultBlueprints/tier1/-", "value" : { "item" : "startech:wrench" } },
-  { "op" : "add", "path" : "/defaultBlueprints/tier1/-", "value" : { "item" : "startech:networkrelay" } }
+  { "op" : "add", "path" : "/defaultBlueprints/tier1/-", "value" : { "item" : "startech:networkrelay" } },
+  { "op" : "add", "path" : "/defaultBlueprints/tier1/-", "value" : { "item" : "startech:networkrelay2" } },
+  
+  { "op" : "add", "path" : "/defaultBlueprints/tier1/-", "value" : { "item" : "startech:machineplating" } },
+  
+  { "op" : "add", "path" : "/defaultBlueprints/tier1/-", "value" : { "item" : "teleportercore" } }
 ] 

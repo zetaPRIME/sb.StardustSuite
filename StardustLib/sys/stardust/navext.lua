@@ -1,5 +1,7 @@
 -- StardustLib nav extension
 
+require "/scripts/vec2.lua"
+
 navExt = { }
 
 local _cb = { }
@@ -32,6 +34,10 @@ function init(...)
   
   local hasFU = not not config.getParameter("visitableTypeDescription.aethersea")
   
+  if hasFU then -- adjust zoom-out button to be above the fuel gauge
+    widget.setPosition("zoomOut", vec2.add(config.getParameter("gui.zoomOut.position"), {0, 11}))
+  end
+  
   -- remove bars if present from before a reload
   pane.removeWidget("stardustlib:topBar")
   pane.removeWidget("stardustlib:bottomBar")
@@ -49,7 +55,7 @@ function init(...)
   pane.addWidget({
     type = "layout",
     layoutType = "flow",
-    position = hasFU and {5, 1} or {5, 9},
+    position = hasFU and {2, 1} or {5, 9},
     size = {386, 14},
     spacing = {2, 0},
     scissoring = false,

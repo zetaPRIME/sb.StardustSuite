@@ -1,0 +1,5 @@
+[ // -*- grammar-ext: json -*-
+  // need this in post to avoid other things clobbering it
+  { "op" : "add", "path" : "/scripts/-", "value" : "/sys/stardust/navext.lua" },
+  { "op" : "add", "path" : "/scriptWidgetCallbacks/-", "value" : "_callback" }
+]

@@ -133,6 +133,10 @@ function init(...)
   local modules = config.getParameter("stardustlib:speciesModules")
   local module = modules[player.species()] or modules.default
   if type(module) == "string" then require(module) end
+  
+  -- and general addons after
+  local addons = config.getParameter("stardustlib:addonModules") or { }
+  for _, m in pairs(addons) do if type(m) == "string" then require(m) end end
 end
 
 local _update = update or function() end

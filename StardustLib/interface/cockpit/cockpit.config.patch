@@ -1,5 +1,6 @@
 [ // -*- grammar-ext: json -*-
   //{ "op" : "add", "path" : "/scripts/-", "value" : "/sys/stardust/navext.lua" },
   { "op" : "add", "path" : "/scriptWidgetCallbacks/-", "value" : "_callback" },
-  { "op" : "add", "path" : "/stardustlib:speciesModules", "value" : { "default" : "/sys/stardust/navmodule-default.lua" } }
+  { "op" : "add", "path" : "/stardustlib:speciesModules", "value" : { "default" : "/sys/stardust/navmodule-default.lua" } },
+  { "op" : "add", "path" : "/stardustlib:addonModules", "value" : [ ] }
 ]

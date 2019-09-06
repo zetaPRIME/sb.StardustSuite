@@ -1,6 +1,12 @@
-Libraries for various interop, etc. 
+NOTE TO SERVER OWNERS: this mod contains a second .pak! make sure this is loaded or client crashes may occur!
 
-You probably don't care about this unless you're a modder or use a mod that uses this. 
+Library code and system features for the modded experience.
+This mod contains the Quickbar; you don't need QuickbarMini with it.
+
+Other features:
+- Costume system
+- Navigation panel extension (fuel gauge, toolbar; per species options)
+- Per-species intro cinematic system
 
 If you're a modder, follow development here: 
 https://github.com/zetaPRIME/sb.StardustSuite

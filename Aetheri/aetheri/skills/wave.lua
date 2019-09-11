@@ -110,10 +110,11 @@ dynItem.addTask(function() while true do
     local dmgProps = {
       damage = dmg,
       team = activeItem.ownerTeam(),
-      damageSourceKind = "plasma",
-      statusEffects = { "aetheri:aethertouched" },
+      damageSourceKind = "shortsword", -- quietish slash sound
+      statusEffects = { "aetheri:aethertouched", { effect = "stardustlib:armorstrip", duration = 0.005 } },
       knockback = 0.1,
       rayCheck = false,
+      blahblah = "This is a test.",
       damageRepeatGroup = "aetheri:wave=" .. sb.nrand(),
       damageRepeatTimeout = cfg.animTime * 0.4,
     }

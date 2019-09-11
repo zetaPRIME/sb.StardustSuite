@@ -45,7 +45,7 @@
   },
   
   "sounds" : {
-    "fire" : [ "/sfx/gun/magnorbs_fire5.ogg" ],
+    "fire" : [ "/sfx/gun/magnorbs_fire5.ogg", "/sfx/gun/magnorbs_fire6.ogg", "/sfx/gun/magnorbs_fire7.ogg" ],
     "charge" : [ "/sfx/gun/aegisaltpistol_loop2.ogg" ],
     "bonus" : [ "/sfx/interface/sniper_mark_stop2.ogg" ],
     "bonusFire" : [ "/sfx/interface/energy_out1.ogg" ]

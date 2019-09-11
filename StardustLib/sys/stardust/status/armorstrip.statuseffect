@@ -1,0 +1,6 @@
+{ // -*- grammar-ext: json -*-
+  "name" : "stardustlib:armorstrip",
+  "effectConfig" : { },
+
+  "scripts" : [ "armorstrip.lua" ]
+}

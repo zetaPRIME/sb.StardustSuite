@@ -1,0 +1,12 @@
+[ // -*- grammar-ext: json -*-
+  { "op" : "add", "path" : "/jewelGrants", "value" : [
+    ["description", "Congratulations! You won ^orange;BETA CONTENT!^reset;\n"],
+    
+    ["flag", "unlockFlight"],
+    ["description", "Can fly in atmosphere"],
+    ["unlockSkill", "sniper"],
+    ["description", "Unlocks \"Sniper Shot\" skill"],
+    
+    ["description", ""] // endcap I guess
+  ] }
+]

@@ -114,6 +114,11 @@ dynItem.addTask(function() while true do
     activeItem.setHoldingItem(true)
     activeItem.setFrontArmFrame("run.3")
     activeItem.setBackArmFrame("jump.3")
+    
+    if not mcontroller.groundMovement() and not mcontroller.liquidMovement() and not mcontroller.zeroG() then
+      mcontroller.addMomentum{0, 50};
+    end
+    
     coroutine.yield()
     
     animator.playSound("sweep")

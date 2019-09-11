@@ -7,7 +7,8 @@
     { "op" : "replace", "path" : "/scriptConfig/dialogMode", "value" : "random" }, // don't just pick one and stick with it!
     { "op" : "add", "path" : "/scriptConfig/dialog/converse/default/aetheri", "value" : [ // Aetheri dialog lines
       "I don't suppose you've seen anyone running around with a Matter Manipulator, have you, dear?\n^lightgray;(Always running off to who knows where...)",
-      "My, such a lovely glow you have! An... Aetheri, are you? Seeing one of you in person is rare indeed!"
+      "My, such a lovely glow you have! An... Aetheri, are you? Seeing one of you in person is rare indeed!",
+      "Hmm. I wonder..."
     ] }
   ]
 ]

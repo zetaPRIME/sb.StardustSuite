@@ -16,7 +16,5 @@
 
   "scripts" : ["sniper.lua"],
   
-  "isAetherSkill" : true,
-  
-  "baseDamage" : 7
+  "isAetherSkill" : true
 }

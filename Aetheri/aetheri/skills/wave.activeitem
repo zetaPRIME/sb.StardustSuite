@@ -1,0 +1,20 @@
+{ // -*- grammar-ext: json -*-
+  "itemName" : "aetheri:skill.wave",
+  "maxStack" : 1,
+  "rarity" : "Essential",
+  "shortdescription" : "Burst Wave",
+  "description" : "Slice through your enemies with an energy blade that ^cyan;pierces through walls^reset;.",
+  "category" : "aetheri:skill",
+  "tooltipKind" : "mm",
+  "twoHanded" : true,
+  
+  "inventoryIcon" : [
+    { "image" : "skillSlotBG.png" },
+    { "image" : "noicon.png" }
+  ],
+  "animation" : "wave.animation",
+
+  "scripts" : ["wave.lua"],
+  
+  "isAetherSkill" : true
+}

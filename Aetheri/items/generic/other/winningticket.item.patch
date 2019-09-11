@@ -5,7 +5,8 @@
     ["flag", "unlockFlight"],
     ["description", "Can fly in atmosphere"],
     ["unlockSkill", "sniper"],
-    ["description", "Unlocks \"Sniper Shot\" skill"],
+    ["unlockSkill", "wave"],
+    ["description", "Unlocks \"Sniper Shot\" and \"Burst Wave\" skills"],
     
     ["description", ""] // endcap I guess
   ] }

@@ -26,6 +26,16 @@ do
     activeItem.setArmAngle(angle - mcontroller.rotation() * dir)
   end
   
+  function dynItem.aimAtPos(vec, dir)
+    local aimPos = vec2.add(vec2.add(vec, vec2.mul(mcontroller.velocity(), script.updateDt())), dynItem.aimOffset)
+    local aimAngle, aimDir = activeItem.aimAngleAndDirection(dynItem.aimVOffset, aimPos)
+    if dir then
+      if dir ~= aimDir then aimAngle = -aimAngle + math.pi end
+      aimDir = dir
+    end
+    dynItem.aimAt(aimDir, aimAngle)
+  end
+  
   function dynItem.setAutoAim(f)
     if mcontroller then -- adjust immediately if already init'd
       if f and not dynItem.autoAim then dynItem.aimAt(dynItem.aimDir, dynItem.aimAngle) end

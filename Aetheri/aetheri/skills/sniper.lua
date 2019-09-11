@@ -34,6 +34,7 @@ end
 
 dynItem.install()
 dynItem.setAutoAim(true)
+dynItem.aimVOffset = -2.5/8
 
 local cfg = {
   manaCost = 50,

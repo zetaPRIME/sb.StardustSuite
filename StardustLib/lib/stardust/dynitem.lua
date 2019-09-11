@@ -9,11 +9,12 @@ do
   local queue = { }
   
   dynItem.aimOffset = {0, 0}
+  dynItem.aimVOffset = 0
   dynItem.time = 0
   
   local function updateAim()
     dynItem.aimPos = vec2.add(vec2.add(activeItem.ownerAimPosition(), vec2.mul(mcontroller.velocity(), script.updateDt())), dynItem.aimOffset)
-    dynItem.aimAngle, dynItem.aimDir = activeItem.aimAngleAndDirection(0, dynItem.aimPos)
+    dynItem.aimAngle, dynItem.aimDir = activeItem.aimAngleAndDirection(dynItem.aimVOffset, dynItem.aimPos)
     if dynItem.autoAim then dynItem.aimAt(dynItem.aimDir, dynItem.aimAngle) end
   end
   

@@ -2,7 +2,7 @@
   "itemName" : "aetheri:skill.wave",
   "maxStack" : 1,
   "rarity" : "Essential",
-  "shortdescription" : "Burst Wave",
+  "shortdescription" : "Crescent Wave",
   "description" : "Slice through your enemies with an energy blade that ^cyan;pierces through walls^reset;.",
   "category" : "aetheri:skill",
   "tooltipKind" : "mm",

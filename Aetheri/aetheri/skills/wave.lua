@@ -111,7 +111,7 @@ dynItem.addTask(function() while true do
       damage = dmg,
       team = activeItem.ownerTeam(),
       damageSourceKind = "shortsword", -- quietish slash sound
-      statusEffects = { "aetheri:aethertouched", { effect = "stardustlib:armorstrip", duration = 0.005 } },
+      statusEffects = { "aetheri:aethertouched", { effect = "stardustlib:armorstrip", duration = 0.005, panini = "yes" } },
       knockback = 0.1,
       rayCheck = false,
       blahblah = "This is a test.",

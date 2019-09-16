@@ -4,7 +4,7 @@
   "rarity" : "Rare",
   "objectType" : "container",
   //"tooltipKind" : "container",
-  "description" : "The core of a transmatter network.",
+  "description" : "The core of a transmatter storage network.",
   "shortdescription" : "Transmatter Controller",
   "race" : "generic",
   "category" : "storagenet",

@@ -22,6 +22,7 @@ end
 local function rotatePoly(p, rot, off)
   --off = off or {0, 0}
   if not p then return nil end
+  if rot == 0 and (not off or vec2.eq(off, {0, 0})) then return p end
   local np = { }
   for k, v in pairs(p) do
     if off then v = vec2.add(v, off) end

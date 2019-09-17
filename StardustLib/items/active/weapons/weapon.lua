@@ -341,76 +341,13 @@ function dwDisallowFlip()
   return false
 end
 
--- StardustLib addition
-if (true) then -- encapsulate
-  -- wrap-once on the problem function
-  local _updAim = Weapon.updateAim
-  Weapon.updateAim = function(...)
-    local follow = false
-    local armAngle = 0
-    local setArmAngle = activeItem.setArmAngle
-    function activeItem.setArmAngle(angle, f)
-      follow = not not f
-      if follow then angle = angle - mcontroller.rotation() * mcontroller.facingDirection() end
-      armAngle = angle
-      return setArmAngle(armAngle)
+do -- StardustLib shim
+  local _new = Weapon.new
+  Weapon.new = function(...)
+    Weapon.new = _new
+    if root.hasTech("stardustlib:stub1") then
+      require "/sys/stardust/weaponext.lua"
     end
-    local handPosition = activeItem.handPosition
-    function activeItem.handPosition(off)
-      if not follow then return handPosition(off) end
-      setArmAngle(armAngle + mcontroller.rotation() * mcontroller.facingDirection())
-      local vec = handPosition(off)
-      setArmAngle(armAngle)
-      return vec
-    end
-    
-    local function rotatePoly(p, rot, off)
-      --off = off or {0, 0}
-      if not p then return nil end
-      local np = { }
-      for k, v in pairs(p) do
-        if off then v = vec2.add(v, off) end
-        np[k] = vec2.rotate(v, rot)
-      end
-      return np
-    end
-    
-    local setDamageSources = activeItem.setDamageSources
-    function activeItem.setDamageSources(lst)
-      local nl
-      if lst then
-        local rot = mcontroller.rotation()
-        if rot == 0 then return setDamageSources(lst) end -- early out if not rotated
-        nl = { }
-        for _, s in pairs(lst) do
-          local ms = util.mergeTable({ }, s)
-          table.insert(nl, ms)
-          ms.poly = rotatePoly(ms.poly, rot)
-          ms.line = rotatePoly(ms.line, rot)
-        end
-      end
-      return setDamageSources(nl)
-    end
-    
-    local setItemDamageSources = activeItem.setItemDamageSources
-    function activeItem.setItemDamageSources(lst)
-      local nl
-      if lst then
-        local rot = mcontroller.rotation() * mcontroller.facingDirection()
-        if rot == 0 then return setItemDamageSources(lst) end -- early out if not rotated
-        --local off = handPosition()
-        nl = { }
-        for _, s in pairs(lst) do
-          local ms = util.mergeTable({ }, s)
-          table.insert(nl, ms)
-          ms.poly = rotatePoly(ms.poly, rot, off)
-          ms.line = rotatePoly(ms.line, rot, off)
-        end
-      end
-      return setItemDamageSources(nl)
-    end
-    
-    Weapon.updateAim = _updAim
-    return _updAim(...)
+    return Weapon.new(...)
   end
 end

@@ -45,6 +45,9 @@ if not _stardustlib then
       table.insert(dir, d or "")
       return _spd(table.concat(dir))
     end
+    
+    -- bring in global versions
+    require "/sys/stardust/statusext.lua"
   end
   
   local _applyDamageRequest = applyDamageRequest

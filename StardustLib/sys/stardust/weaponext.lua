@@ -75,3 +75,13 @@ function activeItem.setItemDamageSources(lst)
   end
   return setItemDamageSources(nl)
 end
+
+-- imbue projectiles
+-- TODO: make sure this only applies to projectiles that *hit enemies*
+-- TODO: maybe make this apply to explosions as well (actionOnReap stuff)
+local spawnProjectile = world.spawnProjectile
+function world.spawnProjectile(name, pos, src, dir, track, params)
+  local imbues = weaponUtil.getStatusImbue()
+  params.statusEffects = imbue(params.statusEffects or root.projectileConfig(name).statusEffects, imbues)
+  return spawnProjectile(name, pos, src, dir, track, params)
+end

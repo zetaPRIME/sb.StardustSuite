@@ -83,6 +83,7 @@ end
 local spawnProjectile = world.spawnProjectile
 function world.spawnProjectile(name, pos, src, dir, track, params)
   local imbues = weaponUtil.getStatusImbue()
-  params.statusEffects = imbue(params.statusEffects or root.projectileConfig(name).statusEffects, imbues)
+  local cfg = root.projectileConfig(name)
+  params.statusEffects = imbue(params.statusEffects or cfg.statusEffects, imbues)
   return spawnProjectile(name, pos, src, dir, track, params)
 end

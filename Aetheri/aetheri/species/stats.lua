@@ -152,7 +152,12 @@ message.setHandler("stardustlib:modifyDamageTaken", function(_, _, damageRequest
   end
 end)
 
-
+message.setHandler("stardustlib:statusImbueQuery", function()
+  world.sendEntityMessage(entity.id(), "stardustlib:statusImbueQueryReply", {
+    "aetheri:aethertouched",
+    '::{"tag":"spaceDamageBonus"}'
+  })
+end)
 
 
 

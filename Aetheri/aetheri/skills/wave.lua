@@ -88,6 +88,10 @@ function capsuleSweep(p1, p2, size)
   }
 end
 
+local function enc(stat)
+  return "::" .. sb.printJson(stat)
+end
+
 -- fire task
 dynItem.addTask(function() while true do
   if buffered == 1 and status.consumeResource("aetheri:mana", cfg.manaCost) then -- primary fire
@@ -111,7 +115,9 @@ dynItem.addTask(function() while true do
       damage = dmg,
       team = activeItem.ownerTeam(),
       damageSourceKind = "shortsword", -- quietish slash sound
-      statusEffects = { "aetheri:aethertouched", { effect = "stardustlib:armorstrip", duration = 0.005, panini = "yes" } },
+      statusEffects = { "aetheri:aethertouched", { effect = "stardustlib:armorstrip", duration = 0.005 },
+        enc { tag = "spaceDamageBonus" },
+        enc { tag = "impulse", vec = vec2.mul(vec2.norm(vec2.sub(activeItem.ownerAimPosition(), mcontroller.position())), 15) } },
       knockback = 0.1,
       rayCheck = false,
       blahblah = "This is a test.",

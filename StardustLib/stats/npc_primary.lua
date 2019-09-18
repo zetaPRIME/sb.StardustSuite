@@ -6,7 +6,7 @@ function init()
       status.addEphemeralEffect(effectConfig, duration, sourceEntityId)
     end)
   
-  if root.hasTech("stardustlib:stub1") then -- stardustlib shim
+  if root.hasTech("stardustlib:enable-extenders") then -- stardustlib shim
     require "/sys/stardust/statusext.lua"
   end
 end

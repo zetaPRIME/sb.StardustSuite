@@ -31,7 +31,7 @@ function init()
       end
     end)
   
-  if root.hasTech("stardustlib:stub1") then -- stardustlib shim
+  if root.hasTech("stardustlib:enable-extenders") then -- stardustlib shim
     __spaceMonster = true
     require "/sys/stardust/statusext.lua"
   end

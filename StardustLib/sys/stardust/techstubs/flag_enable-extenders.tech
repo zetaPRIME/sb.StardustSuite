@@ -1,0 +1,11 @@
+{ // -*- grammar-ext: json -*-
+  "name" : "stardustlib:enable-extenders",
+  "type" : "body",
+
+  "shortDescription" : "^gray;???",
+  "description" : "^red;You shouldn't have this?",
+  "rarity" : "Essential",
+  "icon" : "/interface/statuses/x.png",
+  
+  "scripts" : [ ]
+}

@@ -345,7 +345,7 @@ do -- StardustLib shim
   local _new = Weapon.new
   Weapon.new = function(...)
     Weapon.new = _new
-    if root.hasTech("stardustlib:stub1") then
+    if root.hasTech("stardustlib:enable-extenders") then
       require "/sys/stardust/weaponext.lua"
     end
     return Weapon.new(...)

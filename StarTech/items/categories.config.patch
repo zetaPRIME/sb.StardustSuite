@@ -5,6 +5,8 @@
   { "op" : "add", "path" : "/labels/power.transport", "value" : "Power Transport" },
   { "op" : "add", "path" : "/labels/power.machine", "value" : "Powered Machinery" },
   
+  { "op" : "add", "path" : "/labels/startech:power.weapon", "value" : "^violet;Pulse Weapon^reset;" },
+  
   { "op" : "add", "path" : "/labels/storagenet", "value" : "Transmatter Network" },
   { "op" : "add", "path" : "/labels/storagenet.storage", "value" : "Transmatter Storage" }
-] 
+]

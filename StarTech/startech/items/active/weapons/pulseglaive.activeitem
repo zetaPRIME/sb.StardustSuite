@@ -1,0 +1,15 @@
+{ // -*- grammar-ext: json -*-
+  "itemName" : "startech:pulseglaive",
+  "shortdescription" : "Pulsestrike Glaive",
+  "description" : "it a weapn",
+  "category" : "startech:power.weapon",
+  "inventoryIcon" : "pulseglaive.png",
+  "rarity" : "Legendary",
+  "maxStack" : 1,
+  "twoHanded" : true,
+  "itemTags" : ["weapon", "melee", "spear", "energy"],
+  //"tooltipKind" : "sword",
+
+  "animation" : "pulseglaive.animation",
+  "scripts" : ["pulseglaive.lua"]
+}

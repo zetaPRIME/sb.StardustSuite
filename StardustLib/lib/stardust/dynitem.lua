@@ -13,9 +13,18 @@ do
   dynItem.time = 0
   
   local function updateAim()
+    do
+      activeItem.setArmAngle(0)
+      local p1 = activeItem.handPosition()
+      activeItem.setArmAngle(math.pi)
+      local p2 = activeItem.handPosition()
+      dynItem.shoulderPos = vec2.mul(vec2.add(p1, p2), 0.5)
+    end
+    
     dynItem.aimPos = vec2.add(vec2.add(activeItem.ownerAimPosition(), vec2.mul(mcontroller.velocity(), script.updateDt())), dynItem.aimOffset)
     dynItem.aimAngle, dynItem.aimDir = activeItem.aimAngleAndDirection(dynItem.aimVOffset, dynItem.aimPos)
-    if dynItem.autoAim then dynItem.aimAt(dynItem.aimDir, dynItem.aimAngle) end
+    if dynItem.autoAim then dynItem.aimAt(dynItem.aimDir, dynItem.aimAngle) -- aim at cursor
+    else dynItem.aimAt(dynItem.dir, dynItem.armAngle) end -- hold previous angle
   end
   
   function dynItem.aimAt(dir, angle)
@@ -44,14 +53,23 @@ do
     dynItem.autoAim = f
   end
   
-  function dynItem.offsetPoly(p)
+  function dynItem.offsetPoly(p, fromShoulder)
     local r = { }
     local rot, scale = dynItem.armAngle, {mcontroller.facingDirection(), 1}
-    local hp = vec2.rotate(activeItem.handPosition(), mcontroller.rotation())
+    local hp = vec2.rotate(fromShoulder and dynItem.shoulderPos or activeItem.handPosition(), mcontroller.rotation())
     for _, pt in pairs(p) do
       table.insert(r, vec2.add(vec2.mul( vec2.rotate(pt, rot), scale), hp))
     end
     return r
+  end
+  
+  function dynItem.normalizeTransformationGroup(g)
+    --animator.resetTransformationGroup(g)
+    local d = mcontroller.facingDirection()
+    animator.translateTransformationGroup(g, vec2.mul(vec2.rotate(activeItem.handPosition(), mcontroller.rotation()), {-1, -1}))
+    animator.translateTransformationGroup(g, dynItem.shoulderPos)
+    animator.rotateTransformationGroup(g, -dynItem.armAngle * d)
+    animator.scaleTransformationGroup(g, {d, 1})
   end
   
   function dynItem.tween(v1, v2, time)
@@ -106,4 +124,24 @@ do
     end
     update = dynItem.update
   end
+  
+  -- Combo system
+  
+  local function comboSystemLoop(df, ...)
+    local r = { }
+    while true do
+      if r[1] then
+        r = { r[1](table.unpack(r, 2)) }
+      else
+        r = { df(...) }
+      end
+    end
+  end
+  
+  function dynItem.comboSystem(startingFunc, ...)
+    local p = {...}
+    dynItem.addTask(function() comboSystemLoop(startingFunc, table.unpack(p)) end)
+    return dynItem -- chain
+  end
+  
 end

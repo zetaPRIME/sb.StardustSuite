@@ -73,6 +73,10 @@ do
   end
   
   function dynItem.tween(v1, v2, time)
+    if not v2 and not time then
+      time = v1
+      v1, v2 = 0.0, 1.0
+    end
     local c = coroutine.create(function()
       local t = 0
       while t < 1.0 do

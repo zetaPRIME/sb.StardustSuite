@@ -9,8 +9,16 @@ function init()
   activeItem.setTwoHandedGrip(false)
   activeItem.setBackArmFrame("rotation")
   
-  animator.setPartTag("haft", "partImage", --[["/items/active/weapons/melee/spear/feneroxspear.png" or]] asset "pulseglaive.png")
-  --animator.setPartTag("wave", "directives", "?multiply=ffffff00")
+  animator.setSoundVolume("open", 1.5)
+  
+  animator.setGlobalTag("wave", "energyDirectives", "?multiply=ffffff00")
+  
+  animator.setPartTag("haft", "partImage", asset "pulseglaive-haft.png")
+  animator.setPartTag("lens", "partImage", asset "pulseglaive-lens.png")
+  animator.setPartTag("blade1", "partImage", asset "pulseglaive-blade1.png")
+  animator.setPartTag("blade1e", "partImage", asset "pulseglaive-blade1e.png")
+  animator.setPartTag("blade2", "partImage", asset "pulseglaive-blade2.png")
+  animator.setPartTag("blade2e", "partImage", asset "pulseglaive-blade2e.png")
   
   activeItem.setDamageSources()
   
@@ -23,10 +31,14 @@ end
 
 dynItem.install()
 dynItem.setAutoAim(false)
-dynItem.aimVOffset = -5/8
+dynItem.aimVOffset = -4/8
 
 local cfg = {
-  comboTime = 1/3,
+  thrustTime = 1/3,
+  slashTime = 2/5,
+  
+  pulseTime = 1/4,
+  openTime = 1/5,
   
   manaCost = 5,
   baseDamage = 5,
@@ -60,47 +72,106 @@ local function enc(stat)
   return "::" .. sb.printJson(stat)
 end
 
+function animBlade(v)
+  animator.resetTransformationGroup("arm1a")
+  animator.resetTransformationGroup("arm1b")
+  animator.resetTransformationGroup("arm2a")
+  animator.resetTransformationGroup("arm2b")
+  
+  local o1 = util.lerp(v, 0.0, math.pi*0.85)
+  local o2 = o1-util.lerp(v, 0.0, math.pi*0.25)
+  
+  -- a is the blade, b is the armature
+  
+  animator.rotateTransformationGroup("arm1a", o2)
+  animator.rotateTransformationGroup("arm1b", -o1)
+  animator.rotateTransformationGroup("arm2a", -o2)
+  animator.rotateTransformationGroup("arm2b", o1)
+  
+  --[[animator.translateTransformationGroup("arm1a", {0, 3/8})
+  animator.translateTransformationGroup("arm2a", {0, 2/8})
+  animator.translateTransformationGroup("arm1b", {1/8, 8/8 - v*2/8})
+  animator.translateTransformationGroup("arm2b", {-2/8, 7/8})
+  -- a2 7/8 2/8 ]]
+  
+  animator.translateTransformationGroup("arm1b", {(1 - v*1.0)/8, (11 - v*7)/8})
+  animator.translateTransformationGroup("arm2b", {-(2 + v*0.0)/8, (9 - v*4.25)/8})
+end
+
+do
+  local pulseId = -1
+  function cancelPulse() pulseId = (pulseId + 1) % 16384 return pulseId end
+  function setEnergy(amt)
+    cancelPulse()
+    animator.setGlobalTag("energyDirectives", string.format("?multiply=ffffff%02x", math.floor(0.5 + util.clamp(amt, 0.0, 1.0) * 255)))
+  end
+  function pulseEnergy(amt)
+    local id = cancelPulse()
+    dynItem.addTask(function()
+      for v in dynItem.tween(cfg.pulseTime * amt) do
+        if pulseId ~= id then return nil end -- cancel if signaled
+        v = math.min((1.0-v) * amt, 1.0) ^ 0.333
+        animator.setGlobalTag("energyDirectives", string.format("?multiply=ffffff%02x", math.floor(0.5 + v * 255)))
+      end
+    end)
+  end
+end
+
 function idle()
   activeItem.setTwoHandedGrip(false)
+  animBlade(0)
   while true do
-    dynItem.aimAt(dynItem.aimDir, math.pi * -0.575)
     animator.resetTransformationGroup("weapon")
+    dynItem.aimAt(dynItem.aimDir, math.pi * -0.575)
     
     if dynItem.firePress then return swing end
     coroutine.yield()
   end
-end
+end dynItem.comboSystem(idle)
 
 function swing()
   activeItem.setTwoHandedGrip(true)
   animator.playSound("swing")
+  pulseEnergy(1.25)
   local len = 2.0
   local m = 0.0
-  local mx = 2.1
+  local mx = 1.7
   local md = 0.3
-  for v in dynItem.tween(0.0, 1.0, cfg.comboTime*0.2) do
-    v = v^0.25
-    local a = util.lerp(v, mx, m)
+  for v in dynItem.tween(cfg.thrustTime*0.2) do
+    local vv = v^0.125
+    local a = util.lerp(vv, mx, m)
     dynItem.aimAt(dynItem.aimDir, dynItem.aimAngle - a)
     animator.resetTransformationGroup("weapon")
-    animator.translateTransformationGroup("weapon", {0, len * util.lerp(v, 0.0, 1.0)})
+    animator.translateTransformationGroup("weapon", {0, len * util.lerp(v^0.5, 0.0, 1.0)})
     animator.rotateTransformationGroup("weapon", (math.pi * -0.5) + a)
   end
-  for v, f in dynItem.tween(0.0, 1.5, cfg.comboTime*0.8) do
-    v = math.min(v, 1.0)
+  for v, f in dynItem.tween(cfg.thrustTime*0.8) do
+    v = math.min(v*1.5, 1.0)
     local a = util.lerp(v^3, m, md)
     dynItem.aimAt(dynItem.aimDir, dynItem.aimAngle - a)
     animator.resetTransformationGroup("weapon")
     animator.translateTransformationGroup("weapon", {0, len * util.lerp(v, 1.0, 1.0)})
     animator.rotateTransformationGroup("weapon", (math.pi * -0.5) + a)
   end
+  if dynItem.fire then return test_open end
   while dynItem.fire do
     dynItem.aimAt(dynItem.aimDir, dynItem.aimAngle - md)
     coroutine.yield()
   end
 end
 
-dynItem.comboSystem(idle)
+function test_open()
+  local md = 0.3
+  animator.playSound("open")
+  for v in dynItem.tween(cfg.openTime) do
+    dynItem.aimAt(dynItem.aimDir, dynItem.aimAngle - md)
+    animBlade(0.5 + math.cos(v * math.pi) * -0.5)
+  end
+  while dynItem.fire do
+    dynItem.aimAt(dynItem.aimDir, dynItem.aimAngle - md)
+    coroutine.yield()
+  end
+end
 
 -- fire task
 if false then dynItem.addTask(function() while true do

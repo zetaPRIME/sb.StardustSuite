@@ -7,14 +7,59 @@
   
   "animatedParts" : {
     "parts" : {
+      
       "haft" : {
         "properties" : {
           "zLevel" : 0,
-          "centered" : true,
+          "centered" : true, "offset" : [0, 0],
           "image" : "<partImage><directives>",
-          //"fullbright" : true,
-          "offset" : [0, 0],
           "transformationGroups" : ["weapon"]
+        }
+      },
+      "lens" : {
+        "properties" : {
+          "zLevel" : 1,
+          "centered" : true, "offset" : [0, 0],
+          "image" : "<partImage><directives>",
+          "fullbright" : true,
+          "transformationGroups" : ["weapon"]
+        }
+      },
+      
+      "blade1" : {
+        "properties" : {
+          "zLevel" : 10,
+          "centered" : true, "offset" : [0, 0],
+          "image" : "<partImage><directives>",
+          "transformationGroups" : ["arm1a", "arm1b", "weapon"]
+        }
+      },
+      "blade1e" : {
+        "properties" : {
+          "zLevel" : 11,
+          "centered" : true, "offset" : [0, 0],
+          "image" : "<partImage><energyDirectives>",
+          "fullbright" : true,
+          "transformationGroups" : ["arm1a", "arm1b", "weapon"]
+        }
+      },
+      
+      "blade2" : {
+        "properties" : {
+          "zLevel" : 5,
+          "centered" : true, "offset" : [0, 0],
+          "image" : "<partImage><directives>",
+          "transformationGroups" : ["arm2a", "arm2b", "weapon"]
+        }
+      },
+      
+      "blade2e" : {
+        "properties" : {
+          "zLevel" : 6,
+          "centered" : true, "offset" : [0, 0],
+          "image" : "<partImage><energyDirectives>",
+          "fullbright" : true,
+          "transformationGroups" : ["arm2a", "arm2b", "weapon"]
         }
       },
       
@@ -32,7 +77,8 @@
   },
   
   "transformationGroups" : {
-    "weapon" : { }, "flash" : { }
+    "weapon" : { }, "arm1a" : { }, "arm1b" : { }, "arm2a" : { }, "arm2b" : { },
+    "flash" : { }
   },
   
   "lights" : {
@@ -47,6 +93,7 @@
   
   "sounds" : {
     "swing" : [ "/sfx/melee/laser_weapon_swing1.ogg", "/sfx/melee/laser_weapon_swing2.ogg", "/sfx/melee/laser_weapon_swing3.ogg" ],
+    "open" : [ "/sfx/gun/mech_beamsniper_windup1.ogg" ],
     "charge" : [ "/sfx/gun/aegisaltpistol_loop2.ogg" ],
     "fire" : [ "/sfx/interface/energy_out1.ogg" ]
   }

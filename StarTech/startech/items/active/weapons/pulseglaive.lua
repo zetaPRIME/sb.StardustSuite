@@ -46,7 +46,7 @@ dynItem.aimVOffset = -4/8
   
   -- visuals
   idleHoldAngle = math.pi * -0.575,
-  thrustLenth = 2.0,
+  thrustLength = 2.0,
   pulseTime = 1/4,
   fxTime = 1/8,
 }
@@ -154,6 +154,7 @@ end
 
 function idle()
   activeItem.setTwoHandedGrip(false)
+  activeItem.setOutsideOfHand(false)
   animBlade(0)
   while true do
     animator.resetTransformationGroup("weapon")
@@ -168,8 +169,30 @@ function fail() -- not enough fp
   animator.playSound("fail")
 end
 
-function thrust(num)
-  num = num or 1
+function cooldown() -- ...with a flourish
+  activeItem.setTwoHandedGrip(false)
+  activeItem.setOutsideOfHand(true)
+  local start = dynItem.armAngle
+  local apex = math.pi * 0.5
+  
+  local flipTime = 3/7
+  
+  for v in dynItem.tween(flipTime * 0.3) do
+    dynItem.aimAt(dynItem.aimDir, util.lerp(v^0.5, start, apex))
+    animator.resetTransformationGroup("weapon")
+    animator.translateTransformationGroup("weapon", {0, cfg.thrustLength * util.lerp(v, 1.0, 0.5)})
+    animator.rotateTransformationGroup("weapon", util.lerp(v, (math.pi * -0.5) + 0.3, math.pi * -1.5))
+  end
+  for v in dynItem.tween(flipTime * 0.7) do
+    if v >= 0.75 then activeItem.setOutsideOfHand(false) end
+    dynItem.aimAt(dynItem.aimDir, util.lerp(v^2, apex, cfg.idleHoldAngle))
+    animator.resetTransformationGroup("weapon")
+    animator.translateTransformationGroup("weapon", {0, cfg.thrustLength * util.lerp(v, 0.5, 0.0)})
+    animator.rotateTransformationGroup("weapon", util.lerp(v, math.pi * -1.5, math.pi * -2))
+  end
+end
+
+function thrust(finisher)
   local buffered, released
   local function inp()
     if dynItem.firePress then buffered = true end
@@ -179,9 +202,10 @@ function thrust(num)
   activeItem.setTwoHandedGrip(true)
   animator.playSound("thrust")
   animator.playSound("beam")
+  if finisher then animator.playSound("finisher") end
   pulseEnergy(1.0)
   
-  local len = cfg.thrustLenth
+  local len = cfg.thrustLength
   local m = 0.05
   local mx = 1.7
   local md = 0.3
@@ -195,7 +219,7 @@ function thrust(num)
   end
   
   -- damage
-  strike(cfg.thrustTime, "spear", dynItem.offsetPoly({
+  strike(cfg.thrustTime * (finisher and 1.5 or 1.0), "spear", dynItem.offsetPoly({
     {5.5, -1},
     {-1.25, -0.5},
     {-1.25, 0.5},
@@ -215,11 +239,9 @@ function thrust(num)
     animator.rotateTransformationGroup("weapon", (math.pi * -0.5) + a)
   end
   if not released then return beamOpen end
+  if finisher then return cooldown end
   if buffered then return slash end
-  while dynItem.fire do
-    dynItem.aimAt(dynItem.aimDir, dynItem.aimAngle - md)
-    coroutine.yield()
-  end
+  --
 end
 
 local function sigexp(n, x)
@@ -239,7 +261,7 @@ function slash(num)
   -- snapshot
   local dir, aim = dynItem.aimDir, dynItem.aimAngle
   local sweepWidth = math.pi * 0.27
-  local len = cfg.thrustLenth
+  local len = cfg.thrustLength
   
   activeItem.setTwoHandedGrip(true)
   animator.playSound("slash")
@@ -247,7 +269,7 @@ function slash(num)
   pulseEnergy(1.0)
   
   animator.resetTransformationGroup("weapon")
-  animator.translateTransformationGroup("weapon", {0, cfg.thrustLenth})
+  animator.translateTransformationGroup("weapon", {0, cfg.thrustLength})
   animator.rotateTransformationGroup("weapon", math.pi * -0.5)
   
   -- actual swing (and accompanying fx)
@@ -268,6 +290,7 @@ function slash(num)
     dynItem.aimAt(dir, aim - (sweepWidth + math.sin(((v^0.75)*0.75)*math.pi) * 0.075 * math.pi) * slashDir)
   end
   
+  if not released then return beamOpen end
   if buffered then
     if num > 1 then return thrust, true end
     return slash, num + 1
@@ -283,7 +306,7 @@ function beamOpen()
     animBlade(sv)
     local md = 0.3
     animator.resetTransformationGroup("weapon")
-    animator.translateTransformationGroup("weapon", {0, cfg.thrustLenth * util.lerp(sv, 1.0, 0.4)})
+    animator.translateTransformationGroup("weapon", {0, cfg.thrustLength * util.lerp(sv, 1.0, 0.4)})
     animator.rotateTransformationGroup("weapon", (math.pi * -0.5) + md)
   end
   while dynItem.fire do

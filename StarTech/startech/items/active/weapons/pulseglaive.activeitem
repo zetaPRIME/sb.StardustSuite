@@ -1,14 +1,18 @@
 { // -*- grammar-ext: json -*-
   "itemName" : "startech:pulseglaive",
   "shortdescription" : "Pulsestrike Glaive",
-  "description" : "it a weapn",
+  "description" : "A ^violet;fluxpulse-powered^reset; polearm with both ^violet;melee and ranged^reset; capabilities.",
   "category" : "startech:power.weapon",
   "inventoryIcon" : "pulseglaive.png",
   "rarity" : "Legendary",
   "maxStack" : 1,
   "twoHanded" : true,
   "itemTags" : ["weapon", "melee", "spear", "energy"],
-  "tooltipKind" : "staff",
+  "tooltipKind" : "stardustlib.withPreview",
+  "largeImage" : "/startech/items/active/weapons/pulseglaive-preview.png",
+  "tooltipFields" : { },
+  
+  "level" : 3,
 
   "animation" : "pulseglaive.animation",
   "scripts" : ["pulseglaive.lua"]

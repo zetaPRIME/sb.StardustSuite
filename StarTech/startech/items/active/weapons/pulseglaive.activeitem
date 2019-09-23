@@ -8,7 +8,7 @@
   "maxStack" : 1,
   "twoHanded" : true,
   "itemTags" : ["weapon", "melee", "spear", "energy"],
-  //"tooltipKind" : "sword",
+  "tooltipKind" : "staff",
 
   "animation" : "pulseglaive.animation",
   "scripts" : ["pulseglaive.lua"]

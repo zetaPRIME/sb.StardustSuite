@@ -12,6 +12,8 @@ do
   dynItem.aimVOffset = 0
   dynItem.time = 0
   
+  dynItem.autoResetRegions = true
+  
   local function updateAim()
     do
       activeItem.setArmAngle(0)
@@ -53,9 +55,9 @@ do
     dynItem.autoAim = f
   end
   
-  function dynItem.offsetPoly(p, fromShoulder)
+  function dynItem.offsetPoly(p, fromShoulder, angle)
     local r = { }
-    local rot, scale = dynItem.armAngle, {mcontroller.facingDirection(), 1}
+    local rot, scale = angle or dynItem.armAngle, {mcontroller.facingDirection(), 1}
     local hp = vec2.rotate(fromShoulder and dynItem.shoulderPos or activeItem.handPosition(), mcontroller.rotation())
     for _, pt in pairs(p) do
       table.insert(r, vec2.add(vec2.mul( vec2.rotate(pt, rot), scale), hp))
@@ -106,6 +108,15 @@ do
       local f, af = fireMode == "primary", fireMode == "alt"
       dynItem.firePress, dynItem.altFirePress = f and not dynItem.fire, af and not dynItem.altFire
       dynItem.fire, dynItem.altFire = f, af
+    end
+    
+    if dynItem.autoResetRegions then
+      activeItem.setDamageSources()
+      activeItem.setItemDamageSources()
+      activeItem.setShieldPolys()
+      activeItem.setItemShieldPolys()
+      activeItem.setForceRegions()
+      activeItem.setItemForceRegions()
     end
     
     updateAim()

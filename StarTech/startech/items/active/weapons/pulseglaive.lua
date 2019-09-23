@@ -1,27 +1,30 @@
 require "/lib/stardust/dynitem.lua"
+require "/lib/stardust/weaponutil.lua"
 require "/lib/stardust/playerext.lua"
 require "/lib/stardust/color.lua"
 
-function asset(f) return string.format("/startech/items/active/weapons/%s", f) end
+function asset(f) return string.format("/startech/items/active/weapons/pulseglaive-%s.png", f) end
 
+local cfg
 function init()
   activeItem.setHoldingItem(true)
   activeItem.setTwoHandedGrip(false)
   activeItem.setBackArmFrame("rotation")
   
   animator.setSoundVolume("open", 1.5)
+  animator.setSoundVolume("beam", 0.75)
   
   animator.setGlobalTag("wave", "energyDirectives", "?multiply=ffffff00")
   
-  animator.setPartTag("haft", "partImage", asset "pulseglaive-haft.png")
-  animator.setPartTag("lens", "partImage", asset "pulseglaive-lens.png")
-  animator.setPartTag("blade1", "partImage", asset "pulseglaive-blade1.png")
-  animator.setPartTag("blade1e", "partImage", asset "pulseglaive-blade1e.png")
-  animator.setPartTag("blade2", "partImage", asset "pulseglaive-blade2.png")
-  animator.setPartTag("blade2e", "partImage", asset "pulseglaive-blade2e.png")
+  animator.setPartTag("haft", "partImage", asset "haft")
+  animator.setPartTag("lens", "partImage", asset "lens")
+  animator.setPartTag("blade1", "partImage", asset "blade1")
+  animator.setPartTag("blade1e", "partImage", asset "blade1e")
+  animator.setPartTag("blade2", "partImage", asset "blade2")
+  animator.setPartTag("blade2e", "partImage", asset "blade2e")
   
   activeItem.setDamageSources()
-  
+  cfg.baseDps = cfg.baseDps * root.evalFunction("weaponDamageLevelMultiplier", config.getParameter("level", 1))
   --
 end
 
@@ -33,43 +36,49 @@ dynItem.install()
 dynItem.setAutoAim(false)
 dynItem.aimVOffset = -4/8
 
-local cfg = {
+--[[local]] cfg = {
   thrustTime = 1/3,
-  slashTime = 2/5,
+  slashTime = 1/4,
   
-  pulseTime = 1/4,
   openTime = 1/5,
   
-  manaCost = 5,
-  baseDamage = 5,
+  baseDps = 15,
   
-  animTime = 1/3,
-  distance = 30,
-  
-  altManaCost = 12,
-  altBaseDamage = 7,
+  -- visuals
+  idleHoldAngle = math.pi * -0.575,
+  thrustLenth = 2.0,
+  pulseTime = 1/4,
+  fxTime = 1/8,
 }
-
-local buffered = false
-
-local ang = 0.0
-
--- buffer task
-dynItem.addTask(function() while true do
-  if dynItem.firePress then buffered = 1 elseif dynItem.altFirePress then buffered = 2 end
-  
-  --dynItem.aimAt(dynItem.aimDir, math.pi * -0.55)
-  
-  --[[animator.resetTransformationGroup("weapon")
-  animator.rotateTransformationGroup("weapon", ang)
-  dynItem.normalizeTransformationGroup("weapon")
-  ang = ang + script.updateDt() * 0.25]]
-  
-  coroutine.yield()
-end end)
 
 local function enc(stat)
   return "::" .. sb.printJson(stat)
+end
+
+function strike(dmg, type, poly)
+  local np = #poly
+  activeItem.setDamageSources { {
+    poly = np > 2 and poly,
+    line = np == 2 and poly,
+    damage = dmg * cfg.baseDps * status.stat("powerMultiplier", 1.0),
+    team = activeItem.ownerTeam(),
+    damageSourceKind = type,
+    statusEffects = weaponUtil.imbue {
+      enc { tag = "spaceDamageBonus" },
+    },
+    knockback = {mcontroller.facingDirection(), 20},
+    rayCheck = true,
+    damageRepeatTimeout = 0,
+  } }
+end
+
+function polyFan(width, rad, pts)
+  local p = {{0, 0}}
+  pts = pts or 7
+  for i = 1, pts do
+    table.insert(p, vec2.rotate({rad, 0}, (2 * ((i-1)/(pts-1)) - 1) * width))
+  end
+  return p
 end
 
 function animBlade(v)
@@ -117,138 +126,168 @@ do
   end
 end
 
+do
+  local fxId = -1
+  function throwFx(type, dir, angle, offset, baseScale)
+    fxId = (fxId + 1) % 16384
+    local id = fxId
+    offset = offset or {0, 0}
+    baseScale = baseScale or 1
+    dynItem.addTask(function()
+      animator.setPartTag("fx", "partImage", asset(type))
+      for v in dynItem.tween(cfg.fxTime) do
+        if fxId ~= id then return nil end -- cancelable
+        local a = (1.0-v)^0.5
+        animator.setPartTag("fx", "fxDirectives", string.format("?multiply=ffffff%02x", math.floor(0.5 + a * 255)))
+        
+        animator.resetTransformationGroup("fx")
+        animator.scaleTransformationGroup("fx", util.lerp(v, 1.0, 1.25) * baseScale)
+        animator.translateTransformationGroup("fx", vec2.add(offset, {(v^0.5) * 3, 0}))
+        animator.rotateTransformationGroup("fx", angle)
+        
+        if (dir < 0) then animator.scaleTransformationGroup("fx", {-1, 1}) end
+        dynItem.normalizeTransformationGroup("fx")
+      end
+    end)
+  end
+end
+
 function idle()
   activeItem.setTwoHandedGrip(false)
   animBlade(0)
   while true do
     animator.resetTransformationGroup("weapon")
-    dynItem.aimAt(dynItem.aimDir, math.pi * -0.575)
+    dynItem.aimAt(dynItem.aimDir, cfg.idleHoldAngle)
     
-    if dynItem.firePress then return swing end
+    if dynItem.firePress then dynItem.firePress = false return thrust end
     coroutine.yield()
   end
 end dynItem.comboSystem(idle)
 
-function swing()
+function fail() -- not enough fp
+  animator.playSound("fail")
+end
+
+function thrust(num)
+  num = num or 1
+  local buffered, released
+  local function inp()
+    if dynItem.firePress then buffered = true end
+    if not dynItem.fire then released = true end
+  end
+  
   activeItem.setTwoHandedGrip(true)
-  animator.playSound("swing")
-  pulseEnergy(1.25)
-  local len = 2.0
-  local m = 0.0
+  animator.playSound("thrust")
+  animator.playSound("beam")
+  pulseEnergy(1.0)
+  
+  local len = cfg.thrustLenth
+  local m = 0.05
   local mx = 1.7
   local md = 0.3
-  for v in dynItem.tween(cfg.thrustTime*0.2) do
+  for v in dynItem.tween(cfg.thrustTime*0.2) do inp()
     local vv = v^0.125
     local a = util.lerp(vv, mx, m)
     dynItem.aimAt(dynItem.aimDir, dynItem.aimAngle - a)
     animator.resetTransformationGroup("weapon")
-    animator.translateTransformationGroup("weapon", {0, len * util.lerp(v^0.5, 0.0, 1.0)})
+    animator.translateTransformationGroup("weapon", {0, len * util.lerp(v^0.5, 0.0, 1.3)})
     animator.rotateTransformationGroup("weapon", (math.pi * -0.5) + a)
   end
-  for v, f in dynItem.tween(cfg.thrustTime*0.8) do
-    v = math.min(v*1.5, 1.0)
+  
+  -- damage
+  strike(cfg.thrustTime, "spear", dynItem.offsetPoly({
+    {5.5, -1},
+    {-1.25, -0.5},
+    {-1.25, 0.5},
+    {5.5, 1},
+    {10, 0},
+  }, false, dynItem.aimAngle))
+  -- fx
+  throwFx("thrustfx", dynItem.aimDir, dynItem.aimAngle, {6, -2/8})
+  
+  for v, f in dynItem.tween(cfg.thrustTime*0.8) do inp()
+    local rv = v
+    v = util.clamp(v*1.5 - 0.5, 0.0, 1.0)
     local a = util.lerp(v^3, m, md)
     dynItem.aimAt(dynItem.aimDir, dynItem.aimAngle - a)
     animator.resetTransformationGroup("weapon")
-    animator.translateTransformationGroup("weapon", {0, len * util.lerp(v, 1.0, 1.0)})
+    animator.translateTransformationGroup("weapon", {0, len * util.lerp(v^0.25, 1.3, 1)})
     animator.rotateTransformationGroup("weapon", (math.pi * -0.5) + a)
   end
-  if dynItem.fire then return test_open end
+  if not released then return beamOpen end
+  if buffered then return slash end
   while dynItem.fire do
     dynItem.aimAt(dynItem.aimDir, dynItem.aimAngle - md)
     coroutine.yield()
   end
 end
 
-function test_open()
+local function sigexp(n, x)
+  local s = n >= 0 and 1 or -1
+  return math.abs(n)^x * s
+end
+
+function slash(num)
+  num = num or 1
+  local slashDir = ((num % 2) == 0) and 1 or -1
+  local buffered, released
+  local function inp()
+    if dynItem.firePress then buffered = true end
+    if not dynItem.fire then released = true end
+  end
+
+  -- snapshot
+  local dir, aim = dynItem.aimDir, dynItem.aimAngle
+  local sweepWidth = math.pi * 0.27
+  local len = cfg.thrustLenth
+  
+  activeItem.setTwoHandedGrip(true)
+  animator.playSound("slash")
+  animator.playSound("beam")
+  pulseEnergy(1.0)
+  
+  animator.resetTransformationGroup("weapon")
+  animator.translateTransformationGroup("weapon", {0, cfg.thrustLenth})
+  animator.rotateTransformationGroup("weapon", math.pi * -0.5)
+  
+  -- actual swing (and accompanying fx)
+  strike(cfg.slashTime, "shortsword", dynItem.offsetPoly(polyFan(sweepWidth, 11), true, dynItem.aimAngle))
+  throwFx("slashfx", dynItem.aimDir, dynItem.aimAngle, {6.5, 0}, 0.9) -- 0.8 == 1/1.25
+  
+  for v in dynItem.tween(cfg.slashTime * 0.2) do inp() -- main swing
+    --v = math.sin(v * math.pi)
+    local sv = 0.5 + math.cos(v * math.pi) * -0.5
+    dynItem.aimAt(dir, aim - util.lerp(sv, -1.0, 1.0) * sweepWidth * slashDir)
+    
+    --[[animator.resetTransformationGroup("weapon")
+    animator.translateTransformationGroup("weapon", {0, len})
+    animator.rotateTransformationGroup("weapon", math.pi * (-0.5 + (1.0-v) * slashDir * 0.15 ))]]
+  end
+  
+  for v in dynItem.tween(cfg.slashTime * 0.8) do inp() -- overswing
+    dynItem.aimAt(dir, aim - (sweepWidth + math.sin(((v^0.75)*0.75)*math.pi) * 0.075 * math.pi) * slashDir)
+  end
+  
+  if buffered then
+    if num > 1 then return thrust, true end
+    return slash, num + 1
+  end
+end
+
+function beamOpen()
   local md = 0.3
   animator.playSound("open")
   for v in dynItem.tween(cfg.openTime) do
+    local sv = 0.5 + math.cos(v * math.pi) * -0.5
     dynItem.aimAt(dynItem.aimDir, dynItem.aimAngle - md)
-    animBlade(0.5 + math.cos(v * math.pi) * -0.5)
+    animBlade(sv)
+    local md = 0.3
+    animator.resetTransformationGroup("weapon")
+    animator.translateTransformationGroup("weapon", {0, cfg.thrustLenth * util.lerp(sv, 1.0, 0.4)})
+    animator.rotateTransformationGroup("weapon", (math.pi * -0.5) + md)
   end
   while dynItem.fire do
     dynItem.aimAt(dynItem.aimDir, dynItem.aimAngle - md)
     coroutine.yield()
   end
 end
-
--- fire task
-if false then dynItem.addTask(function() while true do
-  if buffered == 1 and status.consumeResource("aetheri:mana", cfg.manaCost) then -- primary fire
-    -- set up for the actual toss
-    activeItem.setHoldingItem(true)
-    activeItem.setFrontArmFrame("run.3")
-    activeItem.setBackArmFrame("jump.3")
-    coroutine.yield() -- single frame delay because otherwise the hand position is incorrect (*W H Y*)
-    dynItem.setAutoAim(false) -- lock aim during animation
-    animator.playSound("fire")
-    buffered = 0
-    
-    activeItem.setFrontArmFrame("rotation")
-    activeItem.setBackArmFrame("rotation")
-    
-    local tpos = vec2.add(mcontroller.position(), vec2.mul(vec2.norm(vec2.sub(activeItem.ownerAimPosition(), mcontroller.position())), cfg.distance * 1.1))
-    local dir = mcontroller.facingDirection()
-    
-    local dmg = cfg.baseDamage * status.stat("powerMultiplier", 1.0) * status.stat("aetheri:skillPowerMultiplier", 0.0)
-    local dmgProps = {
-      damage = dmg,
-      team = activeItem.ownerTeam(),
-      damageSourceKind = "shortsword", -- quietish slash sound
-      statusEffects = { "aetheri:aethertouched", { effect = "stardustlib:armorstrip", duration = 0.005 },
-        enc { tag = "spaceDamageBonus" },
-        enc { tag = "impulse", vec = vec2.mul(vec2.norm(vec2.sub(activeItem.ownerAimPosition(), mcontroller.position())), 15) } },
-      knockback = 0.1,
-      rayCheck = false,
-      blahblah = "This is a test.",
-      damageRepeatGroup = "aetheri:wave=" .. sb.nrand(),
-      damageRepeatTimeout = cfg.animTime * 0.4,
-    }
-    -- double damage on top of the multiplier to compensate for lack of double-hit potential; risk-reward trying to "tipper" it
-    local critDmgProps = util.mergeTable(util.mergeTable({ }, dmgProps), { damage = dmg * 2 * status.stat("aetheri:skillCritMultiplier" )})
-    
-    local pDist = 0
-    for t in dynItem.tween(0.0, 1.0, cfg.animTime) do
-      dynItem.aimAtPos(tpos, dir)
-      local distP = math.sin(t * math.pi)
-      local dist = distP * cfg.distance
-      local crit = distP >= 0.75 -- crit at end of flight
-      
-      local sc = 1
-      local sc2 = 1
-      if t < 0.5 then
-        local tt = t*2
-        sc = util.lerp(tt^0.25, 0.5, 1)
-        sc2 = sc^2
-      else
-        local tt = t*2 - 1
-        sc = -1 - tt
-        sc2 = 1.0 - (tt*0.75)
-      end
-      
-      activeItem.setDamageSources {
-        util.mergeTable({ poly = dynItem.offsetPoly(capsuleSweep(pDist, dist, 2.5*sc2)) }, crit and critDmgProps or dmgProps),
-      }
-      pDist = dist
-      
-      animator.setPartTag("wave", "directives", directives)
-      animator.resetTransformationGroup("wave")
-      animator.scaleTransformationGroup("wave", {sc, sc2})
-      animator.translateTransformationGroup("wave", {dist, 0})
-      animator.setLightColor("muzzleFlash", color.lightColor(lightColor, 0.64))
-    end
-    
-    activeItem.setDamageSources()
-    activeItem.setHoldingItem(false)
-    dynItem.setAutoAim(true)
-    animator.setPartTag("wave", "directives", "?multiply=ffffff00")
-    animator.setLightColor("muzzleFlash", color.lightColor(lightColor, 0))
-    
-    --
-  elseif false and buffered == 2 and status.consumeResource("aetheri:mana", cfg.altManaCost) then -- alt fire
-    --
-  else buffered = false end
-  
-  coroutine.yield()
-end end) end

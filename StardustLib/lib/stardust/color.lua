@@ -71,6 +71,10 @@ do
     return table.concat(l)
   end
   
+  function color.alphaDirective(a)
+    return string.format("?multiply=ffffff%02x", math.floor(0.5 + util.clamp(a, 0.0, 1.0) * 255))
+  end
+  
   -- code borrowed from https://github.com/Wavalab/rgb-hsl-rgb/blob/master/rgbhsl.lua; license unknown :(
   local function hslToRgb(h, s, l)
     if s == 0 then return l, l, l end

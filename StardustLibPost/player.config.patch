@@ -1,0 +1,8 @@
+[ // -*- grammar-ext: json -*-
+  [ // category fixes for bk3k inventory
+    { "op" : "test", "path" : "/inventory/itemBags/armoryBag" }, // detect if bk3k inv installed
+    
+    { "op" : "add", "path" : "/inventoryFilters/mainBag/categoryBlacklist/-",   "value" : "startech:power.weapon" },
+    { "op" : "add", "path" : "/inventoryFilters/armoryBag/categoryWhitelist/-", "value" : "startech:power.weapon" }//,
+  ]
+]

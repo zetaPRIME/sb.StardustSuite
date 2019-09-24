@@ -1,6 +1,6 @@
 { // -*- grammar-ext: json -*-
   "input" : [ ],
-  "output" : { "item" : "__metacraft", "parameters" : {
+  "output" : { "item" : " ", "parameters" : {
     "testing" : "we can have arbitrary data *here* but not in recipe root"
   } }
 }

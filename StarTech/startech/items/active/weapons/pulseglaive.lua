@@ -13,6 +13,8 @@ function init()
   
   animator.setSoundVolume("open", 1.5)
   animator.setSoundVolume("beam", 0.75)
+  animator.setSoundPitch("beam", 1.0)
+  animator.setSoundVolume("finisher", 0.75)
   
   animator.setGlobalTag("wave", "energyDirectives", "?multiply=ffffff00")
   
@@ -34,7 +36,7 @@ end
 
 dynItem.install()
 dynItem.setAutoAim(false)
-dynItem.aimVOffset = -4/8
+dynItem.aimVOffset = -5.5/8
 
 --[[local]] cfg = {
   thrustTime = 1/3,
@@ -42,7 +44,11 @@ dynItem.aimVOffset = -4/8
   
   openTime = 1/5,
   
+  chargeTime = 4/5,
+  fireTime = 2/5,
+  
   baseDps = 15,
+  beamDamageMult = 1.5,
   
   -- visuals
   idleHoldAngle = math.pi * -0.575,
@@ -58,15 +64,15 @@ end
 function strike(dmg, type, poly)
   local np = #poly
   activeItem.setDamageSources { {
-    poly = np > 2 and poly,
-    line = np == 2 and poly,
+    poly = (np > 2) and poly or nil,
+    line = (np == 2) and poly or nil,
     damage = dmg * cfg.baseDps * status.stat("powerMultiplier", 1.0),
     team = activeItem.ownerTeam(),
     damageSourceKind = type,
     statusEffects = weaponUtil.imbue {
       enc { tag = "spaceDamageBonus" },
     },
-    knockback = {mcontroller.facingDirection(), 20},
+    knockback = {mcontroller.facingDirection(), 25},
     rayCheck = true,
     damageRepeatTimeout = 0,
   } }
@@ -112,7 +118,7 @@ do
   function cancelPulse() pulseId = (pulseId + 1) % 16384 return pulseId end
   function setEnergy(amt)
     cancelPulse()
-    animator.setGlobalTag("energyDirectives", string.format("?multiply=ffffff%02x", math.floor(0.5 + util.clamp(amt, 0.0, 1.0) * 255)))
+    animator.setGlobalTag("energyDirectives", color.alphaDirective(amt))
   end
   function pulseEnergy(amt)
     local id = cancelPulse()
@@ -120,7 +126,7 @@ do
       for v in dynItem.tween(cfg.pulseTime * amt) do
         if pulseId ~= id then return nil end -- cancel if signaled
         v = math.min((1.0-v) * amt, 1.0) ^ 0.333
-        animator.setGlobalTag("energyDirectives", string.format("?multiply=ffffff%02x", math.floor(0.5 + v * 255)))
+        animator.setGlobalTag("energyDirectives", color.alphaDirective(v))
       end
     end)
   end
@@ -138,7 +144,7 @@ do
       for v in dynItem.tween(cfg.fxTime) do
         if fxId ~= id then return nil end -- cancelable
         local a = (1.0-v)^0.5
-        animator.setPartTag("fx", "fxDirectives", string.format("?multiply=ffffff%02x", math.floor(0.5 + a * 255)))
+        animator.setPartTag("fx", "fxDirectives", color.alphaDirective(a))
         
         animator.resetTransformationGroup("fx")
         animator.scaleTransformationGroup("fx", util.lerp(v, 1.0, 1.25) * baseScale)
@@ -155,12 +161,15 @@ end
 function idle()
   activeItem.setTwoHandedGrip(false)
   activeItem.setOutsideOfHand(false)
+  activeItem.setCursor()
   animBlade(0)
+  
   while true do
     animator.resetTransformationGroup("weapon")
     dynItem.aimAt(dynItem.aimDir, cfg.idleHoldAngle)
     
     if dynItem.firePress then dynItem.firePress = false return thrust end
+    if dynItem.altFirePress then dynItem.altFirePress = false return thrust, true end -- for now just skip to the finisher
     coroutine.yield()
   end
 end dynItem.comboSystem(idle)
@@ -190,6 +199,7 @@ function cooldown() -- ...with a flourish
     animator.translateTransformationGroup("weapon", {0, cfg.thrustLength * util.lerp(v, 0.5, 0.0)})
     animator.rotateTransformationGroup("weapon", util.lerp(v, math.pi * -1.5, math.pi * -2))
   end
+  if dynItem.fire then return thrust end -- allow holding button to thrust again
 end
 
 function thrust(finisher)
@@ -220,14 +230,15 @@ function thrust(finisher)
   
   -- damage
   strike(cfg.thrustTime * (finisher and 1.5 or 1.0), "spear", dynItem.offsetPoly({
-    {5.5, -1},
-    {-1.25, -0.5},
-    {-1.25, 0.5},
-    {5.5, 1},
+    {5.5, -1.5},
+    {-1, -1},
+    {-2, 0},
+    {-1, 1},
+    {5.5, 1.5},
     {10, 0},
   }, false, dynItem.aimAngle))
   -- fx
-  throwFx("thrustfx", dynItem.aimDir, dynItem.aimAngle, {6, -2/8})
+  throwFx("thrustfx", dynItem.aimDir, dynItem.aimAngle, {6, -2/8}, finisher and 1.25 or 1.0)
   
   for v, f in dynItem.tween(cfg.thrustTime*0.8) do inp()
     local rv = v
@@ -297,6 +308,11 @@ function slash(num)
   end
 end
 
+local function chargeCursor(v)
+  local a = math.min(math.floor((1.0-v) * 6), 5)
+  activeItem.setCursor(string.format("/cursors/reticle%i.cursor", a))
+end
+
 function beamOpen()
   local md = 0.3
   animator.playSound("open")
@@ -304,13 +320,63 @@ function beamOpen()
     local sv = 0.5 + math.cos(v * math.pi) * -0.5
     dynItem.aimAt(dynItem.aimDir, dynItem.aimAngle - md)
     animBlade(sv)
+    chargeCursor(1.0 - sv)
     local md = 0.3
     animator.resetTransformationGroup("weapon")
     animator.translateTransformationGroup("weapon", {0, cfg.thrustLength * util.lerp(sv, 1.0, 0.4)})
     animator.rotateTransformationGroup("weapon", (math.pi * -0.5) + md)
   end
-  while dynItem.fire do
+  return beamCharge
+  --[[while dynItem.fire do
     dynItem.aimAt(dynItem.aimDir, dynItem.aimAngle - md)
     coroutine.yield()
+  end]]
+end
+
+function beamCharge()
+  local md = 0.3
+  animator.setSoundVolume("charge", 0)
+  animator.playSound("charge", -1)
+  local cancel
+  for v in dynItem.tween(cfg.chargeTime) do
+    if not dynItem.fire then cancel = true break end
+    dynItem.aimAt(dynItem.aimDir, dynItem.aimAngle - md)
+    animator.setSoundPitch("charge", util.lerp(v ^ 2, 0.5, 2.0))
+    animator.setSoundVolume("charge", util.lerp(v, 0.75, 1.0))
+    setEnergy(v * 0.5)
+    chargeCursor(v)
   end
+  while dynItem.fire do
+    dynItem.aimAt(dynItem.aimDir, dynItem.aimAngle - md)
+    setEnergy(0.5)
+    activeItem.setCursor("/cursors/chargeidle.cursor")
+    coroutine.yield()
+  end
+  animator.stopAllSounds("charge")
+  setEnergy(0)
+  if not cancel then return beamFire end
+end
+
+function beamFire()
+  local md = 0.3
+  local dir, angle = dynItem.aimDir, dynItem.aimAngle
+  
+  --animator.setSoundVolume("fire", 1.25)
+  animator.playSound("fire")
+  
+  --throwFx("thrustfx", dir, angle, {6, -2/8}, -2)
+  strike(cfg.beamDamageMult, "plasma", dynItem.offsetPoly({ {0, 0}, {150, 0} }, false, angle))
+  
+  for v in dynItem.tween(cfg.fireTime) do
+    local cv = math.sin((v ^ 0.5) * math.pi) ^ 0.5
+    local rca = util.lerp(cv, 0, 0.3)
+    --local md = util.lerp(cv, 0.3, 0.7)
+    dynItem.aimAt(dir, angle - md - rca)
+    setEnergy(1.0 - v)
+    chargeCursor(1.0 - v^0.25)
+    animator.resetTransformationGroup("weapon")
+    animator.translateTransformationGroup("weapon", {0, cfg.thrustLength * util.lerp(cv, 0.4, 0.1)})
+    animator.rotateTransformationGroup("weapon", (math.pi * -0.5) + md + rca*2)
+  end
+  if dynItem.fire then return beamCharge end
 end

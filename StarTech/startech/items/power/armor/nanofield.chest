@@ -6,7 +6,7 @@
   "rarity" : "Essential",
   "maxStack" : 1,
   //"price" : 68000,
-  "category" : "Modular Gear",
+  "category" : "startech:power.armor",
   "tooltipKind" : "stardustlib.power.wearable",
   "builder" : "/sys/stardust/builders/powered.lua",
   
@@ -15,7 +15,7 @@
   ],
   
   "techScript" : "/startech/items/power/armor/nanofield.lua",
-  "statusEffects" : [ 
+  "statusEffects" : [
     "stardustlib:techoverride",
     { "stat" : "deployWithoutMech", "amount" : 1 }
   ],

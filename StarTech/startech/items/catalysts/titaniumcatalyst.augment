@@ -1,0 +1,16 @@
+{ // -*- grammar-ext: json -*-
+  "itemName" : "startech:titaniumcatalyst",
+  "shortdescription" : "Lv.3 Catalyst (Titanium)",
+  "description" : "Hardens certain equipment to level 3.",
+  "category" : "startech:catalyst",
+  "inventoryIcon" : "/items/currency/essence.png",
+  "rarity" : "Uncommon",
+  "price" : 0,
+  "tooltipKind" : "object",
+
+  "scripts" : [ "/startech/items/catalysts/catalyst.lua" ],
+  "catalystData" : {
+    "level" : 3,
+    "name" : "Titanium"
+  }
+}

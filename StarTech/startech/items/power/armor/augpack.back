@@ -3,7 +3,7 @@
   "price" : 5000,
   "inventoryIcon" : "augpack.icon.png",
   "rarity" : "Legendary",
-  "category" : "backwear",
+  "category" : "startech:power.armor",
   "description" : "A modular energy pack which uses ^violet;any Pulse Cell^reset; to power held items. ^gray;Install modules via Configurator.^reset;",
   "shortdescription" : "Pulse Augpack",
   "tooltipKind" : "stardustlib.power.wearable",

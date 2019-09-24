@@ -13,6 +13,7 @@
   "builder" : "/startech/items/active/weapons/buildpulseweapon.lua",
   
   "level" : 3,
+  "acceptsUpgradeCatalyst" : true,
 
   "animation" : "pulseglaive.animation",
   "scripts" : ["pulseglaive.lua"]

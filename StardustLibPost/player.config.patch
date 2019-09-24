@@ -3,6 +3,11 @@
     { "op" : "test", "path" : "/inventory/itemBags/armoryBag" }, // detect if bk3k inv installed
     
     { "op" : "add", "path" : "/inventoryFilters/mainBag/categoryBlacklist/-",   "value" : "startech:power.weapon" },
-    { "op" : "add", "path" : "/inventoryFilters/armoryBag/categoryWhitelist/-", "value" : "startech:power.weapon" }//,
+    { "op" : "add", "path" : "/inventoryFilters/armoryBag/categoryWhitelist/-", "value" : "startech:power.weapon" },
+    { "op" : "add", "path" : "/inventoryFilters/mainBag/categoryBlacklist/-",   "value" : "startech:power.armor" },
+    { "op" : "add", "path" : "/inventoryFilters/armoryBag/categoryWhitelist/-", "value" : "startech:power.armor" },
+    
+    { "op" : "add", "path" : "/inventoryFilters/mainBag/categoryBlacklist/-",   "value" : "startech:catalyst" },
+    { "op" : "add", "path" : "/inventoryFilters/armoryBag/categoryWhitelist/-", "value" : "startech:catalyst" }
   ]
 ]

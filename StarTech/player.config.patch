@@ -12,5 +12,8 @@
     { "op" : "add", "path" : "/defaultBlueprints/tier1/-", "value" : { "item" : "startech:machineplating" } },
     
     { "op" : "add", "path" : "/defaultBlueprints/tier1/-", "value" : { "item" : "teleportercore" } }
+  ],
+  [ // recipes for FU-specific items
+    { "op" : "test", "path" : "/defaultCodexes/fukirhos" }//, // detect if FU is present
   ]
 ]

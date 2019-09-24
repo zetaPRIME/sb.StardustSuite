@@ -1,0 +1,16 @@
+{ // -*- grammar-ext: json -*-
+  "itemName" : "startech:durasteelcatalyst",
+  "shortdescription" : "Lv.4 Catalyst (Durasteel)",
+  "description" : "Reinforces certain equipment to level 4.",
+  "category" : "startech:catalyst",
+  "inventoryIcon" : "/items/currency/essence.png",
+  "rarity" : "Uncommon",
+  "price" : 0,
+  "tooltipKind" : "object",
+
+  "scripts" : [ "/startech/items/catalysts/catalyst.lua" ],
+  "catalystData" : {
+    "level" : 4,
+    "name" : "Durasteel"
+  }
+}

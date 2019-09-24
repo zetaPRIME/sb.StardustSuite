@@ -1,0 +1,16 @@
+{ // -*- grammar-ext: json -*-
+  "itemName" : "startech:solariumcatalyst",
+  "shortdescription" : "Lv.6 Catalyst (Solarium)",
+  "description" : "Energizes certain equipment to level 6.",
+  "category" : "startech:catalyst",
+  "inventoryIcon" : "/items/currency/essence.png",
+  "rarity" : "Legendary",
+  "price" : 0,
+  "tooltipKind" : "object",
+
+  "scripts" : [ "/startech/items/catalysts/catalyst.lua" ],
+  "catalystData" : {
+    "level" : 6,
+    "name" : "Solarium"
+  }
+}

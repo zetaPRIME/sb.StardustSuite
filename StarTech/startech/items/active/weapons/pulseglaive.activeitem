@@ -10,7 +10,7 @@
   "itemTags" : ["weapon", "melee", "spear", "energy"],
   "tooltipKind" : "stardustlib.withPreview",
   "largeImage" : "/startech/items/active/weapons/pulseglaive-preview.png",
-  "tooltipFields" : { },
+  "builder" : "/startech/items/active/weapons/buildpulseweapon.lua",
   
   "level" : 3,
 

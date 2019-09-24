@@ -23,6 +23,20 @@
     "vAnchor" : "top",
     "wrapWidth" : 123
   },
+  "topLabel" : {
+    "type" : "label", //"value" : "This is the top",
+    "position" : [11, 141],
+    "hAnchor" : "left",
+    "vAnchor" : "top",
+    "wrapWidth" : 123
+  },
+  "bottomLabel" : {
+    "type" : "label", //"value" : "and this is the bottom!",
+    "position" : [11, 85],
+    "hAnchor" : "left",
+    "vAnchor" : "bottom",
+    "wrapWidth" : 123
+  },
   "rarityLabel" : {
     "type" : "label",
     "position" : [7, 23],

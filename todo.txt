@@ -1,5 +1,14 @@
 -
 
+for next update {
+    finish out catalysts, give them recipes
+    transition nanofield to catalyst system
+    adjust elytra control and animation to match Aetheri flight
+    add anti-space imbue to nanofield
+    finish Pulsestrike Glaive (visible beam, FP costs)
+    apply weaponext to magnorbs
+}
+
 ! hook engine {
     included by replaced util.lua
     hijacks the first setting of _ENV.init to hook into core tables (widget, player etc.)
@@ -99,14 +108,10 @@ compost bin that makes food age faster, for use as biofuel
 
 renamer (custom shortdescription, put vanilla one as category because tooltip)
 
-actual configurator object instead of having it in the quickbar for non-admins
-
 some item transport for automation (and library to make use of input/output configuration)
 networked wire I/O ports
 
 # make RCS tech obtainable; balance energy use
-
-clean up tinkertable categories
 
 some major cleanup in places
 

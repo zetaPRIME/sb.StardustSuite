@@ -55,6 +55,11 @@ do
     dynItem.autoAim = f
   end
   
+  function dynItem.aimVector(dir, angle, mag)
+    dir, angle, mag = dir or dynItem.aimDir, angle or dynItem.aimAngle, mag or 1.0
+    return vec2.rot({dir*mag, 0}, dir*angle)
+  end
+  
   function dynItem.offsetPoly(p, fromShoulder, angle)
     local r = { }
     local rot, scale = angle or dynItem.armAngle, {mcontroller.facingDirection(), 1}

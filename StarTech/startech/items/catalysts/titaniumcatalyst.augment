@@ -3,7 +3,7 @@
   "shortdescription" : "Lv.3 Catalyst (Titanium)",
   "description" : "Hardens certain equipment to level 3.",
   "category" : "startech:catalyst",
-  "inventoryIcon" : "/items/currency/essence.png",
+  "inventoryIcon" : "/items/generic/crafting/titaniumbar.png?border=1;b7f;0000",
   "rarity" : "Uncommon",
   "price" : 0,
   "tooltipKind" : "object",

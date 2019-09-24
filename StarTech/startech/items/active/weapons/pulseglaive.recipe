@@ -1,6 +1,6 @@
 { // -*- grammar-ext: json -*-
   "input" : [
-    { "item" : "startech:machineplating", "count" : 5, "parameters" : {"shortdescription" : "Temporary recipe!"} },
+    { "item" : "startech:machineplating", "count" : 5 },
     { "item" : "goldbar", "count" : 3 },
     { "item" : "silverbar", "count" : 2 },
     //{ "item" : "startech:resonitebar", "count" : 1 },

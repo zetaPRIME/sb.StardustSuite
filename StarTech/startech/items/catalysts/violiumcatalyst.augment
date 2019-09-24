@@ -1,0 +1,16 @@
+{ // -*- grammar-ext: json -*-
+  "itemName" : "startech:violiumcatalyst",
+  "shortdescription" : "Lv.5 Catalyst (Violium)",
+  "description" : "Separates some equipment to level 5.",
+  "category" : "startech:catalyst",
+  "inventoryIcon" : "/items/generic/crafting/refinedviolium.png?border=1;b7f;0000",
+  "rarity" : "Rare",
+  "price" : 0,
+  "tooltipKind" : "object",
+
+  "scripts" : [ "/startech/items/catalysts/catalyst.lua" ],
+  "catalystData" : {
+    "level" : 5,
+    "name" : "Violium"
+  }
+}

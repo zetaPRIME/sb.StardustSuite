@@ -3,7 +3,7 @@
   "shortdescription" : "Lv.4 Catalyst (Durasteel)",
   "description" : "Reinforces certain equipment to level 4.",
   "category" : "startech:catalyst",
-  "inventoryIcon" : "/items/currency/essence.png",
+  "inventoryIcon" : "/items/generic/crafting/durasteelbar.png?border=1;b7f;0000",
   "rarity" : "Uncommon",
   "price" : 0,
   "tooltipKind" : "object",

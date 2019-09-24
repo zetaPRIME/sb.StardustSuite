@@ -12,7 +12,7 @@
   "largeImage" : "/startech/items/active/weapons/pulseglaive-preview.png",
   "builder" : "/startech/items/active/weapons/buildpulseweapon.lua",
   
-  "level" : 3,
+  "level" : 2,
   "acceptsUpgradeCatalyst" : true,
 
   "animation" : "pulseglaive.animation",

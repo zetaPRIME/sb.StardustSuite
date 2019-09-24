@@ -36,15 +36,18 @@ end
 local function nf() end
 local tagFunc = { }
 
+local currentDamageRequest
+
 local _applyDamageRequest = applyDamageRequest
 function applyDamageRequest(damageRequest)
+  currentDamageRequest = damageRequest
   do -- resparth the F r ackle
     local se = { }
     for _, s in pairs(damageRequest.statusEffects) do
       s = decodeStatus(s)
       if type(s) == "string" then table.insert(se, s)
       elseif s.effect then table.insert(se, s)
-      elseif s.tag then (tagFunc[s.tag] or nf)(s, damageRequest) end
+      elseif s.tag then (tagFunc[s.tag] or nf)(damageRequest, s) end
     end
     damageRequest.statusEffects = se
   end
@@ -54,14 +57,42 @@ function applyDamageRequest(damageRequest)
   end
   
   damageRequest = querySelf("stardustlib:modifyDamageTaken", damageRequest) or damageRequest
+  currentDamageRequest = damageRequest
   local res = _applyDamageRequest(damageRequest)
   
   --
   
+  currentDamageRequest = nil
   return res
 end
 
+-- we're overriding knockbackMomentum because it'll work on all entity types this way
+local _knockbackMomentum = knockbackMomentum
+function knockbackMomentum(vec)
+  local kb = _knockbackMomentum(vec)
+  
+  if (currentDamageRequest and currentDamageRequest.impulse) then
+    kb = vec2.add(kb, currentDamageRequest.impulse)
+  end
+  
+  return kb
+end
 
-function tagFunc.spaceDamageBonus(tag, req)
-  req.spaceDamageBonus = true
+
+
+function tagFunc:antiSpace(tag)
+  self.spaceDamageBonus = true
+end
+tagFunc.spaceDamageBonus = tagFunc.antiSpace
+
+function tagFunc:impulse(tag)
+  local v = tag.vec or tag.vector
+  if not v then return nil end
+  self.impulse = vec2.add(self.impulse or {0, 0}, vec2.mul(v, (1 - status.stat("grit"))))
+end
+
+function tagFunc:rawImpulse(tag)
+  local v = tag.vec or tag.vector
+  if not v then return nil end
+  self.impulse = vec2.add(self.impulse or {0, 0}, v)
 end

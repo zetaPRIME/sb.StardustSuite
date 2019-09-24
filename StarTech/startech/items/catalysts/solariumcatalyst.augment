@@ -3,7 +3,7 @@
   "shortdescription" : "Lv.6 Catalyst (Solarium)",
   "description" : "Energizes certain equipment to level 6.",
   "category" : "startech:catalyst",
-  "inventoryIcon" : "/items/currency/essence.png",
+  "inventoryIcon" : "/items/generic/crafting/solariumstar.png?border=1;b7f;0000",
   "rarity" : "Legendary",
   "price" : 0,
   "tooltipKind" : "object",

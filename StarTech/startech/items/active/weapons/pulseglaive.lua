@@ -61,7 +61,8 @@ local function enc(stat)
   return "::" .. sb.printJson(stat)
 end
 
-function strike(dmg, type, poly)
+function strike(dmg, type, poly, kb)
+  kb = kb or 1.0
   local np = #poly
   activeItem.setDamageSources { {
     poly = (np > 2) and poly or nil,
@@ -70,9 +71,10 @@ function strike(dmg, type, poly)
     team = activeItem.ownerTeam(),
     damageSourceKind = type,
     statusEffects = weaponUtil.imbue {
-      enc { tag = "spaceDamageBonus" },
+      enc { tag = "antiSpace" },
+      enc { tag = "impulse", vec = vec2.mul(vec2.rotate({dynItem.aimDir, 0}, dynItem.aimAngle * dynItem.aimDir), 25 * kb) }
     },
-    knockback = {mcontroller.facingDirection(), 25},
+    knockback = {0, 0},--{mcontroller.facingDirection(), 22},
     rayCheck = true,
     damageRepeatTimeout = 0,
   } }
@@ -236,7 +238,7 @@ function thrust(finisher)
     {-1, 1},
     {5.5, 1.5},
     {10, 0},
-  }, false, dynItem.aimAngle))
+  }, false, dynItem.aimAngle), finisher and 1.5)
   -- fx
   throwFx("thrustfx", dynItem.aimDir, dynItem.aimAngle, {6, -2/8}, finisher and 1.25 or 1.0)
   
@@ -365,7 +367,7 @@ function beamFire()
   animator.playSound("fire")
   
   --throwFx("thrustfx", dir, angle, {6, -2/8}, -2)
-  strike(cfg.beamDamageMult, "plasma", dynItem.offsetPoly({ {0, 0}, {150, 0} }, false, angle))
+  strike(cfg.beamDamageMult, "plasma", dynItem.offsetPoly({ {0, 0}, {150, 0} }, false, angle), 2.2)
   
   for v in dynItem.tween(cfg.fireTime) do
     local cv = math.sin((v ^ 0.5) * math.pi) ^ 0.5

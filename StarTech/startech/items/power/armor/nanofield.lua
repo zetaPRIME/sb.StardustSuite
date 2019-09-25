@@ -163,7 +163,13 @@ function init()
   message.setHandler("stardustlib:modifyDamageTaken", modifyDamageTaken)
   message.setHandler("startech:nanofield.update", function() statsNeedUpdate = true end)
   --playerext.message("Nanofield online.")
-  status.overConsumeResource("energy", 1.0) -- debug signal
+  --status.overConsumeResource("energy", 1.0) -- debug signal
+  
+  message.setHandler("stardustlib:statusImbueQuery", function()
+    world.sendEntityMessage(entity.id(), "stardustlib:statusImbueQueryReply", {
+      '::{"tag":"antiSpace"}',
+    })
+  end)
   
   wingFront:scale({0, 0})
   wingBack:scale({0, 0})
@@ -277,7 +283,7 @@ function updateStats()
   effectiveStatsNeedUpdate = true
 end
 
-function updateEffectiveStats()  
+function updateEffectiveStats()
   if item.parameters.statusEffects then
     item.parameters.statusEffects = nil
     itemModified = true
@@ -500,7 +506,7 @@ function modes.wing:update(p)
   local boost = 25
   local boostForce = 25*1.5
   
-  local vx, vy = 0, 0  
+  local vx, vy = 0, 0
   if p.key.up then vy = vy + 1 end
   if p.key.down then vy = vy - 1 end
   if p.key.left then vx = vx - 1 end

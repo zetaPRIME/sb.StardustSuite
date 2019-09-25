@@ -4,7 +4,7 @@ for next update {
     finish out catalysts, give them recipes
     transition nanofield to catalyst system
     adjust elytra control and animation to match Aetheri flight
-    add anti-space imbue to nanofield
+    - add anti-space imbue to nanofield
     finish Pulsestrike Glaive (visible beam, FP costs)
     apply weaponext to magnorbs
 }

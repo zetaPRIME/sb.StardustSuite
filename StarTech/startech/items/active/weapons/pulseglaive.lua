@@ -26,6 +26,8 @@ function init()
   
   activeItem.setDamageSources()
   cfg.baseDps = cfg.baseDps * root.evalFunction("weaponDamageLevelMultiplier", config.getParameter("level", 1))
+  
+  cfg.hasFU = root.hasTech("fuhealzone")
   --
 end
 
@@ -55,6 +57,14 @@ dynItem.aimVOffset = -5.5/8
   pulseTime = 1/4,
   fxTime = 1/8,
 }
+
+function dmgtype(t)
+  if cfg.hasFU then -- for now, use cosmic when FU is present
+    return "cosmic" .. t
+  else -- ...and electric otherwise
+    return "electric" .. t
+  end
+end
 
 function strike(dmg, type, poly, kb)
   kb = kb or 1.0
@@ -226,7 +236,7 @@ function thrust(finisher)
   end
   
   -- damage
-  strike(cfg.thrustTime * (finisher and 1.5 or 1.0), "spear", dynItem.offsetPoly({
+  strike(cfg.thrustTime * (finisher and 1.5 or 1.0), dmgtype "spear", dynItem.offsetPoly({
     {5.5, -1.5},
     {-1, -1},
     {-2, 0},
@@ -281,7 +291,7 @@ function slash(num)
   animator.rotateTransformationGroup("weapon", math.pi * -0.5)
   
   -- actual swing (and accompanying fx)
-  strike(cfg.slashTime, "shortsword", dynItem.offsetPoly(polyFan(sweepWidth, 11), true, dynItem.aimAngle))
+  strike(cfg.slashTime, dmgtype "shortsword", dynItem.offsetPoly(polyFan(sweepWidth, 11), true, dynItem.aimAngle))
   throwFx("slashfx", dynItem.aimDir, dynItem.aimAngle, {6.5, 0}, 0.9) -- 0.8 == 1/1.25
   
   for v in dynItem.tween(cfg.slashTime * 0.2) do inp() -- main swing
@@ -362,7 +372,7 @@ function beamFire()
   animator.playSound("fire")
   
   --throwFx("thrustfx", dir, angle, {6, -2/8}, -2)
-  strike(cfg.beamDamageMult, "plasma", dynItem.offsetPoly({ {0, 0}, {150, 0} }, false, angle), 2.2)
+  strike(cfg.beamDamageMult, dmgtype "plasmashotgun", dynItem.offsetPoly({ {0, 0}, {150, 0} }, false, angle), 2.2)
   
   for v in dynItem.tween(cfg.fireTime) do
     local cv = math.sin((v ^ 0.5) * math.pi) ^ 0.5

@@ -194,6 +194,8 @@ end
 
 local staticitm = "startech:nanofieldstatic"
 
+local storedLevel
+
 local _prevKeys = { }
 function update(p)
   item = playerext.getEquip("chest") or { }
@@ -201,6 +203,16 @@ function update(p)
   if item.name ~= "startech:nanofield" then
     return nil -- abort when no longer equipped
   end
+  local level = itemutil.property(item, "level") or 2
+  if item.parameters.moduleSystem then -- carry over old leveling
+    level = item.parameters.moduleSystem.tierCatalyst or level
+    item.parameters.moduleSystem = nil
+    item.parameters.level = level
+    itemModified = true
+    statsNeedUpdate = true
+  end
+  if storedLevel and storedLevel ~= level then statsNeedUpdate = true end -- update if upgraded
+  storedLevel = level
   if statsNeedUpdate then updateStats() end
   
   -- maintain other slots
@@ -273,7 +285,7 @@ function uninit()
 end
 
 function updateStats()
-  local tierStats = tierBaseStats[itemutil.property(item, "/moduleSystem/tierCatalyst")]
+  local tierStats = tierBaseStats[itemutil.property(item, "level") or 2]--"/moduleSystem/tierCatalyst")]
   stats.armor = tierStats.armor * 4
   stats.health = tierStats.health
   stats.energy = tierStats.energy
@@ -489,6 +501,27 @@ function modes.wing:updateEffectiveStats(sg)
   })
 end
 
+-- couple functions from Aetheri
+local elytraDir
+local elytraSetPose = coroutine.wrap(function()
+  local threshold = 1/6
+  local t = 0.0
+  local f = false
+  while true do
+    local a = ((vec2.mag(elytraDir) ~= 0 and vec2.dot(elytraDir, vec2.norm(mcontroller.velocity())) > 0) and 1.0 or -1.0) * script.updateDt()
+    t = util.clamp(t + a/threshold, 0.0, 1.0)
+    if t == 1.0 then f = true elseif t == 0.0 then f = false end
+    if f then tech.setParentState("fly") else tech.setParentState() end
+    coroutine.yield()
+  end
+end)
+
+local function forceFacing(f)
+  mcontroller.controlModifiers{movementSuppressed = false}
+  mcontroller.controlFace(f)
+  mcontroller.controlModifiers{movementSuppressed = true}
+end
+
 function modes.wing:update(p)
   mcontroller.clearControls()
   mcontroller.controlParameters{
@@ -497,8 +530,10 @@ function modes.wing:update(p)
     liquidImpedance = -100, -- full speed in water
     liquidBuoyancy = -1000, -- same as above
     groundForce = 0, airForce = 0, liquidForce = 0, -- disable default movement entirely
+    maximumPlatformCorrection = 0.0,
+    maximumPlatformCorrectionVelocityFactor = 0.0,
   }
-  mcontroller.controlDown()
+  mcontroller.controlModifiers{ movementSuppressed = true } -- disable harder, and also don't paddle at the air
   if p.keyDown.special1 then return setMode("ground") end
   
   local curSpeed = vec2.mag(mcontroller.velocity())
@@ -511,6 +546,8 @@ function modes.wing:update(p)
   if p.key.down then vy = vy - 1 end
   if p.key.left then vx = vx - 1 end
   if p.key.right then vx = vx + 1 end
+  
+  if vx ~= 0 then forceFacing(vx) end
   
   if vx ~= 0 and vy ~= 0 then
     vx = vx / sqrt2
@@ -527,9 +564,17 @@ function modes.wing:update(p)
   --status.clearEphemeralEffects() -- ???
   
   
-  mcontroller.controlApproachVelocity({vx*boost, vy*boost}, boostForce * 60 * p.dt)
+  --mcontroller.controlApproachVelocity({vx*boost, vy*boost}, boostForce * 60 * p.dt)
   
-  tech.setParentState("fly")
+  -- for now this is just taken straight from the Aetheri
+  local dirN = {vx, vy}
+  local forceMult = util.lerp((1.0 - vec2.dot(dirN, vec2.norm(mcontroller.velocity()))) * 0.5, 0.5, 1.0)
+  if vec2.mag(dirN) < 0.25 then forceMult = 0.25 end
+  mcontroller.controlApproachVelocity(vec2.mul(dirN, boost), 12500 * forceMult * p.dt)
+  
+  --tech.setParentState("fly")
+  elytraDir = dirN
+  elytraSetPose()
   self.hEff = towards(self.hEff, util.clamp(mcontroller.velocity()[1] / 55, -1.0, 1.0), p.dt * 8)
   self.vEff = towards(self.vEff, util.clamp(mcontroller.velocity()[2] / 55, -1.0, 1.0), p.dt * 8)
   --local rot = util.clamp(mcontroller.velocity()[1] / -55, -1.0, 1.0)

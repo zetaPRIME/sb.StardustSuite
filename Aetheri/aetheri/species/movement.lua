@@ -131,7 +131,7 @@ do movement.states.ground = { }
     if mcontroller.canJump() then self.groundTimer = 0.2 end
     if false and self.groundTimer > 0 and input.dir[1] == 0 and input.dir[2] == -1 then
       tech.setParentState(input.key.down and "Duck" or "Stand")
-      mcontroller.controlParameters { 
+      mcontroller.controlParameters {
         normalGroundFriction = 0.75,
         ambulatingGroundFriction = 0.2,
         --slopeSlidingFactor = 500.0
@@ -186,7 +186,7 @@ do movement.states.ground = { }
     
     if self.groundTimer > 0 then self.groundTimer = self.groundTimer - dt end
     
-    if self.airJumpTimer > 0 then 
+    if self.airJumpTimer > 0 then
       -- ?
       self.airJumpTimer = self.airJumpTimer - dt
     end
@@ -240,7 +240,7 @@ do movement.states.flight = { }
           mcontroller.addMomentum(vec2.mul(input.dirN, mcontroller.mass() * (input.key.sprint and 25 or 10)))
         end
         return movement.enterState("ground", true, input.key.sprint) -- give back air jumps
-      end  
+      end
       if input.keyDown.t1 and not movement.zeroG then return movement.enterState("ground", false, input.key.sprint) end
     else self.canSwitch = true end
     

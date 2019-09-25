@@ -10,6 +10,9 @@
   "tooltipKind" : "stardustlib.power.wearable",
   "builder" : "/sys/stardust/builders/powered.lua",
   
+  "level" : 2,
+  "acceptsUpgradeCatalyst" : true,
+  
   "learnBlueprintsOnPickup" : [
     "startech:phasedrill"
   ],
@@ -23,10 +26,6 @@
   "batteryStats" : {
     "capacity" : 320000,
     "ioRate" : 250
-  },
-  
-  "moduleSystem" : {
-    "tierCatalyst" : 2
   },
   
   "maleFrames" : {

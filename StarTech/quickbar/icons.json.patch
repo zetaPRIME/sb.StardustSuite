@@ -6,13 +6,13 @@
     "action" : [ "exec", "/startech/quickbar/configurator.lua" ]
     //"action" : [ "pane", "/startech/interface/configurator/configurator.config" ]
   } },
-  { "op" : "add", "path" : "/items/startech:upgradenanofield", "value" : {
+  /*{ "op" : "add", "path" : "/items/startech:upgradenanofield", "value" : {
     "label" : "Upgrade Nanofield (WIP)",
     "icon" : "/startech/items/ores/resonitebar.png",
     "weight" : 5,
     "action" : [ "exec", "/startech/quickbar/upgradenanofield.lua" ],
     "condition" : [ "statPositive", "startech:wearingNanofield" ]
-  } },
+  } },*/
   
   { "op" : "add", "path" : "/items/startech:recharge", "value" : {
     "label" : "^admin;Recharge worn items",

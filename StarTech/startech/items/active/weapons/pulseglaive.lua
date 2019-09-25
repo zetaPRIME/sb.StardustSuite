@@ -1,6 +1,7 @@
 require "/lib/stardust/dynitem.lua"
 require "/lib/stardust/playerext.lua"
 require "/lib/stardust/color.lua"
+require "/lib/stardust/power.item.lua"
 
 function asset(f) return string.format("/startech/items/active/weapons/pulseglaive-%s.png", f) end
 
@@ -24,6 +25,11 @@ function init()
   animator.setPartTag("blade2", "partImage", asset "blade2")
   animator.setPartTag("blade2e", "partImage", asset "blade2e")
   
+  -- hide any lingering fx
+  animator.scaleTransformationGroup("fx", {0, 0})
+  animator.scaleTransformationGroup("fx2", {0, 0})
+  animator.scaleTransformationGroup("fx3", {0, 0})
+  
   activeItem.setDamageSources()
   cfg.baseDps = cfg.baseDps * root.evalFunction("weaponDamageLevelMultiplier", config.getParameter("level", 1))
   
@@ -37,7 +43,7 @@ end
 
 dynItem.install()
 dynItem.setAutoAim(false)
-dynItem.aimVOffset = -5.5/8
+dynItem.aimVOffset = -4.5/8
 
 --[[local]] cfg = {
   thrustTime = 1/3,
@@ -51,12 +57,19 @@ dynItem.aimVOffset = -5.5/8
   baseDps = 15,
   beamDamageMult = 1.5,
   
+  meleePowerCost = 250,
+  beamPowerCost = 1000,
+  
   -- visuals
   idleHoldAngle = math.pi * -0.575,
   thrustLength = 2.0,
   pulseTime = 1/4,
   fxTime = 1/8,
 }
+
+function drawPower(amt)
+  return power.drawEquipEnergy(amt, false, 50) >= amt
+end
 
 function dmgtype(t)
   if cfg.hasFU then -- for now, use cosmic when FU is present
@@ -139,6 +152,20 @@ do
   end
 end
 
+function setFx(id, dir, angle, pos, scale, rot)
+  scale = scale or 1
+  rot = rot or 0
+  
+  animator.resetTransformationGroup(id)
+  animator.scaleTransformationGroup(id, scale)
+  animator.rotateTransformationGroup(id, rot)
+  animator.translateTransformationGroup(id, pos)
+  animator.rotateTransformationGroup(id, angle)
+  
+  if (dir < 0) then animator.scaleTransformationGroup(id, {-1, 1}) end
+  dynItem.normalizeTransformationGroup(id)
+end
+
 do
   local fxId = -1
   function throwFx(type, dir, angle, offset, baseScale)
@@ -182,6 +209,8 @@ function idle()
 end dynItem.comboSystem(idle)
 
 function fail() -- not enough fp
+  pulseEnergy(0.5) -- "attempt" to power up
+  animator.stopAllSounds("fail")
   animator.playSound("fail")
 end
 
@@ -210,6 +239,8 @@ function cooldown() -- ...with a flourish
 end
 
 function thrust(finisher)
+  if not drawPower(cfg.meleePowerCost) then return fail end
+  
   local buffered, released
   local function inp()
     if dynItem.firePress then buffered = true end
@@ -268,6 +299,8 @@ local function sigexp(n, x)
 end
 
 function slash(num)
+  if not drawPower(cfg.meleePowerCost) then return fail end
+  
   num = num or 1
   local slashDir = ((num % 2) == 0) and 1 or -1
   local buffered, released
@@ -340,7 +373,10 @@ function beamOpen()
   end]]
 end
 
+local beamPt = {40/8, dynItem.aimVOffset}
 function beamCharge()
+  animator.setPartTag("fx2", "partImage", asset "orb")
+  
   local md = 0.3
   animator.setSoundVolume("charge", 0)
   animator.playSound("charge", -1)
@@ -352,19 +388,34 @@ function beamCharge()
     animator.setSoundVolume("charge", util.lerp(v, 0.75, 1.0))
     setEnergy(v * 0.5)
     chargeCursor(v)
+    
+    animator.setPartTag("fx2", "fxDirectives", "")
+    setFx("fx2", dynItem.aimDir, dynItem.aimAngle, beamPt, v, dynItem.time * math.pi * 7)
+    --[[animator.resetTransformationGroup("fx2")
+    animator.rotateTransformationGroup("fx2", dynItem.time * math.pi * 7)
+    animator.scaleTransformationGroup("fx2", v)
+    animator.translateTransformationGroup("fx2", dynItem.offsetPoly{{-0.5/8, 24/8}}[1])
+    dynItem.normalizeTransformationGroup("fx2")]]
   end
   while dynItem.fire do
     dynItem.aimAt(dynItem.aimDir, dynItem.aimAngle - md)
     setEnergy(0.5)
     activeItem.setCursor("/cursors/chargeidle.cursor")
+    
+    animator.setPartTag("fx2", "fxDirectives", "")
+    setFx("fx2", dynItem.aimDir, dynItem.aimAngle, beamPt, 1, dynItem.time * math.pi * 7)
+    
     coroutine.yield()
   end
   animator.stopAllSounds("charge")
   setEnergy(0)
+  animator.scaleTransformationGroup("fx2", 0)
   if not cancel then return beamFire end
 end
 
 function beamFire()
+  if not drawPower(cfg.beamPowerCost) then return fail end
+  
   local md = 0.3
   local dir, angle = dynItem.aimDir, dynItem.aimAngle
   
@@ -372,7 +423,17 @@ function beamFire()
   animator.playSound("fire")
   
   --throwFx("thrustfx", dir, angle, {6, -2/8}, -2)
-  strike(cfg.beamDamageMult, dmgtype "plasmashotgun", dynItem.offsetPoly({ {0, 0}, {150, 0} }, false, angle), 2.2)
+  local line = dynItem.offsetPoly({ {0, 1/8}, {150, 1/8} }, false, angle)
+  strike(cfg.beamDamageMult, dmgtype "plasmashotgun", line, 2.2)
+  
+  local pos = vec2.add(mcontroller.position(), {0, 0})
+  line = {vec2.add(pos, line[1]), vec2.add(pos, line[2])}
+  line[2] = world.lineCollision(line[1], line[2]) or line[2]
+  local dist = vec2.mag(vec2.sub(line[1], line[2]))
+  dist = math.max(0, dist - 3.5)
+  
+  animator.setPartTag("fx", "fxDirectives", "")
+  animator.setPartTag("fx", "partImage", asset "beam")
   
   for v in dynItem.tween(cfg.fireTime) do
     local cv = math.sin((v ^ 0.5) * math.pi) ^ 0.5
@@ -384,6 +445,11 @@ function beamFire()
     animator.resetTransformationGroup("weapon")
     animator.translateTransformationGroup("weapon", {0, cfg.thrustLength * util.lerp(cv, 0.4, 0.1)})
     animator.rotateTransformationGroup("weapon", (math.pi * -0.5) + md + rca*2)
+    
+    local bv = math.max(0, 1.0 - v*2)
+    setFx("fx2", dir, angle, beamPt, 1.1 * bv^2, dynItem.time * math.pi * 7)
+    setFx("fx", dir, angle, beamPt, {(dist + 0.5 * (1.0 - bv)^2)*8.0, bv^2})
+    
   end
   if dynItem.fire then return beamCharge end
 end

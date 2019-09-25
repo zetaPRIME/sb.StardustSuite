@@ -72,13 +72,31 @@
           "fullbright" : true,
           "transformationGroups" : ["fx"]
         }
+      },
+      "fx2" : {
+        "properties" : {
+          "zLevel" : -4,
+          "centered" : true, "offset" : [0, 0],
+          "image" : "<partImage><fxDirectives>",
+          "fullbright" : true,
+          "transformationGroups" : ["fx2"]
+        }
+      },
+      "fx3" : {
+        "properties" : {
+          "zLevel" : -3,
+          "centered" : true, "offset" : [0, 0],
+          "image" : "<partImage><fxDirectives>",
+          "fullbright" : true,
+          "transformationGroups" : ["fx3"]
+        }
       }
     }
   },
   
   "transformationGroups" : {
     "weapon" : { }, "arm1a" : { }, "arm1b" : { }, "arm2a" : { }, "arm2b" : { },
-    "fx" : { }
+    "fx" : { }, "fx2" : { }, "fx3" : { }
   },
   
   "lights" : {

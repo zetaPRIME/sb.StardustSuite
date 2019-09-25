@@ -7,7 +7,8 @@ for next update {
     - give nanofield an air jump
     - add anti-space imbue to nanofield
     - apply weaponext to magnorbs
-    finish Pulsestrike Glaive (visible beam, FP costs)
+    - finish Pulsestrike Glaive (- visible beam, - FP costs)
+    > write the release notes
 } then soon {
     custom damage type for pulse weapons (void? energy?)
     give Pulsestrike Glaive a secondary that isn't just the combo finisher

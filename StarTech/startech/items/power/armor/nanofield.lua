@@ -333,6 +333,8 @@ function modes.ground:init()
   tech.setParentState()
   mcontroller.setRotation(0)
   mcontroller.clearControls()
+  
+  self.airJumps = 0
 end
 
 function modes.ground:uninit()
@@ -341,6 +343,10 @@ end
 
 function modes.ground:update(p)
   --
+  tech.setParentState() -- default to no state override
+  
+  if mcontroller.groundMovement() then self.airJumps = 1 end
+  
   if p.keyDown.special1 then
     if p.key.down and not zeroG then
       setMode("sphere")
@@ -368,6 +374,20 @@ function modes.ground:update(p)
     if p.keyDown.jump and mcontroller.onGround() then -- slight bunnyhop effect
       mcontroller.setXVelocity(mcontroller.velocity()[1] * 1.5)
     end
+  end
+  
+  -- air jump, borrowed from Aetheri
+  if not mcontroller.canJump()
+  and not mcontroller.jumping()
+  and not mcontroller.liquidMovement()
+  --and mcontroller.yVelocity() < 0
+  and p.keyDown.jump and self.airJumps >= 1 then
+    self.airJumps = self.airJumps - 1
+    mcontroller.controlJump(true)
+    mcontroller.setYVelocity(math.max(0, mcontroller.yVelocity()))
+    mcontroller.controlParameters({ airForce = 1750.0 }) -- allow easier direction control during jump
+    sound.play("/sfx/tech/tech_doublejump.ogg")
+    tech.setParentState("Fall") -- animate a bit even when already rising
   end
   
   if zeroG and not zeroGPrev then setMode("wing") end

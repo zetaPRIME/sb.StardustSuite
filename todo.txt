@@ -4,10 +4,10 @@ for next update {
     - finish out catalysts, give them recipes
     - transition nanofield to catalyst system
     - adjust elytra control and animation to match Aetheri flight
-    give nanofield an air jump
+    - give nanofield an air jump
     - add anti-space imbue to nanofield
+    - apply weaponext to magnorbs
     finish Pulsestrike Glaive (visible beam, FP costs)
-    apply weaponext to magnorbs
 } then soon {
     custom damage type for pulse weapons (void? energy?)
     give Pulsestrike Glaive a secondary that isn't just the combo finisher
@@ -16,6 +16,7 @@ for next update {
 }
 
 at some point, rewrite nanofield into a modular structure matching the Aetheri
+figure out how to lessen the load of build scripts like the nanofield's?
 
 ! hook engine {
     included by replaced util.lua

@@ -1,15 +1,8 @@
 -
 
-for next update {
-    - finish out catalysts, give them recipes
-    - transition nanofield to catalyst system
-    - adjust elytra control and animation to match Aetheri flight
-    - give nanofield an air jump
-    - add anti-space imbue to nanofield
-    - apply weaponext to magnorbs
-    - finish Pulsestrike Glaive (- visible beam, - FP costs)
-    > write the release notes
-} then soon {
+for next update(s)? {
+    pulse rifle
+    ---
     custom damage type for pulse weapons (void? energy?)
     give Pulsestrike Glaive a secondary that isn't just the combo finisher
     rework phase drill to be tiered

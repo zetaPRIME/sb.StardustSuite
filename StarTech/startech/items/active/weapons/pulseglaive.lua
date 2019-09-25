@@ -16,7 +16,7 @@ function init()
   animator.setSoundPitch("beam", 1.0)
   animator.setSoundVolume("finisher", 0.75)
   
-  animator.setGlobalTag("wave", "energyDirectives", "?multiply=ffffff00")
+  animator.setGlobalTag("energyDirectives", "?multiply=ffffff00")
   
   animator.setPartTag("haft", "partImage", asset "haft")
   animator.setPartTag("lens", "partImage", asset "lens")

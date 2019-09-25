@@ -1,7 +1,8 @@
 { // -*- grammar-ext: json -*-
   "globalTagDefaults" : {
-    "partImage" : "",
+    "partImage" : "/assetmissing.png",
     "directives" : "",
+    "energyColor" : "",
     "energyDirectives" : "",
     "fxDirectives" : ""
   },
@@ -39,7 +40,7 @@
         "properties" : {
           "zLevel" : 11,
           "centered" : true, "offset" : [0, 0],
-          "image" : "<partImage><energyDirectives>",
+          "image" : "<partImage><energyColor><energyDirectives>",
           "fullbright" : true,
           "transformationGroups" : ["arm1a", "arm1b", "weapon"]
         }
@@ -58,7 +59,7 @@
         "properties" : {
           "zLevel" : 6,
           "centered" : true, "offset" : [0, 0],
-          "image" : "<partImage><energyDirectives>",
+          "image" : "<partImage><energyColor><energyDirectives>",
           "fullbright" : true,
           "transformationGroups" : ["arm2a", "arm2b", "weapon"]
         }
@@ -68,7 +69,7 @@
         "properties" : {
           "zLevel" : -5,
           "centered" : true, "offset" : [0, 0],
-          "image" : "<partImage><fxDirectives>",
+          "image" : "<partImage><energyColor><fxDirectives>",
           "fullbright" : true,
           "transformationGroups" : ["fx"]
         }
@@ -77,7 +78,7 @@
         "properties" : {
           "zLevel" : -4,
           "centered" : true, "offset" : [0, 0],
-          "image" : "<partImage><fxDirectives>",
+          "image" : "<partImage><energyColor><fxDirectives>",
           "fullbright" : true,
           "transformationGroups" : ["fx2"]
         }
@@ -86,7 +87,7 @@
         "properties" : {
           "zLevel" : -3,
           "centered" : true, "offset" : [0, 0],
-          "image" : "<partImage><fxDirectives>",
+          "image" : "<partImage><energyColor><fxDirectives>",
           "fullbright" : true,
           "transformationGroups" : ["fx3"]
         }

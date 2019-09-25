@@ -27,3 +27,12 @@ function weaponUtil.getStatusImbue()
 end
 
 function weaponUtil.imbue(src) return imbue(src, weaponUtil.getStatusImbue()) end
+
+function weaponUtil.encodeStatus(t) return "::" .. sb.printJson(t) end
+
+function weaponUtil.tag(t)
+  if type(t) == "string" then return weaponUtil.encodeStatus { tag = t } end
+  return weaponUtil.encodeStatus(t)
+end
+
+function weaponUtil.impulse(v, raw) return weaponUtil.encodeStatus { tag = raw and "rawImpulse" or "impulse", vec = v } end

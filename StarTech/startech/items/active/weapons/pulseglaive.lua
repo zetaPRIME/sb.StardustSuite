@@ -1,5 +1,4 @@
 require "/lib/stardust/dynitem.lua"
-require "/lib/stardust/weaponutil.lua"
 require "/lib/stardust/playerext.lua"
 require "/lib/stardust/color.lua"
 
@@ -57,10 +56,6 @@ dynItem.aimVOffset = -5.5/8
   fxTime = 1/8,
 }
 
-local function enc(stat)
-  return "::" .. sb.printJson(stat)
-end
-
 function strike(dmg, type, poly, kb)
   kb = kb or 1.0
   local np = #poly
@@ -71,8 +66,8 @@ function strike(dmg, type, poly, kb)
     team = activeItem.ownerTeam(),
     damageSourceKind = type,
     statusEffects = weaponUtil.imbue {
-      enc { tag = "antiSpace" },
-      enc { tag = "impulse", vec = vec2.mul(vec2.rotate({dynItem.aimDir, 0}, dynItem.aimAngle * dynItem.aimDir), 25 * kb) }
+      weaponUtil.tag "antiSpace",
+      dynItem.impulse(25, 0.64),
     },
     knockback = {0, 0},--{mcontroller.facingDirection(), 22},
     rayCheck = true,

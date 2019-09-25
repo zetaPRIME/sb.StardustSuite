@@ -2,6 +2,8 @@
   [ // category fixes for bk3k inventory
     { "op" : "test", "path" : "/inventory/itemBags/armoryBag" }, // detect if bk3k inv installed
     
+    // structure ref https://www.dropbox.com/s/bgs9n9xgg8bsvio/bk3k_inventory.7z?dl=0&file_subpath=%2Fbk3k_inventory%2Fplayer.config.patch
+    
     { "op" : "add", "path" : "/inventoryFilters/mainBag/categoryBlacklist/-",   "value" : "startech:power.weapon" },
     { "op" : "add", "path" : "/inventoryFilters/armoryBag/categoryWhitelist/-", "value" : "startech:power.weapon" },
     { "op" : "add", "path" : "/inventoryFilters/mainBag/categoryBlacklist/-",   "value" : "startech:power.armor" },

@@ -3,6 +3,7 @@
 require "/scripts/util.lua"
 require "/scripts/vec2.lua"
 
+require "/lib/stardust/weaponutil.lua"
 
 do
   dynItem = { }
@@ -57,7 +58,20 @@ do
   
   function dynItem.aimVector(dir, angle, mag)
     dir, angle, mag = dir or dynItem.aimDir, angle or dynItem.aimAngle, mag or 1.0
-    return vec2.rot({dir*mag, 0}, dir*angle)
+    return vec2.rotate({dir*mag, 0}, dir*angle)
+  end
+  
+  function dynItem.impulse(v, velMult, raw)
+    velMult = velMult or 0
+    if type(v) == "number" then v = dynItem.aimVector(nil, nil, v) end
+    if mcontroller.groundMovement() then v = vec2.add(v, {0, 5}) end -- bit of help to lift
+    if velMult == 0 then
+      return weaponUtil.impulse(v, raw)
+    else
+      local vel = mcontroller.velocity()
+      local p = math.max(0, vec2.dot(vec2.norm(vel), vec2.norm(v)))
+      return weaponUtil.impulse(vec2.add(v, vec2.mul(vel, p * velMult)), raw)
+    end
   end
   
   function dynItem.offsetPoly(p, fromShoulder, angle)

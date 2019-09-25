@@ -10,6 +10,7 @@ for next update {
     apply weaponext to magnorbs
 } then soon {
     custom damage type for pulse weapons (void? energy?)
+    give Pulsestrike Glaive a secondary that isn't just the combo finisher
     rework phase drill to be tiered
     have all recipes unlocked by default
 }

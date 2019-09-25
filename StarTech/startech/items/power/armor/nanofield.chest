@@ -1,14 +1,16 @@
 { // -*- grammar-ext: json -*-
   "itemName" : "startech:nanofield",
   "shortdescription" : "Nanofield Resonator",
-  "description" : "A high-tech alternative to a normal suit of armor. Install Module Cards to enhance its functionality. (early WIP)",
+  //"description" : "A high-tech alternative to a normal suit of armor. Install Module Cards to enhance its functionality. (early WIP)",
+  "description" : "Forego traditional armor for a ^violet;fluxpulse-powered force field^reset;. Also provides ^violet;enhanced mobility^reset;.",
   "inventoryIcon" : "/interface/deployhover.png",
   "rarity" : "Essential",
   "maxStack" : 1,
   //"price" : 68000,
   "category" : "startech:power.armor",
   "tooltipKind" : "stardustlib.power.wearable",
-  "builder" : "/sys/stardust/builders/powered.lua",
+  "builder" : "/startech/items/power/armor/buildnanofield.lua",
+  //"builder" : "/sys/stardust/builders/powered.lua",
   
   "level" : 2,
   "acceptsUpgradeCatalyst" : true,

@@ -23,6 +23,13 @@
     "vAnchor" : "top",
     "wrapWidth" : 123
   },
+  "bottomLabel" : {
+    "type" : "label",
+    "position" : [9, 119],
+    "hAnchor" : "left",
+    "vAnchor" : "bottom",
+    "wrapWidth" : 123
+  },
   "rarityLabel" : {
     "type" : "label",
     "position" : [7, 23],

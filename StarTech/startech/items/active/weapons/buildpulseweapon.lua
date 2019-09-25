@@ -13,9 +13,8 @@ function build(directory, config, parameters, level, seed)
     lvLabel = string.format("%s ^darkgray;(no catalyst)^reset;", lvLabel)
   end
   
-  parameters.tooltipFields = {
-    bottomLabel = lvLabel
-  }
+  parameters.tooltipFields = parameters.tooltipFields or { }
+  parameters.tooltipFields.bottomLabel = lvLabel
   
   return config, parameters
 end

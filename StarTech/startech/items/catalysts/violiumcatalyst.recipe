@@ -1,0 +1,9 @@
+{ // -*- grammar-ext: json -*-
+  "input" : [
+    { "item" : "refinedviolium", "count" : 15 },
+    { "item" : "corefragmentore", "count" : 3 },
+    { "item" : "diamond", "count" : 1 }
+  ],
+  "output" : { "item" : "startech:violiumcatalyst", "count" : 1 },
+  "groups" : [ "startech:tinkertable", "tools", "all" ]
+}

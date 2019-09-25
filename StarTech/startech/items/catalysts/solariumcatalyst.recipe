@@ -1,0 +1,9 @@
+{ // -*- grammar-ext: json -*-
+  "input" : [
+    { "item" : "solariumstar", "count" : 20 },
+    { "item" : "corefragmentore", "count" : 3 },
+    { "item" : "startech:resonitebar", "count" : 1 }
+  ],
+  "output" : { "item" : "startech:solariumcatalyst", "count" : 1 },
+  "groups" : [ "startech:tinkertable", "tools", "all" ]
+}

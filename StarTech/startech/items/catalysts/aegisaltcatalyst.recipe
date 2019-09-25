@@ -1,0 +1,9 @@
+{ // -*- grammar-ext: json -*-
+  "input" : [
+    { "item" : "refinedaegisalt", "count" : 15 },
+    { "item" : "corefragmentore", "count" : 3 },
+    { "item" : "diamond", "count" : 1 }
+  ],
+  "output" : { "item" : "startech:aegisaltcatalyst", "count" : 1 },
+  "groups" : [ "startech:tinkertable", "tools", "all" ]
+}

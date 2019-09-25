@@ -1,13 +1,17 @@
 -
 
 for next update {
-    finish out catalysts, give them recipes
+    - finish out catalysts, give them recipes
     - transition nanofield to catalyst system
     - adjust elytra control and animation to match Aetheri flight
     give nanofield an air jump
     - add anti-space imbue to nanofield
     finish Pulsestrike Glaive (visible beam, FP costs)
     apply weaponext to magnorbs
+} then soon {
+    custom damage type for pulse weapons (void? energy?)
+    rework phase drill to be tiered
+    have all recipes unlocked by default
 }
 
 at some point, rewrite nanofield into a modular structure matching the Aetheri

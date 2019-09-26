@@ -213,16 +213,9 @@ patternMatch = function(match, tbl)
   return true
 end
 
-function svc.fillEquipEnergy(msg, isLocal, amount, testOnly) return power.fillEquipEnergy(amount, testOnly) end
-function svc.drawEquipEnergy(msg, isLocal, amount, testOnly) return power.drawEquipEnergy(amount, testOnly) end
-function svc.fillEquipEnergyAsync(msg, isLocal, amount, iterations)
-  local acc = 0
-  for i = 1, iterations do
-    acc = acc + power.fillEquipEnergy(amount - acc)
-    if acc >= amount then break end
-  end
-  return acc
-end
+function svc.fillEquipEnergy(msg, isLocal, amount, testOnly, ioMult) return power.fillEquipEnergy(amount, testOnly, ioMult) end
+function svc.drawEquipEnergy(msg, isLocal, amount, testOnly, ioMult) return power.drawEquipEnergy(amount, testOnly, ioMult) end
+function svc.fillEquipEnergyAsync(msg, isLocal, amount, iterations) return power.fillEquipEnergy(amount, false, iterations) end
 
 local essentialSlots = { beamaxe = true, wiretool = true, painttool = true, inspectiontool = true }
 -- read/write equipped items, generally meant to be used synchronously (from techs, etc.)

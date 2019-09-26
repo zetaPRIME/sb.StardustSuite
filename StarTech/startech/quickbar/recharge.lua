@@ -1,2 +1,2 @@
 require "/lib/stardust/power.item.lua"
-while power.fillEquipEnergy(573000) > 0 do end -- max-fill until nothing can recharge further
+while power.fillEquipEnergy(math.huge, false, math.huge) > 0 do end -- turbo-fill until nothing can recharge further

@@ -3,18 +3,22 @@ tables = { }
 
 -- merges two or more map-style tables together (insert by key)
 -- modifies the first input! to perform a copy instead, have a blank table { } as first input
-function tables.merge(a, b, ...)
-  if not b then return a end -- done
-  for k, v in pairs(b) do a[k] = v end
-  return tables.merge(a, ...)
+function tables.merge(a, ...)
+  local l = { ... }
+  for _, t in ipairs(l) do
+    for k, v in pairs(b) do a[k] = v end
+  end
+  return a
 end
 
 -- merges two or more list-style tables together (sequential keys)
 -- modifies the first input! to perform a copy instead, have a blank table { } as first input
-function tables.append(a, b, ...)
-  if not b then return a end -- done
-  for k, v in pairs(b) do table.insert(a, v) end
-  return tables.merge(a, ...)
+function tables.append(a, ...)
+  local l = { ... }
+  for _, t in ipairs(l) do
+    for k, v in ipairs(t) do table.insert(a, v) end
+  end
+  return a
 end
 
 -- shorthand for a shallow copy

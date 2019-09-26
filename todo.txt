@@ -1,6 +1,7 @@
 -
 
 for next update(s)? {
+    give the glaive a light source paired with energy
     pulse rifle
     ---
     custom damage type for pulse weapons (void? energy?)

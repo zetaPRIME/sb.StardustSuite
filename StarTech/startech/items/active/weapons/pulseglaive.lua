@@ -374,6 +374,12 @@ function beamOpen()
 end
 
 local beamPt = {40/8, dynItem.aimVOffset}
+
+local flashTb = { 1.0, 0.8, 0.6 }
+local function flash()
+  return flashTb[math.floor((dynItem.time*30) % 3) + 1]
+end
+
 function beamCharge()
   animator.setPartTag("fx2", "partImage", asset "orb")
   
@@ -390,7 +396,7 @@ function beamCharge()
     chargeCursor(v)
     
     animator.setPartTag("fx2", "fxDirectives", "")
-    setFx("fx2", dynItem.aimDir, dynItem.aimAngle, beamPt, v, dynItem.time * math.pi * 7)
+    setFx("fx2", dynItem.aimDir, dynItem.aimAngle, beamPt, v * flash(), dynItem.time * math.pi * 7)
     --[[animator.resetTransformationGroup("fx2")
     animator.rotateTransformationGroup("fx2", dynItem.time * math.pi * 7)
     animator.scaleTransformationGroup("fx2", v)
@@ -403,7 +409,7 @@ function beamCharge()
     activeItem.setCursor("/cursors/chargeidle.cursor")
     
     animator.setPartTag("fx2", "fxDirectives", "")
-    setFx("fx2", dynItem.aimDir, dynItem.aimAngle, beamPt, 1, dynItem.time * math.pi * 7)
+    setFx("fx2", dynItem.aimDir, dynItem.aimAngle, beamPt, flash(), dynItem.time * math.pi * 7)
     
     coroutine.yield()
   end
@@ -437,17 +443,20 @@ function beamFire()
   
   for v in dynItem.tween(cfg.fireTime) do
     local cv = math.sin((v ^ 0.5) * math.pi) ^ 0.5
-    local rca = util.lerp(cv, 0, 0.3)
+    local rca = 0--util.lerp(cv, 0, 0.12)--0.3
     --local md = util.lerp(cv, 0.3, 0.7)
     dynItem.aimAt(dir, angle - md - rca)
     setEnergy(1.0 - v)
     chargeCursor(1.0 - v^0.25)
     animator.resetTransformationGroup("weapon")
     animator.translateTransformationGroup("weapon", {0, cfg.thrustLength * util.lerp(cv, 0.4, 0.1)})
-    animator.rotateTransformationGroup("weapon", (math.pi * -0.5) + md + rca*2)
+    animator.rotateTransformationGroup("weapon", (math.pi * -0.5) + md + rca*3)
     
-    local bv = math.max(0, 1.0 - v*2)
-    setFx("fx2", dir, angle, beamPt, 1.1 * bv^2, dynItem.time * math.pi * 7)
+    animBlade(util.lerp(cv, 1, 1.15)) -- slight overextend from the force of firing
+    
+    local ov = math.max(0, 1.0 - v*2)
+    local bv = math.max(0, 1.0 - v*4)
+    setFx("fx2", dir, angle, beamPt, 1.25 * ov^2, dynItem.time * math.pi * 7)
     setFx("fx", dir, angle, beamPt, {(dist + 0.5 * (1.0 - bv)^2)*8.0, bv^2})
     
   end

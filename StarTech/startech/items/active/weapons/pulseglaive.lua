@@ -89,6 +89,7 @@ function strike(dmg, type, poly, kb)
     team = activeItem.ownerTeam(),
     damageSourceKind = type,
     statusEffects = weaponUtil.imbue {
+      weaponUtil.dmgTypes { fire = 1, electric = 1 },
       weaponUtil.tag "antiSpace",
       dynItem.impulse(25, 0.64),
     },

@@ -78,7 +78,28 @@ function knockbackMomentum(vec)
   return kb
 end
 
+local elementalResistance = root.elementalResistance
+function root.elementalResistance(type)
+  if currentDamageRequest and currentDamageRequest.dmgTypes then
+    return elementalResistance -- eh, why not.
+  end
+  return elementalResistance(type)
+end
 
+local stat = status.stat
+function status.stat(s, default)
+  if s ~= elementalResistance then return stat(s, default) end
+  local types = currentDamageRequest.dmgTypes
+  local r, acc = 0, 0
+  for type, amt in pairs(types) do
+    acc = acc + math.abs(amt)
+    r = r + stat(elementalResistance(type)) * amt
+  end
+  if acc == 0 then return 0 end
+  return r / acc
+end
+
+--- --- ---
 
 function tagFunc:antiSpace(tag)
   self.spaceDamageBonus = true
@@ -95,4 +116,15 @@ function tagFunc:rawImpulse(tag)
   local v = tag.vec or tag.vector
   if not v then return nil end
   self.impulse = vec2.add(self.impulse or {0, 0}, v)
+end
+
+local dmgTypeFix = { physical = "plasma" }
+function tagFunc:dmgTypes(tag)
+  local t = tag.types or tag.type or tag.t
+  if not t then return nil end
+  self.dmgTypes = self.dmgTypes or { }
+  for k, v in pairs(t) do
+    k = dmgTypeFix[k] or k
+    self.dmgTypes[k] = (self.dmgTypes[k] or 0) + v
+  end
 end

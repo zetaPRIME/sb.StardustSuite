@@ -36,3 +36,13 @@ function weaponUtil.tag(t)
 end
 
 function weaponUtil.impulse(v, raw) return weaponUtil.encodeStatus { tag = raw and "rawImpulse" or "impulse", vec = v } end
+function weaponUtil.dmgTypes(t)
+  if type(t) == "string" then t = { [t] = 1.0 } end
+  if t[1] then -- list to array
+    local tt = { }
+    for _, v in pairs(t) do tt[v] = 1.0 end
+    t = tt
+  end
+  return weaponUtil.encodeStatus { tag = "dmgTypes", t = t }
+end
+weaponUtil.dmgType = weaponUtil.dmgTypes -- alias

@@ -62,8 +62,6 @@ lots of shiny new ship components, especially animating ones that match their st
 }
 
 power stuffs {
-    bump up the maximum charging rate (packet size) of Resonite Transmitter
-    
     nanofield {
         action states? or just turn movement modes into something similar to dynitem's combo system
         

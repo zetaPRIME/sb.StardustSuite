@@ -27,7 +27,7 @@
   
   "batteryStats" : {
     "capacity" : 25000,
-    "ioRate" : 1000
+    "ioRate" : 5000
   },
   "tileRange" : 50,
   

@@ -1,4 +1,4 @@
--- input module, you know what this does
+-- input module for techs
 
 input = {
   key = { },
@@ -9,7 +9,11 @@ input = {
   dirN = {0, 0},
 }
 
+local _i = true
 function input.update(p)
+  if _i then _i = false
+    --
+  end
   local m = p.moves -- alias
   input.keyLast = input.key -- push back
   input.key = { -- assemble keys

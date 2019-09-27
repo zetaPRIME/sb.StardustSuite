@@ -13,6 +13,12 @@ local _i = true
 function input.update(p)
   if _i then _i = false
     --
+    message.setHandler("stardustlib:getTechInput", function()
+      return {
+        key = input.key, keyDown = input.keyDown, keyUp = input.keyUp,
+        dir = input.dir, dirN = input.dirN,
+      }
+    end)
   end
   local m = p.moves -- alias
   input.keyLast = input.key -- push back

@@ -57,6 +57,13 @@ function power.drawItemEnergy(item, amount, testOnly, ioMult)
   return r
 end
 
+local slots = {
+  "back",
+  "chest",
+  "legs",
+  "head"
+}
+
 function power.fillEquipEnergy(amount, testOnly, ioMult)
   if not player then return 0 end -- abort if player table is unavailable
   local function msg() world.sendEntityMessage(entity.id(), "stardustlib:onFillEquipEnergy") end
@@ -68,13 +75,6 @@ function power.fillEquipEnergy(amount, testOnly, ioMult)
     if not testOnly then status.giveResource("stardustlib:fluxpulse", internal) end
     if acc >= amount then msg() return acc end
   end
-  
-  local slots = {
-    "back",
-    "chest",
-    "legs",
-    "head"
-  }
   
   for k,slot in pairs(slots) do
     -- check each slot
@@ -100,13 +100,6 @@ function power.drawEquipEnergy(amount, testOnly, ioMult)
     if not testOnly then status.overConsumeResource("stardustlib:fluxpulse", internal) end
     if acc >= amount then msg() return acc end
   end
-  
-  local slots = {
-    "back",
-    "chest",
-    "legs",
-    "head"
-  }
   
   for k,slot in pairs(slots) do
     -- check each slot

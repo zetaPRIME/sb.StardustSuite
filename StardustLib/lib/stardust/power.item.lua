@@ -64,6 +64,17 @@ local slots = {
   "head"
 }
 
+function power.readEquipEnergy()
+  if not player then return 0 end
+  local cur, max = status.resource("stardustlib:fluxpulse"), status.resourceMax("stardustlib:fluxpulse")
+  
+  for k, slot in pairs(slots) do
+    local itm = player.equippedItem(slot)
+    cur = cur + (itemutil.property(itm, "/batteryStats/energy") or 0)
+    max = max + (itemutil.property(itm, "/batteryStats/capacity") or 0)
+  end
+end
+
 function power.fillEquipEnergy(amount, testOnly, ioMult)
   if not player then return 0 end -- abort if player table is unavailable
   local function msg() world.sendEntityMessage(entity.id(), "stardustlib:onFillEquipEnergy") end

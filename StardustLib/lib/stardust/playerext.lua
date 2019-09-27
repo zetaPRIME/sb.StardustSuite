@@ -41,6 +41,7 @@ if not playerext then
     "setEquip",
     "updateEquip",
     
+    "readEquipEnergy",
     "fillEquipEnergy",
     "drawEquipEnergy",
     "fillEquipEnergyAsync",

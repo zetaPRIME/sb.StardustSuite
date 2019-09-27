@@ -213,6 +213,7 @@ patternMatch = function(match, tbl)
   return true
 end
 
+function svc.readEquipEnergy() return power.readEquipEnergy() end
 function svc.fillEquipEnergy(msg, isLocal, amount, testOnly, ioMult) return power.fillEquipEnergy(amount, testOnly, ioMult) end
 function svc.drawEquipEnergy(msg, isLocal, amount, testOnly, ioMult) return power.drawEquipEnergy(amount, testOnly, ioMult) end
 function svc.fillEquipEnergyAsync(msg, isLocal, amount, iterations) return power.fillEquipEnergy(amount, false, iterations) end

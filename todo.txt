@@ -1,6 +1,9 @@
 -
 
 for next update(s)? {
+    some way of claiming HUD rows??
+    turn FP meter into a status effect and use it for augpack too
+    
     split some things out from glaive into pulseweapon-common
     pulse rifle
     give the glaive a light source paired with energy

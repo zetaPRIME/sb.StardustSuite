@@ -2,6 +2,7 @@
 
 for next update(s)? {
     nanofield energy hud (percentage; what conditions to appear under?)
+    ^ <= 15%, charging or discharging
     split some things out from glaive into pulseweapon-common
     pulse rifle
     give the glaive a light source paired with energy

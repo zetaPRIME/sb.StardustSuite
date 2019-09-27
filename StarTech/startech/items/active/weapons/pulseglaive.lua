@@ -453,7 +453,7 @@ function beamFire()
     animator.translateTransformationGroup("weapon", {0, cfg.thrustLength * util.lerp(cv, 0.4, 0.1)})
     animator.rotateTransformationGroup("weapon", (math.pi * -0.5) + md + rca*3)
     
-    animBlade(util.lerp(cv, 1, 1.15)) -- slight overextend from the force of firing
+    animBlade(util.lerp(cv, 1, 1.25)) -- slight overextend from the force of firing
     
     local ov = math.max(0, 1.0 - v*2)
     local bv = math.max(0, 1.0 - v*4)

@@ -1,13 +1,17 @@
 -
 
 for next update(s)? {
-    give the glaive a light source paired with energy
+    nanofield energy hud (percentage; what conditions to appear under?)
+    split some things out from glaive into pulseweapon-common
     pulse rifle
+    give the glaive a light source paired with energy
     ---
-    custom damage type for pulse weapons (void? energy?)
+    customizable elements for pulse weapons (via configurator)
     give Pulsestrike Glaive a secondary that isn't just the combo finisher
-    rework phase drill to be tiered
+    maybe an alt finisher to main fire combo if buffered during?
+    rework phase drill to be tiered and also maybe a dynitem
     have all recipes unlocked by default
+    pulse chakram similar to razorwave
 }
 
 at some point, rewrite nanofield into a modular structure matching the Aetheri
@@ -30,10 +34,6 @@ figure out how to lessen the load of build scripts like the nanofield's?
 sb.jsonQuery exists, adjust itemutil.property?
 
 turn the liquid accumulator (phase drill, excavate) into a prefab
-
-maybe give phase drill its own battery?
-alternative, tip-glow-only effect for phase drill when cursor is too close to player
-^ actually, just add particles to beam tip and snap them to the lens if too close
 
 configurable tram stop {
   built-in player sensor
@@ -66,21 +66,13 @@ power stuffs {
     bump up the maximum charging rate (packet size) of Resonite Transmitter
     
     nanofield {
-        action states?
-        - fall damage immunity
-        - hard-fall effect of some sort
-        
-        - some temporary means of giving the thing actual armor stats
-        - figure out what to do for sphere mode
+        action states? or just turn movement modes into something similar to dynitem's combo system
         
         power draw for stuff
         
-        - lingering deploy error with FU if mech is incomplete
-        
         elytra {
-            - tween rotation and implement rez/derez animation
-            - autoswitch only when environment gravity changes
             speed/thrust stats
+            use an actual item
         }
     }
     
@@ -91,9 +83,7 @@ power stuffs {
 
     fluxsaber (fluxpulse-charged beamsword)
     pulse rifle (machine gun), vector rifle (railgun)
-    fluxpulse weapons get a damage bonus when wielded in elytra in a zero-g environment
     
-    intermediary pulse-battery component?
     maybe a way to add a pulse battery to stock equipment
     
     powered lamp that fills a large region with full-bright light (basically volumetric lighting at the cost of fp)
@@ -101,8 +91,7 @@ power stuffs {
     more smelter-type machines
     ^ chance bias stat (inverse exponent to random number)
     
-    prefix and move power categories to stardustlib
-    modular gear category
+    prefix and move power categories to stardustlib?
     
     eventually make transmatter network require power (after rewrite)
 }
@@ -115,11 +104,7 @@ renamer (custom shortdescription, put vanilla one as category because tooltip)
 some item transport for automation (and library to make use of input/output configuration)
 networked wire I/O ports
 
-# make RCS tech obtainable; balance energy use
-
-some major cleanup in places
-
-probably a UI lib that encapsulates widgets (read from heirarchy)
+actually implement metagui at some point
 
 Extend sync library {
     //Recognize RpcPromise returning another RpcPromise and replace in queue
@@ -148,6 +133,8 @@ Aetheri species mod {
     make flight in air use aether; place behind unlock, add efficiency stat
     
     Innates {
+        ! standardize on a separate tag (energyColor?) for replace directives
+        
         Kinetic Burst {
             refine secondary, place after unlock?
             different secondary in water and zero-g?

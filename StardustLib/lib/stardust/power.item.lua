@@ -73,12 +73,14 @@ function power.readEquipEnergy()
     cur = cur + (itemutil.property(itm, "/batteryStats/energy") or 0)
     max = max + (itemutil.property(itm, "/batteryStats/capacity") or 0)
   end
+  
+  return cur, max
 end
 
 function power.fillEquipEnergy(amount, testOnly, ioMult)
   if not player then return 0 end -- abort if player table is unavailable
-  local function msg() world.sendEntityMessage(entity.id(), "stardustlib:onFillEquipEnergy") end
   local acc = 0
+  local function msg() if acc > 0 then world.sendEntityMessage(player.id(), "stardustlib:onFillEquipEnergy") end end
   
   if not status.resourceLocked("stardustlib:fluxpulse") then -- fill internal battery if present
     local internal = math.min(amount, status.resourceMax("stardustlib:fluxpulse") - status.resource("stardustlib:fluxpulse"))
@@ -96,14 +98,13 @@ function power.fillEquipEnergy(amount, testOnly, ioMult)
     if acc >= amount then msg() return acc end -- early out when quota reached
   end
   
-  if acc >= 0 then msg() end
-  return acc
+  msg() return acc
 end
 
 function power.drawEquipEnergy(amount, testOnly, ioMult)
   if not player then return 0 end -- abort if player table is unavailable
-  local function msg() world.sendEntityMessage(entity.id(), "stardustlib:onDrawEquipEnergy") end
   local acc = 0
+  local function msg() if acc > 0 then world.sendEntityMessage(player.id(), "stardustlib:onDrawEquipEnergy") end end
   
   if not status.resourceLocked("stardustlib:fluxpulse") then -- draw from internal battery if present
     local internal = math.min(amount, status.resource("stardustlib:fluxpulse"))
@@ -122,8 +123,7 @@ function power.drawEquipEnergy(amount, testOnly, ioMult)
     if acc >= amount then msg() return acc end -- early out when quota reached
   end
   
-  if acc >= 0 then msg() end
-  return acc
+  msg() return acc
 end
 
 function power.fillContainerEnergy(id, amount, testOnly, ioMult)

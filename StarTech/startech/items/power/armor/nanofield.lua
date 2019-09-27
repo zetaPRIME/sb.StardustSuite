@@ -1,7 +1,9 @@
 --
 
-require("/scripts/vec2.lua")
-require("/lib/stardust/itemutil.lua")
+require "/scripts/vec2.lua"
+require "/lib/stardust/itemutil.lua"
+
+require "/startech/items/power/armor/nanofield/hud.lua"
 
 -- armor value works differently from normal armors
 -- mult = .5^(armor/100); or, every 100 points is a 50% damage reduction
@@ -148,17 +150,6 @@ function modifyDamageTaken(msg, isLocal, damageRequest)
   end
 end
 
-function renderHUD()
-  local hl = "foregroundEntity+3" -- HUD layer
-  
-  --[[ playerext.queueDrawable {
-    image = "/interface/lockicon.png",
-    position = { 0, -4 },
-    renderLayer = hl,
-    fullbright = true,
-  }]]
-end
-
 function init()
   message.setHandler("stardustlib:modifyDamageTaken", modifyDamageTaken)
   message.setHandler("startech:nanofield.update", function() statsNeedUpdate = true end)
@@ -269,7 +260,7 @@ function update(p)
   wingBack:scale({mcontroller.facingDirection() * wingEffDir, 1.0}, {0.0, 0.0})
   wingEffDir = mcontroller.facingDirection()
   
-  renderHUD()
+  hud.update(p)
 end
 
 function uninit()

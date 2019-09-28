@@ -117,8 +117,8 @@ local function rotTowards(cur, target, max)
   return towards(cur, target, max)
 end
 
-function drawEnergy(amount, testOnly)
-  local res = playerext.drawEquipEnergy(amount, testOnly)
+function drawEnergy(amount, testOnly, ioMult)
+  local res = playerext.drawEquipEnergy(amount, testOnly, ioMult)
   if not testOnly then -- update cached item's capacitor
     item.parameters.batteryStats = playerext.getEquip("chest").parameters.batteryStats
   end
@@ -235,8 +235,8 @@ function update(p)
     mcontroller.setVelocity(prevVelocity) -- override FU's BYOS system stopping you when it turns off gravity
   end
   --
-  callMode("update", p)
-  --movement.update(p)
+  --callMode("update", p)
+  movement.update(p)
   
   prevVelocity = mcontroller.velocity()
   
@@ -263,7 +263,8 @@ function update(p)
 end
 
 function uninit()
-  callMode("uninit")
+  --callMode("uninit")
+  movement.call("uninit")
   
   -- destroy ephemera on unequip
   for _, slot in pairs{"head", "legs"} do
@@ -308,11 +309,6 @@ function updateEffectiveStats()
 end
 
 -- movement modes!
-
-local sqrt2 = math.sqrt(2)
-local function vmag(vec)
-  return math.sqrt(vec[1]^2 + vec[2]^2)
-end
 
 -----------------
 -- ground mode --

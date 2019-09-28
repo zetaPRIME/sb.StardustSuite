@@ -60,7 +60,7 @@ local drawableQueue = { }
 local lightQueue = { }
 local particleQueue = { }
 
-local hudSpacing = 1
+local hudSpacing = 1/8 -- single world pixel
 local hudBasePos = {
   top = 16/8,
   bottom = -24/8,

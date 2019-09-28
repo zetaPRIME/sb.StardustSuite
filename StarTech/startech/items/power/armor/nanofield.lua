@@ -3,7 +3,7 @@
 require "/scripts/vec2.lua"
 require "/lib/stardust/itemutil.lua"
 
-require "/startech/items/power/armor/nanofield/hud.lua"
+--require "/startech/items/power/armor/nanofield/hud.lua"
 
 -- armor value works differently from normal armors
 -- mult = .5^(armor/100); or, every 100 points is a 50% damage reduction
@@ -260,7 +260,7 @@ function update(p)
   wingBack:scale({mcontroller.facingDirection() * wingEffDir, 1.0}, {0.0, 0.0})
   wingEffDir = mcontroller.facingDirection()
   
-  hud.update(p)
+  --hud.update(p)
 end
 
 function uninit()

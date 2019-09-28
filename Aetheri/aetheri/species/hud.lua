@@ -18,7 +18,7 @@ end
 function hud.update(p)
   --
   if itemutil.property(world.entityHandItemDescriptor(entity.id(), "primary"), "isAetherSkill") and status.resourcePercentage("aetheri:mana") < 1.0 then
-    manaShowTime = 1
+    manaShowTime = 2
   end
   if manaShowTime > 0 then
     -- mana gauge
@@ -27,8 +27,8 @@ function hud.update(p)
     local str = string.format("%d/%d", math.floor(0.5 + status.resource("aetheri:mana") or 0), math.floor(0.5 + status.resourceMax("aetheri:mana") or 0))
     --local str = string.format("%d", safeFloor(0.5 + status.resourcePercentage("aetheri:mana") * 100))
     local off = ((str:len() - 1) * numWidth - 4) * -0.5
-    local mult = string.format("?multiply=ffffff%02x", math.floor(0.5 + manaShowTime * 255))
-    local y = -28 * px
+    local mult = string.format("?multiply=ffffff%02x", math.floor(0.5 + math.min(1, manaShowTime) * 255))
+    local y = playerext.getHUDPosition("bottom", 1)
     for i = 1, str:len() do
       table.insert(drw, {
         position = { (off + (i - 1) * numWidth) * px, y },

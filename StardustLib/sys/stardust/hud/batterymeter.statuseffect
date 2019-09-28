@@ -1,0 +1,7 @@
+{ // -*- grammar-ext: json -*-
+  "name" : "stardustlib:batterymeter",
+  "effectConfig" : { },
+  "defaultDuration" : 5,
+
+  "scripts" : [ "batterymeter.lua" ]
+}

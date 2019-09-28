@@ -157,7 +157,7 @@ function init()
             "battery.meter.png?addmask=/startech/objects/power/battery.meter.png", ";0;",
             10 - math.floor(batLevel * 10),
             "?multiply=", color.toHex(color.fromHsl{math.max(0, batLevel*1.25 - 0.25) * 1/3, 1, 0.5, 1})
-          }), 
+          }),
           fullbright = true
         }
       }
@@ -188,9 +188,9 @@ function init()
     } end
     
     -- set epp status
-    cfgItem.parameters.statusEffects = nil
+    cfgItem.parameters.statusEffects = { "stardustlib:batterymeter" }
     if inv.pack then
-      cfgItem.parameters.statusEffects = inv.pack.statusEffects or root.itemConfig(inv.pack).config.statusEffects
+      util.mergeTable(cfgItem.parameters.statusEffects, inv.pack.statusEffects or root.itemConfig(inv.pack).config.statusEffects)
     end
     
     -- set augment

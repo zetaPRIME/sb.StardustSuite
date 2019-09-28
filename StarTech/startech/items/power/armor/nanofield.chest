@@ -21,6 +21,7 @@
   
   "techScript" : "/startech/items/power/armor/nanofield.lua",
   "statusEffects" : [
+    "stardustlib:batterymeter",
     "stardustlib:techoverride",
     { "stat" : "deployWithoutMech", "amount" : 1 }
   ],

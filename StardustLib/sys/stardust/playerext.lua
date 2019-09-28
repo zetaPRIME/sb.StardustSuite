@@ -60,6 +60,13 @@ local drawableQueue = { }
 local lightQueue = { }
 local particleQueue = { }
 
+local hudSpacing = 1
+local hudBasePos = {
+  top = 16/8,
+  bottom = -24/8,
+}
+local hudPos = { top = 0, bottom = 0 }
+
 local lastPos = { 0, 0 }
 local _update = update or function() end
 function update(dt, ...)
@@ -71,6 +78,9 @@ function update(dt, ...)
       scripts = {"/sys/stardust/playerext-screenmetrics.lua"}, scriptDelta = 1,
     })
   end--]]
+  
+  -- clear HUD positions
+  for k in pairs(hudPos) do hudPos[k] = 0 end
   
   localAnimator.clearLightSources()
   _update(dt, ...)
@@ -310,6 +320,14 @@ function svc.playAudio(msg, isLocal, sound, loops, volume)
   if type(loops) ~= "number" then loops = 1 end
   if type(volume) ~= "number" then volume = 1.0 end
   localAnimator.playAudio(sound, math.floor(loops + 0.5), volume)
+end
+
+function svc.getHUDPosition(_, _, loc, size)
+  if not hudBasePos[loc] then return -99999 end -- return a valid but irrelevant value for a non-thing
+  local bp, hp = hudBasePos[loc], hudPos[loc] or 0
+  local sign = bp >= 0 and 1 or -1
+  hudPos[loc] = hp + (size + hudSpacing) * sign
+  return bp + hp + size/2 * sign
 end
 
 local function deployWithoutMech()

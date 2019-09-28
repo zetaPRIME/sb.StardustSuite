@@ -54,6 +54,7 @@ if not playerext then
     "queueLight",
     "queueParticle",
     "playAudio",
+    "getHUDPosition",
     
     "setGlowColor",
   }

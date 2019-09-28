@@ -44,7 +44,7 @@ function hud.update(p)
     
     local off = -width/2--((str:len() - 1) * numWidth - 4) * -0.5
     local mult = color.alphaDirective(alpha)
-    local x, y = 0, -28 * px
+    local x, y = 0, playerext.getHUDPosition("bottom", 1)
     for i = 1, str:len() do
       local ch = str:sub(i, i)
       local color = charColor[ch] or defColor

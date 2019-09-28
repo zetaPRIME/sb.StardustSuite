@@ -2,8 +2,10 @@
 
 require "/scripts/vec2.lua"
 require "/lib/stardust/itemutil.lua"
+require "/lib/stardust/tech/input.lua"
 
---require "/startech/items/power/armor/nanofield/hud.lua"
+require "/startech/items/power/armor/nanofield/stats.lua"
+require "/startech/items/power/armor/nanofield/movement.lua"
 
 -- armor value works differently from normal armors
 -- mult = .5^(armor/100); or, every 100 points is a 50% damage reduction
@@ -189,6 +191,8 @@ local storedLevel
 
 local _prevKeys = { }
 function update(p)
+  input.update(p)
+  
   item = playerext.getEquip("chest") or { }
   itemModified = false
   if item.name ~= "startech:nanofield" then
@@ -231,13 +235,8 @@ function update(p)
     mcontroller.setVelocity(prevVelocity) -- override FU's BYOS system stopping you when it turns off gravity
   end
   --
-  p.key = p.moves p.moves = nil
-  p.key.sprint = not p.key.run
-  p.keyPrev = _prevKeys
-  _prevKeys = p.key
-  p.keyDown = { }
-  for k, v in pairs(p.key) do p.keyDown[k] = v and not p.keyPrev[k] end
   callMode("update", p)
+  --movement.update(p)
   
   prevVelocity = mcontroller.velocity()
   
@@ -338,31 +337,22 @@ function modes.ground:update(p)
   
   if mcontroller.groundMovement() then self.airJumps = 1 end
   
-  if p.keyDown.special1 then
-    if p.key.down and not zeroG then
+  if input.keyDown.t1 then
+    if input.key.down and not zeroG then
       setMode("sphere")
     else
       setMode("wing", true)
     end
   end
-  if p.keyDown.shutup then
-    local c = ""
-    for k,v in pairs(p.key) do
-      if v then c = c .. k .. ", " end
-    end
-    sb.logInfo("Moves: " .. c)
-  end
-  if p.key.sprint then -- sprint instead of slow walk!
-    local v = 0
-    if p.key.left then v = v - 1 end
-    if p.key.right then v = v + 1 end
+  if input.key.sprint then -- sprint instead of slow walk!
+    local v = input.dir[1]
     if v ~= 0 then
       --mcontroller.controlApproachXVelocity(255 * v, 255)
       mcontroller.controlMove(v, true)
       mcontroller.controlModifiers({ speedModifier = 1.75 })
       --tech.setParentState("running")
     end
-    if p.keyDown.jump and mcontroller.onGround() then -- slight bunnyhop effect
+    if input.keyDown.jump and mcontroller.onGround() then -- slight bunnyhop effect
       mcontroller.setXVelocity(mcontroller.velocity()[1] * 1.5)
     end
   end
@@ -372,7 +362,7 @@ function modes.ground:update(p)
   and not mcontroller.jumping()
   and not mcontroller.liquidMovement()
   --and mcontroller.yVelocity() < 0
-  and p.keyDown.jump and self.airJumps >= 1 then
+  and input.keyDown.jump and self.airJumps >= 1 then
     self.airJumps = self.airJumps - 1
     mcontroller.controlJump(true)
     mcontroller.setYVelocity(math.max(0, mcontroller.yVelocity()))
@@ -407,7 +397,7 @@ function modes.hardFall:update(p)
   self.time = self.time + p.dt
   if self.time >= 0.333 or not mcontroller.onGround() then
     setMode("ground")
-  elseif p.keyDown.jump then
+  elseif input.keyDown.jump then
     mcontroller.controlJump(5)
     mcontroller.setVelocity({self.startingVelocity * 2.5, -5})
   end
@@ -442,7 +432,7 @@ function modes.sphere:uninit()
 end
 
 function modes.sphere:update(p)
-  if p.keyDown.special1 then -- unmorph
+  if input.keyDown.t1 then -- unmorph
     return setMode(zeroG and "wing" or "ground")
   end
   mcontroller.clearControls()
@@ -513,13 +503,12 @@ function modes.wing:updateEffectiveStats(sg)
 end
 
 -- couple functions from Aetheri
-local elytraDir
 local elytraSetPose = coroutine.wrap(function()
   local threshold = 1/6
   local t = 0.0
   local f = false
   while true do
-    local a = ((vec2.mag(elytraDir) ~= 0 and vec2.dot(elytraDir, vec2.norm(mcontroller.velocity())) > 0) and 1.0 or -1.0) * script.updateDt()
+    local a = ((vec2.mag(input.dirN) ~= 0 and vec2.dot(input.dirN, vec2.norm(mcontroller.velocity())) > 0) and 1.0 or -1.0) * script.updateDt()
     t = util.clamp(t + a/threshold, 0.0, 1.0)
     if t == 1.0 then f = true elseif t == 0.0 then f = false end
     if f then tech.setParentState("fly") else tech.setParentState() end
@@ -545,46 +534,19 @@ function modes.wing:update(p)
     maximumPlatformCorrectionVelocityFactor = 0.0,
   }
   mcontroller.controlModifiers{ movementSuppressed = true } -- disable harder, and also don't paddle at the air
-  if p.keyDown.special1 then return setMode("ground") end
+  if input.keyDown.t1 then return setMode("ground") end
   
   local curSpeed = vec2.mag(mcontroller.velocity())
   
-  local boost = 25
-  local boostForce = 25*1.5
+  local boost = input.key.sprint and 55 or 25
   
-  local vx, vy = 0, 0
-  if p.key.up then vy = vy + 1 end
-  if p.key.down then vy = vy - 1 end
-  if p.key.left then vx = vx - 1 end
-  if p.key.right then vx = vx + 1 end
-  
-  if vx ~= 0 then forceFacing(vx) end
-  
-  if vx ~= 0 and vy ~= 0 then
-    vx = vx / sqrt2
-    vy = vy / sqrt2
-  elseif vx == 0 and vy == 0 then
-    boostForce = boostForce * 1.2 -- greater braking force
-  end
-  
-  if (vx ~= 0 or vy ~= 0) and p.key.sprint then
-    boost = 55
-    boostForce = boostForce * 1.5 + curSpeed * 2.5
-  end
-  --boostForce = util.lerp(math.min(curSpeed / 10, 1), 500, boostForce) -- extra force when going slowly
-  --status.clearEphemeralEffects() -- ???
-  
-  
-  --mcontroller.controlApproachVelocity({vx*boost, vy*boost}, boostForce * 60 * p.dt)
+  if input.dir[1] ~= 0 then forceFacing(input.dir[1]) end
   
   -- for now this is just taken straight from the Aetheri
-  local dirN = {vx, vy}
-  local forceMult = util.lerp((1.0 - vec2.dot(dirN, vec2.norm(mcontroller.velocity()))) * 0.5, 0.5, 1.0)
-  if vec2.mag(dirN) < 0.25 then forceMult = 0.25 end
-  mcontroller.controlApproachVelocity(vec2.mul(dirN, boost), 12500 * forceMult * p.dt)
+  local forceMult = util.lerp((1.0 - vec2.dot(input.dirN, vec2.norm(mcontroller.velocity()))) * 0.5, 0.5, 1.0)
+  if vec2.mag(input.dirN) < 0.25 then forceMult = 0.25 end
+  mcontroller.controlApproachVelocity(vec2.mul(input.dirN, boost), 12500 * forceMult * p.dt)
   
-  --tech.setParentState("fly")
-  elytraDir = dirN
   elytraSetPose()
   self.hEff = towards(self.hEff, util.clamp(mcontroller.velocity()[1] / 55, -1.0, 1.0), p.dt * 8)
   self.vEff = towards(self.vEff, util.clamp(mcontroller.velocity()[2] / 55, -1.0, 1.0), p.dt * 8)

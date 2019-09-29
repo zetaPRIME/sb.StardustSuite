@@ -155,7 +155,7 @@ do local s = movement.state("hardFall")
 
   function s:main()
     mcontroller.controlModifiers({ speedModifier = 0, normalGroundFriction = 0, ambulatingGroundFriction = 0 }) -- just a tiny bit of slide
-    mcontroller.setXVelocity(prevVelocity[1] * (1.0 - 5.0 * p.dt))
+    mcontroller.setXVelocity(movement.prevVelocity[1] * (1.0 - 5.0 * script.updateDt()))
     tech.setParentState("duck")
     for v in tween(0.333) do
       if not mcontroller.onGround() then break end
@@ -196,7 +196,7 @@ do local s = movement.state("sphere")
   end
   
   function s:onHardFall()
-    mcontroller.setXVelocity(prevVelocity[1] * 2)
+    mcontroller.setXVelocity(movement.prevVelocity[1] * 2)
   end
 
   function s:main()

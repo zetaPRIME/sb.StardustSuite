@@ -140,8 +140,14 @@ message.setHandler("stardustlib:modifyDamageTaken", function(msg, isLocal, damag
     damageRequest.damageSourceKind = "applystatus" -- cancel fall damage
     return damageRequest
   elseif damageRequest.damageType == "Damage" then -- normal damage, apply DR
+    local powered = stats.drawEnergy(damageRequest.damage * 25, false, 60)
+    if powered then
+      sound.play("/sfx/melee/charge_full_swing2.ogg") -- shield sound
+      appearance.pulseForceField() -- visual field effect!
+    end
+    local def = status.stat("protection") * (powered and 1.0 or 0.5)
     damageRequest.damageType = "IgnoresDef"
-    damageRequest.damage = damageRequest.damage * (.5 ^ (status.stat("protection") / 100))
+    damageRequest.damage = damageRequest.damage * (.5 ^ (def / 100))
     return damageRequest
   end
 end)

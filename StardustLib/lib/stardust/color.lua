@@ -42,6 +42,12 @@ do
     } end
   end
   
+  function color.withAlpha(c, a)
+    c = color.toRgb(c)
+    return { c[1], c[2], c[3], a }
+  end
+  function color.hexWithAlpha(c, a, h) return color.toHex(color.withAlpha(c, a), h) end -- shorthand
+  
   function color.brighterOf(a, b)
     local ca, cb = color.toRgb(a), color.toRgb(b)
     return ( (ca[1] + ca[2] + ca[3]) * (ca[4] or 1) >= (cb[1] + cb[2] + cb[3]) * (cb[4] or 1) ) and a or b

@@ -15,6 +15,9 @@ local wingBaseRot = 0
 wingFront:scale({0, 0})
 wingBack:scale({0, 0})
 
+local fieldAlpha = 0
+local fieldColor = "9771e4"
+
 function appearance.update(p)
 
   do -- wings
@@ -32,6 +35,20 @@ function appearance.update(p)
     wingBack:scale({mcontroller.facingDirection() * wingEffDir, 1.0}, {0.0, 0.0})
     wingEffDir = mcontroller.facingDirection()
   end
+  
+  if fieldAlpha > 0 then
+    fieldAlpha = fieldAlpha - p.dt * 3
+    local a = util.clamp(fieldAlpha, 0.0, 1.0)
+    if a == 0 then
+      tech.setParentDirectives("")
+    else
+      tech.setParentDirectives(string.format("?border=1;%s;0000", color.hexWithAlpha(wingsVisible and wingEnergyColor or fieldColor, a)))
+    end
+  end
+end
+
+function appearance.pulseForceField(amt)
+  fieldAlpha = (amt or 1.0) + script.updateDt() * 3
 end
 
 function appearance.setWings(w)

@@ -254,14 +254,13 @@ do local s = movement.state("flight")
     
     if summoned then
       self.summoned = true
-      if mcontroller.onGround() then -- lift off ground a bit
-        mcontroller.controlApproachYVelocity(12, 65536)
+      if mcontroller.groundMovement() then -- lift off ground a bit
+        mcontroller.setYVelocity(12)
       end
     end
     
-    --wingFront:setImage("elytra.png")
-    --wingBack:setImage("elytra.png")
-    --wingBack:setDirectives("?brightness=-40")
+    appearance.setWings(self.stats)
+    appearance.setWingsVisible(true)
     sound.play(self.stats.soundActivate)
     self.thrustLoop = sound.newLoop(self.stats.soundThrust)
     
@@ -274,6 +273,7 @@ do local s = movement.state("flight")
     mcontroller.setRotation(0)
     mcontroller.clearControls()
     
+    appearance.setWingsVisible(false)
     self.thrustLoop:discard()
     sound.play(self.stats.soundDeactivate)
     
@@ -290,7 +290,7 @@ do local s = movement.state("flight")
   end
   
   -- couple functions from Aetheri
-  local elytraSetPose = coroutine.wrap(function()
+  local setPose = coroutine.wrap(function()
     local threshold = 1/6
     local t = 0.0
     local f = false
@@ -338,7 +338,7 @@ do local s = movement.state("flight")
     if vec2.mag(input.dirN) < 0.25 then forceMult = 0.25 end
     mcontroller.controlApproachVelocity(vec2.mul(input.dirN, boost), 12500 * forceMult * dt)
     
-    elytraSetPose()
+    setPose()
     self.hEff = towards(self.hEff, util.clamp(mcontroller.velocity()[1] / 55, -1.0, 1.0), dt * 8)
     self.vEff = towards(self.vEff, util.clamp(mcontroller.velocity()[2] / 55, -1.0, 1.0), dt * 8)
     --local rot = util.clamp(mcontroller.velocity()[1] / -55, -1.0, 1.0)
@@ -364,29 +364,7 @@ do local s = movement.state("flight")
     end
     self.thrustLoop:setPitch(pitch)
     
-    if false then
-      -- handle props
-      local offset = {-5 / 16, -15 / 16}
-      wingFront:resetTransform()
-      wingBack:resetTransform()
-      
-      -- base rotation first
-      wingFront:rotate(self.stats.baseRotation)
-      wingBack:rotate(self.stats.baseRotation)
-      
-      -- rotate wings relative to attachment
-      wingFront:rotate(rot2 * math.pi * .14)
-      wingBack:rotate(rot2 * math.pi * .07)
-      wingBack:rotate(-0.11)
-      
-      -- then handle attachment sync
-      wingFront:translate(offset)
-      wingFront:rotate(mcontroller.rotation() * mcontroller.facingDirection())
-      wingBack:translate(offset)
-      wingBack:translate({3 / 16, 0 / 16})
-      wingBack:rotate(mcontroller.rotation() * mcontroller.facingDirection())
-      wingEffDir = 1.0
-    end
+    appearance.positionWings(rot2)
     
     if not zeroG and zeroGPrev then movement.switchState("ground") end
     

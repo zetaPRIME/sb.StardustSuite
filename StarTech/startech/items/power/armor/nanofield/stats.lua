@@ -113,11 +113,12 @@ function stats.uninit()
 end
 
 function stats.drawEnergy(amount, testOnly, ioMult)
+  if amount <= 0 then return true end
   local res = playerext.drawEquipEnergy(amount, testOnly, ioMult)
   if not testOnly then -- update cached item's capacitor
     stats.item.parameters.batteryStats = playerext.getEquip("chest").parameters.batteryStats
   end
-  return res
+  return res >= amount
 end
 
 message.setHandler("stardustlib:modifyDamageTaken", function(msg, isLocal, damageRequest)

@@ -110,10 +110,8 @@ do local s = movement.state("ground")
     if input.key.sprint then -- sprint instead of slow walk!
       local v = input.dir[1]
       if v ~= 0 then
-        --mcontroller.controlApproachXVelocity(255 * v, 255)
         mcontroller.controlMove(v, true)
         mcontroller.controlModifiers({ speedModifier = 1.75 })
-        --tech.setParentState("running")
       end
       if input.keyDown.jump and mcontroller.onGround() then -- slight bunnyhop effect
         mcontroller.setXVelocity(mcontroller.velocity()[1] * 1.5)
@@ -126,12 +124,16 @@ do local s = movement.state("ground")
     and not mcontroller.liquidMovement()
     --and mcontroller.yVelocity() < 0
     and input.keyDown.jump and self.airJumps >= 1 then
-      self.airJumps = self.airJumps - 1
-      mcontroller.controlJump(true)
-      mcontroller.setYVelocity(math.max(0, mcontroller.yVelocity()))
-      mcontroller.controlParameters({ airForce = 1750.0 }) -- allow easier direction control during jump
-      sound.play("/sfx/tech/tech_doublejump.ogg")
-      tech.setParentState("Fall") -- animate a bit even when already rising
+      if stats.drawEnergy(250, false, 25) then
+        self.airJumps = self.airJumps - 1
+        mcontroller.controlJump(true)
+        mcontroller.setYVelocity(math.max(0, mcontroller.yVelocity()))
+        mcontroller.controlParameters({ airForce = 1750.0 }) -- allow easier direction control during jump
+        sound.play("/sfx/tech/tech_doublejump.ogg")
+        tech.setParentState("Fall") -- animate a bit even when already rising
+      else
+        sound.play("/sfx/interface/energy_out2.ogg")
+      end
     end
     
     if movement.zeroG and not movement.zeroGPrev then movement.switchState("flight") end
@@ -229,6 +231,12 @@ end
 do local s = movement.state("flight")
   
   local wingDefaults = {
+    flightSpeed = 25,
+    boostSpeed = 55,
+    idlePowerCost = 0,--25,
+    flightPowerCost = 250,
+    boostPowerCost = 1000,
+    
     energyColor = "ff0354",
     baseRotation = 0.0,
     soundActivate = "/sfx/objects/ancientlightplatform_on.ogg",
@@ -253,6 +261,10 @@ do local s = movement.state("flight")
     self.stats = wingDefaults
     
     if summoned then
+      if not stats.drawEnergy(self.stats.boostPowerCost, true, 60) then -- out of power already
+        sound.play("/sfx/interface/energy_out2.ogg")
+        movement.switchState("ground")
+      end
       self.summoned = true
       if mcontroller.groundMovement() then -- lift off ground a bit
         mcontroller.setYVelocity(12)
@@ -328,15 +340,22 @@ do local s = movement.state("flight")
     
     local dt = script.updateDt()
     
-    local curSpeed = vec2.mag(mcontroller.velocity())
-    local boost = input.key.sprint and 55 or 25
+    local boosting = input.key.sprint
+    local thrustSpeed = boosting and self.stats.boostSpeed or self.stats.flightSpeed
+    if input.dir[1] ~= 0 and input.dir[2] ~= 0 then
+      local cm = 1.0
+      if movement.zeroG then cm = 0.1 elseif mcontroller.liquidMovement then cm = 0.25 end
+      if not stats.drawEnergy((boosting and self.stats.boostPowerCost or self.stats.flightPowerCost) * dt * cm) then movement.switchState("ground") end
+    elseif not movement.zeroG and not mcontroller.liquidMovement() then
+      if not stats.drawEnergy(self.stats.idlePowerCost * dt) then movement.switchState("ground") end
+    end
     
     if input.dir[1] ~= 0 then forceFacing(input.dir[1]) end
     
     -- for now this is just taken straight from the Aetheri
     local forceMult = util.lerp((1.0 - vec2.dot(input.dirN, vec2.norm(mcontroller.velocity()))) * 0.5, 0.5, 1.0)
     if vec2.mag(input.dirN) < 0.25 then forceMult = 0.25 end
-    mcontroller.controlApproachVelocity(vec2.mul(input.dirN, boost), 12500 * forceMult * dt)
+    mcontroller.controlApproachVelocity(vec2.mul(input.dirN, thrustSpeed), 12500 * forceMult * dt)
     
     setPose()
     self.hEff = towards(self.hEff, util.clamp(mcontroller.velocity()[1] / 55, -1.0, 1.0), dt * 8)

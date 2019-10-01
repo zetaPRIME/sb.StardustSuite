@@ -121,10 +121,9 @@ function uiSyncRequest(msg, isLocal, ...)
   }
 end
 
-
-
-
-
-
-
---
+-- drop currently smelting items on break
+function die()
+  if smelting and smelting.item and smelting.item.count >= 0 then
+    world.spawnItem(smelting.item, world.entityPosition(entity.id()))
+  end
+end

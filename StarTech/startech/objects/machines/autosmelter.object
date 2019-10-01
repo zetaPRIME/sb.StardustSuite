@@ -39,7 +39,7 @@
   },
   
   "batteryStats" : {
-    "capacity" : 100000,
+    "capacity" : 5000,
     "ioRate" : 150
   },
   

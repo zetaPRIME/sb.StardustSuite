@@ -4,7 +4,7 @@
   
   "category" : "power.gen",
   "price" : 500,
-  "description" : "A basic generator. Generates power by burning solid fuel.",
+  "description" : "A basic generator. Generates power by burning solid fuels.",
   "shortdescription" : "Combustion Generator",
   "health" : 5.73,
 

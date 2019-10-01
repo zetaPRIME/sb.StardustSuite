@@ -4,7 +4,6 @@
     "label" : "Configurator",
     "icon" : "/startech/interface/configurator/icon.png",
     "action" : [ "exec", "/startech/quickbar/configurator.lua" ]
-    //"action" : [ "pane", "/startech/interface/configurator/configurator.config" ]
   } },
   
   { "op" : "add", "path" : "/items/startech:recharge", "value" : {

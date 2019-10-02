@@ -188,10 +188,11 @@ function init()
     } end
     
     -- set epp status
-    cfgItem.parameters.statusEffects = { "stardustlib:batterymeter" }
-    if inv.pack then
+    cfgItem.parameters.statusEffects = { }
+    if inv.pack then -- copy EPP statuses
       util.mergeTable(cfgItem.parameters.statusEffects, inv.pack.statusEffects or root.itemConfig(inv.pack).config.statusEffects)
     end
+    table.insert(cfgItem.parameters.statusEffects, "stardustlib:batterymeter") -- add battery meter after the fact
     
     -- set augment
     if inv.augment then

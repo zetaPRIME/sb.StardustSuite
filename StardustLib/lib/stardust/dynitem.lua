@@ -86,9 +86,9 @@ do
   
   function dynItem.normalizeTransformationGroup(g)
     --animator.resetTransformationGroup(g)
-    local d = mcontroller.facingDirection()
-    animator.translateTransformationGroup(g, vec2.mul(vec2.rotate(activeItem.handPosition(), mcontroller.rotation()), {-1, -1}))
-    animator.translateTransformationGroup(g, dynItem.shoulderPos)
+    local d, r = mcontroller.facingDirection(), mcontroller.rotation()
+    animator.translateTransformationGroup(g, vec2.mul(vec2.rotate(activeItem.handPosition(), r), {-1, -1}))
+    animator.translateTransformationGroup(g, vec2.rotate(dynItem.shoulderPos, r))
     animator.rotateTransformationGroup(g, -dynItem.armAngle * d)
     animator.scaleTransformationGroup(g, {d, 1})
   end

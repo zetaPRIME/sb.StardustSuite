@@ -72,7 +72,7 @@ function drawPower(amt)
 end
 
 function dmgtype(t)
-  if cfg.hasFU then -- for now, use cosmic when FU is present
+  if false and cfg.hasFU then -- for now, use cosmic when FU is present
     return "cosmic" .. t
   else -- ...and electric otherwise
     return "electric" .. t

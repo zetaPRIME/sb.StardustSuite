@@ -1,8 +1,8 @@
 -
 
 for next update(s)? {
-    - fix glaive beam positioning not taking player rotation into account
     split some things out from glaive into pulseweapon-common
+    set up pulse weapon energy color to match nanofield?
     pulse rifle
     give the glaive a light source paired with energy
     ---

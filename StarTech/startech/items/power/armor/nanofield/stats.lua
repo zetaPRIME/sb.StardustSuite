@@ -123,7 +123,7 @@ end
 
 message.setHandler("stardustlib:modifyDamageTaken", function(msg, isLocal, damageRequest)
   if damageRequest.damageSourceKind == "falling" then
-    if damageRequest.damage >= 50 then -- WIP: do something special on hard fall
+    if damageRequest.damage >= 50 then -- do something special on hard fall
       local vol = 1.0
       sound.play("/sfx/melee/hammer_hit_ground1.ogg", vol * 1.5, 1) -- impact low
       sound.play("/sfx/gun/grenadeblast_small_electric2.ogg", vol * 1.125, 0.75) -- impact mid
@@ -131,12 +131,14 @@ message.setHandler("stardustlib:modifyDamageTaken", function(msg, isLocal, damag
       -- zoops
       --sound.play("/sfx/gun/erchiuseyebeam_start.ogg", vol * 1.5, 0.333)
       sound.play("/sfx/gun/erchiuseyebeam_start.ogg", vol * 1.0, 1)
+      appearance.pulseForceField(3) -- long pulse
       movement.call("onHardFall")
     else -- only a bit of a fall
       local vol = 0.75
       sound.play("/sfx/melee/hammer_hit_ground1.ogg", vol * 1.15, 1) -- impact low
       sound.play("/sfx/gun/grenadeblast_small_electric2.ogg", vol * 0.5, 0.75) -- impact mid
       sound.play("/sfx/objects/essencechest_open1.ogg", vol * 0.75, 2) -- impact high
+      appearance.pulseForceField(0.5) -- pulse a bit
     end
     damageRequest.damageSourceKind = "applystatus" -- cancel fall damage
     return damageRequest

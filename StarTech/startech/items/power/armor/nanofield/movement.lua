@@ -269,6 +269,8 @@ do local s = movement.state("flight")
       if mcontroller.groundMovement() then -- lift off ground a bit
         mcontroller.setYVelocity(12)
       end
+    else -- if automatic, restore last frame's momentum (bypass FU's momentum kill)
+      mcontroller.setVelocity(movement.prevVelocity)
     end
     
     appearance.setWings(self.stats)
@@ -385,7 +387,7 @@ do local s = movement.state("flight")
     
     appearance.positionWings(rot2)
     
-    if not zeroG and zeroGPrev then movement.switchState("ground") end
+    if not summoned and not movement.zeroG and movement.zeroGPrev then movement.switchState("ground") end
     
     coroutine.yield()
   end

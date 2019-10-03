@@ -16,7 +16,7 @@ do
   local uiDef = itemutil.property(itm, "/startech:configuratorUi")
   if not uiDef then
     pane.playSound("/sfx/interface/clickon_error.ogg")
-    playerext.message("Must be holding configurable item.")
+    playerext.message("Must be holding configurable item in cursor.")
     return nil
   end
   if type(uiDef) == "string" then

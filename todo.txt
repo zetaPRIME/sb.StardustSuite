@@ -8,7 +8,7 @@ for next update(s)? {
     
     proper tool tip for fp-containing objects
     
-    ---
+} then {
     customizable elements for pulse weapons (via configurator)
     give Pulsestrike Glaive a secondary that isn't just the combo finisher
     maybe an alt finisher to main fire combo if buffered during?

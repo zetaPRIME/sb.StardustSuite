@@ -82,6 +82,7 @@ do
   end
   
   -- code borrowed from https://github.com/Wavalab/rgb-hsl-rgb/blob/master/rgbhsl.lua; license unknown :(
+  -- {
   local function hslToRgb(h, s, l)
     if s == 0 then return l, l, l end
     local function to(p, q, t)
@@ -97,10 +98,33 @@ do
     return to(p, q, h + .33334), to(p, q, h), to(p, q, h - .33334)
   end
   
+  local function rgbToHsl(r, g, b)
+    local max, min = math.max(r, g, b), math.min(r, g, b)
+    local b = max + min
+    local h = b / 2
+    if max == min then return 0, 0, h end
+    local s, l = h, h
+    local d = max - min
+    s = l > .5 and d / (2 - b) or d / b
+    if max == r then h = (g - b) / d + (g < b and 6 or 0)
+    elseif max == g then h = (b - r) / d + 2
+    elseif max == b then h = (r - g) / d + 4
+    end
+    return h * .16667, s, l
+  end
+  -- }
+  
   function color.fromHsl(hsl)
     local c = { hslToRgb(table.unpack(hsl)) }
     c[4] = hsl[4] -- add alpha if present
     return c
+  end
+  
+  function color.toHsl(c)
+    c = color.toRgb(c)
+    local hsl = { rgbToHsl(table.unpack(c)) }
+    hsl[4] = c[4]
+    return hsl
   end
   
   --

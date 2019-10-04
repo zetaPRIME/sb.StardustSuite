@@ -56,6 +56,7 @@ function appearance.updateColors()
   
   playerext.setGlowColor(color.lightColor(a.glowColor, 0.8))
   world.sendEntityMessage(entity.id(), "aetheri:paletteChanged")
+  world.sendEntityMessage(entity.id(), "startech:refreshEnergyColor")
   updateGlow = true
 end
 
@@ -69,3 +70,8 @@ end
 
 -- register these here since this is executed during techstub init
 message.setHandler("aetheri:refreshAppearance", appearance.updateColors)
+
+message.setHandler("startech:getEnergyColor", function()
+  local p = appearance.settings.palette
+  return { p[1], p[3], p[4] } -- somewhat cut down palette
+end)

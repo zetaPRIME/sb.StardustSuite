@@ -1,12 +1,8 @@
-require "/lib/stardust/dynitem.lua"
-require "/lib/stardust/playerext.lua"
-require "/lib/stardust/color.lua"
-require "/lib/stardust/power.item.lua"
+require "/startech/items/active/weapons/pulseweapon.lua"
 
-function asset(f) return string.format("/startech/items/active/weapons/pulseglaive-%s.png", f) end
+assetPrefix "pulseglaive-"
 
-local cfg
-function init()
+function init() initPulseWeapon()
   activeItem.setHoldingItem(true)
   activeItem.setTwoHandedGrip(false)
   activeItem.setBackArmFrame("rotation")
@@ -15,8 +11,6 @@ function init()
   animator.setSoundVolume("beam", 0.75)
   animator.setSoundPitch("beam", 1.0)
   animator.setSoundVolume("finisher", 0.75)
-  
-  animator.setGlobalTag("energyDirectives", "?multiply=ffffff00")
   
   animator.setPartTag("haft", "partImage", asset "haft")
   animator.setPartTag("lens", "partImage", asset "lens")
@@ -30,10 +24,6 @@ function init()
   animator.scaleTransformationGroup("fx2", {0, 0})
   animator.scaleTransformationGroup("fx3", {0, 0})
   
-  activeItem.setDamageSources()
-  cfg.baseDps = cfg.baseDps * root.evalFunction("weaponDamageLevelMultiplier", config.getParameter("level", 1))
-  
-  cfg.hasFU = root.hasTech("fuhealzone")
   --
 end
 
@@ -45,7 +35,7 @@ dynItem.install()
 dynItem.setAutoAim(false)
 dynItem.aimVOffset = -4.5/8
 
---[[local]] cfg = {
+cfg {
   thrustTime = 1/3,
   slashTime = 1/4,
   
@@ -67,25 +57,13 @@ dynItem.aimVOffset = -4.5/8
   fxTime = 1/8,
 }
 
-function drawPower(amt)
-  return power.drawEquipEnergy(amt, false, 50) >= amt
-end
-
-function dmgtype(t)
-  if false and cfg.hasFU then -- for now, use cosmic when FU is present
-    return "cosmic" .. t
-  else -- ...and electric otherwise
-    return "electric" .. t
-  end
-end
-
 function strike(dmg, type, poly, kb)
   kb = kb or 1.0
   local np = #poly
   activeItem.setDamageSources { {
     poly = (np > 2) and poly or nil,
     line = (np == 2) and poly or nil,
-    damage = dmg * cfg.baseDps * status.stat("powerMultiplier", 1.0),
+    damage = dmg * cfg.baseDps * cfg.levelDpsMult * status.stat("powerMultiplier", 1.0),
     team = activeItem.ownerTeam(),
     damageSourceKind = type,
     statusEffects = weaponUtil.imbue {
@@ -93,7 +71,7 @@ function strike(dmg, type, poly, kb)
       weaponUtil.tag "antiSpace",
       dynItem.impulse(25, 0.64),
     },
-    knockback = {0, 0},--{mcontroller.facingDirection(), 22},
+    --knockback = {0, 0},
     rayCheck = true,
     damageRepeatTimeout = 0,
   } }
@@ -132,25 +110,6 @@ function animBlade(v)
   
   animator.translateTransformationGroup("arm1b", {(1 - v*1.0)/8, (11 - v*7)/8})
   animator.translateTransformationGroup("arm2b", {-(2 + v*0.0)/8, (9 - v*4.25)/8})
-end
-
-do
-  local pulseId = -1
-  function cancelPulse() pulseId = (pulseId + 1) % 16384 return pulseId end
-  function setEnergy(amt)
-    cancelPulse()
-    animator.setGlobalTag("energyDirectives", color.alphaDirective(amt))
-  end
-  function pulseEnergy(amt)
-    local id = cancelPulse()
-    dynItem.addTask(function()
-      for v in dynItem.tween(cfg.pulseTime * amt) do
-        if pulseId ~= id then return nil end -- cancel if signaled
-        v = math.min((1.0-v) * amt, 1.0) ^ 0.333
-        animator.setGlobalTag("energyDirectives", color.alphaDirective(v))
-      end
-    end)
-  end
 end
 
 function setFx(id, dir, angle, pos, scale, rot)

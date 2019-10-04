@@ -97,7 +97,7 @@ do local s = movement.state("ground")
     --
     tech.setParentState() -- default to no state override
     
-    if mcontroller.groundMovement() then self.airJumps = 1 end
+    if mcontroller.groundMovement() or mcontroller.liquidMovement() then self.airJumps = 1 end
     
     if input.keyDown.t1 then
       input.keyDown.t1 = false -- consume press

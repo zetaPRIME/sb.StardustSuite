@@ -290,6 +290,7 @@ do local s = movement.state("flight")
     appearance.setWingsVisible(false)
     self.thrustLoop:discard()
     sound.play(self.stats.soundDeactivate)
+    appearance.setEnergyColor()
     
     -- restore FR effects
     world.sendEntityMessage(entity.id(), "playerext:reinstateFRStatus")

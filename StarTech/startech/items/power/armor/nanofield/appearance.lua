@@ -17,6 +17,7 @@ wingBack:scale({0, 0})
 
 local fieldAlpha = 0
 local fieldColor = "9771e4"
+local energyPalette = { }
 
 function appearance.update(p)
 
@@ -42,10 +43,24 @@ function appearance.update(p)
     if a == 0 then
       tech.setParentDirectives("")
     else
-      tech.setParentDirectives(string.format("?border=1;%s;0000", color.hexWithAlpha(wingsVisible and wingEnergyColor or fieldColor, a)))
+      tech.setParentDirectives(string.format("?border=1;%s;0000", color.hexWithAlpha(energyPalette[2] or fieldColor, a)))
     end
   end
 end
+
+function appearance.setEnergyColor(c)
+  if not c then energyPalette = { } else
+    local h, s, l, a = table.unpack(color.toHsl(c))
+    energyPalette = {
+      color.fromHsl {h, s, math.min(l * 75, 0.9), a },
+      c,
+      color.fromHsl {h, s, l * 0.64, a },
+    }
+  end
+  world.sendEntityMessage(entity.id(), "startech:refreshEnergyColor")
+end
+
+message.setHandler("startech:getEnergyColor", function() return energyPalette[1] and energyPalette or nil end)
 
 function appearance.pulseForceField(amt)
   fieldAlpha = math.max(fieldAlpha, (amt or 1.0) + script.updateDt() * 3)
@@ -57,6 +72,7 @@ function appearance.setWings(w)
   wingEnergyColor = w.energyColor
   wingBaseRot = w.baseRotation or 0
   
+  appearance.setEnergyColor(w.energyColor)
   wingAlpha = wingAlpha - 0.001 -- kick things a bit
 end
 

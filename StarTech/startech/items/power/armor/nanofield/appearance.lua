@@ -48,7 +48,7 @@ function appearance.update(p)
 end
 
 function appearance.pulseForceField(amt)
-  fieldAlpha = (amt or 1.0) + script.updateDt() * 3
+  fieldAlpha = math.max(fieldAlpha, (amt or 1.0) + script.updateDt() * 3)
 end
 
 function appearance.setWings(w)

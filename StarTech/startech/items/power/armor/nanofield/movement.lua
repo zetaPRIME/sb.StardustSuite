@@ -202,7 +202,6 @@ do local s = movement.state("sphere")
   end
 
   function s:main()
-    sb.logInfo("sphere main")
     if input.keyDown.t1 then -- unmorph
       input.keyDown.t1 = false -- consume press
       movement.switchState(movement.zeroG and "flight" or "ground")

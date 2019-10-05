@@ -2,43 +2,48 @@
 
 stats = { stat = { }, item = { } }
 
--- probably quadruple until module system is implemented
 local tierBaseStats = {
   { -- T1 (Iron)
-    armor = 5,
+    armor = 20,
     health = 110,
     energy = 110,
     damageMult = 1.5,
   },
   { -- T2 (Tungsten) (default)
-    armor = 10,
+    armor = 40,
     health = 120,
     energy = 120,
     damageMult = 2.0,
   },
   { -- T3 (Titanium)
-    armor = 30,
+    armor = 120,
     health = 130,
     energy = 130,
     damageMult = 2.5,
   },
   { -- T4 (Durasteel)
-    armor = 40,
+    armor = 160,
     health = 140,
     energy = 140,
     damageMult = 3.0,
   },
   { -- T5 (Violium/Ferozium/Aegisalt)
-    armor = 50,
+    armor = 200,
     health = 150,
     energy = 150,
     damageMult = 3.5,
   },
   { -- T6 (Solarium)
-    armor = 60,
+    armor = 240,
     health = 160,
     energy = 160,
     damageMult = 4.0,
+  },
+  { -- T7 (Ancient)
+    armor = 275,
+    health = 170,
+    energy = 170,
+    damageMult = 4.5,
   },
 }
 
@@ -76,8 +81,7 @@ function stats.update(p)
     end
   end
   
-  util.mergeTable(stats.stat, tierBaseStats[stats.level] or tierBaseStats[6])
-  stats.stat.armor = stats.stat.armor*4 -- temp scaling
+  util.mergeTable(stats.stat, tierBaseStats[util.clamp(math.floor(0.5 + stats.level), 1, #tierBaseStats)])
   
 end
 

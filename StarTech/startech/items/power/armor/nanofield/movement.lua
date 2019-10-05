@@ -344,7 +344,7 @@ do local s = movement.state("flight")
     
     local boosting = input.key.sprint
     local thrustSpeed = boosting and self.stats.boostSpeed or self.stats.flightSpeed
-    if input.dir[1] ~= 0 and input.dir[2] ~= 0 then
+    if input.dir[1] ~= 0 or input.dir[2] ~= 0 then
       local cm = 1.0
       if movement.zeroG then cm = 0.1 elseif mcontroller.liquidMovement then cm = 0.25 end
       if not stats.drawEnergy((boosting and self.stats.boostPowerCost or self.stats.flightPowerCost) * dt * cm) then movement.switchState("ground") end

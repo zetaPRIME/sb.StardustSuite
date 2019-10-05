@@ -1,0 +1,16 @@
+{ // -*- grammar-ext: json -*-
+  "itemName" : "startech:essencecatalyst",
+  "shortdescription" : "Lv.7 Catalyst (Ancient)",
+  "description" : "Infuses certain equipment to level 6.",
+  "category" : "startech:catalyst",
+  "inventoryIcon" : "/items/currency/essence.png?border=1;b7f;0000",
+  "rarity" : "Legendary",
+  "price" : 0,
+  "tooltipKind" : "object",
+
+  "scripts" : [ "/startech/items/catalysts/catalyst.lua" ],
+  "catalystData" : {
+    "level" : 7,
+    "name" : "Ancient"
+  }
+}

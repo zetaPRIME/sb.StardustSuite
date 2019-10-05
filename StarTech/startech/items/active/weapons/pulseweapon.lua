@@ -10,6 +10,10 @@ require "/lib/stardust/power.item.lua"
 cfg = (type(cfg) == "table") and cfg or { }
 setmetatable(cfg, { __call = util.mergeTable })
 
+cfg { -- defaults
+  baseDps = 15,
+}
+
 function assetPath(s) cfg.assetPath = s end
 function assetPrefix(s) cfg.assetPrefix = s end
 function asset(s) return string.format("%s%s%s.png", cfg.assetPath or "", cfg.assetPrefix or "", s) end
@@ -27,7 +31,7 @@ local function resultOf(promise)
   return promise:result()
 end
 
-local function querySelf(cmd, ...)
+function querySelf(cmd, ...)
   return resultOf(world.sendEntityMessage(entity.id(), cmd, ...))
 end
 
@@ -47,12 +51,19 @@ function initPulseWeapon()
   activeItem.setDamageSources()
   setEnergy(0)
   
+  cfg.baseStatus = {
+    weaponUtil.dmgTypes { fire = 1, electric = 1 },
+    weaponUtil.tag "antiSpace",
+  }
+  
   refreshEnergyColor()
   message.setHandler("startech:refreshEnergyColor", refreshEnergyColor)
 end
 
 function dmgtype(t) return "electric" .. t end -- visual damage type
 function drawPower(amt) return power.drawEquipEnergy(amt, false, 50) >= amt end
+function baseStatus() return table.unpack(cfg.baseStatus) end
+function damage(m) return m * (cfg.baseDps or 1.0) * cfg.levelDpsMult * status.stat("powerMultiplier", 1.0) end
 
 do -- energy pulse
   local pulseId = -1

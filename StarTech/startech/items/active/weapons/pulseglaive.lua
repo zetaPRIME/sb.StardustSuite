@@ -44,7 +44,7 @@ cfg {
   chargeTime = 4/5,
   fireTime = 2/5,
   
-  baseDps = 15,
+  --baseDps = 15,
   beamDamageMult = 1.5,
   
   meleePowerCost = 250,
@@ -63,12 +63,11 @@ function strike(dmg, type, poly, kb)
   activeItem.setDamageSources { {
     poly = (np > 2) and poly or nil,
     line = (np == 2) and poly or nil,
-    damage = dmg * cfg.baseDps * cfg.levelDpsMult * status.stat("powerMultiplier", 1.0),
+    damage = damage(dmg),
     team = activeItem.ownerTeam(),
     damageSourceKind = type,
     statusEffects = weaponUtil.imbue {
-      weaponUtil.dmgTypes { fire = 1, electric = 1 },
-      weaponUtil.tag "antiSpace",
+      baseStatus(),
       dynItem.impulse(25, 0.64),
     },
     --knockback = {0, 0},

@@ -4,6 +4,7 @@ require "/lib/stardust/json.lua"
 
 local entityType = world.entityType(entity.id())
 local isSpaceMonster = not not __spaceMonster
+local hasFU = root.hasTech("fuhealzone") -- quick and easy detection
 
 local function resultOf(promise)
   err = nil
@@ -99,32 +100,54 @@ function status.stat(s, default)
   return r / acc
 end
 
---- --- ---
-
-function tagFunc:antiSpace(tag)
-  self.spaceDamageBonus = true
-end
-tagFunc.spaceDamageBonus = tagFunc.antiSpace
-
-function tagFunc:impulse(tag)
-  local v = tag.vec or tag.vector
-  if not v then return nil end
-  self.impulse = vec2.add(self.impulse or {0, 0}, vec2.mul(v, (1 - status.stat("grit"))))
+biFunc = { }
+local evalFunction2 = root.evalFunction2
+function root.evalFunction2(f, a, b)
+  local fn = biFunc[f]
+  if fn then return fn(a, b) end
+  return evalFunction2(f, a, b)
 end
 
-function tagFunc:rawImpulse(tag)
-  local v = tag.vec or tag.vector
-  if not v then return nil end
-  self.impulse = vec2.add(self.impulse or {0, 0}, v)
-end
-
-local dmgTypeFix = { physical = "plasma" }
-function tagFunc:dmgTypes(tag)
-  local t = tag.types or tag.type or tag.t
-  if not t then return nil end
-  self.dmgTypes = self.dmgTypes or { }
-  for k, v in pairs(t) do
-    k = dmgTypeFix[k] or k
-    self.dmgTypes[k] = (self.dmgTypes[k] or 0) + v
+do -- bivariate functions --
+  --
+  if hasFU then
+    -- damage cap is high enough to be irrelevant
+  else
+    function biFunc.protection(dmg, def)
+      dmg = dmg * (1.0 - def/100.0)
+      if dmg <= 0 then return 0 end
+      return math.max(1, dmg) -- if it does damage, always do at least 1.0
+    end
   end
-end
+  --
+end -- -- -- -- -- -- -- --
+
+do -- tag functions --
+  function tagFunc:antiSpace(tag)
+    self.spaceDamageBonus = true
+  end
+  tagFunc.spaceDamageBonus = tagFunc.antiSpace
+  
+  function tagFunc:impulse(tag)
+    local v = tag.vec or tag.vector
+    if not v then return nil end
+    self.impulse = vec2.add(self.impulse or {0, 0}, vec2.mul(v, (1 - status.stat("grit"))))
+  end
+  
+  function tagFunc:rawImpulse(tag)
+    local v = tag.vec or tag.vector
+    if not v then return nil end
+    self.impulse = vec2.add(self.impulse or {0, 0}, v)
+  end
+  
+  local dmgTypeFix = { physical = "plasma" }
+  function tagFunc:dmgTypes(tag)
+    local t = tag.types or tag.type or tag.t
+    if not t then return nil end
+    self.dmgTypes = self.dmgTypes or { }
+    for k, v in pairs(t) do
+      k = dmgTypeFix[k] or k
+      self.dmgTypes[k] = (self.dmgTypes[k] or 0) + v
+    end
+  end
+end -- -- -- -- -- --

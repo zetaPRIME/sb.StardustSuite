@@ -13,6 +13,7 @@ function apply(input)
   end
   
   output:setInstanceValue("catalystData", data)
+  output:setInstanceValue("_catalystUpdated", true)
   
   return output:descriptor(), 1
 end

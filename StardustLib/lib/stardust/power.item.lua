@@ -29,6 +29,7 @@ function power.fillItemEnergy(item, amount, testOnly, ioMult)
   if not testOnly then -- actually fill
     if not item.parameters.batteryStats then item.parameters.batteryStats = {} end
     item.parameters.batteryStats.energy = bs.energy + r
+    --item.parameters._batteryUpdated = true
   end
   
   return r
@@ -52,6 +53,7 @@ function power.drawItemEnergy(item, amount, testOnly, ioMult)
   if not testOnly then -- actually remove
     if not item.parameters.batteryStats then item.parameters.batteryStats = {} end
     item.parameters.batteryStats.energy = bs.energy - r
+    --item.parameters._batteryUpdated = true
   end
   
   return r

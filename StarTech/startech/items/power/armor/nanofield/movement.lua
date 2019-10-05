@@ -167,7 +167,7 @@ do local s = movement.state("hardFall")
         break
       end
     end
-    movement.switch("ground")
+    movement.switchState("ground")
   end
 end
 

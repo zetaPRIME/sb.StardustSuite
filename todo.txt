@@ -1,8 +1,7 @@
 -
 
 for next update(s)? {
-    - split some things out from glaive into pulseweapon-common
-    - set up pulse weapon energy color to match nanofield
+    flux knives
     pulse rifle
     give the glaive a light source paired with energy
     
@@ -114,17 +113,14 @@ Aetheri species mod {
     
     Androgynous, fullbright "core" (novakid male minus chest definition, with Avian-ish talons) with crystalline plates on top
     (part of innate armor); hue and brightness sliders for core, fine-grained control over what plates you have
-    # "Focus" slot; an item held in the hand(s) while using Innates that modifies stats
     
-    AP sharing; general "aethertouched" aura when using non-skill weapons you have some specialty with
+    AP sharing?
     "aether channeling" for particular weapon types (back up energy bar using aether when wielding specific weapon types)
     
     figure out crit conditions for innates other than sniper
     actually put crit multiplier somewhere on the tree
     crit rate (multiplier on base chance, bonus timing length etc.)
     
-    !!! PRIORITY: !!!
-    > Innate flight in zero-g, similar controls to Elytra
     make flight in air use aether; place behind unlock, add efficiency stat
     
     Innates {

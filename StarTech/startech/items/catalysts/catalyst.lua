@@ -7,13 +7,14 @@ function apply(input)
   local output = Item.new(input)
   if not output:instanceValue("acceptsUpgradeCatalyst") then return nil end -- only on compatible items (pulse weapons etc.)
   
+  local consume = 1
   if data.level then
-    if (output:instanceValue("level") or 1) >= data.level then return nil end -- no non-upgrades
-    output:setInstanceValue("level", data.level)
+    if (output:instanceValue("level") or 1) >= data.level then consume = 0 -- no non-upgrades
+    else output:setInstanceValue("level", data.level) end
   end
   
   output:setInstanceValue("catalystData", data)
   output:setInstanceValue("_catalystUpdated", true)
   
-  return output:descriptor(), 1
+  return output:descriptor(), consume
 end

@@ -19,6 +19,7 @@
     { "op" : "add", "path" : "/defaultBlueprints/tier1/-", "value" : { "item" : "startech:feroziumcatalyst" } },
     { "op" : "add", "path" : "/defaultBlueprints/tier1/-", "value" : { "item" : "startech:violiumcatalyst" } },
     { "op" : "add", "path" : "/defaultBlueprints/tier1/-", "value" : { "item" : "startech:solariumcatalyst" } },
+    { "op" : "add", "path" : "/defaultBlueprints/tier1/-", "value" : { "item" : "startech:essencecatalyst" } },
     
     // weapons
     { "op" : "add", "path" : "/defaultBlueprints/tier1/-", "value" : { "item" : "startech:pulseglaive" } },

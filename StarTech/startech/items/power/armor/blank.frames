@@ -1,4 +1,4 @@
-{
+{ // -*- grammar-ext: json -*-
   "frameGrid" : {
     "size" : [43, 43],
     "dimensions" : [9, 6],
@@ -17,6 +17,18 @@
     "swim.5" : "swimIdle.1",
     "swim.6" : "swimIdle.2",
     "swim.7" : "swimIdle.2",
-    "lay.1" : "idle.1"
+    "lay.1" : "idle.1",
+    "swim" : "swim.1",
+    "duck" : "duck.1",
+    "runbackwards.1" : "run.1",
+    "runbackwards.2" : "run.2",
+    "runbackwards.3" : "run.3",
+    "runbackwards.4" : "run.4",
+    "runbackwards.5" : "run.5",
+    "runbackwards.6" : "run.6",
+    "runbackwards.7" : "run.7",
+    "runbackwards.8" : "run.8",
+    "runbackwards" : "runbackwards.1",
+    "run" : "idle.1", "chest.1" : "idle.1", "chest.2" : "idle.1", "chest.3" : "idle.1"
   }
 }

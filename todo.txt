@@ -1,8 +1,8 @@
 -
 
 for next update(s)? {
-    flux knives
     pulse rifle
+    flux knives
     give the glaive a light source paired with energy
     
     proper tool tip for fp-containing objects
@@ -16,9 +16,7 @@ for next update(s)? {
     pulse chakram similar to razorwave
 }
 
-figure out how to lessen the load of build scripts like the nanofield's?
-
-! hook engine {
+? hook engine {
     included by replaced util.lua
     hijacks the first setting of _ENV.init to hook into core tables (widget, player etc.)
 }

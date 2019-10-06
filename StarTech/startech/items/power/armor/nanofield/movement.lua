@@ -233,8 +233,8 @@ do local s = movement.state("flight")
     flightSpeed = 25,
     boostSpeed = 55,
     idlePowerCost = 0,--25,
-    flightPowerCost = 250,
-    boostPowerCost = 1000,
+    flightPowerCost = 500,
+    boostPowerCost = 1500,
     
     energyColor = "ff0354",
     baseRotation = 0.0,

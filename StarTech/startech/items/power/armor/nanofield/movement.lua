@@ -233,8 +233,8 @@ do local s = movement.state("flight")
     flightSpeed = 25,
     boostSpeed = 55,
     idlePowerCost = 0,--25,
-    flightPowerCost = 500,
-    boostPowerCost = 1500,
+    flightPowerCost = 250,
+    boostPowerCost = 1000,
     
     energyColor = "ff0354",
     baseRotation = 0.0,
@@ -271,6 +271,10 @@ do local s = movement.state("flight")
     else -- if automatic, restore last frame's momentum (bypass FU's momentum kill)
       mcontroller.setVelocity(movement.prevVelocity)
     end
+    
+    local maxFuel = world.getProperty("ship.maxFuel")
+    self.onShip = type(maxFuel) == "number" and maxFuel > 0
+    --sb.logInfo("on ship: " .. (self.onShip and "true" or "false"))
     
     appearance.setWings(self.stats)
     appearance.setWingsVisible(true)
@@ -346,7 +350,7 @@ do local s = movement.state("flight")
     local thrustSpeed = boosting and self.stats.boostSpeed or self.stats.flightSpeed
     if input.dir[1] ~= 0 or input.dir[2] ~= 0 then
       local cm = 1.0
-      if movement.zeroG then cm = 0.1 elseif mcontroller.liquidMovement then cm = 0.25 end
+      if movement.zeroG or self.onShip then cm = 0.1 elseif mcontroller.liquidMovement() then cm = 0.25 end
       if not stats.drawEnergy((boosting and self.stats.boostPowerCost or self.stats.flightPowerCost) * dt * cm) then movement.switchState("ground") end
     elseif not movement.zeroG and not mcontroller.liquidMovement() then
       if not stats.drawEnergy(self.stats.idlePowerCost * dt) then movement.switchState("ground") end

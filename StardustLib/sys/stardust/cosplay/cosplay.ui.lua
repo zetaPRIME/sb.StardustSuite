@@ -73,17 +73,19 @@ function init()
   costumes = cdata.costumes
   local cl = { }
   for id, c in pairs(costumes) do
-    c.id = id
-    c.sortAs = c.sortAs or c.id
-    c.description = c.description or "(no description specified)"
-    c.baseDir = util.absolutePath("/cosplay/", c.baseDir)
-    if c.baseDir:sub(-1, -1) ~= "/" then c.baseDir = c.baseDir .. "/" end
-    c.body = c.body and util.absolutePath(c.baseDir, c.body)
-    c.head = c.head and util.absolutePath(c.baseDir, c.head)
-    c.frontArm = c.frontArm and util.absolutePath(c.baseDir, c.frontArm)
-    c.backArm = c.backArm and util.absolutePath(c.baseDir, c.backArm)
-    
-    table.insert(cl, c)
+    if not c.hidden then
+      c.id = id
+      c.sortAs = c.sortAs or c.id
+      c.description = c.description or "(no description specified)"
+      c.baseDir = util.absolutePath("/cosplay/", c.baseDir)
+      if c.baseDir:sub(-1, -1) ~= "/" then c.baseDir = c.baseDir .. "/" end
+      c.body = c.body and util.absolutePath(c.baseDir, c.body)
+      c.head = c.head and util.absolutePath(c.baseDir, c.head)
+      c.frontArm = c.frontArm and util.absolutePath(c.baseDir, c.frontArm)
+      c.backArm = c.backArm and util.absolutePath(c.baseDir, c.backArm)
+      
+      table.insert(cl, c)
+    end
   end
   table.sort(cl, function(a, b) return a.sortAs < b.sortAs end)
   

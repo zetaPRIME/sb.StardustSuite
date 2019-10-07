@@ -1,6 +1,6 @@
 {
   "costumes" : {
-    "starbound:nuru" : { "sortAs" : "000nuru",
+    "starbound:nuru" : { "sortAs" : "000nuru", "hidden" : true, // incomplete
       "name" : "Nuru", "baseDir" : "nuru",
       "body" : "body.png", "frontArm" : "frontarm.png", "backArm" : "backarm.png"
     },

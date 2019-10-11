@@ -15,7 +15,7 @@ local wingBaseRot = 0
 wingFront:scale({0, 0})
 wingBack:scale({0, 0})
 
-local fieldAlpha = 0
+local fieldAlpha = 0.00001 -- update on first frame
 local fieldColor = "9771e4"
 local energyPalette = { }
 

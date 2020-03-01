@@ -1,4 +1,6 @@
 --
+require "/scrips/util.lua"
+
 require "/lib/stardust/network.lua"
 require "/lib/stardust/itemutil.lua"
 
@@ -7,8 +9,6 @@ spMeta = { __index = spTemplate }
 
 spDeadTemplate = {} -- and a swap one
 spDeadMeta = { __index = spDeadTemplate }
-
-containerLock = false -- when true, containerCallback is disabled
 
 -- each discrete type of item takes up 24 bytes of capacity; each count of item takes one bit
 local typeBits = 24 * 8
@@ -54,15 +54,9 @@ function spTemplate:refreshInfo() -- refresh bits used etc.
 end
 
 function spTemplate:commit()
-  containerLock = true
   self:refreshInfo()
   self.item.parameters.syncId = genSyncId() -- generate a new sync UID
-  while true do -- sync, check and retry if failed
-    world.containerSwapItemsNoCombine(entity.id(), self.item, self.slot - 1)
-    local itm = world.containerItemAt(entity.id(), self.slot - 1)
-    if itm and itm.parameters and itm.parameters.syncId == self.item.parameters.syncId then break end
-  end
-  containerLock = false
+  -- the rest is already handled by being in the storage table
 end
 
 local priorityModifier = 1000000
@@ -192,6 +186,7 @@ function genSyncId()
 end
 
 function importDrive(slot, itemJson)
+  itemJson = itemJson or storage.drives -- default param
   if not itemJson[slot] then return nil end -- what are you doing. go home.
   if not shared.storageProvider[slot] then shared.storageProvider[slot] = setmetatable({slot = slot}, spMeta) end
   local sp = shared.storageProvider[slot]
@@ -206,7 +201,7 @@ function importDrive(slot, itemJson)
 end
 
 function eject(slot, item)
-  world.containerConsumeAt(entity.id(), slot - 1, item.count)
+  storage.drives[slot] = nil
   world.spawnItem(item, entity.position())
 end
 
@@ -235,12 +230,14 @@ end
 -- Container functions --
 -------------------------
 
+local svc = { }
+
 function init()
   shared.storageProvider = setmetatable({}, { __index = { _array = true } })
   
   -- import drives
-  local itemJson = world.containerItems(entity.id()) or {}
-  for slot,item in pairs(itemJson) do importDrive(slot, itemJson) end
+  storage.drives = storage.drives or { }
+  for slot in pairs(storage.drives) do importDrive(slot) end
   
   -- might as well refresh tooltip and the like
   for slot,sp in pairs(shared.storageProvider) do sp:commit() end
@@ -248,6 +245,7 @@ function init()
   -- set up messages
   message.setHandler("getInfo", uiGetInfo)
   message.setHandler("setInfo", uiSetInfo)
+  for k,f in pairs(svc) do message.setHandler("drivebay:"..k, function(_, _, ...) return f(...) end) end
   
   updateLights()
 end
@@ -258,6 +256,29 @@ function uninit()
   end
 end
 
+function svc.getDisplayItems() -- get drives for display; no sending hueg contents table
+  local i = { }
+  for slot, itm in pairs(storage.drives) do
+    i[slot] = { name = itm.name, count = 1, parameters = { } }
+    for k, v in pairs(itm.parameters) do
+      if k ~= "contents" then i[slot].parameters[k] = v end
+    end
+  end
+  return i
+end
+
+function svc.swapDrive(slot, item)
+  -- TODO verify
+  
+  local sp = shared.storageProvider[slot]
+  if sp then sp:commit() sp:kill() end -- update info and kill drive
+  local itm = storage.drives[slot] -- store old item
+  storage.drives[slot] = item
+  importDrive(slot)
+  return itm
+end
+
+--[[
 function containerCallback()
   if containerLock then return nil end
   containerLock = true
@@ -273,10 +294,10 @@ function containerCallback()
   
   containerLock = false
   updateLights()
-end
+end--]]
 
 function onStorageNetUpdate()
-  -- save memory by sharing a single cache among all things that have touched since last unload!
+  -- save memory by sharing a single cache among all things that have touched since last unload
   itemutil.mergeConfigCache(shared.controller.id)
 end
 

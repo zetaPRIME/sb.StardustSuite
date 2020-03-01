@@ -60,6 +60,10 @@ lots of shiny new ship components, especially animating ones that match their st
     warp cores should count as FU ones, if possible
 }
 
+move tag patches to stardustlib and add some more {
+    "component", "material" etc.
+}
+
 power stuffs {
     nanofield {
         elytra {

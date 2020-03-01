@@ -23,6 +23,9 @@
   "scripts" : [ "drivebay.lua" ],
   "scriptDelta" : 1,
   
+  "interactAction" : "ScriptPane",
+  "interactData" : "/startech/interface/storagenet/drivebay.config",
+  
   "animationScripts" : [ "drivebay.render.lua" ],
   
   "inputNodes" : [ [0, 0] ],

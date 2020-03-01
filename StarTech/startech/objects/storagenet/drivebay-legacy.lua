@@ -229,6 +229,7 @@ function updateLights()
     lights[i] = 1
   end
   object.setAnimationParameter("lights", lights)
+  object.setAnimationParameter("isLegacy", true)
 end
 
 -------------------------

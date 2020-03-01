@@ -7,6 +7,7 @@ function init()
   
   self.drawPath = "/startech/objects/storagenet/"
   self.dLight = self.drawPath .. "drivebay.light.png?multiply=00FF00"
+  self.dLightLegacy = self.drawPath .. "drivebay.light.png?multiply=FF3F3F"
   
   dPos = vec2.add(objectAnimator.position(), {-1, 0})
   if objectAnimator.direction() == 1 then dPos[1] = dPos[1] + 5/8 end
@@ -49,6 +50,7 @@ function update()
   
   local lightStates = animationConfig.animationParameter("lights", {})
   if not lightStates then return nil end
+  local legacy = animationConfig.animationParameter("isLegacy", false)
   
   for i,v in pairs(lightStates) do
   i = i - 1 -- 0-indexed pls
@@ -57,7 +59,7 @@ function update()
       math.floor(i/2) * -2
     }, 1/8))
     localAnimator.addDrawable({
-      image = self.dLight,
+      image = legacy and self.dLightLegacy or self.dLight,
       position = ddPos,
       fullbright = true,
       centered = false,

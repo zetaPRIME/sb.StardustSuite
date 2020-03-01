@@ -57,7 +57,6 @@ x BYOS functionality as machine { // probably incompatible with FU's version
 patch warp state matching into encounter variations of booster flames (/objects/ship/boosters/)
 add distinguishing names to even/odd small booster flames
 lots of shiny new ship components, especially animating ones that match their state to flight {
-    - also floor-only teleporters (implemented as part of telepads)
     warp cores should count as FU ones, if possible
 }
 
@@ -75,6 +74,7 @@ power stuffs {
 
     fluxsaber (fluxpulse-charged beamsword)
     pulse rifle (machine gun), vector rifle (railgun)
+    artemis bow?
     
     maybe a way to add a pulse battery to stock equipment
     

@@ -1,6 +1,4 @@
 --
-require "/scrips/util.lua"
-
 require "/lib/stardust/network.lua"
 require "/lib/stardust/itemutil.lua"
 
@@ -217,7 +215,7 @@ function compactTable(tbl)
 end
 
 function updateLights()
-  local cc = world.containerItems(entity.id())
+  local cc = storage.drives
   if not cc then return nil end -- !?
   local lights = {}
   for i,v in pairs(cc) do
@@ -236,7 +234,7 @@ function init()
   shared.storageProvider = setmetatable({}, { __index = { _array = true } })
   
   -- import drives
-  storage.drives = storage.drives or { }
+  storage.drives = storage.drives or { { name = "startech:storagenet.drive.256k", count = 1, parameters = { } } }
   for slot in pairs(storage.drives) do importDrive(slot) end
   
   -- might as well refresh tooltip and the like
@@ -256,6 +254,15 @@ function uninit()
   end
 end
 
+function die()
+  for k,sp in pairs(shared.storageProvider) do
+    sp:commit() sp:kill() -- save changes and nuke
+  end
+  for slot, item in pairs(storage.drives) do
+    world.spawnItem(item, world.entityPosition(entity.id()))
+  end
+end
+
 function svc.getDisplayItems() -- get drives for display; no sending hueg contents table
   local i = { }
   for slot, itm in pairs(storage.drives) do
@@ -268,14 +275,16 @@ function svc.getDisplayItems() -- get drives for display; no sending hueg conten
 end
 
 function svc.swapDrive(slot, item)
-  -- TODO verify
+  -- verify that this is actually a drive
+  if item and not itemutil.getCachedConfig(item).config.driveParameters then return item end
   
   local sp = shared.storageProvider[slot]
   if sp then sp:commit() sp:kill() end -- update info and kill drive
-  local itm = storage.drives[slot] -- store old item
+  local old = storage.drives[slot] -- store old item
   storage.drives[slot] = item
   importDrive(slot)
-  return itm
+  updateLights()
+  return old
 end
 
 --[[

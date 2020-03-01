@@ -1,5 +1,3 @@
--- old buggy version saved for reference
-
 --
 require "/lib/stardust/network.lua"
 require "/lib/stardust/itemutil.lua"
@@ -12,13 +10,8 @@ spDeadMeta = { __index = spDeadTemplate }
 
 containerLock = false -- when true, containerCallback is disabled
 
--- have some values
-local typeBits = 24 * 8 -- so that a 1k storage (1024 bytes) can store... one stack... oh okay...  *sigh*
--- let's see. would a 1m be a better starting point?
--- that would be... 1048576 bytes, so 1048.576 stacks is *really silly* for a first thing
--- 1k, 4k, 16k, 64k... 1024, 4096, 16384, 65536 hmm. should I just make the initial ones *really stupid cheap*?
--- or maybe do the actual counting in *bits*! 8 stacks of one item for the 1k would actually be pretty decent
--- types still counted in full bytes because why not
+-- each discrete type of item takes up 24 bytes of capacity; each count of item takes one bit
+local typeBits = 24 * 8
 
 --------------------------
 -- Storage Provider API --
@@ -64,9 +57,11 @@ function spTemplate:commit()
   containerLock = true
   self:refreshInfo()
   self.item.parameters.syncId = genSyncId() -- generate a new sync UID
-  -- don't bother tossing a new itemdescriptor into lua context, please
-  while world.containerConsumeAt(entity.id(), self.slot - 1, 1) and false do end -- "and false" to disable the little hack
-  world.containerPutItemsAt(entity.id(), self.item, self.slot - 1) -- and commit
+  while true do -- sync, check and retry if failed
+    world.containerSwapItemsNoCombine(entity.id(), self.item, self.slot - 1)
+    local itm = world.containerItemAt(entity.id(), self.slot - 1)
+    if itm and itm.parameters and itm.parameters.syncId == self.item.parameters.syncId then break end
+  end
   containerLock = false
 end
 
@@ -86,7 +81,7 @@ function spTemplate:getPriority(item)
       for k, itm in pairs(self.item.parameters.contents) do
         if itemutil.canStack(itemAnon, itm) and itm.count > 0 then
           priorityMod = priorityMod + priorityModifier
-          break
+          break 
         end
       end
     end
@@ -96,7 +91,19 @@ function spTemplate:getPriority(item)
 end
 
 function spTemplate:getItemList()
-  return self.item.parameters.contents or {} -- the most simple thing ever :D
+  --return self.item.parameters.contents or { } -- the most simple thing ever :D
+  if not self.item.parameters.contents then return { } end -- if no contents table, return empty and not nil
+  local i = { }
+  local ii = 1;
+  for k, item in pairs(self.item.parameters.contents) do
+    i[ii] = {
+      name = item.name,
+      count = item.count,
+      parameters = item.parameters
+    }
+    ii = ii + 1
+  end
+  return i
 end
 
 function spTemplate:tryTakeItem(itemReq)

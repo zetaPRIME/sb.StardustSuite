@@ -1,11 +1,12 @@
 { // -*- grammar-ext: json -*-
-  "objectName" : "startech:storagenet.drivebay2",
+  "objectName" : "startech:storagenet.drivebay",
   "rarity" : "Rare",
+  "objectType" : "container",
   
   "category" : "storagenet.storage",
   "price" : 500,
-  "description" : "A drive bay for holding and accessing transmatter storage discs.",
-  "shortdescription" : "Transmatter Drive Bay",
+  "description" : "A drive bay for holding and accessing transmatter storage discs.\n^red;(Legacy version! Please replace at your earliest convenience!)^reset;",
+  "shortdescription" : "Transmatter Drive Bay (Legacy)",
   "health" : 5.73,
 
   "inventoryIcon" : "drivebay.icon.png",
@@ -20,7 +21,7 @@
     }
   ],
   
-  "scripts" : [ "drivebay.lua" ],
+  "scripts" : [ "drivebay-legacy.lua" ],
   "scriptDelta" : 1,
   
   "animationScripts" : [ "drivebay.render.lua" ],
@@ -31,6 +32,13 @@
     "storageNet" : true,
     "storageNet.storage" : true // HERP DERP
   },
+
+  "openSounds" : [ "/sfx/objects/locker_open.ogg" ],
+  "closeSounds" : [ "/sfx/objects/locker_close.ogg" ],
+  "slotCount" : 8,
+  "uiConfig" : "/startech/interface/storagenet/drivebay-legacy.config",
+  "frameCooldown" : 5,
+  "autoCloseCooldown" : 3600,
   
   "learnBlueprintsOnPickup" : [ "startech:storagenet.drivecomponent" ]
 }

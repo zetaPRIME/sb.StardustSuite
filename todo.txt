@@ -100,7 +100,10 @@ renamer (custom shortdescription, put vanilla one as category because tooltip)
 some item transport for automation (and library to make use of input/output configuration)
 networked wire I/O ports
 
-actually implement metagui at some point
+actually implement metagui at some point {
+    click events, etc. as coroutines
+    named widgets in the config given tables in _ENV
+}
 
 Extend sync library {
     //Recognize RpcPromise returning another RpcPromise and replace in queue

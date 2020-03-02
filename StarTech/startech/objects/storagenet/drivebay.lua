@@ -1,6 +1,7 @@
 --
 require "/lib/stardust/network.lua"
 require "/lib/stardust/itemutil.lua"
+require "/lib/stardust/playerext.lua"
 
 spTemplate = {} -- template for functional storageProviders
 spMeta = { __index = spTemplate }
@@ -234,7 +235,7 @@ function init()
   shared.storageProvider = setmetatable({}, { __index = { _array = true } })
   
   -- import drives
-  storage.drives = storage.drives or { { name = "startech:storagenet.drive.256k", count = 1, parameters = { } } }
+  storage.drives = storage.drives or { }
   for slot in pairs(storage.drives) do importDrive(slot) end
   
   -- might as well refresh tooltip and the like
@@ -264,7 +265,7 @@ function die()
 end
 
 function svc.getDisplayItems() -- get drives for display; no sending hueg contents table
-  local i = { }
+  local i = { false, false, false, false, false, false, false, false }
   for slot, itm in pairs(storage.drives) do
     i[slot] = { name = itm.name, count = 1, parameters = { } }
     for k, v in pairs(itm.parameters) do
@@ -274,9 +275,12 @@ function svc.getDisplayItems() -- get drives for display; no sending hueg conten
   return i
 end
 
-function svc.swapDrive(slot, item)
+function svc.swapDrive(pid, slot, item)
   -- verify that this is actually a drive
-  if item and not itemutil.getCachedConfig(item).config.driveParameters then return item end
+  if item and not itemutil.getCachedConfig(item).config.driveParameters then
+    playerext.setPlayer(pid).giveItemToCursor(item)
+    return nil
+  end
   
   local sp = shared.storageProvider[slot]
   if sp then sp:commit() sp:kill() end -- update info and kill drive
@@ -284,7 +288,7 @@ function svc.swapDrive(slot, item)
   storage.drives[slot] = item
   importDrive(slot)
   updateLights()
-  return old
+  playerext.setPlayer(pid).giveItemToCursor(old)
 end
 
 --[[

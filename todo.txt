@@ -108,7 +108,9 @@ Extend sync library {
     actually, response system with a proper response-message instead of just an RpcPromise
     generate responseID with makeuuid? register with an anonymous function for continuation of operation after response
     
-    coroutine-based things?
+    coroutine-based things? ...
+    
+    fixed sync registry (register callback ahead of time; optional automatic timer)
 }
 
 Aetheri species mod {

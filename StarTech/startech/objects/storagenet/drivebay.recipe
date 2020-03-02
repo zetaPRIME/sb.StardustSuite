@@ -5,7 +5,7 @@
     { "item" : "corefragmentore", "count" : 5 },
     { "item" : "solidfuel", "count" : 5 }
   ],
-  "output" : { "item" : "startech:storagenet.drivebay", "count" : 1 },
+  "output" : { "item" : "startech:storagenet.drivebay2", "count" : 1 },
   "duration" : 5,
   "groups" : [ "startech:tinkertable", "storagenet", "all" ]
 }

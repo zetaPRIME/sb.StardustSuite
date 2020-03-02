@@ -3,6 +3,9 @@
   "rarity" : "Rare",
   "objectType" : "container",
   
+  "builder" : "/sys/stardust/builders/convert.lua",
+  "convertsTo" : "startech:storagenet.drivebay2",
+  
   "category" : "storagenet.storage",
   "price" : 500,
   "description" : "A drive bay for holding and accessing transmatter storage discs.\n^red;(Legacy version! Please replace at your earliest convenience!)^reset;",

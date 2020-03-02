@@ -29,6 +29,8 @@ function update()
   xs.syncTime = xs.syncTime - 1
   
   if xs.swapRpc and xs.swapRpc:finished() then
+    xs.swapRpc = nil
+    
     -- force sync
     xs.syncRpc = world.sendEntityMessage(pane.sourceEntity(), "drivebay:getDisplayItems")
     xs.syncTime = -1

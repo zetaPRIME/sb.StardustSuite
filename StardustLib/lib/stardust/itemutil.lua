@@ -107,6 +107,7 @@ do
   
   -- normalize item descriptor
   function itemutil.normalize(itm)
+    itm = itm or { }
     itm.parameters = itm.parameters or {}
     itm.count = itm.count or 0
     itm.name = itm.name or ""

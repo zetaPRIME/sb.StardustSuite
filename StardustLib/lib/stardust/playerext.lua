@@ -24,6 +24,7 @@ if not playerext then
     elseif player then plr = player.id()
     elseif entity then plr = entity.id()
     end
+    return playerext -- chainable
   end
   
   local commands = {

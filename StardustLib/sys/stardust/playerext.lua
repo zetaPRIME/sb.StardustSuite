@@ -181,7 +181,7 @@ function svc.giveItemToCursor(msg, isLocal, itm, shiftable)
   --[[
     give cursor as much as can be added to stack; give inventory the rest
   ]]
-  itemutil.normalize(itm) -- normalize recieved descriptor
+  itm = itemutil.normalize(itm) -- normalize recieved descriptor
   local cur = itemutil.normalize(player.swapSlotItem() or {name = itm.name, count = 0, parameters = itm.parameters});
   if cur.count == 0 or itemutil.canStack(cur, itm) then
     -- stack into cursor, then into inventory

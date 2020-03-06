@@ -1,0 +1,14 @@
+{ //  -*- grammar-ext: json -*-
+  "style" : "window", // window (has titlebar), panel (just a frame) etc.
+  "size" : [240, 160], // *internal* size (not including chrome)
+  "some info" : "goes here",
+  // unique id? bound?
+  "layout" : "vertical",
+  // implicit layout stacking by nesting arrays (if outermost is vertical, then next in is treated as horizontal etc.)
+  // layout properties can be specified as first object within (if "type" not specified)
+  // most notably, "span"
+  "children" : [
+    // color attribute: none (default, generally gray), accent (window accent color), color name(?) or hexcode
+    { "type" : "button", "id" : "btn", "caption" : "this is text", "color" : "accent" }
+  ]
+}

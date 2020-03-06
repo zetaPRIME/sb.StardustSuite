@@ -1,4 +1,11 @@
 {
     "name" : "Carbon",
-    "description" : "Dark, sleek and simple."
+    "description" : "Dark, sleek and simple.",
+    
+    "metrics" : {
+        "borderMargins" : { // left, top, right, bottom
+            "window" : [ 3, 22, 3, 3 ],
+            "panel" : [ 3, 3, 3, 3 ]
+        }
+    }
 }

@@ -1,4 +1,4 @@
-{
+{ // -*- grammar-ext: json -*-
   "objectName" : "startech:tinkertable",
   "colonyTags" : ["crafting","electronic"],
   "rarity" : "Legendary",

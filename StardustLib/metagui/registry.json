@@ -4,6 +4,12 @@
         "carbon" : "/metagui/themes/carbon/"
     },
     "panes" : { // Registration optional; this is simply for ease of addressing
-        // "modname:pane" : "/path/to/pane.ui",
+        "starbound" : { },
+        "metagui" : {
+            "example" : "/metagui/example.ui" // addressed as "metagui:example"
+        },
+        "stardustlib" : {
+            // "paneName" : "/path/to/pane.ui", // addressed as "stardustlib:paneName" in this case
+        }
     }
 }

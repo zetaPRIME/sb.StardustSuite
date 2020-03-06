@@ -100,9 +100,20 @@ renamer (custom shortdescription, put vanilla one as category because tooltip)
 some item transport for automation (and library to make use of input/output configuration)
 networked wire I/O ports
 
-actually implement metagui at some point {
+metaGUI details {
     click events, etc. as coroutines
     named widgets in the config given tables in _ENV
+    
+    9patches using arbitrary frame format:
+    {
+      "frameList" : {
+        "normal" : [43, 0, 86, 43],
+        "climb" : [43, 172, 86, 215]
+      }
+    }
+    rects in left, top, right, bottom format I think
+    
+    
 }
 
 Extend sync library {

@@ -10,6 +10,6 @@
   "children" : [
     // color attribute: none (default, generally gray), accent (window accent color), color name(?) or hexcode
     //{ "type" : "button", "id" : "btn", "caption" : "this is text", "color" : "accent" }
-    [ "lol" ], ["lol"]
+    [ ["lol"], ["lol"] ], ["lol"]
   ]
 }

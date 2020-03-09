@@ -1,9 +1,15 @@
 require "/scripts/util.lua"
 require "/scripts/vec2.lua"
 
+local debug = {
+  showLayoutBoxes = true,
+}
+
 -- metaGUI core
 metagui = metagui or { }
 local mg = metagui
+
+require "/sys/metagui/gfx.lua"
 
 do -- encapsulate
   local id = 0
@@ -100,8 +106,9 @@ do -- layout
     if self.mode == "v" then self.mode = "vertical" end
     
     self.backingWidget = mkwidget(base, { type = "layout", layoutType = "basic", zlevel = param.zLevel })
-    -- TEMP image to make it visible
-    widget.addChild(self.backingWidget, { type = "image", file = "/assetmissing.png?crop=0;0;1;1?multiply=0000?replace;0000=0000004f?scalenearest=640;640"})
+    if debug.showLayoutBoxes then -- image to make it visible (random color)
+      widget.addChild(self.backingWidget, { type = "image", file = string.format("/assetmissing.png?crop=0;0;1;1?multiply=0000?replace;0000=%06x4f", sb.makeRandomSource():randu32() % 0x1000000), scale = 1024 })
+    end
     if type(param.children) == "table" then -- iterate through and add children
       for _, c in pairs(param.children) do
         if c[1] then mg.createImplicitLayout(c, self) else
@@ -137,11 +144,17 @@ do -- layout
       end
       -- and 2
       if exLv > 0 then
+        local sz = (self.size[axis] - sizeAcc) / numEx
+        local szf = math.floor(sz)
+        local rm = 0
         for _, c in pairs(self.children) do
           if c.expandMode[axis] == exLv then
-            -- TODO: do a remainder-accumulator to keep things integer
+            -- do a remainder-accumulator to keep things integer
+            rm = rm + (sz - szf)
+            local rmf = math.floor(rm)
             c.size = c:preferredSize()
-            c.size[axis] = (self.size[axis] - sizeAcc) / numEx
+            c.size[axis] = szf + rmf
+            rm = rm - rmf
           end
         end
       end
@@ -152,7 +165,7 @@ do -- layout
         c.position = c.position or {0, 0}
         c.position[axis] = posAcc
         posAcc = posAcc + c.size[axis] + self.spacing
-        -- for now just force expansion
+        -- for now just force expansion; TODO honor (and center)
         c.size[opp] = self.size[opp]
       end
       
@@ -241,8 +254,8 @@ function init() init = nil -- clear out for prep
   pane.addWidget({
     type = "layout", size = mg.cfg.size, position = {borderMargins[1], borderMargins[4]}, layoutType = "basic"
   }, "layout")]]
+  frame = mg.createWidget({ type = "layout", size = mg.cfg.totalSize, position = {0, 0}, zlevel = -9999 })
   paneBase = mg.createImplicitLayout(mg.cfg.children, nil, { size = mg.cfg.size, position = {borderMargins[1], borderMargins[4]}, mode = mg.cfg.layoutMode or "vertical" })
-  frame = mg.createWidget({ type = "layout", size = mg.cfg.totalSize, position = {0, 0} })
   
   mg.theme.decorate()
   

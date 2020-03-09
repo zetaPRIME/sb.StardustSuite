@@ -1,22 +1,56 @@
 metagui = metagui or { }
 local mg = metagui
 
-rectool = { }
--- left bottom right top
-function rectool.topEdge(r, c) return { r[1], r[4] - c, r[3], r[4] } end
-function rectool.bottomEdge(r, c) return {r[1], r[2], r[3], r[2] + c } end
-function rectool.leftEdge(r, c) return { r[1], r[2], r[1] + c, r[4] } end
-function rectool.rightEdge(r, c) return { r[3] - c, r[2], r[3], r[4] } end
-
 function asset(path)
   return mg.cfg.themePath .. path
 end
 
 local nps = { }
 
+local npp = { }
+local nppm = { __index = npp }
+
+function npMatrix(r, m) -- calculate points
+  local h = { r[1], r[1] + m[1], r[3] - m[3], r[3] }
+  local v = { r[2], r[2] + m[2], r[4] - m[4], r[4] }
+  local res = { { }, { }, { }, { } }
+  for y=1,4 do
+    for x=1,4 do
+      res[y][x] = {h[x], v[y]}
+    end
+  end
+  return res
+end
+function npRs(r, m)
+  local mx = npMatrix(r, m)
+  local res = { }
+  for y=1,3 do
+    for x=1,3 do
+      local bl = mx[y][x]
+      local tr = mx[y+1][x+1]
+      table.insert(res, { bl[1], bl[2], tr[1], tr[2]})
+    end
+  end
+  return res
+end
+
+function npp:drawToCanvas(c, f, r)
+  if not r then
+    local s = c:size()
+    r = {0, 0, s[1], s[2]}
+  end
+  f = f or "default"
+  local sr = {0, 0, self.frameSize[1], self.frameSize[2]}
+  local invm = {self.margins[1], self.margins[4], self.margins[3], self.margins[2]}
+  local img = string.format("%s:%s", self.image, f)
+  
+  local rc, sc = npRs(r, invm), npRs(sr, invm)
+  for i=1,9 do c:drawImageRect(img, sc[i], rc[i]) end
+end
+
 function mg.ninePatch(path)
   if nps[path] then return nps[path] end
-  local np = { } nps[path] = np
+  local np = setmetatable({ }, nppm) nps[path] = np
   np.image = path .. ".png"
   local d = root.assetJson(path .. ".frames")
   np.margins = d.ninePatchMargins

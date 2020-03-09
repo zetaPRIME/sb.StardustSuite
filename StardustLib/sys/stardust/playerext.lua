@@ -135,6 +135,9 @@ function init(...)
   
   -- and set up techs
   svci.assertTechs()
+  
+  local m = getmetatable('')
+  m.testSvc = svc
 end
 
 local function liveMsg(msg)

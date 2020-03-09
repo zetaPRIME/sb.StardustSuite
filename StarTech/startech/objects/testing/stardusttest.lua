@@ -22,6 +22,10 @@ function init()
   object.setAllOutputNodes(true)
   
   message.setHandler("onOpen", onOpen)
+  
+  --local m = getmetatable('')
+  --m.blarg = (m.blarg or 0) + 1
+  --object.say("persist number: " .. m.blarg)
 end
 
 blah2 = 0

@@ -113,7 +113,14 @@ metaGUI details {
     }
     rects in left, top, right, bottom format I think
     
-    
+    for container proxy: {
+        use ipc lib (getmetatable '' and all)
+        host can check for itembag changes every frame and push an event
+    }
+}
+
+ipc lib {
+    weakly-keyed by _ENV for automatic cleanup
 }
 
 Extend sync library {

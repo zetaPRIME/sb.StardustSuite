@@ -38,18 +38,21 @@ uicfg.accentColor = uicfg.accentColor or defaultAccentColor
 -- actually construct the base
 uicfg.style = uicfg.style or "window" -- default window style
 
-local size = uicfg.size
 local borderMargins = themedata.metrics.borderMargins[uicfg.style]
-size[1] = size[1] + borderMargins[1] + borderMargins[3]
-size[2] = size[2] + borderMargins[2] + borderMargins[4]
+local size = {
+  uicfg.size[1] + borderMargins[1] + borderMargins[3],
+  uicfg.size[2] + borderMargins[2] + borderMargins[4]
+}
+uicfg.totalSize = size
 
 player.interact("ScriptPane", {
   gui = {
-    background = {
+    _ = {
       type = "background",
       fileFooter = "/assetmissing.png?crop=0;0;1;1?multiply=0000?scalenearest=" .. size[1] .. ";" .. size[2]
     }
   },
   scripts = { "/sys/metagui/core.lua" },
+  scriptWidgetCallbacks = { "__cb1", "__cb2", "__cb3", "__cb4", "__cb5" },
   ___ = uicfg
 }, pane.sourceEntity())

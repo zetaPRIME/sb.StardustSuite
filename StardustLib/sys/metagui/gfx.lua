@@ -2,6 +2,7 @@ metagui = metagui or { }
 local mg = metagui
 
 function asset(path)
+  if path:sub(1, 1) == '/' then return path end
   return mg.cfg.themePath .. path
 end
 
@@ -10,7 +11,8 @@ local nps = { }
 local npp = { }
 local nppm = { __index = npp }
 
-function npMatrix(r, m) -- calculate points
+-- calculates all points involved in a ninepatch
+local function npMatrix(r, m)
   local h = { r[1], r[1] + m[1], r[3] - m[3], r[3] }
   local v = { r[2], r[2] + m[2], r[4] - m[4], r[4] }
   local res = { { }, { }, { }, { } }
@@ -21,13 +23,14 @@ function npMatrix(r, m) -- calculate points
   end
   return res
 end
-function npRs(r, m)
+
+-- calls the above, then arranges matrix into section rects
+local function npRs(r, m)
   local mx = npMatrix(r, m)
   local res = { }
   for y=1,3 do
     for x=1,3 do
-      local bl = mx[y][x]
-      local tr = mx[y+1][x+1]
+      local bl, tr = mx[y][x], mx[y+1][x+1]
       table.insert(res, { bl[1], bl[2], tr[1], tr[2]})
     end
   end

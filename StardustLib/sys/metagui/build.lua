@@ -54,5 +54,6 @@ player.interact("ScriptPane", {
   },
   scripts = { "/sys/metagui/core.lua" },
   scriptWidgetCallbacks = { "__cb1", "__cb2", "__cb3", "__cb4", "__cb5" },
+  --canvasClickCallbacks = { canvas = "canvasTest" },
   ___ = uicfg
 }, pane.sourceEntity())

@@ -9,7 +9,10 @@
   // most notably, "span"
   "children" : [
     // color attribute: none (default, generally gray), accent (window accent color), color name(?) or hexcode
-    //{ "type" : "button", "id" : "btn", "caption" : "this is text", "color" : "accent" }
-    [ ["lol"], ["lol"] ], ["lol"]
+    { "type" : "button", "id" : "btn", "caption" : "This is a button.", "color" : "accent" },
+    [ { "type" : "button", "caption" : "A row of buttons..." }, { "type" : "button", "caption" : "...in proper layout." } ],
+    "spacer",
+    [ { "type" : "button", "caption" : "It even supports layout spacers!" } ]
+    //[ ["lol"], ["lol"] ], ["lol"]
   ]
 }

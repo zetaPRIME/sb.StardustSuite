@@ -2,7 +2,7 @@ require "/scripts/util.lua"
 require "/scripts/vec2.lua"
 
 local debug = {
-  showLayoutBoxes = true,
+  --showLayoutBoxes = true,
 }
 
 -- metaGUI core
@@ -44,11 +44,15 @@ local widgetTypes = { }
 local widgetBase = {
   expandMode = {0, 0}, -- default: decline to expand in either direction (1 is "can", 2 is "wants to")
 }
+local redrawQueue = { }
 
 function widgetBase:minSize() return {0, 0} end
 function widgetBase:preferredSize() return {0, 0} end
 
 function widgetBase:init() end
+
+function widgetBase:queueRedraw() redrawQueue[self] = true end
+function widgetBase:draw() end
 
 function widgetBase:applyGeometry()
   self.size = self.size or self:preferredSize() -- fill in default size if absent
@@ -67,7 +71,8 @@ function widgetBase:applyGeometry()
     widget.setSize(self.backingWidget, {math.floor(self.size[1]), math.floor(self.size[2])})
     widget.setPosition(self.backingWidget, {math.floor(etp[1]), math.floor(etp[2])})
   end
-  sb.logInfo("widget " .. (self.backingWidget or "unknown") .. ", type " .. self.typeName .. ", pos (" .. self.position[1] .. ", " .. self.position[2] .. "), size (" .. self.size[1] .. ", " .. self.size[2] .. ")")
+  --sb.logInfo("widget " .. (self.backingWidget or "unknown") .. ", type " .. self.typeName .. ", pos (" .. self.position[1] .. ", " .. self.position[2] .. "), size (" .. self.size[1] .. ", " .. self.size[2] .. ")")
+  self:queueRedraw()
   if self.children then
     for k,c in pairs(self.children) do
       if c.applyGeometry then c:applyGeometry() end
@@ -85,7 +90,7 @@ do -- layout
   widgetTypes.layout = proto(widgetBase, {
     -- widget attributes
     isBaseWidget = true,
-    expandMode = {1, 1}, -- agree to expand to fill horizontally
+    expandMode = {1, 0}, -- agree to expand to fill horizontally
     
     -- defaults
     mode = "manual",
@@ -99,11 +104,14 @@ do -- layout
   -- "horizontal" and "vertical" auto-arrange for each axis
   
   function widgetTypes.layout:init(base, param)
+    self.children = self.children or { } -- always have a children table
+    
     -- parameters first
     self.mode = param.mode
-    self.spacing = param.spacing
     if self.mode == "h" then self.mode = "horizontal" end
     if self.mode == "v" then self.mode = "vertical" end
+    self.spacing = param.spacing
+    self.expandMode = param.expandMode
     
     self.backingWidget = mkwidget(base, { type = "layout", layoutType = "basic", zlevel = param.zLevel })
     if debug.showLayoutBoxes then -- image to make it visible (random color)
@@ -111,16 +119,35 @@ do -- layout
     end
     if type(param.children) == "table" then -- iterate through and add children
       for _, c in pairs(param.children) do
-        if c[1] then mg.createImplicitLayout(c, self) else
+        if type(c) == "string" then
+          if c == "spacer" then
+            mg.createWidget({ type = "spacer" }, self)
+          end
+        elseif c[1] then mg.createImplicitLayout(c, self) else
           mg.createWidget(c, self)
         end
       end
     end
   end
   
+  function widgetTypes.layout:preferredSize()
+    local res = {0, 0}
+    if self.mode == "horizontal" or self.mode == "vertical" then
+      local axis = self.mode == "vertical" and 2 or 1
+      local opp = 3 - axis
+      
+      res[axis] = self.spacing * (#(self.children) - 1)
+      
+      for _, c in pairs(self.children) do
+        local ps = c:preferredSize()
+        res[opp] = math.max(res[opp], ps[opp])
+        res[axis] = res[axis] + ps[axis]
+      end
+    end
+    return res
+  end
+  
   function widgetTypes.layout:updateGeometry(noApply)
-    self.children = self.children or { } -- hmm.
-    
     -- autoarrange modes
     if self.mode == "horizontal" or self.mode == "vertical" then
       local axis = self.mode == "vertical" and 2 or 1
@@ -165,8 +192,12 @@ do -- layout
         c.position = c.position or {0, 0}
         c.position[axis] = posAcc
         posAcc = posAcc + c.size[axis] + self.spacing
-        -- for now just force expansion; TODO honor (and center)
-        c.size[opp] = self.size[opp]
+        -- resize or align on opposite axis
+        if c.expandMode[opp] >= 1 then
+          c.size[opp] = self.size[opp]
+        else
+          c.position[opp] = math.floor(self.size[opp]/2 - c.size[opp]/2)
+        end
       end
       
     end
@@ -178,17 +209,26 @@ do -- layout
   end
 end
 
+do -- spacer
+  widgetTypes.spacer = proto(widgetBase, {
+    expandMode = {2, 2} -- prefer to expand
+  })
+end
+
 do -- button
   widgetTypes.button = proto(widgetBase, {
     expandMode = {1, 0}, -- will expand horizontally, but not vertically
   })
   
   function widgetTypes.button:init(base, param)
-    --self.backingWidget = mkwidget(base, { type = "button", })
+    self.caption = param.caption or ""
+    self.backingWidget = mkwidget(base, { type = "canvas", })
   end
   
   function widgetTypes.button:minSize() return {16, 16} end
-  function widgetTypes.button:preferredSize() return {64, 16} end
+  function widgetTypes.button:preferredSize() return self.explicitSize or {64, 16} end
+  
+  function widgetTypes.button:draw() theme.drawButton(self) end
 end
 
 -- DEBUG populate type names
@@ -236,6 +276,10 @@ end
 
 
 function init() init = nil -- clear out for prep
+  for k,v in pairs(player) do
+    sb.logInfo(k .. " (" .. type(v) .. ")")
+  end
+  
   mg.cfg = config.getParameter("___") -- window config
   
   mg.theme = root.assetJson(mg.cfg.themePath .. "theme.json")
@@ -264,4 +308,70 @@ function init() init = nil -- clear out for prep
   
   for _, s in pairs(mg.cfg.scripts or { }) do require(s) end
   if init then init() end -- call script init
+  
+  --[[setmetatable(_ENV, {__index = function(t, k)
+    sb.logInfo("absent var: " .. k)
+  end})]]
+end
+
+local function findWindowPosition()
+  if not mg.windowPosition then mg.windowPosition = {0, 0} end -- at the very least, make sure this exists
+  local fp
+  local sz = mg.cfg.totalSize
+  local max = {1920, 1080} -- technically probably 4k
+  
+  local ws = frame.backingWidget -- widget to search for
+  
+  -- initial find
+  for y=0,max[2],sz[2] do
+    for x=0,max[1],sz[1] do
+      if widget.inMember(ws, {x, y}) then
+        fp = {x, y} break
+      end
+    end
+    if fp then break end
+  end
+  
+  if not fp then return nil end -- ???
+  
+  local isearch = 32
+  -- narrow x
+  local search = isearch
+  while search >= 1 do
+    while widget.inMember(ws, {fp[1] - search, fp[2]}) do fp[1] = fp[1] - search end
+    search = search / 2
+  end
+  
+  -- narrow y
+  local search = isearch
+  while search >= 1 do
+    while widget.inMember(ws, {fp[1], fp[2] - search}) do fp[2] = fp[2] - search end
+    search = search / 2
+  end
+  
+  mg.windowPosition = fp
+end
+
+function update()
+  local ws = frame.backingWidget
+  if not mg.windowPosition then
+    findWindowPosition()
+  else
+    --local fcp = {mg.windowPosition[1] + mg.cfg.totalSize[1], mg.windowPosition[2] + mg.cfg.totalSize[2]}
+    if not widget.inMember(ws, mg.windowPosition) or not widget.inMember(ws, vec2.add(mg.windowPosition, mg.cfg.totalSize)) then findWindowPosition() end
+  end
+  
+  --[[local c = widget.bindCanvas(frame.backingWidget .. ".canvas")
+  widget.setText("debugWidget", table.concat {
+    "window pos: ", mg.windowPosition[1], ", ", mg.windowPosition[2], "\n",
+    "over widget: ", widget.getChildAt(vec2.add(mg.windowPosition, c:mousePosition())) or "none",
+  })]]
+  
+  for w in pairs(redrawQueue) do w:draw() end
+  redrawQueue = { }
+end
+
+function canvasTest()
+  local m = getmetatable('')
+  if m.testSvc then m.testSvc.message(nil, nil, "clicked") end
 end

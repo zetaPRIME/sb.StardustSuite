@@ -5,6 +5,7 @@ require "/scripts/rect.lua"
 local mg = metagui
 
 local npFrame = mg.ninePatch(asset "frame")
+local npButton = mg.ninePatch(asset "button")
 
 local c
 local dw = "debugWidget"
@@ -30,8 +31,17 @@ end
 function theme.drawButton(b)
   local c = widget.bindCanvas(b.backingWidget)
   c:clear()
-  npFrame:drawToCanvas(c)
+  npButton:drawToCanvas(c, b.state or "idle")
+  npButton:drawToCanvas(c, "accent?multiply=33f")
   c:drawText(b.caption or "", { position = vec2.mul(c:size(), 0.5), horizontalAnchor = "mid", verticalAnchor = "mid", wrapWidth = b.size[1] - 4 }, 8)
+end
+
+function theme.onButtonHover(b)
+  pane.playSound("/sfx/interface/hoverover_bumb.ogg", 0, 0.5)
+end
+
+function theme.onButtonClick(b)
+  pane.playSound("/sfx/interface/clickon_success.ogg", 0, 1)
 end
 
 function supdate(...)

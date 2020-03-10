@@ -45,6 +45,7 @@ local widgetBase = {
   expandMode = {0, 0}, -- default: decline to expand in either direction (1 is "can", 2 is "wants to")
 }
 local redrawQueue = { }
+local mouseMap = setmetatable({ }, { __mode = 'v' })
 
 function widgetBase:minSize() return {0, 0} end
 function widgetBase:preferredSize() return {0, 0} end
@@ -53,6 +54,11 @@ function widgetBase:init() end
 
 function widgetBase:queueRedraw() redrawQueue[self] = true end
 function widgetBase:draw() end
+
+function widgetBase:isMouseInteractable() return false end
+function widgetBase:onMouseEnter() end
+function widgetBase:onMouseLeave() end
+function widgetBase:onMouseButtonEvent(btn, down) end
 
 function widgetBase:applyGeometry()
   self.size = self.size or self:preferredSize() -- fill in default size if absent
@@ -222,6 +228,7 @@ do -- button
   
   function widgetTypes.button:init(base, param)
     self.caption = param.caption or ""
+    self.state = "idle"
     self.backingWidget = mkwidget(base, { type = "canvas", })
   end
   
@@ -229,6 +236,29 @@ do -- button
   function widgetTypes.button:preferredSize() return self.explicitSize or {64, 16} end
   
   function widgetTypes.button:draw() theme.drawButton(self) end
+  
+  function widgetTypes.button:isMouseInteractable() return true end
+  function widgetTypes.button:onMouseEnter()
+    self.state = "hover"
+    self:queueRedraw()
+    theme.onButtonHover(self)
+  end
+  function widgetTypes.button:onMouseLeave() self.state = "idle" self:queueRedraw() end
+  function widgetTypes.button:onMouseButtonEvent(btn, down)
+    if btn == 0 then -- left button
+      if down then
+        self.state = "press"
+        self:queueRedraw()
+        theme.onButtonClick(self)
+      elseif self.state == "press" then
+        self.state = "hover"
+        self:queueRedraw()
+        self:onClick()
+      end
+    end
+  end
+  
+  function widgetTypes.button:onClick() end
 end
 
 -- DEBUG populate type names
@@ -244,6 +274,7 @@ function mg.createWidget(param, parent)
   end
   
   -- some basics
+  w.id = param.id
   w.position = param.position
   w.explicitSize = param.size
   w.size = param.size
@@ -255,6 +286,12 @@ function mg.createWidget(param, parent)
     base = f.backingWidget
   end
   w:init(base, param)
+  if w:isMouseInteractable() then -- enroll in mouse events
+    if w.backingWidget then mouseMap[w.backingWidget] = w end
+  end
+  if w.id and _ENV[w.id] == nil then
+    _ENV[w.id] = w
+  end
   return w
 end
 
@@ -276,9 +313,7 @@ end
 
 
 function init() init = nil -- clear out for prep
-  for k,v in pairs(player) do
-    sb.logInfo(k .. " (" .. type(v) .. ")")
-  end
+  -- for k,v in pairs(player) do sb.logInfo(k .. " (" .. type(v) .. ")") end
   
   mg.cfg = config.getParameter("___") -- window config
   
@@ -309,6 +344,8 @@ function init() init = nil -- clear out for prep
   for _, s in pairs(mg.cfg.scripts or { }) do require(s) end
   if init then init() end -- call script init
   
+  function btnSpacer:onClick() pane.dismiss() end
+  
   --[[setmetatable(_ENV, {__index = function(t, k)
     sb.logInfo("absent var: " .. k)
   end})]]
@@ -320,7 +357,7 @@ local function findWindowPosition()
   local sz = mg.cfg.totalSize
   local max = {1920, 1080} -- technically probably 4k
   
-  local ws = frame.backingWidget -- widget to search for
+  local ws = "_tracker" -- widget to search for
   
   -- initial find
   for y=0,max[2],sz[2] do
@@ -352,8 +389,9 @@ local function findWindowPosition()
   mg.windowPosition = fp
 end
 
+local lastMouseOver
 function update()
-  local ws = frame.backingWidget
+  local ws = "_tracker"
   if not mg.windowPosition then
     findWindowPosition()
   else
@@ -367,8 +405,31 @@ function update()
     "over widget: ", widget.getChildAt(vec2.add(mg.windowPosition, c:mousePosition())) or "none",
   })]]
   
+  local c = widget.bindCanvas(ws)
+  mg.mousePosition = c:mousePosition()
+  local mwc = widget.getChildAt(vec2.add(mg.windowPosition, mg.mousePosition))
+  widget.setText("debugWidget", table.concat {
+    "mouse pos: ", mg.mousePosition[1], ", ", mg.mousePosition[2],
+    " over ", mwc or "none"
+  })
+  local mw = mwc and mouseMap[mwc:sub(2)]
+  if mw ~= lastMouseOver then
+    if mw then mw:onMouseEnter() end
+    if lastMouseOver then lastMouseOver:onMouseLeave() end
+  end
+  lastMouseOver = mw
+  if mw then
+    widget.setPosition("_intercept", {0, 0})
+  else
+    widget.setPosition("_intercept", {-99999, -99999})
+  end
+  
   for w in pairs(redrawQueue) do w:draw() end
   redrawQueue = { }
+end
+
+function _mouseEvent(_, btn, down)
+  if lastMouseOver then lastMouseOver:onMouseButtonEvent(btn, down) end
 end
 
 function canvasTest()

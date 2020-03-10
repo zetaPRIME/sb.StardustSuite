@@ -50,10 +50,16 @@ player.interact("ScriptPane", {
     _ = {
       type = "background",
       fileFooter = "/assetmissing.png?crop=0;0;1;1?multiply=0000?scalenearest=" .. size[1] .. ";" .. size[2]
-    }
+    },
+    _tracker = {
+      type = "canvas", size = size, zlevel = -99999
+    },
+    _intercept = {
+      type = "canvas", size = size, zlevel = -99998, captureMouseEvents = true
+    },
   },
   scripts = { "/sys/metagui/core.lua" },
   scriptWidgetCallbacks = { "__cb1", "__cb2", "__cb3", "__cb4", "__cb5" },
-  --canvasClickCallbacks = { canvas = "canvasTest" },
+  canvasClickCallbacks = { _intercept = "_mouseEvent" },
   ___ = uicfg
 }, pane.sourceEntity())

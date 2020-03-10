@@ -12,7 +12,7 @@
     { "type" : "button", "id" : "btn", "caption" : "This is a button.", "color" : "accent" },
     [ { "type" : "button", "caption" : "A row of buttons..." }, { "type" : "button", "caption" : "...in proper layout." } ],
     "spacer",
-    [ { "type" : "button", "caption" : "It even supports layout spacers!" } ]
+    [ { "type" : "button", "caption" : "It even supports layout spacers!", "id" : "btnSpacer" } ]
     //[ ["lol"], ["lol"] ], ["lol"]
   ]
 }

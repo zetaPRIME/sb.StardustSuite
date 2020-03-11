@@ -264,4 +264,44 @@ end do -- image
     self.file = mg.path(f)
     if parent then parent:queueGeometryUpdate() end
   end
+end do -- item slot
+  widgets.itemSlot = mg.proto(mg.widgetBase, {
+    --
+  })
+  
+  function widgets.itemSlot:init(base, param)
+    self.glyph = mg.path(param.glyph or param.colorGlyph)
+    self.colorGlyph = not not param.colorGlyph -- some themes may want to render non-color glyphs as monochrome in their own colors
+    self.color = param.color -- might as well let themes have at this
+    self.autoInteract = param.autoInteract or param.auto
+    --
+    self.backingWidget = mkwidget(base, { type = "canvas" })
+    self.subWidgets = {
+      slot = mkwidget(base, { type = "itemslot", callback = "_clickLeft", rightClickCallback = "_clickRight", showRarity = false })
+    }
+    if param.item then self:setItem(param.item) end
+  end
+  function widgets.itemSlot:preferredSize() return {18, 18} end
+  function widgets.itemSlot:applyGeometry()
+    mg.widgetBase.applyGeometry(self) -- base first
+    widget.setPosition(self.subWidgets.slot, widget.getPosition(self.backingWidget)) -- sync position
+  end
+  function widgets.itemSlot:draw()
+    theme.drawItemSlot(self)
+  end
+  
+  function widgets.itemSlot:isMouseInteractable() return true end
+  function widgets.itemSlot:onMouseEnter() self.hover = true self:queueRedraw() end
+  function widgets.itemSlot:onMouseLeave() self.hover = false self:queueRedraw() end
+  function widgets.itemSlot:onMouseButtonEvent(btn, down)
+    --pane.playSound("/sfx/interface/clickon_success.ogg", 0, 1.0)
+  end
+  
+  function widgets.itemSlot:getItem() return widget.itemSlotItem(self.subWidgets.slot) end
+  function widgets.itemSlot:setItem(itm)
+    local old = self:getItem()
+    widget.setItemSlotItem(self.subWidgets.slot, itm)
+    self:queueRedraw()
+    return old
+  end
 end

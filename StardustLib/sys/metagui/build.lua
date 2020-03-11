@@ -63,7 +63,7 @@ player.interact("ScriptPane", {
     },
   },
   scripts = { "/sys/metagui/core.lua" },
-  scriptWidgetCallbacks = { "__cb1", "__cb2", "__cb3", "__cb4", "__cb5" },
+  scriptWidgetCallbacks = { "__cb1", "__cb2", "__cb3", "__cb4", "__cb5", "_clickLeft", "_clickRight" },
   canvasClickCallbacks = { _intercept = "_mouseEvent" },
   ___ = uicfg
 }, pane.sourceEntity())

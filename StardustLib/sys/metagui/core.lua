@@ -320,3 +320,5 @@ end
 function _mouseEvent(_, btn, down)
   if lastMouseOver then lastMouseOver:onMouseButtonEvent(btn, down) end
 end
+function _clickLeft() _mouseEvent(nil, 0, true) end
+function _clickRight() _mouseEvent(nil, 2, true) end

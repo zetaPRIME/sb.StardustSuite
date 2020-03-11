@@ -114,6 +114,7 @@ metaGUI details {
     proper data-passing
     
     eventually {
+        autoInteract for item slots
         can detect shift+click by polling item pickup and replacing
         can use knowledge of window position to make mouse-relative context menus
         generator scripts?
@@ -126,7 +127,7 @@ metaGUI details {
         - image
         checkbox
         option box?
-        item slot
+        - item slot
         item grid? just a wrapper around a given number of slots
         text box
         scrollarea

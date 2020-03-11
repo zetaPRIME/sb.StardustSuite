@@ -1,0 +1,13 @@
+{ // -*- grammar-ext: json -*-
+  "frameGrid" : {
+    "size" : [18, 18],
+    "dimensions" : [1, 5],
+    "names" : [
+      [ "common" ],
+      [ "uncommon" ],
+      [ "rare" ],
+      [ "legendary" ],
+      [ "essential" ]
+    ]
+  }
+}

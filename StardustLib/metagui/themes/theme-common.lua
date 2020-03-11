@@ -7,6 +7,9 @@ local tdef = { } -- defaults
 theme.assets = { -- default assets
   frame = mg.ninePatch(mg.asset "frame"),
   button = mg.ninePatch(mg.asset "button"),
+  
+  itemSlot = mg.asset "itemSlot.png",
+  itemRarity = mg.asset "itemRarity.png",
 } local assets = theme.assets
 
 --
@@ -34,6 +37,18 @@ end
 
 function tdef.onButtonClick(b)
   pane.playSound("/sfx/interface/clickon_success.ogg", 0, 1.0)
+end
+
+function tdef.drawItemSlot(s)
+  local center = {9, 9}
+  local c = widget.bindCanvas(s.backingWidget)
+  c:clear() c:drawImage(assets.itemSlot .. ":" .. (s.hover and "hover" or "idle"), center, nil, nil, true)
+  if s.glyph then c:drawImage(s.glyph, center, nil, nil, true) end
+  local ic = root.itemConfig(s:getItem())
+  if ic then
+    local rarity = (ic.parameters.rarity or ic.config.rarity or "Common"):lower()
+    c:drawImage(assets.itemRarity .. ":" .. rarity .. (s.hover and "?brightness=50" or ""), center, nil, nil, true)
+  end
 end
 
 

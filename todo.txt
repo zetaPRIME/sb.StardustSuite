@@ -107,7 +107,7 @@ metaGUI details {
     - add removal of widgets
     icon support for buttons
     
-    widgets.lua
+    - widgets.lua
     theme-common.lua
     - pane path
     - setTitle

@@ -1,11 +1,11 @@
 local mg = metagui
 
-local widgetTypes = mg.widgetTypes
+local widgets = mg.widgetTypes
 local mkwidget = mg.mkwidget
 local debug = mg.debugFlags
 
 do -- layout
-  widgetTypes.layout = mg.proto(mg.widgetBase, {
+  widgets.layout = mg.proto(mg.widgetBase, {
     -- widget attributes
     isBaseWidget = true,
     expandMode = {1, 0}, -- agree to expand to fill horizontally
@@ -21,7 +21,7 @@ do -- layout
   -- "manual" (the explicit default) is exactly what it says on the tim
   -- "horizontal" and "vertical" auto-arrange for each axis
   
-  function widgetTypes.layout:init(base, param)
+  function widgets.layout:init(base, param)
     self.children = self.children or { } -- always have a children table
     
     -- parameters first
@@ -55,7 +55,7 @@ do -- layout
     end
   end
   
-  function widgetTypes.layout:preferredSize()
+  function widgets.layout:preferredSize()
     local res = {0, 0}
     if self.mode == "horizontal" or self.mode == "vertical" then
       local axis = self.mode == "vertical" and 2 or 1
@@ -80,7 +80,7 @@ do -- layout
     return res
   end
   
-  function widgetTypes.layout:updateGeometry(noApply)
+  function widgets.layout:updateGeometry(noApply)
     -- autoarrange modes
     if self.mode == "horizontal" or self.mode == "vertical" then
       local axis = self.mode == "vertical" and 2 or 1
@@ -141,20 +141,16 @@ do -- layout
     -- finally, apply
     if not noApply then self:applyGeometry() end
   end
-end
-
-do -- spacer
-  widgetTypes.spacer = mg.proto(mg.widgetBase, {
+end do -- spacer
+  widgets.spacer = mg.proto(mg.widgetBase, {
     expandMode = {2, 2} -- prefer to expand
   })
-end
-
-do -- button
-  widgetTypes.button = mg.proto(mg.widgetBase, {
+end do -- button
+  widgets.button = mg.proto(mg.widgetBase, {
     expandMode = {1, 0}, -- will expand horizontally, but not vertically
   })
   
-  function widgetTypes.button:init(base, param)
+  function widgets.button:init(base, param)
     self.caption = mg.formatText(param.caption)
     self.captionOffset = param.captionOffset or {0, 0}
     self.color = param.color
@@ -162,19 +158,19 @@ do -- button
     self.backingWidget = mkwidget(base, { type = "canvas" })
   end
   
-  function widgetTypes.button:minSize() return {16, 16} end
-  function widgetTypes.button:preferredSize() return self.explicitSize or {64, 16} end
+  function widgets.button:minSize() return {16, 16} end
+  function widgets.button:preferredSize() return self.explicitSize or {64, 16} end
   
-  function widgetTypes.button:draw() theme.drawButton(self) end
+  function widgets.button:draw() theme.drawButton(self) end
   
-  function widgetTypes.button:isMouseInteractable() return true end
-  function widgetTypes.button:onMouseEnter()
+  function widgets.button:isMouseInteractable() return true end
+  function widgets.button:onMouseEnter()
     self.state = "hover"
     self:queueRedraw()
     theme.onButtonHover(self)
   end
-  function widgetTypes.button:onMouseLeave() self.state = "idle" self:queueRedraw() end
-  function widgetTypes.button:onMouseButtonEvent(btn, down)
+  function widgets.button:onMouseLeave() self.state = "idle" self:queueRedraw() end
+  function widgets.button:onMouseButtonEvent(btn, down)
     if btn == 0 then -- left button
       if down then
         self.state = "press"
@@ -188,22 +184,20 @@ do -- button
     end
   end
   
-  function widgetTypes.button:onClick() end
+  function widgets.button:onClick() end
   
-  function widgetTypes.button:setText(t)
+  function widgets.button:setText(t)
     self.caption = mg.formatText(t)
     self:queueRedraw()
     if self.parent then self.parent:queueGeometryUpdate() end
   end
-end
-
-do -- label
-  widgetTypes.label = mg.proto(mg.widgetBase, {
+end do -- label
+  widgets.label = mg.proto(mg.widgetBase, {
     expandMode = {1, 0}, -- will expand horizontally, but not vertically
     text = "",
   })
   
-  function widgetTypes.label:init(base, param)
+  function widgets.label:init(base, param)
     self.text = mg.formatText(param.text)
     self.color = param.color
     self.fontSize = param.fontSize
@@ -214,12 +208,12 @@ do -- label
     self.backingWidget = mkwidget(base, { type = "canvas" })
   end
   
-  function widgetTypes.label:preferredSize(width)
+  function widgets.label:preferredSize(width)
     if self.explicitSize then return self.explicitSize end
     return mg.measureString(self.text, width, self.fontSize)
   end
   
-  function widgetTypes.label:draw()
+  function widgets.label:draw()
     local c = widget.bindCanvas(self.backingWidget) c:clear()
     local pos, ha = {0, self.size[2]}, "left"
     if self.align == "center" or self.align == "mid" then
@@ -232,7 +226,7 @@ do -- label
     c:drawText(self.text, { position = pos, horizontalAnchor = ha, verticalAnchor = "top", wrapWidth = self.size[1] + 1 }, self.fontSize or 8, color)
   end
   
-  function widgetTypes.label:setText(t)
+  function widgets.label:setText(t)
     self.text = mg.formatText(t)
     self:queueRedraw()
     if self.parent then self.parent:queueGeometryUpdate() end

@@ -48,6 +48,7 @@ do -- layout
           if c == "spacer" then
             mg.createWidget({ type = "spacer" }, self)
           end
+        elseif type(c) == "number" then mg.createWidget({ type = "spacer", size = math.floor(c) }, self)
         elseif c[1] then mg.createImplicitLayout(c, self) else
           mg.createWidget(c, self)
         end
@@ -145,6 +146,10 @@ end do -- spacer
   widgets.spacer = mg.proto(mg.widgetBase, {
     expandMode = {2, 2} -- prefer to expand
   })
+  function widgets.spacer:init(base, param)
+    if self.explicitSize then expandMode = {0, 0} end -- fixed size
+  end
+  function widgets.spacer:preferredSize() local p = self.explicitSize or 0 return {p, p} end
 end do -- button
   widgets.button = mg.proto(mg.widgetBase, {
     expandMode = {1, 0}, -- will expand horizontally, but not vertically

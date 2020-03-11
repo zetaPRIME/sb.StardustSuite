@@ -108,7 +108,7 @@ metaGUI details {
     icon support for buttons
     
     - widgets.lua
-    theme-common.lua
+    - theme-common.lua
     - pane path
     - setTitle
     proper data-passing

@@ -107,9 +107,17 @@ metaGUI details {
     - add removal of widgets
     icon support for buttons
     
+    widgets.lua
+    theme-common.lua
+    - pane path
+    - setTitle
+    proper data-passing
+    
     eventually {
         can detect shift+click by polling item pickup and replacing
         can use knowledge of window position to make mouse-relative context menus
+        generator scripts?
+        unique by tag
     }
     
     widgets needed {

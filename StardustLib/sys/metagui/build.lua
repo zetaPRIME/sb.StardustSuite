@@ -12,7 +12,11 @@ if type(uicfg) == "string" then
     uicfg = (registry.panes[modname] or { })[uiname]
   end
   -- still a string after resolving (if necessary)?
-  if type(uicfg) == "string" then uicfg = root.assetJson(uicfg) end
+  if type(uicfg) == "string" then
+    local fn = uicfg
+    uicfg = root.assetJson(uicfg)
+    uicfg.assetPath = fn:match('^(.*/).-$')
+  end
 end
 if type(uicfg) ~= "table" then
   return nil -- error?

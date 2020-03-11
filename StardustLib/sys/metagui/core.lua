@@ -11,6 +11,16 @@ local mg = metagui
 
 require "/sys/metagui/gfx.lua"
 
+function mg.path(path)
+  if path:sub(1, 1) == '/' then return path end
+  return (mg.cfg.assetPath or "/") .. path
+end
+
+function mg.asset(path)
+  if path:sub(1, 1) == '/' then return path end
+  return mg.cfg.themePath .. path
+end
+
 do -- encapsulate
   local id = 0
   function mg.newUniqueId()
@@ -50,6 +60,7 @@ local redrawQueue = { }
 local recalcQueue = { }
 local lastMouseOver
 local mouseMap = setmetatable({ }, { __mode = 'v' })
+local scriptUpdate = { }
 
 function widgetBase:minSize() return {0, 0} end
 function widgetBase:preferredSize() return {0, 0} end
@@ -176,7 +187,6 @@ do -- layout
   end
   
   function widgetTypes.layout:preferredSize()
-    --if self.explicitSize then return self.explicitSize end
     local res = {0, 0}
     if self.mode == "horizontal" or self.mode == "vertical" then
       local axis = self.mode == "vertical" and 2 or 1
@@ -190,6 +200,13 @@ do -- layout
         res[axis] = res[axis] + ps[axis]
       end
       if type(self.explicitSize) == "number" then res[opp] = self.explicitSize end
+    elseif self.mode == "manual" then
+      if self.explicitSize then return self.explicitSize end
+      for _, c in pairs(self.children) do
+        local fc = vec2.add(c.position, c:preferredSize())
+        res[1] = math.max(res[1], fc[1])
+        res[2] = math.max(res[2], fc[2])
+      end
     end
     return res
   end
@@ -269,7 +286,7 @@ do -- button
   })
   
   function widgetTypes.button:init(base, param)
-    self.caption =  mg.formatText(param.caption) or ""
+    self.caption = mg.formatText(param.caption)
     self.captionOffset = param.captionOffset or {0, 0}
     self.color = param.color
     self.state = "idle"
@@ -303,6 +320,12 @@ do -- button
   end
   
   function widgetTypes.button:onClick() end
+  
+  function widgetTypes.button:setText(t)
+    self.caption = mg.formatText(t)
+    self:queueRedraw()
+    if self.parent then self.parent:queueGeometryUpdate() end
+  end
 end
 
 do -- label
@@ -337,7 +360,13 @@ do -- label
     end
     local color = mg.getColor(self.color) or mg.getColor(theme.baseTextColor)
     if color then color = '#' .. color end
-    c:drawText(self.text, { position = pos, horizontalAnchor = ha, verticalAnchor = "top", wrapWidth = self.size[1] }, self.fontSize or 8, color)
+    c:drawText(self.text, { position = pos, horizontalAnchor = ha, verticalAnchor = "top", wrapWidth = self.size[1] + 1 }, self.fontSize or 8, color)
+  end
+  
+  function widgetTypes.label:setText(t)
+    self.text = mg.formatText(t)
+    self:queueRedraw()
+    if self.parent then self.parent:queueGeometryUpdate() end
   end
 end
 
@@ -389,13 +418,15 @@ function mg.createImplicitLayout(list, parent, defaults)
   return mg.createWidget(p, parent)
 end
 
+local redrawFrame = { draw = function() theme.drawFrame() end }
+function mg.setTitle(s)
+  mg.cfg.title = s
+  redrawQueue[redrawFrame] = true
+end
 
+-- -- --
 
-
-
-function init() init = nil -- clear out for prep
-  -- for k,v in pairs(player) do sb.logInfo(k .. " (" .. type(v) .. ")") end
-  
+function init()
   mg.cfg = config.getParameter("___") -- window config
   
   mg.theme = root.assetJson(mg.cfg.themePath .. "theme.json")
@@ -408,12 +439,6 @@ function init() init = nil -- clear out for prep
   
   -- set up basic pane stuff
   local borderMargins = mg.theme.metrics.borderMargins[mg.cfg.style]
-  --[[pane.addWidget({
-    type = "layout", zlevel = -9999, size = mg.cfg.totalSize, position = {0, 0}, layoutType = "basic"
-  }, "frame")
-  pane.addWidget({
-    type = "layout", size = mg.cfg.size, position = {borderMargins[1], borderMargins[4]}, layoutType = "basic"
-  }, "layout")]]
   frame = mg.createWidget({ type = "layout", size = mg.cfg.totalSize, position = {0, 0}, zlevel = -9999 })
   paneBase = mg.createImplicitLayout(mg.cfg.children, nil, { size = mg.cfg.size, position = {borderMargins[1], borderMargins[4]}, mode = mg.cfg.layoutMode or "vertical" })
   
@@ -423,8 +448,13 @@ function init() init = nil -- clear out for prep
   frame:updateGeometry()
   paneBase:updateGeometry()
   
-  for _, s in pairs(mg.cfg.scripts or { }) do require(s) end
-  if init then init() end -- call script init
+  local sysUpdate = update
+  for _, s in pairs(mg.cfg.scripts or { }) do
+    init, update = nil
+    require(mg.path(s))
+    if update then table.add(scriptUpdate, update) end
+    if init then init() end -- call script init
+  end
 end
 
 local eventQueue = { }
@@ -436,6 +466,7 @@ local function runEventQueue()
     elseif not f then sb.logError(err) end
   end
   eventQueue = next
+  for _, f in pairs(scriptUpdate) do f() end
 end
 function mg.startEvent(func, ...)
   local c = coroutine.create(func)

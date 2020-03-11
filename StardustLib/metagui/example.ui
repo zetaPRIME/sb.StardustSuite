@@ -11,7 +11,7 @@
   "children" : [
     // color attribute: none (default, generally gray), accent (window accent color), color name(?) or hexcode
     { "type" : "button", "id" : "btn", "caption" : "This is a button." },
-    [ {"type":"label","inline":true,"text":"Stuff:"}, { "type" : "button", "caption" : "A row of buttons..." }, { "type" : "button", "caption" : "...in proper layout." }, [{"size":28}, {"type":"button","caption":"fixed!"}] ],
+    [ {"type":"label","inline":true,"text":"Stuff:","id":"inl"}, { "type" : "button", "caption" : "A row of buttons..." }, { "type" : "button", "caption" : "...in proper layout." }, [{"size":28}, {"type":"button","caption":"fixed!"}] ],
     { "type" : "button", "id" : "btn", "caption" : "This one has an ^accent;accent color^reset;.", "color" : "accent" },
     { "type" : "label", "text" : "We have ^accent;labels^reset;..." },
     { "type" : "label", "text" : "...including ^cyan;aligned^reset; ones.", "align" : "right" },

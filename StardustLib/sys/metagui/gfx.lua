@@ -1,11 +1,6 @@
 metagui = metagui or { }
 local mg = metagui
 
-function asset(path)
-  if path:sub(1, 1) == '/' then return path end
-  return mg.cfg.themePath .. path
-end
-
 local nps = { }
 
 local npp = { }

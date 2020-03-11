@@ -60,3 +60,28 @@ function mg.ninePatch(path)
   np.frameSize = d.frameGrid.size
   return np
 end
+
+function mg.measureString(str, wrapWidth, size)
+  pane.addWidget({ type = "label", value = str, wrapWidth = wrapWidth, fontSize = size }, "__measure")
+  local s = widget.getSize("__measure")
+  pane.removeWidget("__measure")
+  return s
+end
+
+function mg.getColor(c)
+  if c == "none" then return nil end
+  if c == "accent" then
+    if mg.cfg.accentColor == "accent" then return "7f7f7f" end
+    return mg.getColor(mg.cfg.accentColor)
+  end
+  return c
+end
+
+function mg.formatText(str)
+  if not str then return nil end
+  local colorSub = {
+    ["^accent;"] = string.format("^#%s;", mg.getColor("accent")),
+  }
+  str = string.gsub(str, "(%b^;)", colorSub)
+  return str
+end

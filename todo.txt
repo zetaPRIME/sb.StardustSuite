@@ -101,18 +101,32 @@ some item transport for automation (and library to make use of input/output conf
 networked wire I/O ports
 
 metaGUI details {
-    click events, etc. as coroutines
-    named widgets in the config given tables in _ENV
+    - click events, etc. as coroutines
+    - named widgets in the config mirrored in _ENV
+    - add explicit size to layout
+    - add removal of widgets
+    icon support for buttons
     
-    9patches using arbitrary frame format:
-    {
-      "frameList" : {
-        "normal" : [43, 0, 86, 43],
-        "climb" : [43, 172, 86, 215]
-      }
+    eventually {
+        can detect shift+click by polling item pickup and replacing
+        can use knowledge of window position to make mouse-relative context menus
     }
-    rects in left, top, right, bottom format I think
     
+    widgets needed {
+        - label
+        image
+        checkbox
+        option box?
+        item slot
+        text box
+        scrollarea
+        
+        arbitrary canvas?
+        
+        tab field!
+    }
+    
+    need universal container proxy as well (transmat terminal and such)
     for container proxy: {
         use ipc lib (getmetatable '' and all)
         host can check for itembag changes every frame and push an event

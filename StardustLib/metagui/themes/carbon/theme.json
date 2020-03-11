@@ -2,6 +2,8 @@
     "name" : "Carbon",
     "description" : "Dark, sleek and simple.",
     
+    "defaultAccentColor" : "bf7fff",
+    
     "metrics" : {
         "borderMargins" : { // left, top, right, bottom
             "window" : [ 3, 22, 3, 3 ],

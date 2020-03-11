@@ -40,11 +40,15 @@ local proto, getproto do
   proto = function(parent, table) return setmetatable(table or { }, getproto(parent)) end
 end
 
-local widgetTypes = { }
+-- some operating variables
+mg.widgetTypes = { }
+local widgetTypes = mg.widgetTypes
 local widgetBase = {
   expandMode = {0, 0}, -- default: decline to expand in either direction (1 is "can", 2 is "wants to")
 }
 local redrawQueue = { }
+local recalcQueue = { }
+local lastMouseOver
 local mouseMap = setmetatable({ }, { __mode = 'v' })
 
 function widgetBase:minSize() return {0, 0} end
@@ -86,11 +90,39 @@ function widgetBase:applyGeometry()
   end
 end
 
+function widgetBase:queueGeometryUpdate() recalcQueue[self] = true end
 function widgetBase:updateGeometry()
   
 end
 
 function widgetBase:addChild(param) return mg.createWidget(param, self) end
+function widgetBase:clearChildren()
+  local c = { }
+  for _, v in pairs(self.children or { }) do table.insert(c, v) end
+  for _, v in pairs(c) do v:delete() end
+end
+function widgetBase:delete()
+  if self.parent then -- remove from parent
+    for k, v in pairs(self.parent.children) do
+      if v == self then table.remove(self.parent.children, k) break end
+    end
+    self.parent:queueGeometryUpdate()
+  end
+  if self.id and _ENV[self.id] == self then _ENV[self.id] = nil end -- remove from global
+  
+  -- unhook from events and drawing
+  redrawQueue[self] = nil
+  recalcQueue[self] = nil
+  if lastMouseOver == this then lastMouseOver = nil end
+  
+  -- clear out backing widgets
+  local function rw(w)
+    local parent, child = w:match('^(.*)%.(.-)$')
+    widget.removeChild(parent, child)
+  end
+  if self.backingWidget then rw(self.backingWidget) end
+  if self.subWidgets then for _, sw in pairs(self.subWidgets) do rw(sw) end end
+end
 
 do -- layout
   widgetTypes.layout = proto(widgetBase, {
@@ -117,7 +149,14 @@ do -- layout
     if self.mode == "h" then self.mode = "horizontal" end
     if self.mode == "v" then self.mode = "vertical" end
     self.spacing = param.spacing
-    self.expandMode = param.expandMode
+    
+    if type(self.explicitSize) == "number" then
+      --self.explicitSize = {self.explicitSize, self.explicitSize}
+      if self.mode == "horizontal" then self.expandMode = {1, 0} end
+      if self.mode == "vertical" then self.expandMode = {0, 1} end
+    end
+    
+    self.expandMode = param.expandMode or self.expandMode
     
     self.backingWidget = mkwidget(base, { type = "layout", layoutType = "basic", zlevel = param.zLevel })
     if debug.showLayoutBoxes then -- image to make it visible (random color)
@@ -137,6 +176,7 @@ do -- layout
   end
   
   function widgetTypes.layout:preferredSize()
+    --if self.explicitSize then return self.explicitSize end
     local res = {0, 0}
     if self.mode == "horizontal" or self.mode == "vertical" then
       local axis = self.mode == "vertical" and 2 or 1
@@ -149,6 +189,7 @@ do -- layout
         res[opp] = math.max(res[opp], ps[opp])
         res[axis] = res[axis] + ps[axis]
       end
+      if type(self.explicitSize) == "number" then res[opp] = self.explicitSize end
     end
     return res
   end
@@ -170,7 +211,7 @@ do -- layout
       -- size pass 1
       for _, c in pairs(self.children) do
         if exLv == 0 or c.expandMode[axis] < exLv then
-          c.size = c:preferredSize()
+          c.size = c:preferredSize(axis == 2 and self.size[1] or nil)
           sizeAcc = sizeAcc + c.size[axis]
         end
         -- ...
@@ -185,7 +226,7 @@ do -- layout
             -- do a remainder-accumulator to keep things integer
             rm = rm + (sz - szf)
             local rmf = math.floor(rm)
-            c.size = c:preferredSize()
+            c.size = c:preferredSize(axis == 1 and szf+rmf or self.size[1])
             c.size[axis] = szf + rmf
             rm = rm - rmf
           end
@@ -202,6 +243,7 @@ do -- layout
         if c.expandMode[opp] >= 1 then
           c.size[opp] = self.size[opp]
         else
+          c.size[opp] = math.min(c.size[opp], self.size[opp]) -- force fit regardless
           c.position[opp] = math.floor(self.size[opp]/2 - c.size[opp]/2)
         end
       end
@@ -209,9 +251,9 @@ do -- layout
     end
     
     -- propagate
-    if not noApply then for _, c in pairs(self.children or { }) do c:updateGeometry(true) end end
+    for _, c in pairs(self.children or { }) do c:updateGeometry(true) end
     -- finally, apply
-    self:applyGeometry()
+    if not noApply then self:applyGeometry() end
   end
 end
 
@@ -227,9 +269,11 @@ do -- button
   })
   
   function widgetTypes.button:init(base, param)
-    self.caption = param.caption or ""
+    self.caption =  mg.formatText(param.caption) or ""
+    self.captionOffset = param.captionOffset or {0, 0}
+    self.color = param.color
     self.state = "idle"
-    self.backingWidget = mkwidget(base, { type = "canvas", })
+    self.backingWidget = mkwidget(base, { type = "canvas" })
   end
   
   function widgetTypes.button:minSize() return {16, 16} end
@@ -253,12 +297,48 @@ do -- button
       elseif self.state == "press" then
         self.state = "hover"
         self:queueRedraw()
-        self:onClick()
+        mg.startEvent(self.onClick, self)
       end
     end
   end
   
   function widgetTypes.button:onClick() end
+end
+
+do -- label
+  widgetTypes.label = proto(widgetBase, {
+    expandMode = {1, 0}, -- will expand horizontally, but not vertically
+    text = "",
+  })
+  
+  function widgetTypes.label:init(base, param)
+    self.text = mg.formatText(param.text)
+    self.color = param.color
+    self.fontSize = param.fontSize
+    self.align = param.align
+    
+    if param.inline then self.expandMode = {0, 0} end
+    
+    self.backingWidget = mkwidget(base, { type = "canvas" })
+  end
+  
+  function widgetTypes.label:preferredSize(width)
+    if self.explicitSize then return self.explicitSize end
+    return mg.measureString(self.text, width, self.fontSize)
+  end
+  
+  function widgetTypes.label:draw()
+    local c = widget.bindCanvas(self.backingWidget) c:clear()
+    local pos, ha = {0, self.size[2]}, "left"
+    if self.align == "center" or self.align == "mid" then
+      pos[1], ha = self.size[1] / 2, "mid"
+    elseif self.align == "right" then
+      pos[1], ha = self.size[1], "right"
+    end
+    local color = mg.getColor(self.color) or mg.getColor(theme.baseTextColor)
+    if color then color = '#' .. color end
+    c:drawText(self.text, { position = pos, horizontalAnchor = ha, verticalAnchor = "top", wrapWidth = self.size[1] }, self.fontSize or 8, color)
+  end
 end
 
 -- DEBUG populate type names
@@ -288,6 +368,7 @@ function mg.createWidget(param, parent)
   w:init(base, param)
   if w:isMouseInteractable() then -- enroll in mouse events
     if w.backingWidget then mouseMap[w.backingWidget] = w end
+    if w.subWidgets then for _, sw in pairs(w.subWidgets) do mouseMap[sw] = w end end
   end
   if w.id and _ENV[w.id] == nil then
     _ENV[w.id] = w
@@ -337,18 +418,29 @@ function init() init = nil -- clear out for prep
   paneBase = mg.createImplicitLayout(mg.cfg.children, nil, { size = mg.cfg.size, position = {borderMargins[1], borderMargins[4]}, mode = mg.cfg.layoutMode or "vertical" })
   
   mg.theme.decorate()
+  mg.theme.drawFrame()
   
   frame:updateGeometry()
   paneBase:updateGeometry()
   
   for _, s in pairs(mg.cfg.scripts or { }) do require(s) end
   if init then init() end -- call script init
-  
-  function btnSpacer:onClick() pane.dismiss() end
-  
-  --[[setmetatable(_ENV, {__index = function(t, k)
-    sb.logInfo("absent var: " .. k)
-  end})]]
+end
+
+local eventQueue = { }
+local function runEventQueue()
+  local next = { }
+  for _, v in pairs(eventQueue) do
+    local f, err = coroutine.resume(v)
+    if coroutine.status(v) ~= "dead" then table.insert(next, v) -- execute; insert in next-frame queue if still running
+    elseif not f then sb.logError(err) end
+  end
+  eventQueue = next
+end
+function mg.startEvent(func, ...)
+  local c = coroutine.create(func)
+  coroutine.resume(c, ...)
+  if coroutine.status(c) ~= "dead" then table.insert(eventQueue, c) end
 end
 
 local function findWindowPosition()
@@ -395,23 +487,15 @@ function update()
   if not mg.windowPosition then
     findWindowPosition()
   else
-    --local fcp = {mg.windowPosition[1] + mg.cfg.totalSize[1], mg.windowPosition[2] + mg.cfg.totalSize[2]}
     if not widget.inMember(ws, mg.windowPosition) or not widget.inMember(ws, vec2.add(mg.windowPosition, mg.cfg.totalSize)) then findWindowPosition() end
   end
   
-  --[[local c = widget.bindCanvas(frame.backingWidget .. ".canvas")
-  widget.setText("debugWidget", table.concat {
-    "window pos: ", mg.windowPosition[1], ", ", mg.windowPosition[2], "\n",
-    "over widget: ", widget.getChildAt(vec2.add(mg.windowPosition, c:mousePosition())) or "none",
-  })]]
-  
   local c = widget.bindCanvas(ws)
   mg.mousePosition = c:mousePosition()
+  
+  runEventQueue() -- not entirely sure where this should go in the update cycle
+  
   local mwc = widget.getChildAt(vec2.add(mg.windowPosition, mg.mousePosition))
-  widget.setText("debugWidget", table.concat {
-    "mouse pos: ", mg.mousePosition[1], ", ", mg.mousePosition[2],
-    " over ", mwc or "none"
-  })
   local mw = mwc and mouseMap[mwc:sub(2)]
   if mw ~= lastMouseOver then
     if mw then mw:onMouseEnter() end
@@ -424,15 +508,11 @@ function update()
     widget.setPosition("_intercept", {-99999, -99999})
   end
   
+  for w in pairs(recalcQueue) do w:updateGeometry() end
   for w in pairs(redrawQueue) do w:draw() end
-  redrawQueue = { }
+  redrawQueue = { } recalcQueue = { }
 end
 
 function _mouseEvent(_, btn, down)
   if lastMouseOver then lastMouseOver:onMouseButtonEvent(btn, down) end
-end
-
-function canvasTest()
-  local m = getmetatable('')
-  if m.testSvc then m.testSvc.message(nil, nil, "clicked") end
 end

@@ -11,55 +11,41 @@ local c
 local dw = "debugWidget"
 
 function theme.decorate()
-  --sb.logInfo("theme decoration called")
-  local m = getmetatable('')
-  m.blarg = (m.blarg or 0) + 1
-  --widget.addChild(frame.backingWidget, { type = "label", value = "lol wut " .. m.blarg, position = {0, 0} })
-  widget.addChild(frame.backingWidget, { type = "canvas", position = {0, 0}, size = frame.size, captureMousseEvents = true, clickCallback = "canvasTest" }, "canvas")
+  local style = mg.cfg.style
+  widget.addChild(frame.backingWidget, { type = "canvas", position = {0, 0}, size = frame.size }, "canvas")
+  
+  if (style == "window") then
+    local csize = 14
+    local csub = 0
+    local close = frame:addChild({ type = "button", caption = "×", captionOffset = {0.5, -0.5}, color = "ff3f3f", size = {csize-csub*2, csize-csub*2}, position = {frame.size[1] - csize - 3 + csub, 3 + csub} })
+    function close:onClick() paneBase:clearChildren() close:delete() end --pane.dismiss() end
+  end
+  
+end
+
+function theme.drawFrame()
+  local style = mg.cfg.style
   c = widget.bindCanvas(frame.backingWidget .. ".canvas")
-  npFrame:drawToCanvas(c)
+  c:clear() npFrame:drawToCanvas(c)
   
-  pane.addWidget({ type = "label" }, dw)
-  
-  --if m.testSvc then m.testSvc.message(nil, nil, "hook through " .. m.blarg) end
-  --widget.addChild("layout", { type = "label", value = "lol wut", position = {0, 0} })
-  --pane.playSound("/sfx/interface/inventory_pickup1.ogg")
-  
-  --sb.logInfo(util.tableToString(_ENV))
+  if (style == "window") then
+    npButton:drawToCanvas(c, "accent?multiply=" .. mg.getColor("accent"), {0, frame.size[2] - 22, frame.size[1], frame.size[2]})
+    c:drawText(mg.cfg.title or "", { position = {6, frame.size[2] - 6}, horizontalAnchor = "left", verticalAnchor = "top" }, 8)
+  end
 end
 
 function theme.drawButton(b)
   local c = widget.bindCanvas(b.backingWidget)
-  c:clear()
-  npButton:drawToCanvas(c, b.state or "idle")
-  npButton:drawToCanvas(c, "accent?multiply=33f")
-  c:drawText(b.caption or "", { position = vec2.mul(c:size(), 0.5), horizontalAnchor = "mid", verticalAnchor = "mid", wrapWidth = b.size[1] - 4 }, 8)
+  c:clear() npButton:drawToCanvas(c, b.state or "idle")
+  local acc = mg.getColor(b.color)
+  if acc then npButton:drawToCanvas(c, "accent?multiply=" .. acc) end
+  c:drawText(b.caption or "", { position = vec2.add(vec2.mul(c:size(), 0.5), b.captionOffset), horizontalAnchor = "mid", verticalAnchor = "mid", wrapWidth = b.size[1] - 4 }, 8)
 end
 
 function theme.onButtonHover(b)
-  pane.playSound("/sfx/interface/hoverover_bumb.ogg", 0, 0.5)
+  pane.playSound("/sfx/interface/hoverover_bumb.ogg", 0, 0.75)
 end
 
 function theme.onButtonClick(b)
-  pane.playSound("/sfx/interface/clickon_success.ogg", 0, 1)
-end
-
-function supdate(...)
-  local mp = c:mousePosition()
-  --sb.logInfo(util.tableToString{...})
-  widget.setText(dw, table.concat {
-    "mouse pos ", mp[1], ", ", mp[2], "; over: ", (widget.getChildAt(mp) or "nothing"),
-    "\ncorner overlap: ", widget.inMember(frame.backingWidget .. ".canvas", {0, 0}) and "true" or "false"
-  })
-end
-
-function createTooltip(pos)
-  --[[widget.setText(dw, table.concat {
-    "mouse pos ", pos[1], ", ", pos[2],
-    "\nwindow pos ", mg.windowPosition[1], ", ", mg.windowPosition[2],
-  })]]
-  
-  --local m = getmetatable('')
-  --if m.testSvc then m.testSvc.message(nil, nil, "ctt pos " .. pos[1] .. ", " .. pos[2] .. "; over: " .. (widget.getChildAt(pos) or "nothing")) end
-  --pane.playSound("/sfx/interface/actionbar_select.ogg")
+  pane.playSound("/sfx/interface/clickon_success.ogg", 0, 1.0)
 end

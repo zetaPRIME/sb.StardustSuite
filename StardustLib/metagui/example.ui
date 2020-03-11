@@ -15,6 +15,7 @@
     { "type" : "button", "id" : "btn", "caption" : "This one has an ^accent;accent color^reset;.", "color" : "accent" },
     { "type" : "label", "text" : "We have ^accent;labels^reset;..." },
     { "type" : "label", "text" : "...including ^cyan;aligned^reset; ones.", "align" : "right" },
+    { "type" : "itemGrid", "slots" : 15, "columns" : 5 },
     "spacer",
     [ { "type" : "button", "caption" : "It even supports layout spacers!", "id" : "btnSpacer" }, { "type" : "image", "file" : "/interface/beamuphover.png" }, { "type" : "itemSlot", "glyph" : "/interface/inventory/backingimagetrash.png", "item" : { "name" : "perfectlygenericitem", "count" : 1, "parameters" : { } } } ]
     //[ ["lol"], ["lol"] ], ["lol"]

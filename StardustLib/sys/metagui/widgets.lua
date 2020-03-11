@@ -285,6 +285,7 @@ end do -- item slot
   function widgets.itemSlot:applyGeometry()
     mg.widgetBase.applyGeometry(self) -- base first
     widget.setPosition(self.subWidgets.slot, widget.getPosition(self.backingWidget)) -- sync position
+    widget.setSize(self.subWidgets.slot, {18, 18})
   end
   function widgets.itemSlot:draw()
     theme.drawItemSlot(self)
@@ -297,11 +298,73 @@ end do -- item slot
     --pane.playSound("/sfx/interface/clickon_success.ogg", 0, 1.0)
   end
   
-  function widgets.itemSlot:getItem() return widget.itemSlotItem(self.subWidgets.slot) end
+  function widgets.itemSlot:item() return widget.itemSlotItem(self.subWidgets.slot) end
   function widgets.itemSlot:setItem(itm)
-    local old = self:getItem()
+    local old = self:item()
     widget.setItemSlotItem(self.subWidgets.slot, itm)
     self:queueRedraw()
     return old
+  end
+end do -- item grid
+  widgets.itemGrid = mg.proto(mg.widgetBase, {
+    -- widget attributes
+    isBaseWidget = true,
+    
+    -- defaults
+    spacing = 2,
+  })
+  
+  function widgets.itemGrid:init(base, param)
+    self.children = self.children or { } -- always have a children table
+    
+    self.columns = param.columns
+    self.spacing = param.spacing
+    if type(self.spacing) == "number" then self.spacing = {self.spacing, self.spacing} end
+    self.autoInteract = param.autoInteract or param.auto
+    
+    self.backingWidget = mkwidget(base, { type = "layout", layoutType = "basic" })
+    
+    local slots = param.slots or 1
+    for i=1,slots do self:addSlot() end
+  end
+  
+  function widgets.itemGrid:addSlot(item)
+    self:addChild {
+      type = "itemSlot",
+      autoInteract = self.autoInteract,
+      item = item,
+    }
+  end
+  function widgets.itemGrid:removeSlot(index) if self.children[index] then self.children[index]:delete() end end
+  function widgets.itemGrid:slot(index) return self.children[index] end
+  
+  function widgets.itemGrid:item(index) if not self:slot(index) then return nil end return self:slot(index):item() end
+  function widgets.itemGrid:setItem(index, item) if not self:slot(index) then return nil end return self:slot(index):setItem(item) end
+  
+  function widgets.itemGrid:preferredSize(width)
+    local dim = {0, 0}
+    
+    if self.columns then dim[1] = self.columns else
+      width = width + self.spacing[1]
+      local sw = 18 + self.spacing[1]
+      dim[1] = math.modf(width / sw)
+    end
+    
+    local w, p = math.modf(#(self.children) / dim[1])
+    dim[2] = w + math.ceil(p)
+    
+    return {dim[1] * 18 + self.spacing[1] * (dim[1] - 1), dim[2] * 18 + self.spacing[2] * (dim[2] - 1)}
+  end
+  
+  function widgets.itemGrid:updateGeometry()
+    local slots = #(self.children)
+    local cols = math.modf((self.size[1] + self.spacing[1]) / (18 + self.spacing[1]))
+    for i, s in pairs(self.children) do
+      s.index = i -- shove this in for script use
+      local row = math.modf((i-1) / cols)
+      local col = i - 1 - (row*cols)
+      s.position = {(18 + self.spacing[1]) * col, (18 + self.spacing[2]) * row}
+    end
+    self:applyGeometry()
   end
 end

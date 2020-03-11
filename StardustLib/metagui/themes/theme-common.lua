@@ -44,7 +44,7 @@ function tdef.drawItemSlot(s)
   local c = widget.bindCanvas(s.backingWidget)
   c:clear() c:drawImage(assets.itemSlot .. ":" .. (s.hover and "hover" or "idle"), center, nil, nil, true)
   if s.glyph then c:drawImage(s.glyph, center, nil, nil, true) end
-  local ic = root.itemConfig(s:getItem())
+  local ic = root.itemConfig(s:item())
   if ic then
     local rarity = (ic.parameters.rarity or ic.config.rarity or "Common"):lower()
     c:drawImage(assets.itemRarity .. ":" .. rarity .. (s.hover and "?brightness=50" or ""), center, nil, nil, true)

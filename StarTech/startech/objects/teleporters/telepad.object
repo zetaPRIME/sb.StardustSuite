@@ -46,7 +46,7 @@
   "objectType" : "teleporter",
   
   "scripts" : [ "telepad.lua" ],
-  "scriptDelta" : 15,
+  "scriptDelta" : 0,
   
   "inventoryIcon" : "telepad.icon.png",
   "orientations" : [

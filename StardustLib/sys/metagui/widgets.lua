@@ -15,9 +15,7 @@ do -- layout
     spacing = 2,
   })
   
-  -- layout engine is probably going to need to be a multi-dive kind of deal
-  -- minimums first (inside out), then calculate actual sizes outside-in
-  -- multiple layout modes... hmm.
+  -- layout modes:
   -- "manual" (the explicit default) is exactly what it says on the tim
   -- "horizontal" and "vertical" auto-arrange for each axis
   
@@ -150,6 +148,18 @@ end do -- spacer
     if self.explicitSize then expandMode = {0, 0} end -- fixed size
   end
   function widgets.spacer:preferredSize() local p = self.explicitSize or 0 return {p, p} end
+end do -- canvas
+  widgets.canvas = mg.proto(mg.widgetBase, {
+    expandMode = {1, 1} -- can expand if no size specified
+  })
+  
+  function widgets.canvas:init(base, param)
+    if self.explicitSize then expandMode = {0, 0} end -- fixed size
+    self.backingWidget = mkwidget(base, { type = "canvas" })
+  end
+  
+  function widgets.canvas:preferredSize() return self.explicitSize or {64, 64} end
+  function widgets.canvas:isMouseInteractable() return true end
 end do -- button
   widgets.button = mg.proto(mg.widgetBase, {
     expandMode = {1, 0}, -- will expand horizontally, but not vertically
@@ -235,5 +245,23 @@ end do -- label
     self.text = mg.formatText(t)
     self:queueRedraw()
     if self.parent then self.parent:queueGeometryUpdate() end
+  end
+end do -- image
+  widgets.image = mg.proto(mg.widgetBase, {
+    file = "/assetmissing.png", -- fallback file
+  })
+  
+  function widgets.image:init(base, param)
+    self.file = mg.path(param.file)
+    self.backingWidget = mkwidget(base, { type = "canvas" })
+  end
+  function widgets.image:preferredSize() return root.imageSize(self.file) end
+  function widgets.image:draw()
+    local c = widget.bindCanvas(self.backingWidget)
+    c:clear() c:drawImage(self.file, {0, 0})
+  end
+  function widgets.image:setFile(f)
+    self.file = mg.path(f)
+    if parent then parent:queueGeometryUpdate() end
   end
 end

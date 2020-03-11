@@ -16,7 +16,7 @@
     { "type" : "label", "text" : "We have ^accent;labels^reset;..." },
     { "type" : "label", "text" : "...including ^cyan;aligned^reset; ones.", "align" : "right" },
     "spacer",
-    [ { "type" : "button", "caption" : "It even supports layout spacers!", "id" : "btnSpacer" } ]
+    [ { "type" : "button", "caption" : "It even supports layout spacers!", "id" : "btnSpacer" }, { "type" : "image", "file" : "/interface/beamuphover.png" } ]
     //[ ["lol"], ["lol"] ], ["lol"]
   ]
 }

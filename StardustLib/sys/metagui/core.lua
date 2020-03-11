@@ -14,11 +14,13 @@ mg.debugFlags = debug
 require "/sys/metagui/gfx.lua"
 
 function mg.path(path)
+  if not path then return nil end
   if path:sub(1, 1) == '/' then return path end
   return (mg.cfg.assetPath or "/") .. path
 end
 
 function mg.asset(path)
+  if not path then return nil end
   if path:sub(1, 1) == '/' then return path end
   return mg.cfg.themePath .. path
 end

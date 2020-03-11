@@ -121,15 +121,15 @@ metaGUI details {
     }
     
     widgets needed {
+        - canvas
         - label
-        image
+        - image
         checkbox
         option box?
         item slot
+        item grid? just a wrapper around a given number of slots
         text box
         scrollarea
-        
-        arbitrary canvas?
         
         tab field!
     }

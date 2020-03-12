@@ -1,0 +1,15 @@
+{ //  -*- grammar-ext: json -*-
+  "style" : "window", // window (has titlebar), panel (just a frame) etc.
+  "size" : [60, 78], // *internal* size (not including chrome)
+  "title" : "Drive Bay",
+  "openWithInventory" : true,
+  "scripts" : [ "drivebay.lua" ],
+  "children" : [
+    { "id" : "grid", "type" : "itemGrid", "slots" : 8, "columns" : 2 },
+    ""
+    /*[
+      { "align" : 0 },
+      { "type" : "label", "text" : "..." },
+    ]*/
+  ]
+}

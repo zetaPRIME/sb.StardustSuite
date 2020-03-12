@@ -411,14 +411,19 @@ end do -- item grid
   end
   
   function widgets.itemGrid:addSlot(item)
-    self:addChild {
+    local s = self:addChild {
       type = "itemSlot",
       autoInteract = self.autoInteract,
       item = item,
     }
+    if not self.autoInteract then
+      s.onMouseButtonEvent = function(...) return self.onSlotMouseEvent(...) end
+    end
   end
   function widgets.itemGrid:removeSlot(index) if self.children[index] then self.children[index]:delete() end end
   function widgets.itemGrid:slot(index) return self.children[index] end
+  
+  function widgets.itemGrid:onSlotMouseEvent(btn, down) end
   
   function widgets.itemGrid:item(index) if not self:slot(index) then return nil end return self:slot(index):item() end
   function widgets.itemGrid:setItem(index, item) if not self:slot(index) then return nil end return self:slot(index):setItem(item) end

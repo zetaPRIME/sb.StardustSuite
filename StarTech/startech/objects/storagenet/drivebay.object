@@ -24,7 +24,8 @@
   "scriptDelta" : 1,
   
   "interactAction" : "ScriptPane",
-  "interactData" : "/startech/interface/storagenet/drivebay.config",
+  "interactData" : { "gui" : { }, "scripts" : ["/metagui.lua"], "config" : "startech:drivebay" },
+  //"interactData" : "/startech/interface/storagenet/drivebay.config",
   
   "animationScripts" : [ "drivebay.render.lua" ],
   

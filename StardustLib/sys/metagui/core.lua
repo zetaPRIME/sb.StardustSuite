@@ -258,6 +258,7 @@ function init()
     if update then table.add(scriptUpdate, update) end
     if init then init() end -- call script init
   end
+  update = sysUpdate
   
   --setmetatable(_ENV, {__index = function(_, n) if DBG then DBG:setText("unknown func " .. n) end end})
 end

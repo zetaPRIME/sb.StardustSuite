@@ -1,0 +1,5 @@
+[ // -*- grammar-ext: json -*-
+  { "op" : "add", "path" : "/panes/startech", "value": {
+    "drivebay" : "/startech/ui/storagenet/drivebay.ui"
+  }}
+]

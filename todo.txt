@@ -101,24 +101,17 @@ some item transport for automation (and library to make use of input/output conf
 networked wire I/O ports
 
 metaGUI details {
-    - click events, etc. as coroutines
-    - named widgets in the config mirrored in _ENV
-    - add explicit size to layout
-    - add removal of widgets
     icon support for buttons
+    pane icon
     
-    - widgets.lua
-    - theme-common.lua
-    - pane path
-    - setTitle
     proper data-passing
     
-    - create and remove keyboard capture
-    - actual scrollbar display
+    - fix layout not fitting full size of labels
     
     eventually {
         debug console pane via common-table
         autoInteract for item slots
+        rework preferredSize to take both a width and a height?
         can detect shift+click by polling item pickup and replacing
         can use knowledge of window position to make mouse-relative context menus
         generator scripts?

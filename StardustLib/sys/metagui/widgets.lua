@@ -13,6 +13,7 @@ do -- layout
     -- defaults
     mode = "manual",
     spacing = 2,
+    align = 0.5,
   })
   
   -- layout modes:
@@ -27,6 +28,7 @@ do -- layout
     if self.mode == "h" then self.mode = "horizontal" end
     if self.mode == "v" then self.mode = "vertical" end
     self.spacing = param.spacing
+    self.align = param.align
     
     if type(self.explicitSize) == "number" then
       --self.explicitSize = {self.explicitSize, self.explicitSize}
@@ -54,7 +56,8 @@ do -- layout
     end
   end
   
-  function widgets.layout:preferredSize()
+  function widgets.layout:preferredSize(width)
+    width = width or (parent and parent.size[1]) or nil
     local res = {0, 0}
     if self.mode == "horizontal" or self.mode == "vertical" then
       local axis = self.mode == "vertical" and 2 or 1
@@ -63,7 +66,8 @@ do -- layout
       res[axis] = self.spacing * (#(self.children) - 1)
       
       for _, c in pairs(self.children) do
-        local ps = c:preferredSize()
+        local ps = c:preferredSize(width)
+        if width and axis == 1 then width = width - ps[1] - self.spacing*2 end
         res[opp] = math.max(res[opp], ps[opp])
         res[axis] = res[axis] + ps[axis]
       end
@@ -71,7 +75,7 @@ do -- layout
     elseif self.mode == "manual" then
       if self.explicitSize then return self.explicitSize end
       for _, c in pairs(self.children) do
-        local fc = vec2.add(c.position, c:preferredSize())
+        local fc = vec2.add(c.position, c:preferredSize(width))
         res[1] = math.max(res[1], fc[1])
         res[2] = math.max(res[2], fc[2])
       end
@@ -96,7 +100,7 @@ do -- layout
       -- size pass 1
       for _, c in pairs(self.children) do
         if exLv == 0 or c.expandMode[axis] < exLv then
-          c.size = c:preferredSize(axis == 2 and self.size[1] or nil)
+          c.size = c:preferredSize(self.size[1])
           sizeAcc = sizeAcc + c.size[axis]
         end
         -- ...
@@ -129,7 +133,7 @@ do -- layout
           c.size[opp] = self.size[opp]
         else
           c.size[opp] = math.min(c.size[opp], self.size[opp]) -- force fit regardless
-          c.position[opp] = math.floor(self.size[opp]/2 - c.size[opp]/2)
+          c.position[opp] = math.floor(self.size[opp]*self.align - c.size[opp]*self.align)
         end
       end
       
@@ -165,7 +169,8 @@ end do -- scrollAera
     mg.createImplicitLayout(param.children, self, { mode = "vertical" })
   end
   
-  function widgets.scrollArea:isMouseInteractable() return true end
+  -- only intercept if it can actually scroll
+  function widgets.scrollArea:isMouseInteractable() return self.children[1].size and self.children[1].size[2] > self.size[2] end
   function widgets.scrollArea:onMouseButtonEvent(btn, down)
     if down and not self.captureBtn then
       self.captureBtn = btn
@@ -193,14 +198,16 @@ end do -- scrollAera
     l.position = vec2.sub(l.position, vec2.mul(delta, self.scrollDirections))
     l.position = rect.ll(rect.bound(rect.fromVec2(l.position, l.position), {0, math.max(0, l.size[2] - self.size[2]) * -1, math.max(0, l.size[1] - self.size[1]), 0}))
     self:applyGeometry()
-    theme.onScroll(self)
+    if l.size[2] > self.size[2] then -- only if there's actually room to scroll
+      theme.onScroll(self)
+    end
   end
   
-  function widgets.scrollArea:preferredSize() return vec2.add(self.children[1]:preferredSize(), sizeMod) end
+  function widgets.scrollArea:preferredSize(width) return vec2.add(self.children[1]:preferredSize(width + sizeMod[1]), sizeMod) end
   function widgets.scrollArea:updateGeometry(noApply)
     local l = self.children[1]
     l.size = vec2.sub(self.size, sizeMod)
-    l.size[2] = l:preferredSize()[2]
+    l.size[2] = l:preferredSize(self.size[1])[2]
     
     l:updateGeometry(true)
     if not noApply then applyGeometry() end
@@ -290,8 +297,10 @@ end do -- label
     self.color = param.color
     self.fontSize = param.fontSize
     self.align = param.align
+    self.expandMode = param.expandMode
     
     if param.inline then self.expandMode = {0, 0} end
+    if param.expand then self.expandMode = {2, 0} end
     
     self.backingWidget = mkwidget(base, { type = "canvas" })
   end

@@ -87,6 +87,12 @@ function widgetBase:captureMouse() return mg.captureMouse(self) end
 function widgetBase:releaseMouse() return mg.releaseMouse(self) end
 function widgetBase:onCaptureMouseMove() end
 
+function widgetBase:grabFocus() return mg.grabFocus(self) end
+function widgetBase:releaseFocus() return mg.releaseFocus(self) end
+function widgetBase:onFocus() end
+function widgetBase:onUnfocus() end
+function widgetBase:onKeyEvent(key, down) end
+
 function widgetBase:applyGeometry()
   self.size = self.size or self:preferredSize() -- fill in default size if absent
   local tp = self.position or {0, 0}
@@ -209,14 +215,17 @@ end
 
 local mouseCaptor
 function mg.captureMouse(w) mouseCaptor = w end
-function mg.releaseMouse(w)
-  if w == mouseCaptor or w == true then
-    mouseCaptor = nil
-    return true
-  end
-end
+function mg.releaseMouse(w) if w == mouseCaptor or w == true then mouseCaptor = nil return true end end
 
 local keyFocus
+function mg.grabFocus(w)
+  if w ~= keyFocus then
+    if keyFocus then keyFocus:onUnfocus() end
+    keyFocus = w
+    if keyFocus then keyFocus:onFocus() end
+  end
+end
+function mg.releaseFocus(w) if w == keyFocus or w == true then mg.grabFocus(nil) return true end end
 
 -- -- --
 
@@ -413,10 +422,9 @@ function _mouseEvent(_, btn, down)
       if not w then break end
     end
   end
+  if down and keyFocus and keyFocus ~= lastMouseOver then mg.grabFocus() end -- clear focus on clicking other widget
 end
 function _clickLeft() _mouseEvent(nil, 0, true) end
 function _clickRight() _mouseEvent(nil, 2, true) end
 
-function _keyEvent(key, down)
-  --DBG:setText(util.tableToString{...})
-end
+function _keyEvent(key, down) if keyFocus then keyFocus:onKeyEvent(key, down) end end

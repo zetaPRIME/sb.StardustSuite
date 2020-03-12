@@ -8,7 +8,7 @@ do -- layout
   widgets.layout = mg.proto(mg.widgetBase, {
     -- widget attributes
     isBaseWidget = true,
-    expandMode = {1, 0}, -- agree to expand to fill horizontally
+    expandMode = {1, 0}, -- can expand to fill horizontally
     
     -- defaults
     mode = "manual",
@@ -140,6 +140,72 @@ do -- layout
     -- finally, apply
     if not noApply then self:applyGeometry() end
   end
+end do -- scrollAera
+  widgets.scrollArea = mg.proto(mg.widgetBase, {
+    isBaseWidget = true,
+    expandMode = {1, 0}, -- can expand to fill horizontally
+    
+    scrollDirections = {0, 1},
+  })
+  
+  local sizeMod = {10, 0}
+  
+  function widgets.scrollArea:init(base, param)
+    self.children = self.children or { }
+    
+    self.expandMode = param.expandMode
+    
+    self.velocity = {0, 0}
+    
+    self.subWidgets = { backing = mkwidget(base, { type = "canvas" }) }
+    self.backingWidget = mkwidget(base, { type = "layout", layoutType = "basic" })
+    mg.createImplicitLayout(param.children, self, { mode = "vertical" })
+  end
+  
+  function widgets.scrollArea:isMouseInteractable() return true end
+  function widgets.scrollArea:onMouseButtonEvent(btn, down)
+    if down and not self.captureBtn then
+      self.captureBtn = btn
+      self.velocity = {0, 0}
+      self:captureMouse()
+      return true
+    elseif btn == self.captureBtn then
+      self.captureBtn = nil
+      mg.startEvent(function()
+        while vec2.mag(self.velocity) >= 1.0 do
+          self:scrollBy(self.velocity)
+          self.velocity = vec2.mul(self.velocity, 0.9)
+          coroutine.yield()
+        end
+      end)
+      return self:releaseMouse()
+    end
+  end
+  function widgets.scrollArea:onCaptureMouseMove(delta)
+    self.velocity = delta
+    self:scrollBy(delta)
+  end
+  function widgets.scrollArea:scrollBy(delta)
+    local l = self.children[1]
+    l.position = vec2.sub(l.position, vec2.mul(delta, self.scrollDirections))
+    l.position = rect.ll(rect.bound(rect.fromVec2(l.position, l.position), {0, math.max(0, l.size[2] - self.size[2]) * -1, math.max(0, l.size[1] - self.size[1]), 0}))
+    self:applyGeometry()
+  end
+  
+  function widgets.scrollArea:preferredSize() return vec2.add(self.children[1]:preferredSize(), sizeMod) end
+  function widgets.scrollArea:updateGeometry(noApply)
+    local l = self.children[1]
+    l.size = vec2.sub(self.size, sizeMod)
+    l.size[2] = l:preferredSize()[2]
+    
+    l:updateGeometry(true)
+    if not noApply then applyGeometry() end
+  end
+  function widgets.scrollArea:applyGeometry()
+    mg.widgetBase.applyGeometry(self) -- base first
+    widget.setPosition(self.subWidgets.backing, widget.getPosition(self.backingWidget)) -- sync position
+    widget.setSize(self.subWidgets.backing, widget.getSize(self.backingWidget))
+  end
 end do -- spacer
   widgets.spacer = mg.proto(mg.widgetBase, {
     expandMode = {2, 2} -- prefer to expand
@@ -196,6 +262,7 @@ end do -- button
         self:queueRedraw()
         mg.startEvent(self.onClick, self)
       end
+      return true
     end
   end
   

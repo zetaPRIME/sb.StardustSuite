@@ -12,9 +12,10 @@ function theme.decorate()
   if (style == "window") then
     local csize, csub = 14, 0
     local close = frame:addChild({ type = "button", caption = "×", captionOffset = {0.5, -0.5}, color = "ff3f3f", size = {csize-csub*2, csize-csub*2}, position = {frame.size[1] - csize - 3 + csub, 3 + csub} })
-    function close:onClick() pane.dismiss() end
+    function close:onClick()
+      pane.dismiss()
+    end
   end
-  
 end
 
 function theme.drawFrame()

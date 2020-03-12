@@ -14,6 +14,8 @@ theme.assets = { -- default assets
 
 --
 
+function tdef.update() end -- default null
+
 function tdef.decorate()
   widget.addChild(frame.backingWidget, { type = "canvas", position = {0, 0}, size = frame.size }, "canvas")
 end

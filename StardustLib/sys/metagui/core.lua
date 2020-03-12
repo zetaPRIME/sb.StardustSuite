@@ -83,6 +83,10 @@ function widgetBase:onMouseEnter() end
 function widgetBase:onMouseLeave() end
 function widgetBase:onMouseButtonEvent(btn, down) end
 
+function widgetBase:captureMouse() return mg.captureMouse(self) end
+function widgetBase:releaseMouse() return mg.releaseMouse(self) end
+function widgetBase:onCaptureMouseMove() end
+
 function widgetBase:applyGeometry()
   self.size = self.size or self:preferredSize() -- fill in default size if absent
   local tp = self.position or {0, 0}
@@ -109,10 +113,12 @@ function widgetBase:applyGeometry()
   end
 end
 
-function widgetBase:queueGeometryUpdate() recalcQueue[self] = true end
-function widgetBase:updateGeometry()
-  
+function widgetBase:queueGeometryUpdate() -- find root
+  local w = self
+  while w.parent do w = w.parent end
+  recalcQueue[w] = true
 end
+function widgetBase:updateGeometry() end
 
 function widgetBase:addChild(param) return mg.createWidget(param, self) end
 function widgetBase:clearChildren()
@@ -133,6 +139,7 @@ function widgetBase:delete()
   redrawQueue[self] = nil
   recalcQueue[self] = nil
   if lastMouseOver == this then lastMouseOver = nil end
+  self:releaseMouse()
   
   -- clear out backing widgets
   local function rw(w)
@@ -159,7 +166,7 @@ function mg.createWidget(param, parent)
   
   -- some basics
   w.id = param.id
-  w.position = param.position
+  w.position = param.position or {0, 0}
   w.explicitSize = param.size
   w.size = param.size
   
@@ -199,6 +206,17 @@ function mg.setTitle(s)
   redrawQueue[redrawFrame] = true
 end
 
+local mouseCaptor
+function mg.captureMouse(w) mouseCaptor = w end
+function mg.releaseMouse(w)
+  if w == mouseCaptor or w == true then
+    mouseCaptor = nil
+    return true
+  end
+end
+
+local keyFocus
+
 -- -- --
 
 function init()
@@ -230,6 +248,8 @@ function init()
     if update then table.add(scriptUpdate, update) end
     if init then init() end -- call script init
   end
+  
+  --setmetatable(_ENV, {__index = function(_, n) if DBG then DBG:setText("unknown func " .. n) end end})
 end
 
 local eventQueue = { }
@@ -241,6 +261,7 @@ local function runEventQueue()
     elseif not f then sb.logError(err) end
   end
   eventQueue = next
+  theme.update()
   for _, f in pairs(scriptUpdate) do f() end
 end
 function mg.startEvent(func, ...)
@@ -287,40 +308,113 @@ local function findWindowPosition()
   mg.windowPosition = fp
 end
 
+mg.mousePosition = {0, 0} -- default
+
+local bcv = { "_tracker", "_mouse", "_keys" }
+local bcvmp = { {0, 0}, {0, 0}, {0, 0} } -- last saved mouse position
+
 local lastMouseOver
 function update()
   local ws = "_tracker"
   if not mg.windowPosition then
     findWindowPosition()
   else
-    if not widget.inMember(ws, mg.windowPosition) or not widget.inMember(ws, vec2.add(mg.windowPosition, mg.cfg.totalSize)) then findWindowPosition() end
+    if not widget.inMember(bcv[1], mg.windowPosition) or not widget.inMember(bcv[1], vec2.add(mg.windowPosition, mg.cfg.totalSize)) then findWindowPosition() end
   end
   
-  local c = widget.bindCanvas(ws)
-  mg.mousePosition = c:mousePosition()
+  local lmp = mg.mousePosition
+  -- we don't know which of these gets mouse changes properly, so we loop through and
+  for k,v in pairs(bcv) do -- set the mouse position whenever one detects a change
+    local bc = widget.bindCanvas(v)
+    if bc then
+      local mp = bc:mousePosition()
+      if not vec2.eq(bcvmp[k], mp) then
+        bcvmp[k] = mp
+        mg.mousePosition = mp
+        bcvmp[0] = true
+      end
+    end
+  end
+  
+  --widget.focus(ws)
+  --local c = widget.bindCanvas(ws)
+  --mg.mousePosition = c:mousePosition()
   
   runEventQueue() -- not entirely sure where this should go in the update cycle
+  --local cc = widget.bindCanvas(DBGC.backingWidget)
+  --widget.focus(DBGC.backingWidget)
+  --[[do -- DEBUG
+    local sep = cc:mousePosition()
+    DBG:setText(table.concat {
+      "mouse pos: ", mg.mousePosition[1], ", ", mg.mousePosition[2], "\n",
+      "scroll mpos: ", sep[1], ", ", sep[2],
+    })
+  end]]
   
-  local mwc = widget.getChildAt(vec2.add(mg.windowPosition, mg.mousePosition))
-  local mw = mwc and mouseMap[mwc:sub(2)]
+  
+  --[[
+  for k in pairs(mouseMap) do
+    if widget.inMember(k, vec2.add(vec2.add(mg.windowPosition, mg.mousePosition), {0, -4})) then mwc = "." .. k end
+  end--]]
+  local mw = mouseCaptor
+  if not mw then
+    local mwc = widget.getChildAt(vec2.add(mg.windowPosition, mg.mousePosition))
+    mwc = mwc and mwc:sub(2)
+    while mwc and not mouseMap[mwc] do
+      mwc = mwc:match('^(.*)%..-$')
+    end
+    if mwc then mw = mouseMap[mwc] end
+  end
+  --DBG:setText(util.tableToString(mg.mousePosition) .. " // " .. (mwc or "(no target)"))
+  --DBG:setText("val " .. util.tableToString(widget.getPosition(SCRL.children[1].backingWidget)))
   if mw ~= lastMouseOver then
     if mw then mw:onMouseEnter() end
     if lastMouseOver then lastMouseOver:onMouseLeave() end
   end
   lastMouseOver = mw
-  if mw then
-    widget.setPosition("_intercept", {0, 0})
-  else
-    widget.setPosition("_intercept", {-99999, -99999})
+  widget.setVisible(bcv[2], not not (mw or keyFocus))
+  
+  if mouseCaptor and not vec2.eq(lmp, mg.mousePosition) then -- send mouse move event
+    mouseCaptor:onCaptureMouseMove(vec2.sub(mg.mousePosition, lmp))
   end
+  
+  do -- handle key focus widget
+    local kf, kw = not not keyFocus, not not widget.bindCanvas(bcv[3])
+    if kf ~= kw then
+      if kf then pane.addWidget({ type = "canvas", size = {0, 0}, zlevel = -99998, captureKeyboardEvents = true }, bcv[3])
+      else pane.removeWidget(bcv[3]) end
+    end
+  end
+  
+  if keyFocus then widget.focus(bcv[3])
+  elseif mw then widget.focus(bcv[2])
+  else widget.focus(bcv[1]) end
   
   for w in pairs(recalcQueue) do w:updateGeometry() end
   for w in pairs(redrawQueue) do w:draw() end
   redrawQueue = { } recalcQueue = { }
 end
 
+function cursorOverride(pos)
+  if not bcvmp[0] then -- no registered mouse positions
+    if mg.windowPosition then mg.mousePosition = vec2.sub(pos, mg.windowPosition) end
+  else
+    --
+  end
+end
+
 function _mouseEvent(_, btn, down)
-  if lastMouseOver then lastMouseOver:onMouseButtonEvent(btn, down) end
+  if lastMouseOver then
+    local w = lastMouseOver
+    while not w:isMouseInteractable() or not w:onMouseButtonEvent(btn, down) do
+      w = w.parent
+      if not w then break end
+    end
+  end
 end
 function _clickLeft() _mouseEvent(nil, 0, true) end
 function _clickRight() _mouseEvent(nil, 2, true) end
+
+function _keyEvent(key, down)
+  --DBG:setText(util.tableToString{...})
+end

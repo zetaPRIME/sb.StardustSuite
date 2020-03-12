@@ -113,7 +113,10 @@ metaGUI details {
     - setTitle
     proper data-passing
     
+    - create and remove keyboard capture
+    
     eventually {
+        debug console pane via common-table
         autoInteract for item slots
         can detect shift+click by polling item pickup and replacing
         can use knowledge of window position to make mouse-relative context menus
@@ -134,6 +137,8 @@ metaGUI details {
         
         tab field!
     }
+    
+    should probably add to quickbar
     
     need universal container proxy as well (transmat terminal and such)
     for container proxy: {

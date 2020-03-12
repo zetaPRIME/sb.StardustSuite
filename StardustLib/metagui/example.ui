@@ -2,9 +2,9 @@
   "style" : "window", // window (has titlebar), panel (just a frame) etc.
   "size" : [240, 160], // *internal* size (not including chrome)
   "title" : "metaGUI example pane",
-  "some info" : "goes here",
+  //"openWithInventory" : true,
+  //"layoutMode" : "horizontal",
   // unique id? bound?
-  "layoutModes" : "horizontal",
   // implicit layout stacking by nesting arrays (if outermost is vertical, then next in is treated as horizontal etc.)
   // layout properties can be specified as first object within (if "type" not specified)
   // most notably, "span"
@@ -12,11 +12,14 @@
     // color attribute: none (default, generally gray), accent (window accent color), color name(?) or hexcode
     { "type" : "button", "id" : "btn", "caption" : "This is a button." },
     [ {"type":"label","inline":true,"text":"Stuff:","id":"inl"}, { "type" : "button", "caption" : "A row of buttons..." }, { "type" : "button", "caption" : "...in proper layout." }, [{"size":28}, {"type":"button","caption":"fixed!"}] ],
-    { "type" : "button", "id" : "btn", "caption" : "This one has an ^accent;accent color^reset;.", "color" : "accent" },
-    { "type" : "label", "text" : "We have ^accent;labels^reset;..." },
-    { "type" : "label", "text" : "...including ^cyan;aligned^reset; ones.", "align" : "right" },
-    { "type" : "itemGrid", "slots" : 15, "columns" : 5 },
-    "spacer",
+    { "type" : "label", "id" : "DBG", "text" : "We have ^accent;labels^reset;..." },
+    { "type" : "scrollArea", "expandMode" : [1, 2], "id" : "SCRL", "children" : [
+      { "type" : "button", "id" : "btn", "caption" : "This one has an ^accent;accent color^reset;.", "color" : "accent" },
+      { "type" : "label", "text" : "...including ^cyan;aligned^reset; ones.", "align" : "right" },
+      { "type" : "itemGrid", "slots" : 55, "columns" : 5 },
+      { "type" : "label", "text" : "uh, layout engine? you okay there?" }
+      //"spacer",
+    ]},
     [ { "type" : "button", "caption" : "It even supports layout spacers!", "id" : "btnSpacer" }, { "type" : "image", "file" : "/interface/beamuphover.png" }, { "type" : "itemSlot", "glyph" : "/interface/inventory/backingimagetrash.png", "item" : { "name" : "perfectlygenericitem", "count" : 1, "parameters" : { } } } ]
     //[ ["lol"], ["lol"] ], ["lol"]
   ]

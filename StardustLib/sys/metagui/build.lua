@@ -26,7 +26,7 @@ end
 local defaultTheme = _mgcfg.defaultTheme
 if not registry.themes[defaultTheme] then for k in pairs(registry.themes) do defaultTheme = k break end end
 
-playercfg = status.statusProperty("metaGUI") or { }
+playercfg = player.getProperty("metaGUIConfig") or { }
 local theme = playercfg.theme or defaultTheme
 if not registry.themes[theme] then theme = defaultTheme end
 
@@ -42,7 +42,7 @@ uicfg.accentColor = uicfg.accentColor or defaultAccentColor
 -- actually construct the base
 uicfg.style = uicfg.style or "window" -- default window style
 
-local borderMargins = themedata.metrics.borderMargins[uicfg.style]
+local borderMargins = themedata.metrics.borderMargins[uicfg.style] or themedata.metrics.borderMargins["panel"]
 local size = {
   uicfg.size[1] + borderMargins[1] + borderMargins[3],
   uicfg.size[2] + borderMargins[2] + borderMargins[4]
@@ -58,12 +58,17 @@ player.interact("ScriptPane", {
     _tracker = {
       type = "canvas", size = size, zlevel = -99999
     },
-    _intercept = {
+    _mouse = {
       type = "canvas", size = size, zlevel = -99998, captureMouseEvents = true
     },
+    _keys = {
+      type = "canvas", size = {0, 0}, zlevel = -99998, captureKeyboardEvents = true
+    }
   },
   scripts = { "/sys/metagui/core.lua" },
   scriptWidgetCallbacks = { "__cb1", "__cb2", "__cb3", "__cb4", "__cb5", "_clickLeft", "_clickRight" },
-  canvasClickCallbacks = { _intercept = "_mouseEvent" },
+  canvasClickCallbacks = { _mouse = "_mouseEvent" },
+  canvasKeyCallbacks = { _keys = "_keyEvent" },
+  openWithInventory = uicfg.openWithInventory,
   ___ = uicfg
 }, pane.sourceEntity())

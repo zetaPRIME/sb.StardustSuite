@@ -170,7 +170,7 @@ end do -- scrollAera
   end
   
   -- only intercept if it can actually scroll
-  function widgets.scrollArea:isMouseInteractable() return self.children[1].size and self.children[1].size[2] > self.size[2] end
+  function widgets.scrollArea:isMouseInteractable(init) return init or self.children[1].size[2] > self.size[2] end
   function widgets.scrollArea:onMouseButtonEvent(btn, down)
     if down and not self.captureBtn then
       self.captureBtn = btn

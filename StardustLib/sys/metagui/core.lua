@@ -184,7 +184,7 @@ function mg.createWidget(param, parent)
     base = f.backingWidget
   end
   w:init(base, param)
-  if w:isMouseInteractable() then -- enroll in mouse events
+  if w:isMouseInteractable(true) then -- enroll in mouse events
     if w.backingWidget then mouseMap[w.backingWidget] = w end
     if w.subWidgets then for _, sw in pairs(w.subWidgets) do mouseMap[sw] = w end end
   end
@@ -375,6 +375,9 @@ function update()
       mwc = mwc:match('^(.*)%..-$')
     end
     if mwc then mw = mouseMap[mwc] end
+    while mw and not mw:isMouseInteractable() do
+      mw = mw.parent
+    end
   end
   --DBG:setText(util.tableToString(mg.mousePosition) .. " // " .. (mwc or "(no target)"))
   --DBG:setText("val " .. util.tableToString(widget.getPosition(SCRL.children[1].backingWidget)))

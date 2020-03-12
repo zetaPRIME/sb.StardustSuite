@@ -47,6 +47,9 @@ function npp:drawToCanvas(c, f, r)
 end
 
 function mg.ninePatch(path)
+  -- rectify path input
+  path = mg.asset((path:match('^(.*)%..-$') or path) .. ".png")
+  path = path:match('^(.*)%..-$') or path
   if nps[path] then return nps[path] end
   local np = setmetatable({ }, nppm) nps[path] = np
   np.image = path .. ".png"

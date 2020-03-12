@@ -22,6 +22,8 @@ end
 function mg.asset(path)
   if not path then return nil end
   if path:sub(1, 1) == '/' then return path end
+  local ext = path:match('^.*%.(.-)$')
+  if ext == "png" and not root.nonEmptyRegion(mg.cfg.themePath .. path) then return "/metagui/themes/fallbackAssets/" .. path end
   return mg.cfg.themePath .. path
 end
 
@@ -143,8 +145,8 @@ end
 
 require "/sys/metagui/widgets.lua"
 
--- DEBUG populate type names
-for id, t in pairs(widgetTypes) do t.typeName = id end
+-- populate type names
+for id, t in pairs(widgetTypes) do t.widgetType = id end
 
 function mg.createWidget(param, parent)
   if not param or not param.type or not widgetTypes[param.type] then return nil end -- abort if not valid

@@ -5,8 +5,8 @@ theme.common = { }
 local tdef = { } -- defaults
 
 theme.assets = { -- default assets
-  frame = mg.ninePatch(mg.asset "frame"),
-  button = mg.ninePatch(mg.asset "button"),
+  frame = mg.ninePatch "frame",
+  button = mg.ninePatch "button",
   
   itemSlot = mg.asset "itemSlot.png",
   itemRarity = mg.asset "itemRarity.png",

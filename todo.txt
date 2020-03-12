@@ -125,12 +125,12 @@ metaGUI details {
         - canvas
         - label
         - image
+        - item slot
+        - item grid
+        scrollarea
+        text box
         checkbox
         option box?
-        - item slot
-        item grid? just a wrapper around a given number of slots
-        text box
-        scrollarea
         
         tab field!
     }

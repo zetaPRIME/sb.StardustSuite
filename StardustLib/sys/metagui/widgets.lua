@@ -148,7 +148,7 @@ end do -- scrollAera
     scrollDirections = {0, 1},
   })
   
-  local sizeMod = {10, 0}
+  local sizeMod = {0, 0}
   
   function widgets.scrollArea:init(base, param)
     self.children = self.children or { }
@@ -157,8 +157,11 @@ end do -- scrollAera
     
     self.velocity = {0, 0}
     
-    self.subWidgets = { backing = mkwidget(base, { type = "canvas" }) }
+    self.subWidgets = { }
+    self.subWidgets.back = mkwidget(base, { type = "canvas" })
     self.backingWidget = mkwidget(base, { type = "layout", layoutType = "basic" })
+    self.subWidgets.front = mkwidget(base, { type = "canvas", mouseTransparent = true })
+    
     mg.createImplicitLayout(param.children, self, { mode = "vertical" })
   end
   
@@ -172,9 +175,9 @@ end do -- scrollAera
     elseif btn == self.captureBtn then
       self.captureBtn = nil
       mg.startEvent(function()
-        while vec2.mag(self.velocity) >= 1.0 do
+        while not self.deleted and vec2.mag(self.velocity) >= 1.0 do
           self:scrollBy(self.velocity)
-          self.velocity = vec2.mul(self.velocity, 0.9)
+          self.velocity = vec2.mul(self.velocity, 0.95)
           coroutine.yield()
         end
       end)
@@ -190,6 +193,7 @@ end do -- scrollAera
     l.position = vec2.sub(l.position, vec2.mul(delta, self.scrollDirections))
     l.position = rect.ll(rect.bound(rect.fromVec2(l.position, l.position), {0, math.max(0, l.size[2] - self.size[2]) * -1, math.max(0, l.size[1] - self.size[1]), 0}))
     self:applyGeometry()
+    theme.onScroll(self)
   end
   
   function widgets.scrollArea:preferredSize() return vec2.add(self.children[1]:preferredSize(), sizeMod) end
@@ -203,8 +207,10 @@ end do -- scrollAera
   end
   function widgets.scrollArea:applyGeometry()
     mg.widgetBase.applyGeometry(self) -- base first
-    widget.setPosition(self.subWidgets.backing, widget.getPosition(self.backingWidget)) -- sync position
-    widget.setSize(self.subWidgets.backing, widget.getSize(self.backingWidget))
+    for _,sw in pairs(self.subWidgets) do -- sync position
+      widget.setPosition(sw, widget.getPosition(self.backingWidget))
+      widget.setSize(sw, widget.getSize(self.backingWidget))
+    end
   end
 end do -- spacer
   widgets.spacer = mg.proto(mg.widgetBase, {

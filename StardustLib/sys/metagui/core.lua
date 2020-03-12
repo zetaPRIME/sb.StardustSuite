@@ -134,6 +134,7 @@ function widgetBase:delete()
     self.parent:queueGeometryUpdate()
   end
   if self.id and _ENV[self.id] == self then _ENV[self.id] = nil end -- remove from global
+  self.deleted = true
   
   -- unhook from events and drawing
   redrawQueue[self] = nil
@@ -268,6 +269,7 @@ function mg.startEvent(func, ...)
   local c = coroutine.create(func)
   coroutine.resume(c, ...)
   if coroutine.status(c) ~= "dead" then table.insert(eventQueue, c) end
+  return c -- might as well
 end
 
 local function findWindowPosition()

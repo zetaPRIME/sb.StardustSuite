@@ -114,6 +114,7 @@ metaGUI details {
     proper data-passing
     
     - create and remove keyboard capture
+    - actual scrollbar display
     
     eventually {
         debug console pane via common-table
@@ -130,7 +131,7 @@ metaGUI details {
         - image
         - item slot
         - item grid
-        scrollarea
+        - scrollarea
         text box
         checkbox
         option box?

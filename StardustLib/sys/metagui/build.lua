@@ -26,13 +26,13 @@ end
 local defaultTheme = _mgcfg.defaultTheme
 if not registry.themes[defaultTheme] then for k in pairs(registry.themes) do defaultTheme = k break end end
 
-playercfg = player.getProperty("metaGUIConfig") or { }
-local theme = playercfg.theme or defaultTheme
+settings = player.getProperty("metaGUISettings") or { }
+local theme = settings.theme or defaultTheme
 if not registry.themes[theme] then theme = defaultTheme end
 
 local themedata = root.assetJson(registry.themes[theme] .. "theme.json")
 
-local defaultAccentColor = playercfg.accentColor or themedata.defaultAccentColor
+local defaultAccentColor = settings.accentColor or themedata.defaultAccentColor
 
 -- apply config to ui data
 uicfg.theme = theme

@@ -62,10 +62,8 @@ function refreshDisplay()
   
   table.sort(shownItems, itemSortByCount)
 	
-  grid:setNumSlots(i-1)
-	for k, v in pairs(shownItems) do
-		grid:slot(k):setItem(v)
-	end
+	grid:setNumSlots(#shownItems)
+	for k, v in pairs(shownItems) do grid:slot(k):setItem(v) end
 end
 
 function itemSortByCount(i1, i2)
@@ -95,14 +93,18 @@ function grid:onSlotMouseEvent(btn, down)
 	elseif not down then
 		if btn == btnHeld then
 			self:releaseMouse()
-			grid:releaseMouse()
 			btnHeld = nil
+			scrollArea:onMouseButtonEvent(btn, down)
 		end
 		if btn ~= 1 then
 			local b = nil;
 			local cur = itemutil.normalize(player.swapSlotItem() or {})
 			local reqItem = self:item()
 			local maxStack = itemutil.property(reqItem, "maxStack") or 1000
+			if cur.count > 0 and not itemutil.canStack(reqItem, cur) then -- deposit
+				player.setSwapSlotItem(world.containerAddItems(pane.sourceEntity(), cur)[1] or itemutil.blankItem)
+				return true
+			end
 			if itemutil.canStack(reqItem, cur) and cur.count < maxStack then b = maxStack - cur.count end
 			if btn == 2 then b = 1 end
 			request(reqItem, b)
@@ -114,7 +116,7 @@ end
 
 function grid:onCaptureMouseMove()
 	local dist = vec2.sub(metagui.mousePosition, dragPos)
-	if vec2.mag(dist) >= 3 then
+	if vec2.mag(dist) >= 5 then
 		scrollArea:captureMouse()
 		scrollArea.captureBtn = btnHeld
 		scrollArea:scrollBy(dist) -- jumpstart drag

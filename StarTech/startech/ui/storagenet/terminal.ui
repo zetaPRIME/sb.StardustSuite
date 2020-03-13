@@ -6,7 +6,7 @@
   "scripts" : [ "terminal.lua" ],
   "children" : [
     { "type" : "scrollArea", "id" : "scrollArea", "children" : [
-      { "type" : "itemGrid", "id" : "grid", "slots" : 280, "columns" : 9, "spacing" : 3 }
+      { "type" : "itemGrid", "id" : "grid", "slots" : 0, "columns" : 9, "spacing" : 3 }
     ]},
     { "type" : "button", "id" : "btn", "caption" : "(search box placeholder)" },
     ""

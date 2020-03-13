@@ -442,15 +442,16 @@ end do -- item grid
     if not self.autoInteract then
       s.onMouseButtonEvent = function(...) return self.onSlotMouseEvent(...) end
     end
+    self:queueGeometryUpdate() -- new slots need positioned
   end
   function widgets.itemGrid:removeSlot(index) if self.children[index] then self.children[index]:delete() end end
   function widgets.itemGrid:slot(index) return self.children[index] end
   function widgets.itemGrid:setNumSlots(num)
     local count = #self.children
     if count > num then
-      for i=count, num+1, -1 do self.children[num+1]:delete() end
+      for i=count, num+1, -1 do self.children[i]:delete() end
     elseif count < num then
-      for i=num+1, count do self:addSlot() end
+      for i=count+1, num do self:addSlot() end
     end
   end
   

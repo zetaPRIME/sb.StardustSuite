@@ -438,6 +438,7 @@ end do -- item grid
       autoInteract = self.autoInteract,
       item = item,
     }
+    s.onCaptureMouseMove = function(...) return self.onCaptureMouseMove(...) end
     if not self.autoInteract then
       s.onMouseButtonEvent = function(...) return self.onSlotMouseEvent(...) end
     end

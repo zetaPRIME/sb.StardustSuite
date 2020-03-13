@@ -77,22 +77,47 @@ end
 
 function request(reqItem, count)
   if not reqItem.name then return nil end -- no item selected!
-  sync.poll("request", refresh, {
+  sync.poll("request", nil, {
     name = reqItem.name,
     count = math.min(count or 999999999, reqItem.parameters.maxStack or itemutil.getCachedConfig(reqItem).config.maxStack or 1000),
     parameters = reqItem.parameters
   }, player.id())
+	refresh()
 end
 
+local btnHeld, dragPos
 function grid:onSlotMouseEvent(btn, down)
-	if down and btn ~= 1 then
-		local b = nil;
-	  local cur = itemutil.normalize(player.swapSlotItem() or {})
-		local reqItem = self:item()
-	  local maxStack = itemutil.property(reqItem, "maxStack") or 1000
-	  if itemutil.canStack(reqItem, cur) and cur.count < maxStack then b = maxStack - cur.count end
-	  if btn == 2 then b = 1 end
-	  request(reqItem, b)
+	if down and not btnHeld then
+		btnHeld = btn
+		dragPos = metagui.mousePosition
+		self:captureMouse()
 		return true
+	elseif not down then
+		if btn == btnHeld then
+			self:releaseMouse()
+			grid:releaseMouse()
+			btnHeld = nil
+		end
+		if btn ~= 1 then
+			local b = nil;
+			local cur = itemutil.normalize(player.swapSlotItem() or {})
+			local reqItem = self:item()
+			local maxStack = itemutil.property(reqItem, "maxStack") or 1000
+			if itemutil.canStack(reqItem, cur) and cur.count < maxStack then b = maxStack - cur.count end
+			if btn == 2 then b = 1 end
+			request(reqItem, b)
+		end
+		return true
+	end
+	return true
+end
+
+function grid:onCaptureMouseMove()
+	local dist = vec2.sub(metagui.mousePosition, dragPos)
+	if vec2.mag(dist) >= 3 then
+		scrollArea:captureMouse()
+		scrollArea.captureBtn = btnHeld
+		scrollArea:scrollBy(dist) -- jumpstart drag
+		btnHeld = nil
 	end
 end

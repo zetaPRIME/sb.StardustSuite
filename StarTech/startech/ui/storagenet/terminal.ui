@@ -5,10 +5,10 @@
   "openWithInventory" : true,
   "scripts" : [ "terminal.lua" ],
   "children" : [
-    { "type" : "scrollArea", "children" : [
-      { "id" : "grid", "type" : "itemGrid", "slots" : 280, "columns" : 9, "spacing" : 4 }
+    { "type" : "scrollArea", "id" : "scrollArea", "children" : [
+      { "type" : "itemGrid", "id" : "grid", "slots" : 280, "columns" : 9, "spacing" : 3 }
     ]},
-    { "type" : "button", "id" : "btn", "caption" : "This is a button." },
+    { "type" : "button", "id" : "btn", "caption" : "(search box placeholder)" },
     ""
     /*[
       { "align" : 0 },

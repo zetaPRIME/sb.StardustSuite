@@ -1,6 +1,7 @@
 -- transmatter terminal, metaGUI edition
 
 require "/lib/stardust/itemutil.lua"
+require "/lib/stardust/sync.lua"
 
 local termItems = { }
 local termSyncUid
@@ -72,4 +73,26 @@ function itemSortByCount(i1, i2)
   if i1.count ~= i2.count then return i1.count > i2.count end -- > because most-first
   local n1, n2 = i1.parameters.shortdescription or c1.config.shortdescription, i2.parameters.shortdescription or c2.config.shortdescription
 	return n1 < n2; 
+end
+
+function request(reqItem, count)
+  if not reqItem.name then return nil end -- no item selected!
+  sync.poll("request", refresh, {
+    name = reqItem.name,
+    count = math.min(count or 999999999, reqItem.parameters.maxStack or itemutil.getCachedConfig(reqItem).config.maxStack or 1000),
+    parameters = reqItem.parameters
+  }, player.id())
+end
+
+function grid:onSlotMouseEvent(btn, down)
+	if down and btn ~= 1 then
+		local b = nil;
+	  local cur = itemutil.normalize(player.swapSlotItem() or {})
+		local reqItem = self:item()
+	  local maxStack = itemutil.property(reqItem, "maxStack") or 1000
+	  if itemutil.canStack(reqItem, cur) and cur.count < maxStack then b = maxStack - cur.count end
+	  if btn == 2 then b = 1 end
+	  request(reqItem, b)
+		return true
+	end
 end

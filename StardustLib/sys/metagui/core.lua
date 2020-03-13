@@ -93,7 +93,7 @@ function widgetBase:onFocus() end
 function widgetBase:onUnfocus() end
 function widgetBase:onKeyEvent(key, down) end
 
-function widgetBase:applyGeometry()
+function widgetBase:applyGeometry(selfOnly)
   self.size = self.size or self:preferredSize() -- fill in default size if absent
   local tp = self.position or {0, 0}
   local s = self
@@ -112,7 +112,7 @@ function widgetBase:applyGeometry()
   end
   --sb.logInfo("widget " .. (self.backingWidget or "unknown") .. ", type " .. self.typeName .. ", pos (" .. self.position[1] .. ", " .. self.position[2] .. "), size (" .. self.size[1] .. ", " .. self.size[2] .. ")")
   self:queueRedraw()
-  if self.children then
+  if not selfOnly and self.children then
     for k,c in pairs(self.children) do
       if c.applyGeometry then c:applyGeometry() end
     end

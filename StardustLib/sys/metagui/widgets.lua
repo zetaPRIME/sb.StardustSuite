@@ -201,7 +201,8 @@ end do -- scrollAera
     local l = self.children[1]
     l.position = vec2.sub(l.position, vec2.mul(delta, self.scrollDirections))
     l.position = rect.ll(rect.bound(rect.fromVec2(l.position, l.position), {0, math.max(0, l.size[2] - self.size[2]) * -1, math.max(0, l.size[1] - self.size[1]), 0}))
-    self:applyGeometry()
+    self:applyGeometry(true)
+    self.children[1]:applyGeometry(true)
     if not suppressAnimation and vec2.mag(delta) > 0 and l.size[2] > self.size[2] then
       theme.onScroll(self) -- only if there's actually room to scroll and delta is nonzero
     end
@@ -218,8 +219,8 @@ end do -- scrollAera
     l.position = rect.ll(rect.bound(rect.fromVec2(l.position, l.position), {0, math.max(0, l.size[2] - self.size[2]) * -1, math.max(0, l.size[1] - self.size[1]), 0}))
     if not noApply then applyGeometry() end
   end
-  function widgets.scrollArea:applyGeometry()
-    mg.widgetBase.applyGeometry(self) -- base first
+  function widgets.scrollArea:applyGeometry(so)
+    mg.widgetBase.applyGeometry(self, so) -- base first
     for _,sw in pairs(self.subWidgets) do -- sync position
       widget.setPosition(sw, widget.getPosition(self.backingWidget))
       widget.setSize(sw, widget.getSize(self.backingWidget))
@@ -372,8 +373,8 @@ end do -- item slot
     if param.item then self:setItem(param.item) end
   end
   function widgets.itemSlot:preferredSize() return {18, 18} end
-  function widgets.itemSlot:applyGeometry()
-    mg.widgetBase.applyGeometry(self) -- base first
+  function widgets.itemSlot:applyGeometry(so)
+    mg.widgetBase.applyGeometry(self, so) -- base first
     local pos = widget.getPosition(self.backingWidget)
     widget.setPosition(self.subWidgets.slot, pos) -- sync position
     widget.setSize(self.subWidgets.slot, {18, 18})

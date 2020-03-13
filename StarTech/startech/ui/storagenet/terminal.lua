@@ -85,15 +85,10 @@ end
 
 local btnHeld, dragPos
 function grid:onSlotMouseEvent(btn, down)
-	if down and not btnHeld then
-		btnHeld = btn
-		dragPos = metagui.mousePosition
-		self:captureMouse()
+	if down and not self:hasMouse() then self:captureMouse(btn)
 	elseif not down then
-		if btn == btnHeld then
+		if btn == self:mouseCaptureButton() then
 			self:releaseMouse()
-			btnHeld = nil
-			scrollArea:onMouseButtonEvent(btn, down)
 			
 			if btn ~= 1 then
 				local b = nil;
@@ -113,12 +108,4 @@ function grid:onSlotMouseEvent(btn, down)
 	return true
 end
 
-function grid:onCaptureMouseMove()
-	local dist = vec2.sub(metagui.mousePosition, dragPos)
-	if vec2.mag(dist) >= 5 then
-		scrollArea:captureMouse()
-		scrollArea.captureBtn = btnHeld
-		scrollArea:scrollBy(dist) -- jumpstart drag
-		btnHeld = nil
-	end
-end
+grid.onCaptureMouseMove = metagui.widgetTypes.button.onCaptureMouseMove

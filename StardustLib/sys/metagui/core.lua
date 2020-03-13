@@ -83,9 +83,27 @@ function widgetBase:onMouseEnter() end
 function widgetBase:onMouseLeave() end
 function widgetBase:onMouseButtonEvent(btn, down) end
 
-function widgetBase:captureMouse() return mg.captureMouse(self) end
+function widgetBase:captureMouse(btn) return mg.captureMouse(self, btn) end
 function widgetBase:releaseMouse() return mg.releaseMouse(self) end
+function widgetBase:hasMouse() return mg.hasMouse(self) end
+function widgetBase:mouseCaptureButton() return mg.mouseCaptureButton(self) end
+function widgetBase:mouseCapturePoint() return mg.mouseCapturePoint(self) end
 function widgetBase:onCaptureMouseMove() end
+function widgetBase:canPassMouseCapture() end
+function widgetBase:onPassedMouseCapture() end
+function widgetBase:passMouseCapture(w) -- pass to nearest accepting ancestor
+  if not mg.hasMouse(self) then return nil end
+  if not w then
+    w = self.parent
+    while w and not w:canPassMouseCapture() do w = w.parent end
+  end
+  if w then
+    local pt = self:mouseCapturePoint()
+    w:captureMouse(self:mouseCaptureButton())
+    w:onPassedMouseCapture(pt)
+    return true
+  end
+end
 
 function widgetBase:grabFocus() return mg.grabFocus(self) end
 function widgetBase:releaseFocus() return mg.releaseFocus(self) end
@@ -213,9 +231,17 @@ function mg.setTitle(s)
   redrawQueue[redrawFrame] = true
 end
 
-local mouseCaptor
-function mg.captureMouse(w) mouseCaptor = w end
-function mg.releaseMouse(w) if w == mouseCaptor or w == true then mouseCaptor = nil return true end end
+local mouseCaptor, mouseCaptureBtn, mouseCapturePoint
+function mg.captureMouse(w, btn)
+  if w ~= mouseCaptor then
+    mouseCaptor, mouseCaptureBtn, mouseCapturePoint = w, btn, mg.mousePosition
+    return true
+  end
+end
+function mg.releaseMouse(w) if w == mouseCaptor or not w then mouseCaptor = nil return true end end
+function mg.mouseCaptureButton(w) if mouseCaptor and (w == mouseCaptor or not w) then return mouseCaptureBtn end end
+function mg.mouseCapturePoint(w) if mouseCaptor and (w == mouseCaptor or not w) then return mouseCapturePoint end end
+function mg.hasMouse(w) return w == mouseCaptor end
 
 local keyFocus
 function mg.grabFocus(w)
@@ -348,26 +374,8 @@ function update()
     end
   end
   
-  --widget.focus(ws)
-  --local c = widget.bindCanvas(ws)
-  --mg.mousePosition = c:mousePosition()
-  
   runEventQueue() -- not entirely sure where this should go in the update cycle
-  --local cc = widget.bindCanvas(DBGC.backingWidget)
-  --widget.focus(DBGC.backingWidget)
-  --[[do -- DEBUG
-    local sep = cc:mousePosition()
-    DBG:setText(table.concat {
-      "mouse pos: ", mg.mousePosition[1], ", ", mg.mousePosition[2], "\n",
-      "scroll mpos: ", sep[1], ", ", sep[2],
-    })
-  end]]
   
-  
-  --[[
-  for k in pairs(mouseMap) do
-    if widget.inMember(k, vec2.add(vec2.add(mg.windowPosition, mg.mousePosition), {0, -4})) then mwc = "." .. k end
-  end--]]
   local mw = mouseCaptor
   if not mw then
     local mwc = widget.getChildAt(vec2.add(mg.windowPosition, mg.mousePosition))
@@ -380,8 +388,7 @@ function update()
       mw = mw.parent
     end
   end
-  --DBG:setText(util.tableToString(mg.mousePosition) .. " // " .. (mwc or "(no target)"))
-  --DBG:setText("val " .. util.tableToString(widget.getPosition(SCRL.children[1].backingWidget)))
+  
   if mw ~= lastMouseOver then
     if mw then mw:onMouseEnter() end
     if lastMouseOver then lastMouseOver:onMouseLeave() end

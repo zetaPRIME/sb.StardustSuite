@@ -104,17 +104,26 @@ metaGUI details {
     icon support for buttons
     pane icon
     
-    proper data-passing
+    > proper data-passing
     
     screen anchor
     
-    some standard way to pass mouse capture up to parent
+    - some standard way to pass mouse capture up to parent
+    - give button-held
+    / standard place for threshold value?
+    - give button capture
     
     eventually {
         debug console pane via common-table
         autoInteract for item slots
         rework preferredSize to take both a width and a height?
-        can detect shift+click by polling item pickup and replacing
+        can detect shift+click by polling item pickup and replacing {
+            how to determine "active" pane?
+            negotiate peer-to-peer; only most-active polls
+            last interacted? hmm.
+            maybe require only a single polling pane to be open
+            exclude anything with a "systemItem" tag (nanofield static, shift-click helpers...)
+        }
         can use knowledge of window position to make mouse-relative context menus
         generator scripts?
         unique by tag
@@ -134,9 +143,11 @@ metaGUI details {
         tab field!
         
         list of sorts; vertical layout of selectable entries, also used for menus
+        
+        panel? either concave or convex
     }
     
-    should probably add to quickbar
+    - should probably add to quickbar
     
     > need universal container proxy as well (transmat terminal and such)
     for container proxy: {

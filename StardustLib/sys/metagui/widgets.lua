@@ -179,13 +179,11 @@ end do -- scrollAera
   -- only intercept if it can actually scroll
   function widgets.scrollArea:isMouseInteractable(init) return init or self.children[1].size[2] > self.size[2] end
   function widgets.scrollArea:onMouseButtonEvent(btn, down)
-    if down and not self.captureBtn then
-      self.captureBtn = btn
+    if down and not self:hasMouse() then
       self.velocity = {0, 0}
-      self:captureMouse()
+      self:captureMouse(btn)
       return true
-    elseif btn == self.captureBtn then
-      self.captureBtn = nil
+    elseif not down and btn == self:mouseCaptureButton() then
       mg.startEvent(function()
         while not self.deleted and vec2.mag(self.velocity) >= 1.0 do
           self:scrollBy(self.velocity)
@@ -196,6 +194,8 @@ end do -- scrollAera
       return self:releaseMouse()
     end
   end
+  function widgets.scrollArea:canPassMouseCapture() return true end
+  function widgets.scrollArea:onPassedMouseCapture(point) self.velocity = {0, 0} self:scrollBy(vec2.sub(mg.mousePosition, point)) end
   function widgets.scrollArea:onCaptureMouseMove(delta)
     self.velocity = delta
     self:scrollBy(delta)
@@ -278,6 +278,7 @@ end do -- button
     if btn == 0 then -- left button
       if down then
         self.state = "press"
+        self:captureMouse(btn)
         self:queueRedraw()
         theme.onButtonClick(self)
       elseif self.state == "press" then
@@ -287,6 +288,12 @@ end do -- button
       end
       return true
     end
+  end
+  function widgets.button:onCaptureMouseMove()
+    local dist = vec2.sub(metagui.mousePosition, self:mouseCapturePoint())
+  	if vec2.mag(dist) >= 5 then
+  		local _ = self:passMouseCapture() or self:releaseMouse()
+  	end
   end
   
   function widgets.button:onClick() end

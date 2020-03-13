@@ -354,6 +354,7 @@ end do -- image
   end
 end do -- item slot
   widgets.itemSlot = mg.proto(mg.widgetBase, {
+    storedCount = 0
     --
   })
   
@@ -365,18 +366,31 @@ end do -- item slot
     --
     self.backingWidget = mkwidget(base, { type = "canvas" })
     self.subWidgets = {
-      slot = mkwidget(base, { type = "itemslot", callback = "_clickLeft", rightClickCallback = "_clickRight", showRarity = false })
+      slot = mkwidget(base, { type = "itemslot", callback = "_clickLeft", rightClickCallback = "_clickRight", showRarity = false, showCount = false }),
+      count = mkwidget(base, { type = "label", mouseTransparent = true, hAnchor = "right" })
     }
     if param.item then self:setItem(param.item) end
   end
   function widgets.itemSlot:preferredSize() return {18, 18} end
   function widgets.itemSlot:applyGeometry()
     mg.widgetBase.applyGeometry(self) -- base first
-    widget.setPosition(self.subWidgets.slot, widget.getPosition(self.backingWidget)) -- sync position
+    local pos = widget.getPosition(self.backingWidget)
+    widget.setPosition(self.subWidgets.slot, pos) -- sync position
     widget.setSize(self.subWidgets.slot, {18, 18})
+    
+    widget.setPosition(self.subWidgets.count, vec2.add(pos, {20, -3}))
   end
   function widgets.itemSlot:draw()
+    widget.setText(self.subWidgets.count, self:prettyCount(self.storedCount))
     theme.drawItemSlot(self)
+  end
+  function widgets.itemSlot:prettyCount(num)
+    num = num or self.storedCount
+    if num <= 1 then return ""
+    elseif num > 999999999 then return math.floor(num / 1000000000) .. "B"
+    elseif num > 999999 then return math.floor(num / 1000000) .. "M"
+    elseif num > 9999 then return math.floor(num / 1000) .. "K"
+    end return "" .. num
   end
   
   function widgets.itemSlot:isMouseInteractable() return true end
@@ -389,6 +403,7 @@ end do -- item slot
   function widgets.itemSlot:item() return widget.itemSlotItem(self.subWidgets.slot) end
   function widgets.itemSlot:setItem(itm)
     local old = self:item()
+    self.storedCount = itm and itm.count or 0
     widget.setItemSlotItem(self.subWidgets.slot, itm)
     self:queueRedraw()
     return old

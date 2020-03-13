@@ -4,6 +4,7 @@ require "/scripts/util.lua"
 require "/sys/stardust/quickbar/conditions.lua"
 
 local actions = { }
+qbActions = actions -- alias in global for execs
 local function nullfunc() end
 local function action(id, ...) return (actions[id] or nullfunc)(...) end
 
@@ -14,6 +15,10 @@ local function action(id, ...) return (actions[id] or nullfunc)(...) end
 function actions.pane(cfg)
   if type(cfg) ~= "table" then cfg = { config = cfg } end
   player.interact(cfg.type or "ScriptPane", cfg.config)
+end
+
+function actions.ui(cfg, data) -- metaGUI
+  player.interact("ScriptPane", { gui = { }, scripts = {"/metagui.lua"}, config = cfg, data = data })
 end
 
 function actions.exec(script, ...)

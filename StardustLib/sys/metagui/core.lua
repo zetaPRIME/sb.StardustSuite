@@ -418,6 +418,10 @@ function cursorOverride(pos)
   end
 end
 
+function createTooltip()
+  --return "lol"
+end
+
 function _mouseEvent(_, btn, down)
   if lastMouseOver then
     local w = lastMouseOver

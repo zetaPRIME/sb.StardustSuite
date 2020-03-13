@@ -106,7 +106,9 @@ metaGUI details {
     
     proper data-passing
     
-    - fix layout not fitting full size of labels
+    screen anchor
+    
+    some way to pass mouse capture up to parent
     
     eventually {
         debug console pane via common-table
@@ -130,6 +132,8 @@ metaGUI details {
         option box?
         
         tab field!
+        
+        list of sorts; vertical layout of selectable entries, also used for menus
     }
     
     should probably add to quickbar

@@ -34,7 +34,7 @@ do -- layout
       --self.explicitSize = {self.explicitSize, self.explicitSize}
       if self.mode == "horizontal" then self.expandMode = {1, 0} end
       if self.mode == "vertical" then self.expandMode = {0, 1} end
-    end
+    elseif type(self.explicitSize) == "table" then self.expandMode = {0, 0} end
     
     self.expandMode = param.expandMode or self.expandMode
     
@@ -58,6 +58,7 @@ do -- layout
   
   function widgets.layout:preferredSize(width)
     width = width or (parent and parent.size[1]) or nil
+    if type(self.explicitSize) == "table" then return self.explicitSize end
     local res = {0, 0}
     if self.mode == "horizontal" or self.mode == "vertical" then
       local axis = self.mode == "vertical" and 2 or 1
@@ -147,7 +148,7 @@ do -- layout
 end do -- scrollAera
   widgets.scrollArea = mg.proto(mg.widgetBase, {
     isBaseWidget = true,
-    expandMode = {1, 0}, -- can expand to fill horizontally
+    expandMode = {1, 2}, -- can expand to fill horizontally, wants to expand vertically
     
     scrollDirections = {0, 1},
   })
@@ -157,7 +158,10 @@ end do -- scrollAera
   function widgets.scrollArea:init(base, param)
     self.children = self.children or { }
     
-    self.expandMode = param.expandMode
+    if type(self.explicitSize) == "number" then self.expandMode = {1, 0}
+    elseif type(self.explicitSize) == "table" then self.expandMode = {0, 0} end
+    
+    self.expandMode = param.expandMode or self.expandMode
     
     self.velocity = {0, 0}
     
@@ -193,13 +197,13 @@ end do -- scrollAera
     self.velocity = delta
     self:scrollBy(delta)
   end
-  function widgets.scrollArea:scrollBy(delta)
+  function widgets.scrollArea:scrollBy(delta, suppressAnimation)
     local l = self.children[1]
     l.position = vec2.sub(l.position, vec2.mul(delta, self.scrollDirections))
     l.position = rect.ll(rect.bound(rect.fromVec2(l.position, l.position), {0, math.max(0, l.size[2] - self.size[2]) * -1, math.max(0, l.size[1] - self.size[1]), 0}))
     self:applyGeometry()
-    if l.size[2] > self.size[2] then -- only if there's actually room to scroll
-      theme.onScroll(self)
+    if not suppressAnimation and vec2.mag(delta) > 0 and l.size[2] > self.size[2] then
+      theme.onScroll(self) -- only if there's actually room to scroll and delta is nonzero
     end
   end
   
@@ -210,6 +214,8 @@ end do -- scrollAera
     l.size[2] = l:preferredSize(self.size[1])[2]
     
     l:updateGeometry(true)
+    -- snap scroll to bounds
+    l.position = rect.ll(rect.bound(rect.fromVec2(l.position, l.position), {0, math.max(0, l.size[2] - self.size[2]) * -1, math.max(0, l.size[1] - self.size[1]), 0}))
     if not noApply then applyGeometry() end
   end
   function widgets.scrollArea:applyGeometry()
@@ -404,7 +410,7 @@ end do -- item grid
     if type(self.spacing) == "number" then self.spacing = {self.spacing, self.spacing} end
     self.autoInteract = param.autoInteract or param.auto
     
-    self.backingWidget = mkwidget(base, { type = "layout", layoutType = "basic" })
+    self.backingWidget = mkwidget(base, { type = "layout", layoutType = "basic", scissoring = false })
     
     local slots = param.slots or 1
     for i=1,slots do self:addSlot() end
@@ -422,6 +428,14 @@ end do -- item grid
   end
   function widgets.itemGrid:removeSlot(index) if self.children[index] then self.children[index]:delete() end end
   function widgets.itemGrid:slot(index) return self.children[index] end
+  function widgets.itemGrid:setNumSlots(num)
+    local count = #self.children
+    if count > num then
+      for i=count, num+1, -1 do self.children[num+1]:delete() end
+    elseif count < num then
+      for i=num+1, count do self:addSlot() end
+    end
+  end
   
   function widgets.itemGrid:onSlotMouseEvent(btn, down) end
   

@@ -34,7 +34,8 @@
   },
   "animationPosition" : [-8, -8],
   
-  "uiConfig" : "/startech/interface/storagenet/terminal.config",
+  //"uiConfig" : "/startech/interface/storagenet/terminal.config",
+  "uiConfig" : "/metagui/container.config", "ui" : "startech:terminal",
   /*"interactAction" : "OpenCraftingInterface", // lolwut
   "interactData" : {
     "config" : "/startech/interface/storagenet/terminal.config",

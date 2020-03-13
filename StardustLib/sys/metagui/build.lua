@@ -4,7 +4,7 @@ if not _mgcfg then _mgcfg = root.assetJson("/panes.config").metaGUI end -- make 
 local registry = root.assetJson("/metagui/registry.json")
 
 -- determine UI json
-local uicfg = config.getParameter("config")
+local uicfg = inputcfg or config.getParameter("config")
 if type(uicfg) == "string" then
   while uicfg and uicfg:sub(1, 1) ~= "/" do -- not path; resolve from registry
     local modname = uicfg:match('^(.-):')
@@ -55,15 +55,9 @@ player.interact("ScriptPane", {
       type = "background",
       fileFooter = "/assetmissing.png?crop=0;0;1;1?multiply=0000?scalenearest=" .. size[1] .. ";" .. size[2]
     },
-    _tracker = {
-      type = "canvas", size = size, zlevel = -99999
-    },
-    _mouse = {
-      type = "canvas", size = size, zlevel = -99998, captureMouseEvents = true
-    },
-    _keys = {
-      type = "canvas", size = {0, 0}, zlevel = -99998, captureKeyboardEvents = true
-    }
+    _tracker = { type = "canvas", size = size, zlevel = -99999 },
+    _mouse = { type = "canvas", size = size, zlevel = -99998, captureMouseEvents = true },
+    _keys = { type = "canvas", size = {0, 0}, zlevel = -99998, captureKeyboardEvents = true }
   },
   scripts = { "/sys/metagui/core.lua" },
   scriptWidgetCallbacks = { "__cb1", "__cb2", "__cb3", "__cb4", "__cb5", "_clickLeft", "_clickRight" },

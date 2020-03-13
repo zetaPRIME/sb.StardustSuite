@@ -1,0 +1,18 @@
+{ //  -*- grammar-ext: json -*-
+  "style" : "window", // window (has titlebar), panel (just a frame) etc.
+  "size" : [200, 240], // *internal* size (not including chrome)
+  "title" : "Transmatter Terminal",
+  "openWithInventory" : true,
+  "scripts" : [ "terminal.lua" ],
+  "children" : [
+    { "type" : "scrollArea", "children" : [
+      { "id" : "grid", "type" : "itemGrid", "slots" : 280, "columns" : 9, "spacing" : 4 }
+    ]},
+    { "type" : "button", "id" : "btn", "caption" : "This is a button." },
+    ""
+    /*[
+      { "align" : 0 },
+      { "type" : "label", "text" : "..." },
+    ]*/
+  ]
+}

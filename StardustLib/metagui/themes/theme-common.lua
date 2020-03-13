@@ -45,6 +45,7 @@ function tdef.onButtonClick(b)
 end
 
 function tdef.drawItemSlot(s)
+  if s.deleted then return nil end
   local center = {9, 9}
   local c = widget.bindCanvas(s.backingWidget)
   c:clear() c:drawImage(assets.itemSlot .. ":" .. (s.hover and "hover" or "idle"), center, nil, nil, true)

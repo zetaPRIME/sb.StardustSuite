@@ -89,27 +89,26 @@ function grid:onSlotMouseEvent(btn, down)
 		btnHeld = btn
 		dragPos = metagui.mousePosition
 		self:captureMouse()
-		return true
 	elseif not down then
 		if btn == btnHeld then
 			self:releaseMouse()
 			btnHeld = nil
 			scrollArea:onMouseButtonEvent(btn, down)
-		end
-		if btn ~= 1 then
-			local b = nil;
-			local cur = itemutil.normalize(player.swapSlotItem() or {})
-			local reqItem = self:item()
-			local maxStack = itemutil.property(reqItem, "maxStack") or 1000
-			if cur.count > 0 and not itemutil.canStack(reqItem, cur) then -- deposit
-				player.setSwapSlotItem(world.containerAddItems(pane.sourceEntity(), cur)[1] or itemutil.blankItem)
-				return true
+			
+			if btn ~= 1 then
+				local b = nil;
+				local cur = itemutil.normalize(player.swapSlotItem() or {})
+				local reqItem = self:item()
+				local maxStack = itemutil.property(reqItem, "maxStack") or 1000
+				if cur.count > 0 and not itemutil.canStack(reqItem, cur) then -- deposit
+					player.setSwapSlotItem(world.containerAddItems(pane.sourceEntity(), cur)[1] or itemutil.blankItem)
+					return true
+				end
+				if itemutil.canStack(reqItem, cur) and cur.count < maxStack then b = maxStack - cur.count end
+				if btn == 2 then b = 1 end
+				request(reqItem, b)
 			end
-			if itemutil.canStack(reqItem, cur) and cur.count < maxStack then b = maxStack - cur.count end
-			if btn == 2 then b = 1 end
-			request(reqItem, b)
 		end
-		return true
 	end
 	return true
 end

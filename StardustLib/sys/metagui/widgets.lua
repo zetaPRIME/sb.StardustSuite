@@ -194,7 +194,7 @@ end do -- scrollAera
       return self:releaseMouse()
     end
   end
-  function widgets.scrollArea:canPassMouseCapture() return true end
+  function widgets.scrollArea:canPassMouseCapture() return self:isMouseInteractable() end
   function widgets.scrollArea:onPassedMouseCapture(point) self.velocity = {0, 0} self:scrollBy(vec2.sub(mg.mousePosition, point)) end
   function widgets.scrollArea:onCaptureMouseMove(delta)
     self.velocity = delta

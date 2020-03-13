@@ -112,6 +112,7 @@ metaGUI details {
     - give button-held
     / standard place for threshold value?
     - give button capture
+    - fix stuck-drag on too-small scrollarea
     
     eventually {
         debug console pane via common-table

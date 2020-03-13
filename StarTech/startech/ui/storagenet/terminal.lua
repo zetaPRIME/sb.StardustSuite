@@ -62,8 +62,11 @@ function refreshDisplay()
   
   table.sort(shownItems, itemSortByCount)
 	
-	grid:setNumSlots(#shownItems)
+	local ns = #shownItems
+	local ens = math.max(1, math.ceil(ns/grid.columns) * grid.columns)
+	grid:setNumSlots(ens)
 	for k, v in pairs(shownItems) do grid:slot(k):setItem(v) end
+	for i = ns+1, ens do grid:slot(i):setItem() end -- clear empties
 end
 
 function itemSortByCount(i1, i2)
@@ -83,7 +86,7 @@ function request(reqItem, count)
 	refresh()
 end
 
-local btnHeld, dragPos
+grid.onCaptureMouseMove = metagui.widgetTypes.button.onCaptureMouseMove
 function grid:onSlotMouseEvent(btn, down)
 	if down and not self:hasMouse() then self:captureMouse(btn)
 	elseif not down then
@@ -95,10 +98,11 @@ function grid:onSlotMouseEvent(btn, down)
 				local cur = itemutil.normalize(player.swapSlotItem() or {})
 				local reqItem = self:item()
 				local maxStack = itemutil.property(reqItem, "maxStack") or 1000
-				if cur.count > 0 and not itemutil.canStack(reqItem, cur) then -- deposit
+				if cur.count > 0 and (not reqItem or not itemutil.canStack(reqItem, cur)) then -- deposit
 					player.setSwapSlotItem(world.containerAddItems(pane.sourceEntity(), cur)[1] or itemutil.blankItem)
 					return true
 				end
+				if not reqItem then return true end -- no trying to request blanks
 				if itemutil.canStack(reqItem, cur) and cur.count < maxStack then b = maxStack - cur.count end
 				if btn == 2 then b = 1 end
 				request(reqItem, b)
@@ -107,5 +111,3 @@ function grid:onSlotMouseEvent(btn, down)
 	end
 	return true
 end
-
-grid.onCaptureMouseMove = metagui.widgetTypes.button.onCaptureMouseMove

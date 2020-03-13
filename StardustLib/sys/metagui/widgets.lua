@@ -151,6 +151,7 @@ end do -- scrollAera
     expandMode = {1, 2}, -- can expand to fill horizontally, wants to expand vertically
     
     scrollDirections = {0, 1},
+    scrollBars = true,
   })
   
   local sizeMod = {0, 0}
@@ -162,6 +163,8 @@ end do -- scrollAera
     elseif type(self.explicitSize) == "table" then self.expandMode = {0, 0} end
     
     self.expandMode = param.expandMode or self.expandMode
+    self.scrollDirections = param.scrollDirections
+    self.scrollBars = param.scrollBars
     
     self.velocity = {0, 0}
     
@@ -203,7 +206,7 @@ end do -- scrollAera
     l.position = rect.ll(rect.bound(rect.fromVec2(l.position, l.position), {0, math.max(0, l.size[2] - self.size[2]) * -1, math.max(0, l.size[1] - self.size[1]), 0}))
     self:applyGeometry(true)
     self.children[1]:applyGeometry(true)
-    if not suppressAnimation and vec2.mag(delta) > 0 and l.size[2] > self.size[2] then
+    if self.scrollBars and not suppressAnimation and vec2.mag(delta) > 0 and l.size[2] > self.size[2] then
       theme.onScroll(self) -- only if there's actually room to scroll and delta is nonzero
     end
   end

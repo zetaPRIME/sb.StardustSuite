@@ -108,7 +108,7 @@ metaGUI details {
     
     screen anchor
     
-    some way to pass mouse capture up to parent
+    some standard way to pass mouse capture up to parent
     
     eventually {
         debug console pane via common-table
@@ -127,7 +127,7 @@ metaGUI details {
         - item slot
         - item grid
         - scrollarea
-        text box
+        text box - hybrid of horizontal scrollarea and label with input handling
         checkbox
         option box?
         
@@ -138,7 +138,7 @@ metaGUI details {
     
     should probably add to quickbar
     
-    need universal container proxy as well (transmat terminal and such)
+    > need universal container proxy as well (transmat terminal and such)
     for container proxy: {
         use ipc lib (getmetatable '' and all)
         host can check for itembag changes every frame and push an event

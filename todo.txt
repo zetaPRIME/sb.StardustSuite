@@ -107,7 +107,7 @@ metaGUI details {
     
     close on world change, by default
     
-    event subcription system? subscriptions stored within widget
+    - event subcription system (subscriptions stored within widget)
     give scrollarea a "thumb mode" when middle click dragging
     
     eventually {
@@ -136,7 +136,7 @@ metaGUI details {
         - panel (flat, concave or convex)
         checkbox
         option box?
-        list of sorts; vertical layout of selectable entries, also used for menus
+        > list item
         
         text box {
             hybrid of horizontal scrollarea and label with input handling

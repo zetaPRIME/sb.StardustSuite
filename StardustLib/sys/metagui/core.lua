@@ -177,6 +177,21 @@ function widgetBase:delete()
   if self.subWidgets then for _, sw in pairs(self.subWidgets) do rw(sw) end end
 end
 
+-- event subscription stuff
+function widgetBase:subscribeEvent(ev, f)
+  self.__event = self.__event or { }
+  self.__event[ev] = f
+end
+function widgetBase:pushEvent(ev, ...)
+  if self.__event then
+    local e = self.__event[ev]
+    if e and e(...) then return nil end -- return true to "catch"
+  end
+  -- else pass to children
+  for _,c in pairs(self.children or { }) do c:pushEvent(ev, ...) end
+end
+function widgetBase:broadcast(ev, ...) self.parent:pushEvent(ev, ...) end -- just a quick shortcut
+
 module "widgets"
 
 -- populate type names
@@ -258,6 +273,8 @@ function mg.grabFocus(w)
   end
 end
 function mg.releaseFocus(w) if w == keyFocus or w == true then mg.grabFocus(nil) return true end end
+
+function mg.broadcast(ev, ...) paneBase:pushEvent(ev, ...) frame:pushEvent(ev, ...) end
 
 -- -- --
 

@@ -2,6 +2,8 @@ require "/scripts/util.lua"
 require "/scripts/vec2.lua"
 require "/scripts/rect.lua"
 
+local function module(s) require("/sys/metagui/" .. s .. ".lua") end -- for easy repointing if needed
+
 local debug = {
   --showLayoutBoxes = true,
 }
@@ -11,7 +13,7 @@ metagui = metagui or { }
 local mg = metagui
 mg.debugFlags = debug
 
-require "/sys/metagui/gfx.lua"
+module "gfx"
 
 function mg.path(path)
   if not path then return nil end
@@ -175,7 +177,7 @@ function widgetBase:delete()
   if self.subWidgets then for _, sw in pairs(self.subWidgets) do rw(sw) end end
 end
 
-require "/sys/metagui/widgets.lua"
+module "widgets"
 
 -- populate type names
 for id, t in pairs(widgetTypes) do t.widgetType = id end

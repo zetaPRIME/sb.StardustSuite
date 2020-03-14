@@ -103,17 +103,10 @@ networked wire I/O ports
 metaGUI details {
     icon support for buttons
     pane icon
-    
-    > proper data-passing
-    
     screen anchor
     
-    - some standard way to pass mouse capture up to parent
-    - give button-held
-    / standard place for threshold value?
-    - give button capture
-    - fix stuck-drag on too-small scrollarea
-    > make scrollarea contents not scissor
+    - proper data-passing
+    >> make scrollarea contents not scissor
     
     eventually {
         debug console pane via common-table
@@ -139,14 +132,20 @@ metaGUI details {
         - item grid
         - scrollarea
         - panel (flat, concave or convex)
-        text box - hybrid of horizontal scrollarea and label with input handling
         checkbox
         option box?
-        
-        tab field!
-        
         list of sorts; vertical layout of selectable entries, also used for menus
         
+        text box {
+            hybrid of horizontal scrollarea and label with input handling
+            needs some way of checking the relative mouse position
+        }
+        
+        tab field! {
+            probably layout with a set of panels, attached to a scrollable area of basically dressed-up buttons
+            tabs on any edge or hidden (can be manually flipped through)
+            event onTabChanged
+        }
     }
     
     - should probably add to quickbar

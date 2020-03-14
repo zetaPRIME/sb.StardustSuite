@@ -259,6 +259,7 @@ function mg.releaseFocus(w) if w == keyFocus or w == true then mg.grabFocus(nil)
 
 function init()
   mg.cfg = config.getParameter("___") -- window config
+  mg.inputData = mg.cfg.inputData -- alias
   
   mg.theme = root.assetJson(mg.cfg.themePath .. "theme.json")
   mg.theme.id = mg.cfg.theme

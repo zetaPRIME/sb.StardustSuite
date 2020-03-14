@@ -1,5 +1,7 @@
 -- pane builder
 
+require "/scripts/util.lua"
+
 if not _mgcfg then _mgcfg = root.assetJson("/panes.config").metaGUI end -- make sure we have this
 local registry = root.assetJson("/metagui/registry.json")
 
@@ -21,6 +23,10 @@ end
 if type(uicfg) ~= "table" then
   return nil -- error?
 end
+
+-- insert passed data, preserving defaults
+uicfg.inputData = uicfg.inputData or { }
+util.mergeTable(uicfg.inputData, inputdata or config.getParameter("data") or { })
 
 -- determine theme and accent color in use
 local defaultTheme = _mgcfg.defaultTheme

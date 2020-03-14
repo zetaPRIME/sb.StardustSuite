@@ -9,14 +9,10 @@
     { "type" : "panel", "style" : "concave", "children" : [
       { "type" : "scrollArea", "id" : "scrollArea", "children" : [
         { "type" : "itemGrid", "id" : "grid", "slots" : 0, "columns" : 9, "spacing" : 4 },
-        { "type" : "spacer", "size" : 2 }
+        { "type" : "spacer", "size" : 1 }
       ]}
     ]},
     { "type" : "button", "id" : "btn", "caption" : "(search box placeholder)" },
     ""
-    /*[
-      { "align" : 0 },
-      { "type" : "label", "text" : "..." },
-    ]*/
   ]
 }

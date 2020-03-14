@@ -108,7 +108,7 @@ metaGUI details {
     close on world change, by default
     
     event subcription system? subscriptions stored within widget
-    - some modifications to image (center by default, take explicit size, scale value)
+    give scrollarea a "thumb mode" when middle click dragging
     
     eventually {
         debug console pane via common-table

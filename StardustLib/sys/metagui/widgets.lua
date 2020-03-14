@@ -191,6 +191,8 @@ end do -- scrollArea
   })
   
   local sizeMod = {0, 0}
+  local scrollFriction = 0.025
+  local scrollVelocityThreshold = 0.25
   
   function widgets.scrollArea:init(base, param)
     self.children = self.children or { }
@@ -221,9 +223,9 @@ end do -- scrollArea
       return true
     elseif not down and btn == self:mouseCaptureButton() then
       mg.startEvent(function()
-        while not self.deleted and vec2.mag(self.velocity) >= 1.0 do
+        while not self.deleted and vec2.mag(self.velocity) >= scrollVelocityThreshold do
           self:scrollBy(self.velocity)
-          self.velocity = vec2.mul(self.velocity, 0.95)
+          self.velocity = vec2.mul(self.velocity, 1.0 - scrollFriction)
           coroutine.yield()
         end
       end)

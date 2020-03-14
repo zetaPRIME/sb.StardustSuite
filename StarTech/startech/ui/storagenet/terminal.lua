@@ -6,6 +6,14 @@ require "/lib/stardust/sync.lua"
 local termItems = { }
 local termSyncUid
 
+-- force scroll bars to show up on opening
+metagui.startEvent(function()
+	for i = 1,60*1.5 do
+		scrollArea:scrollBy {1, 0}
+		coroutine.yield()
+	end
+end)
+
 local function waitFor(p) -- wait for promise
   while not p:finished() do coroutine.yield() end
   return p
@@ -88,7 +96,9 @@ end
 
 grid.onCaptureMouseMove = metagui.widgetTypes.button.onCaptureMouseMove
 function grid:onSlotMouseEvent(btn, down)
-	if down and not self:hasMouse() then self:captureMouse(btn)
+	if down and not self:hasMouse() then
+		scrollArea.velocity = {0, 0} -- force stop
+		self:captureMouse(btn)
 	elseif not down then
 		if btn == self:mouseCaptureButton() then
 			self:releaseMouse()

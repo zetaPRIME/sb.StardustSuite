@@ -105,8 +105,10 @@ metaGUI details {
     pane icon
     screen anchor
     
-    - proper data-passing
-    - make scrollarea contents not scissor
+    close on world change, by default
+    
+    event subcription system? subscriptions stored within widget
+    - some modifications to image (center by default, take explicit size, scale value)
     
     eventually {
         debug console pane via common-table

@@ -384,19 +384,29 @@ end do -- label
 end do -- image
   widgets.image = mg.proto(mg.widgetBase, {
     file = "/assetmissing.png", -- fallback file
+    imgSize = {0, 0},
+    scale = 1
   })
   
   function widgets.image:init(base, param)
     self.file = mg.path(param.file)
+    self.imgSize = root.imageSize(self.file)
+    self.scale = param.scale
+    if type(self.scale) == "number" then self.scale = {self.scale, self.scale} end
+    
     self.backingWidget = mkwidget(base, { type = "canvas" })
   end
-  function widgets.image:preferredSize() return root.imageSize(self.file) end
+  function widgets.image:preferredSize()
+    if self.explicitSize then return self.explicitSize end
+    return {math.ceil(self.imgSize[1] * self.scale[1]), math.ceil(self.imgSize[2] * self.scale[2])}
+  end
   function widgets.image:draw()
     local c = widget.bindCanvas(self.backingWidget)
-    c:clear() c:drawImage(self.file, {0, 0})
+    c:clear() c:drawImageDrawable(self.file, vec2.mul(c:size(), 0.5), self.scale)
   end
   function widgets.image:setFile(f)
     self.file = mg.path(f)
+    self.imgSize = root.imageSize(self.file)
     if parent then parent:queueGeometryUpdate() end
   end
 end do -- item slot

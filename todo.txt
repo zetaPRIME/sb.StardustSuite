@@ -102,7 +102,7 @@ networked wire I/O ports
 
 metaGUI details {
     icon support for buttons
-    pane icon
+    - pane icon
     screen anchor
     
     close on world change, by default

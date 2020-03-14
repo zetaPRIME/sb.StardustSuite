@@ -2,6 +2,7 @@
   "style" : "window", // window (has titlebar), panel (just a frame) etc.
   "size" : [200, 240], // *internal* size (not including chrome)
   "title" : "Transmatter Terminal",
+  "icon" : "terminal.icon.png",
   "openWithInventory" : true,
   "scripts" : [ "terminal.lua" ],
   "children" : [

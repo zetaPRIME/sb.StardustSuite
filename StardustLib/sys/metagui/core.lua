@@ -232,6 +232,10 @@ function mg.setTitle(s)
   mg.cfg.title = s
   redrawQueue[redrawFrame] = true
 end
+function mg.setIcon(img)
+  mg.cfg.icon = mg.path(img)
+  redrawQueue[redrawFrame] = true
+end
 
 local mouseCaptor, mouseCaptureBtn, mouseCapturePoint
 function mg.captureMouse(w, btn)
@@ -266,6 +270,8 @@ function init()
   mg.theme.path = mg.cfg.themePath
   _ENV.theme = mg.theme -- alias
   require(mg.theme.path .. "theme.lua") -- load in theme
+  
+  mg.cfg.icon = mg.path(mg.cfg.icon) -- pre-resolve icon path
   
   -- TODO set up some parameter stuff?? idk, maybe the theme does most of that
   

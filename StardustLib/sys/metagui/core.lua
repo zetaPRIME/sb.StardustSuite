@@ -219,10 +219,12 @@ function mg.createWidget(param, parent)
     base = f.backingWidget
   end
   w:init(base, param)
-  if w:isMouseInteractable(true) then -- enroll in mouse events
-    if w.backingWidget then mouseMap[w.backingWidget] = w end
-    if w.subWidgets then for _, sw in pairs(w.subWidgets) do mouseMap[sw] = w end end
-  end
+  
+  -- enroll in mouse events
+  if w.backingWidget then mouseMap[w.backingWidget] = w end
+  if w.subWidgets then for _, sw in pairs(w.subWidgets) do mouseMap[sw] = w end end
+  
+  -- assign id
   if w.id and _ENV[w.id] == nil then
     _ENV[w.id] = w
   end

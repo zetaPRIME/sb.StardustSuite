@@ -109,6 +109,9 @@ metaGUI details {
     
     - event subcription system (subscriptions stored within widget)
     give scrollarea a "thumb mode" when middle click dragging
+    standard way of halting scrollarea velocity
+    findParent(type)
+    - fix subwidget mouseover weirdness?
     
     eventually {
         debug console pane via common-table

@@ -544,4 +544,76 @@ end do -- item grid
     end
     self:applyGeometry()
   end
+end do -- list item
+  widgets.listItem = mg.proto(mg.widgetBase, {
+    expandMode = {1, 0}, -- assumed to be vertical list
+    
+    padding = 2,
+  })
+  
+  function widgets.listItem:init(base, param)
+    self.children = self.children or { }
+    
+    self.padding = param.padding
+    
+    self.backingWidget = mkwidget(base, { type = "canvas" })
+    mg.createImplicitLayout(param.children, self, { mode = "vertical" })
+    
+    self:subscribeEvent("listItemSelected", function(itm)
+      if itm ~= self then
+        self:deselect()
+      end
+    end)
+  end
+  
+  function widgets.listItem:preferredSize(width)
+    if width then width = width - self.padding*2 end
+    return vec2.add(self.children[1]:preferredSize(width), {self.padding*2, self.padding*2})
+  end
+  function widgets.listItem:updateGeometry(noApply)
+    local l = self.children[1]
+    l.position = {self.padding, self.padding}
+    l.size = vec2.sub(self.size, {self.padding*2, self.padding*2})
+    
+    l:updateGeometry(true)
+    if not noApply then applyGeometry() end
+  end
+  function widgets.listItem:draw() theme.drawListItem(self) end
+  
+  function widgets.listItem:isMouseInteractable() return true end
+  function widgets.listItem:onMouseEnter() self.hover = true self:queueRedraw() end
+  function widgets.listItem:onMouseLeave() self.hover = false self:queueRedraw() end
+  function widgets.listItem:onMouseButtonEvent(btn, down)
+    if down and not self:hasMouse() then
+      self:captureMouse(btn)
+      local p = self -- stop containing scroll area
+      while p.parent do p = p.parent
+        if p.widgetType == "scrollArea" then
+          p.velocity = {0, 0} break
+        end
+      end
+  	elseif not down then
+  		if btn == self:mouseCaptureButton() then
+  			self:releaseMouse()
+        self:select()
+      end
+    end
+    return true
+  end
+  
+  widgets.listItem.onCaptureMouseMove = widgets.button.onCaptureMouseMove -- just yoink this
+  
+  function widgets.listItem:select()
+    if self.selected then return nil end -- no need
+    self.selected = true
+    self:queueRedraw()
+    self:broadcast("listItemSelected", self)
+    mg.startEvent(self.onSelected, self)
+  end
+  function widgets.listItem:deselect()
+    if not self.selected then return nil end
+    self.selected = false
+    self:queueRedraw()
+  end
+  function widgets.listItem:onSelected() end
 end

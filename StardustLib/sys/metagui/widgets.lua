@@ -71,7 +71,7 @@ do -- layout
       
       for _, c in pairs(self.children) do
         local ps = c:preferredSize(width)
-        if width and axis == 1 then width = width - ps[1] - self.spacing*2 end
+        if width and axis == 1 then width = width - ps[1] - self.spacing end
         res[opp] = math.max(res[opp], ps[opp])
         res[axis] = res[axis] + ps[axis]
       end

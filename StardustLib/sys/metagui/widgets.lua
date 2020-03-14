@@ -38,7 +38,10 @@ do -- layout
     
     self.expandMode = param.expandMode or self.expandMode
     
-    self.backingWidget = mkwidget(base, { type = "layout", layoutType = "basic", zlevel = param.zLevel })
+    local scissoring = param.scissoring
+    if scissoring == nil then scissoring = true end
+    
+    self.backingWidget = mkwidget(base, { type = "layout", layoutType = "basic", zlevel = param.zLevel, scissoring = scissoring })
     if debug.showLayoutBoxes then -- image to make it visible (random color)
       widget.addChild(self.backingWidget, { type = "image", file = string.format("/assetmissing.png?crop=0;0;1;1?multiply=0000?replace;0000=%06x4f", sb.makeRandomSource():randu32() % 0x1000000), scale = 1024 })
     end
@@ -206,7 +209,7 @@ end do -- scrollArea
     self.backingWidget = mkwidget(base, { type = "layout", layoutType = "basic" })
     self.subWidgets.front = mkwidget(base, { type = "canvas", mouseTransparent = true })
     
-    mg.createImplicitLayout(param.children, self, { mode = "vertical" })
+    mg.createImplicitLayout(param.children, self, { mode = "vertical", scissoring = false })
   end
   
   -- only intercept if it can actually scroll

@@ -106,7 +106,7 @@ metaGUI details {
     screen anchor
     
     - proper data-passing
-    >> make scrollarea contents not scissor
+    - make scrollarea contents not scissor
     
     eventually {
         debug console pane via common-table

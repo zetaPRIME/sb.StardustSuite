@@ -145,7 +145,40 @@ do -- layout
     -- finally, apply
     if not noApply then self:applyGeometry() end
   end
-end do -- scrollAera
+end do -- panel
+  widgets.panel = mg.proto(mg.widgetBase, {
+    expandMode = {1, 2}, -- can expand to fill horizontally, wants to expand vertically
+    
+    style = "convex",
+  })
+  
+  local padding = 2
+  
+  function widgets.panel:init(base, param)
+    self.children = self.children or { }
+    
+    self.style = param.style
+    
+    self.backingWidget = mkwidget(base, { type = "canvas" })
+    mg.createImplicitLayout(param.children, self, { mode = "vertical" })
+  end
+  
+  function widgets.panel:preferredSize(width)
+    if width then width = width - padding*2 end
+    return vec2.add(self.children[1]:preferredSize(width), {padding*2, padding*2})
+  end
+  function widgets.panel:updateGeometry(noApply)
+    local l = self.children[1]
+    l.position = {padding, padding}
+    l.size = vec2.sub(self.size, {padding*2, padding*2})
+    
+    l:updateGeometry(true)
+    if not noApply then applyGeometry() end
+  end
+  function widgets.panel:draw()
+    theme.drawPanel(self)
+  end
+end do -- scrollArea
   widgets.scrollArea = mg.proto(mg.widgetBase, {
     isBaseWidget = true,
     expandMode = {1, 2}, -- can expand to fill horizontally, wants to expand vertically

@@ -113,6 +113,7 @@ metaGUI details {
     / standard place for threshold value?
     - give button capture
     - fix stuck-drag on too-small scrollarea
+    > make scrollarea contents not scissor
     
     eventually {
         debug console pane via common-table
@@ -137,6 +138,7 @@ metaGUI details {
         - item slot
         - item grid
         - scrollarea
+        - panel (flat, concave or convex)
         text box - hybrid of horizontal scrollarea and label with input handling
         checkbox
         option box?
@@ -145,7 +147,6 @@ metaGUI details {
         
         list of sorts; vertical layout of selectable entries, also used for menus
         
-        panel? either concave or convex
     }
     
     - should probably add to quickbar

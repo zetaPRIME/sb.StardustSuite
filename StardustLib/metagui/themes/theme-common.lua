@@ -6,6 +6,7 @@ local tdef = { } -- defaults
 
 theme.assets = { -- default assets
   frame = mg.ninePatch "frame",
+  panel = mg.ninePatch "panel",
   button = mg.ninePatch "button",
   scrollBar = mg.ninePatch "scrollBar",
   
@@ -26,6 +27,11 @@ end
 function tdef.drawFrame()
   c = widget.bindCanvas(frame.backingWidget .. ".canvas")
   c:clear() assets.frame:drawToCanvas(c)
+end
+
+function tdef.drawPanel(p)
+  local c = widget.bindCanvas(p.backingWidget)
+  c:clear() assets.panel:drawToCanvas(c, p.style or "convex")
 end
 
 function tdef.drawButton(b)

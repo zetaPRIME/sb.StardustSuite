@@ -102,9 +102,6 @@ networked wire I/O ports
 
 metaGUI details {
     icon support for buttons
-    - screen anchor
-    
-    - give scrollarea a "thumb mode" when middle click dragging
     
     eventually {
         debug console pane via common-table
@@ -118,7 +115,7 @@ metaGUI details {
             exclude anything with a "systemItem" tag (nanofield static, shift-click helpers...)
         }
         can use knowledge of window position to make mouse-relative context menus
-        generator scripts?
+        - build scripts
         unique by tag
     }
     

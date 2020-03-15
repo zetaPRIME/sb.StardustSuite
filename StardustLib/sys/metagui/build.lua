@@ -17,7 +17,18 @@ if type(uicfg) == "string" then
   -- still a string after resolving (if necessary)?
   if type(uicfg) == "string" then
     local fn = uicfg
-    uicfg = root.assetJson(uicfg)
+    if fn:lower():match('%.(.-)$') == "lua" then -- build script
+      inputdata = inputdata or config.getParameter("data") or { }
+      require(fn) uicfg = _ENV.cfg -- execute and grab result
+      -- and push in automatically
+      uicfg.inputData = uicfg.inputData or { }
+      util.mergeTable(uicfg.inputData, inputdata or config.getParameter("data") or { })
+    else -- just a plain json doc
+      uicfg = root.assetJson(fn)
+      -- insert passed data, preserving defaults
+      uicfg.inputData = uicfg.inputData or { }
+      util.mergeTable(uicfg.inputData, inputdata or config.getParameter("data") or { })
+    end
     uicfg.configPath = fn
     uicfg.assetPath = fn:match('^(.*/).-$')
   end
@@ -26,9 +37,6 @@ if type(uicfg) ~= "table" then
   return nil -- error?
 end
 
--- insert passed data, preserving defaults
-uicfg.inputData = uicfg.inputData or { }
-util.mergeTable(uicfg.inputData, inputdata or config.getParameter("data") or { })
 
 -- determine theme and accent color in use
 local defaultTheme = _mgcfg.defaultTheme

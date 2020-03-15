@@ -4,6 +4,7 @@
   "title" : "Costumes",
   "icon" : "quickbaricon.png",
   "accentColor" : "7f7f7f",
+  "uniqueBy" : "path",
   "scripts" : [ "cosplay.ui.lua" ],
   "children" : [
     { "mode" : "horizontal" }, // layout mode

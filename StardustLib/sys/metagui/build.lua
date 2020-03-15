@@ -17,6 +17,7 @@ if type(uicfg) == "string" then
   if type(uicfg) == "string" then
     local fn = uicfg
     uicfg = root.assetJson(uicfg)
+    uicfg.configPath = fn
     uicfg.assetPath = fn:match('^(.*/).-$')
   end
 end
@@ -54,6 +55,14 @@ local size = {
   uicfg.size[2] + borderMargins[2] + borderMargins[4]
 }
 uicfg.totalSize = size
+
+-- handle unique conditions
+if uicfg.uniqueBy == "path" and uicfg.configPath then
+  local ipc = getmetatable ''.metagui_ipc
+  if ipc and ipc.uniqueByPath and ipc.uniqueByPath[uicfg.configPath] then
+    ipc.uniqueByPath[uicfg.configPath]()
+  end
+end
 
 player.interact("ScriptPane", {
   gui = {

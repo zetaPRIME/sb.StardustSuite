@@ -291,7 +291,7 @@ function mg.broadcast(ev, ...) paneBase:pushEvent(ev, ...) frame:pushEvent(ev, .
 
 -- -- --
 
-function init()
+function init() -------------------------------------------------------------------------------------------------------------------------------------
   mg.cfg = config.getParameter("___") -- window config
   mg.inputData = mg.cfg.inputData -- alias
   
@@ -304,6 +304,17 @@ function init()
   mg.cfg.icon = mg.path(mg.cfg.icon) -- pre-resolve icon path
   
   -- TODO set up some parameter stuff?? idk, maybe the theme does most of that
+  
+  -- set up IPC
+  do local mt = getmetatable ''
+    mt.metagui_ipc = mt.metagui_ipc or { }
+    mg.ipc = mt.metagui_ipc
+  end
+  
+  if mg.cfg.uniqueBy == "path" and mg.cfg.configPath then
+    mg.ipc.uniqueByPath = mg.ipc.uniqueByPath or { }
+    mg.ipc.uniqueByPath[mg.cfg.configPath] = function() pane.dismiss() mg.ipc.uniqueByPath[mg.cfg.configPath] = nil end
+  end
   
   -- set up basic pane stuff
   local borderMargins = mg.theme.metrics.borderMargins[mg.cfg.style]

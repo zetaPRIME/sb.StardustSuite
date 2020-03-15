@@ -109,7 +109,7 @@ function grid:onSlotMouseEvent(btn, down)
 				local reqItem = self:item()
 				local maxStack = itemutil.property(reqItem, "maxStack") or 1000
 				if cur.count > 0 and (not reqItem or not itemutil.canStack(reqItem, cur)) then -- deposit
-					player.setSwapSlotItem(world.containerAddItems(pane.sourceEntity(), cur)[1] or itemutil.blankItem)
+					player.setSwapSlotItem(world.containerAddItems(pane.sourceEntity(), cur)[1])
 					return true
 				end
 				if not reqItem then return true end -- no trying to request blanks

@@ -291,6 +291,7 @@ function mg.broadcast(ev, ...) paneBase:pushEvent(ev, ...) frame:pushEvent(ev, .
 
 -- -- --
 
+local worldId
 function init() -------------------------------------------------------------------------------------------------------------------------------------
   mg.cfg = config.getParameter("___") -- window config
   mg.inputData = mg.cfg.inputData -- alias
@@ -304,6 +305,9 @@ function init() ----------------------------------------------------------------
   mg.cfg.icon = mg.path(mg.cfg.icon) -- pre-resolve icon path
   
   -- TODO set up some parameter stuff?? idk, maybe the theme does most of that
+  
+  -- store this for later
+  worldId = player.worldId()
   
   -- set up IPC
   do local mt = getmetatable ''
@@ -411,7 +415,8 @@ local bcvmp = { {0, 0}, {0, 0}, {0, 0} } -- last saved mouse position
 
 local lastMouseOver
 function update()
-  local ws = "_tracker"
+  if player.worldId() ~= worldId then return pane.dismiss() end
+  
   if not mg.windowPosition then
     findWindowPosition()
   else

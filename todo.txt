@@ -104,7 +104,7 @@ metaGUI details {
     icon support for buttons
     screen anchor
     
-    close on world change, by default
+    - close on world change, by default
     
     give scrollarea a "thumb mode" when middle click dragging
     

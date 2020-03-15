@@ -9,7 +9,7 @@
             "example" : "/metagui/example.ui" // addressed as "metagui:example"
         },
         "stardustlib" : {
-            // "paneName" : "/path/to/pane.ui", // addressed as "stardustlib:paneName" in this case
+            "cosplay" : "/sys/stardust/cosplay/cosplay.ui"
         }
     }
 }

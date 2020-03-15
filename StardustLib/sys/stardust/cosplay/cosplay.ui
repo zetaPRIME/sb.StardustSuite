@@ -1,0 +1,22 @@
+{ //  -*- grammar-ext: json -*-
+  "style" : "window",
+  "size" : [320, 240],
+  "title" : "Costumes",
+  "icon" : "quickbaricon.png",
+  "scripts" : [ "cosplay.ui.lua" ],
+  "children" : [
+    { "mode" : "horizontal" }, // layout mode
+    "spacer",
+    [ { "size" : 100 }, // sidebar
+      { "type" : "panel", "style" : "concave", "children" : [
+        { "type" : "scrollArea", "id" : "costumeList", "children" : [ { "spacing" : 1 },
+          { "type" : "itemGrid", "id" : "grid", "slots" : 0, "columns" : 9, "spacing" : 4 },
+          { "type" : "spacer", "size" : 1 }
+        ]}
+      ]},
+      [// buttons
+        { "type" : "button", "id" : "apply", "caption" : "Apply" }
+      ]
+    ]
+  ]
+}

@@ -190,6 +190,7 @@ end do -- scroll area ----------------------------------------------------------
     
     scrollDirections = {0, 1},
     scrollBars = true,
+    thumbScrolling = true,
   })
   
   local sizeMod = {0, 0}
@@ -205,6 +206,7 @@ end do -- scroll area ----------------------------------------------------------
     self.expandMode = param.expandMode or self.expandMode
     self.scrollDirections = param.scrollDirections
     self.scrollBars = param.scrollBars
+    self.thumbScrolling = param.thumbScrolling
     
     self.velocity = {0, 0}
     
@@ -240,8 +242,19 @@ end do -- scroll area ----------------------------------------------------------
   function widgets.scrollArea:canPassMouseCapture() return self:isMouseInteractable() end
   function widgets.scrollArea:onPassedMouseCapture(point) self.velocity = {0, 0} self:scrollBy(vec2.sub(mg.mousePosition, point)) end
   function widgets.scrollArea:onCaptureMouseMove(delta)
-    self.velocity = delta
-    self:scrollBy(delta)
+    if self.thumbScrolling and self:mouseCaptureButton() == 1 then -- middle click, "thumb mode"
+      self.velocity = {0, 0}
+      local l = self.children[1]
+      local margin = 16
+      local mpos, tpos = self:relativeMousePosition(), {0, 0}
+      for i=1,2 do -- calculate relative position
+        tpos[i] = util.clamp((mpos[i] - margin) / math.max(1, self.size[i] - margin*2), 0.0, 1.0) * (l.size[i] - self.size[i])
+      end
+      self:scrollTo(tpos)
+    else -- normal delta scrolling
+      self.velocity = delta
+      self:scrollBy(delta)
+    end
   end
   function widgets.scrollArea:scrollBy(delta, suppressAnimation)
     local l = self.children[1]
@@ -251,6 +264,16 @@ end do -- scroll area ----------------------------------------------------------
     self.children[1]:applyGeometry(true)
     if self.scrollBars and not suppressAnimation and vec2.mag(delta) > 0 and l.size[2] > self.size[2] then
       theme.onScroll(self) -- only if there's actually room to scroll and delta is nonzero
+    end
+  end
+  function widgets.scrollArea:scrollTo(pos, suppressAnimation)
+    local l = self.children[1]
+    l.position = vec2.mul(vec2.mul(pos, -1), self.scrollDirections)
+    l.position = rect.ll(rect.bound(rect.fromVec2(l.position, l.position), {0, math.max(0, l.size[2] - self.size[2]) * -1, math.max(0, l.size[1] - self.size[1]), 0}))
+    self:applyGeometry(true)
+    self.children[1]:applyGeometry(true)
+    if self.scrollBars and not suppressAnimation and l.size[2] > self.size[2] then
+      theme.onScroll(self) -- only if there's actually room to scroll
     end
   end
   

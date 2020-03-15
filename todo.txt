@@ -104,7 +104,7 @@ metaGUI details {
     icon support for buttons
     screen anchor
     
-    give scrollarea a "thumb mode" when middle click dragging
+    - give scrollarea a "thumb mode" when middle click dragging
     
     eventually {
         debug console pane via common-table

@@ -37,9 +37,11 @@ end
 function tdef.drawListItem(w)
   local c = widget.bindCanvas(w.backingWidget)
   c:clear() local r = rect.withSize({0, 0}, c:size())
-  if w.selected then
+  if w.selected then -- highlight in accent
     local color = mg.getColor("accent"):sub(1, 6) .. "7f"
     c:drawRect(r, "#" .. color)
+  else
+    c:drawRect(r, "#0000002f") -- slight darken
   end
   if w.hover then
     c:drawRect(r, "#ffffff1f") -- slight highlight

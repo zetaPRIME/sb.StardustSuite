@@ -424,7 +424,7 @@ function update()
   lastMouseOver = mw
   widget.setVisible(bcv[2], not not (mw or keyFocus))
   
-  if mouseCaptor and not vec2.eq(lmp, mg.mousePosition) then -- send mouse move event
+  if mouseCaptor then -- send mouse move event
     mouseCaptor:onCaptureMouseMove(vec2.sub(mg.mousePosition, lmp))
   end
   

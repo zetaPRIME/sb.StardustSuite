@@ -107,6 +107,10 @@ function widgetBase:passMouseCapture(w) -- pass to nearest accepting ancestor
   end
 end
 
+function widgetBase:relativeMousePosition() return mg.paneToWidgetPosition(self, mg.mousePosition) end
+function widgetBase:relativePanePosition(pos) return mg.paneToWidgetPosition(self, pos) end
+function widgetBase:relativeScreenPosition(pos) return mg.screenToWidgetPosition(self, pos) end
+
 function widgetBase:grabFocus() return mg.grabFocus(self) end
 function widgetBase:releaseFocus() return mg.releaseFocus(self) end
 function widgetBase:onFocus() end
@@ -277,6 +281,21 @@ function mg.mouseCaptureButton(w) if mouseCaptor and (w == mouseCaptor or not w)
 function mg.mouseCapturePoint(w) if mouseCaptor and (w == mouseCaptor or not w) then return mouseCapturePoint end end
 function mg.hasMouse(w) return w == mouseCaptor end
 
+function mg.screenToWidgetPosition(w, pos) return mg.paneToWidgetPosition(w, vec2.sub(pos, mg.windowPosition)) end
+function mg.paneToWidgetPosition(w, pos)
+  pos = vec2.mul(pos, {1, -1}) -- make screen-relative and pre-invert
+  while w do
+    if not w.parent then -- root widget
+      pos[1] = pos[1] - w.position[1]
+      pos[2] = pos[2] + w.size[2] + w.position[2] - 1 -- compensate for reported position oddness
+    else
+      pos = vec2.sub(pos, w.position)
+    end
+    w = w.parent
+  end
+  return pos
+end
+
 local keyFocus
 function mg.grabFocus(w)
   if w ~= keyFocus then
@@ -332,8 +351,8 @@ function init() ----------------------------------------------------------------
   for _, s in pairs(mg.cfg.scripts or { }) do
     init, update, uninit = nil
     require(mg.path(s))
-    if update then table.add(scriptUpdate, update) end
-    if uninit then table.add(scriptUninit, uninit) end
+    if update then table.insert(scriptUpdate, update) end
+    if uninit then table.insert(scriptUninit, uninit) end
     if init then init() end -- call script init
   end
   update, uninit = sysUpdate, sysUninit

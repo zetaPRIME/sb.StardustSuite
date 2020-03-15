@@ -98,6 +98,10 @@ local function onCostumeSelected(w)
   paneBase:applyGeometry()
 end
 
+function update() -- DEBUG
+  metagui.setTitle(util.tableToString(preview.parent.parent:relativeMousePosition()))
+end
+
 function buildList()
   local cl = { }
   for _, c in pairs(costumes) do if not c.hidden then table.insert(cl, c) end end

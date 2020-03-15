@@ -214,6 +214,9 @@ end do -- scrollArea
     mg.createImplicitLayout(param.children, self, { mode = "vertical", scissoring = false })
   end
   
+  function widgets.scrollArea:addChild(...) return self.children[1]:addChild(...) end
+  function widgets.scrollArea:clearChildren(...) return self.children[1]:clearChildren(...) end
+  
   -- only intercept if it can actually scroll
   function widgets.scrollArea:isMouseInteractable(init) return init or self.children[1].size[2] > self.size[2] end
   function widgets.scrollArea:onMouseButtonEvent(btn, down)

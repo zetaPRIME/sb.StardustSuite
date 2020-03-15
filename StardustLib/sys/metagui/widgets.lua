@@ -330,6 +330,7 @@ end do -- button
         theme.onButtonClick(self)
       elseif self.state == "press" then
         self.state = "hover"
+        self:releaseMouse()
         self:queueRedraw()
         mg.startEvent(self.onClick, self)
       end

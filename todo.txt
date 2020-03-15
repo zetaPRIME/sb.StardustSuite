@@ -103,7 +103,6 @@ networked wire I/O ports
 metaGUI details {
     icon support for buttons
     screen anchor
-    - uniqueBy
     
     close on world change, by default
     

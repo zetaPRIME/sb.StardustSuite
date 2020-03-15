@@ -63,7 +63,7 @@ local redrawQueue = { }
 local recalcQueue = { }
 local lastMouseOver
 local mouseMap = setmetatable({ }, { __mode = 'v' })
-local scriptUpdate = { }
+local scriptUpdate, scriptUninit = { }, { }
 
 -- and widget stuff
 mg.widgetTypes = { }
@@ -313,7 +313,7 @@ function init() ----------------------------------------------------------------
   
   if mg.cfg.uniqueBy == "path" and mg.cfg.configPath then
     mg.ipc.uniqueByPath = mg.ipc.uniqueByPath or { }
-    mg.ipc.uniqueByPath[mg.cfg.configPath] = function() pane.dismiss() mg.ipc.uniqueByPath[mg.cfg.configPath] = nil end
+    mg.ipc.uniqueByPath[mg.cfg.configPath] = function() pane.dismiss() end
   end
   
   -- set up basic pane stuff
@@ -324,14 +324,15 @@ function init() ----------------------------------------------------------------
   mg.theme.decorate()
   mg.theme.drawFrame()
   
-  local sysUpdate = update
+  local sysUpdate, sysUninit = update, uninit
   for _, s in pairs(mg.cfg.scripts or { }) do
-    init, update = nil
+    init, update, uninit = nil
     require(mg.path(s))
     if update then table.add(scriptUpdate, update) end
+    if uninit then table.add(scriptUninit, uninit) end
     if init then init() end -- call script init
   end
-  update = sysUpdate
+  update, uninit = sysUpdate, sysUninit
   
   frame:updateGeometry()
   paneBase:updateGeometry()
@@ -339,6 +340,11 @@ function init() ----------------------------------------------------------------
   recalcQueue, redrawQueue = { }, { }
   
   --setmetatable(_ENV, {__index = function(_, n) if DBG then DBG:setText("unknown func " .. n) end end})
+end
+
+function uninit()
+  for _, f in pairs(scriptUninit) do f() end
+  if mg.ipc.uniqueByPath and mg.cfg.configPath then mg.ipc.uniqueByPath[mg.cfg.configPath] = nil end
 end
 
 local eventQueue = { }

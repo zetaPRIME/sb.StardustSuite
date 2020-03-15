@@ -324,9 +324,6 @@ function init() ----------------------------------------------------------------
   mg.theme.decorate()
   mg.theme.drawFrame()
   
-  frame:updateGeometry()
-  paneBase:updateGeometry()
-  
   local sysUpdate = update
   for _, s in pairs(mg.cfg.scripts or { }) do
     init, update = nil
@@ -335,6 +332,11 @@ function init() ----------------------------------------------------------------
     if init then init() end -- call script init
   end
   update = sysUpdate
+  
+  frame:updateGeometry()
+  paneBase:updateGeometry()
+  for w in pairs(redrawQueue) do w:draw() end
+  recalcQueue, redrawQueue = { }, { }
   
   --setmetatable(_ENV, {__index = function(_, n) if DBG then DBG:setText("unknown func " .. n) end end})
 end

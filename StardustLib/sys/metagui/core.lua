@@ -153,6 +153,7 @@ function widgetBase:clearChildren()
   for _, v in pairs(c) do v:delete() end
 end
 function widgetBase:delete()
+  widgetBase.clearChildren(self) -- clear down first
   if self.parent then -- remove from parent
     for k, v in pairs(self.parent.children) do
       if v == self then table.remove(self.parent.children, k) break end
@@ -204,6 +205,7 @@ function mg.createWidget(param, parent)
     w.parent = parent
     w.parent.children = w.parent.children or { }
     table.insert(w.parent.children, w)
+    parent:queueGeometryUpdate()
   end
   
   -- some basics

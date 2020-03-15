@@ -44,6 +44,7 @@ if not registry.themes[defaultTheme] then for k in pairs(registry.themes) do def
 
 settings = player.getProperty("metaGUISettings") or { }
 local theme = settings.theme or defaultTheme
+if uicfg.forceTheme then theme = uicfg.forceTheme end
 if not registry.themes[theme] then theme = defaultTheme end
 
 local themedata = root.assetJson(registry.themes[theme] .. "theme.json")

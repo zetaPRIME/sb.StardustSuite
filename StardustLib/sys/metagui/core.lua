@@ -308,6 +308,8 @@ function mg.releaseFocus(w) if w == keyFocus or w == true then mg.grabFocus(nil)
 
 function mg.broadcast(ev, ...) paneBase:pushEvent(ev, ...) frame:pushEvent(ev, ...) end
 
+module "extra"
+
 -- -- --
 
 local worldId

@@ -603,6 +603,7 @@ end do -- list item ------------------------------------------------------------
   function widgets.listItem:clearChildren(...) return self.children[1]:clearChildren(...) end
   
   function widgets.listItem:preferredSize(width)
+    if self.explicitSize then return self.explicitSize end
     if width then width = width - self.padding*2 end
     return vec2.add(self.children[1]:preferredSize(width), {self.padding*2, self.padding*2})
   end

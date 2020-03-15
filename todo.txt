@@ -114,7 +114,7 @@ metaGUI details {
             maybe require only a single polling pane to be open
             exclude anything with a "systemItem" tag (nanofield static, shift-click helpers...)
         }
-        can use knowledge of window position to make mouse-relative context menus
+        - can use knowledge of window position to make mouse-relative context menus
         - build scripts
         unique by tag
     }

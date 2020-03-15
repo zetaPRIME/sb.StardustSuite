@@ -121,3 +121,14 @@ function grid:onSlotMouseEvent(btn, down)
 	end
 	return true
 end
+
+-- TEMP
+function btn:onClick()
+	--metagui.setTitle("lol " .. metagui.measureString("something")[2])
+	metagui.contextMenu {
+		{"There is something here.", function() metagui.setTitle("a thing") end},
+		{"Another menu item.", function() metagui.setTitle("another!") end},
+		"-",
+		{"After the separator~"}
+	}
+end

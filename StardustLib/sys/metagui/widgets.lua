@@ -4,7 +4,8 @@ local widgets = mg.widgetTypes
 local mkwidget = mg.mkwidget
 local debug = mg.debugFlags
 
-do -- layout
+do
+end do -- layout
   widgets.layout = mg.proto(mg.widgetBase, {
     -- widget attributes
     isBaseWidget = true,
@@ -161,6 +162,7 @@ end do -- panel
     self.children = self.children or { }
     
     self.style = param.style
+    self.expandMode = param.expandMode
     
     self.backingWidget = mkwidget(base, { type = "canvas" })
     mg.createImplicitLayout(param.children, self, { mode = "vertical" })
@@ -280,16 +282,20 @@ end do -- spacer
   function widgets.spacer:preferredSize() local p = self.explicitSize or 0 return {p, p} end
 end do -- canvas
   widgets.canvas = mg.proto(mg.widgetBase, {
-    expandMode = {1, 1} -- can expand if no size specified
+    expandMode = {1, 1}, -- can expand if no size specified
+    
+    mouseTransparent = false,
   })
   
   function widgets.canvas:init(base, param)
+    self.mouseTransparent = param.mouseTransparent
+    
     if self.explicitSize then expandMode = {0, 0} end -- fixed size
     self.backingWidget = mkwidget(base, { type = "canvas" })
   end
   
   function widgets.canvas:preferredSize() return self.explicitSize or {64, 64} end
-  function widgets.canvas:isMouseInteractable() return true end
+  function widgets.canvas:isMouseInteractable() return not self.mouseTransparent end
 end do -- button
   widgets.button = mg.proto(mg.widgetBase, {
     expandMode = {1, 0}, -- will expand horizontally, but not vertically
@@ -560,7 +566,7 @@ end do -- list item
     self.padding = param.padding
     
     self.backingWidget = mkwidget(base, { type = "canvas" })
-    mg.createImplicitLayout(param.children, self, { mode = "vertical" })
+    mg.createImplicitLayout(param.children, self, { mode = "horizontal" })
     
     self:subscribeEvent("listItemSelected", function(itm)
       if itm ~= self then
@@ -568,6 +574,9 @@ end do -- list item
       end
     end)
   end
+  
+  function widgets.listItem:addChild(...) return self.children[1]:addChild(...) end
+  function widgets.listItem:clearChildren(...) return self.children[1]:clearChildren(...) end
   
   function widgets.listItem:preferredSize(width)
     if width then width = width - self.padding*2 end

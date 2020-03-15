@@ -234,6 +234,7 @@ function mg.createWidget(param, parent)
 end
 
 function mg.createImplicitLayout(list, parent, defaults)
+  list = list or { }
   local p = { type = "layout", children = list }
   if parent then -- inherit some defaults off parent
     if parent.mode == "horizontal" then p.mode = "vertical"

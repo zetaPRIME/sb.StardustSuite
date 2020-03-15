@@ -1,21 +1,26 @@
 { //  -*- grammar-ext: json -*-
   "style" : "window",
-  "size" : [320, 240],
+  "size" : [300, 200],
   "title" : "Costumes",
   "icon" : "quickbaricon.png",
+  "accentColor" : "7f7f7f",
   "scripts" : [ "cosplay.ui.lua" ],
   "children" : [
     { "mode" : "horizontal" }, // layout mode
-    "spacer",
+    [ { "expandMode" : [2, 2] }, // preview pane
+      { "type" : "panel", "expandMode" : [0, 0], "style" : "concave", "children" : [ { "type" : "canvas", "id" : "preview", "size" : [84, 84] } ]},
+      { "type" : "panel", "style" : "concave", "children" : [
+        { "type" : "scrollArea", "id" : "descArea", "children" : [
+          { "type" : "label", "id" : "descLabel" }
+        ]}
+      ]}
+    ],
     [ { "size" : 100 }, // sidebar
       { "type" : "panel", "style" : "concave", "children" : [
-        { "type" : "scrollArea", "id" : "costumeList", "children" : [ { "spacing" : 1 },
-          { "type" : "itemGrid", "id" : "grid", "slots" : 0, "columns" : 9, "spacing" : 4 },
-          { "type" : "spacer", "size" : 1 }
-        ]}
+        { "type" : "scrollArea", "id" : "costumeList", "children" : [ { "spacing" : 1 } ]}
       ]},
-      [// buttons
-        { "type" : "button", "id" : "apply", "caption" : "Apply" }
+      [ // buttons
+        { "type" : "button", "id" : "apply", "caption" : "Apply Costume" }
       ]
     ]
   ]

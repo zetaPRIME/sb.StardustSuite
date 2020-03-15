@@ -102,7 +102,7 @@ networked wire I/O ports
 
 metaGUI details {
     icon support for buttons
-    screen anchor
+    - screen anchor
     
     - give scrollarea a "thumb mode" when middle click dragging
     

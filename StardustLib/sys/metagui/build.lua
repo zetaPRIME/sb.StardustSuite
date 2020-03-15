@@ -1,6 +1,7 @@
 -- pane builder
 
 require "/scripts/util.lua"
+require "/scripts/vec2.lua"
 
 if not _mgcfg then _mgcfg = root.assetJson("/panes.config").metaGUI end -- make sure we have this
 local registry = root.assetJson("/metagui/registry.json")
@@ -64,12 +65,20 @@ if uicfg.uniqueBy == "path" and uicfg.configPath then
   end
 end
 
+local pf = { type = "panefeature" }
+if type(uicfg.anchor) == "table" then
+  pf.anchor = uicfg.anchor[1]
+  pf.offset = vec2.mul(uicfg.anchor[2], {1, -1})
+  pf.positionLocked = true
+end
+
 player.interact("ScriptPane", {
   gui = {
     _ = {
       type = "background",
       fileFooter = "/assetmissing.png?crop=0;0;1;1?multiply=0000?scalenearest=" .. size[1] .. ";" .. size[2]
     },
+    _pf = pf,
     _tracker = { type = "canvas", size = size, zlevel = -99999 },
     _mouse = { type = "canvas", size = size, zlevel = -99998, captureMouseEvents = true },
     _keys = { type = "canvas", size = {0, 0}, zlevel = -99998, captureKeyboardEvents = true }

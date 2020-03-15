@@ -5,7 +5,7 @@ local mkwidget = mg.mkwidget
 local debug = mg.debugFlags
 
 do
-end do -- layout
+end do -- layout ------------------------------------------------------------------------------------------------------------------------------------
   widgets.layout = mg.proto(mg.widgetBase, {
     -- widget attributes
     isBaseWidget = true,
@@ -149,7 +149,7 @@ end do -- layout
     -- finally, apply
     if not noApply then self:applyGeometry() end
   end
-end do -- panel
+end do -- panel -------------------------------------------------------------------------------------------------------------------------------------
   widgets.panel = mg.proto(mg.widgetBase, {
     expandMode = {1, 2}, -- can expand to fill horizontally, wants to expand vertically
     
@@ -183,7 +183,7 @@ end do -- panel
   function widgets.panel:draw()
     theme.drawPanel(self)
   end
-end do -- scrollArea
+end do -- scroll area -------------------------------------------------------------------------------------------------------------------------------
   widgets.scrollArea = mg.proto(mg.widgetBase, {
     isBaseWidget = true,
     expandMode = {1, 2}, -- can expand to fill horizontally, wants to expand vertically
@@ -272,7 +272,7 @@ end do -- scrollArea
       widget.setSize(sw, widget.getSize(self.backingWidget))
     end
   end
-end do -- spacer
+end do -- spacer ------------------------------------------------------------------------------------------------------------------------------------
   widgets.spacer = mg.proto(mg.widgetBase, {
     expandMode = {2, 2} -- prefer to expand
   })
@@ -280,7 +280,7 @@ end do -- spacer
     if self.explicitSize then expandMode = {0, 0} end -- fixed size
   end
   function widgets.spacer:preferredSize() local p = self.explicitSize or 0 return {p, p} end
-end do -- canvas
+end do -- canvas ------------------------------------------------------------------------------------------------------------------------------------
   widgets.canvas = mg.proto(mg.widgetBase, {
     expandMode = {1, 1}, -- can expand if no size specified
     
@@ -296,7 +296,7 @@ end do -- canvas
   
   function widgets.canvas:preferredSize() return self.explicitSize or {64, 64} end
   function widgets.canvas:isMouseInteractable() return not self.mouseTransparent end
-end do -- button
+end do -- button ------------------------------------------------------------------------------------------------------------------------------------
   widgets.button = mg.proto(mg.widgetBase, {
     expandMode = {1, 0}, -- will expand horizontally, but not vertically
   })
@@ -351,7 +351,7 @@ end do -- button
     self:queueRedraw()
     if self.parent then self.parent:queueGeometryUpdate() end
   end
-end do -- label
+end do -- label -------------------------------------------------------------------------------------------------------------------------------------
   widgets.label = mg.proto(mg.widgetBase, {
     expandMode = {1, 0}, -- will expand horizontally, but not vertically
     text = "",
@@ -393,7 +393,7 @@ end do -- label
     self:queueRedraw()
     if self.parent then self.parent:queueGeometryUpdate() end
   end
-end do -- image
+end do -- image -------------------------------------------------------------------------------------------------------------------------------------
   widgets.image = mg.proto(mg.widgetBase, {
     file = "/assetmissing.png", -- fallback file
     imgSize = {0, 0},
@@ -421,7 +421,7 @@ end do -- image
     self.imgSize = root.imageSize(self.file)
     if parent then parent:queueGeometryUpdate() end
   end
-end do -- item slot
+end do -- item slot ---------------------------------------------------------------------------------------------------------------------------------
   widgets.itemSlot = mg.proto(mg.widgetBase, {
     storedCount = 0
     --
@@ -477,7 +477,7 @@ end do -- item slot
     self:queueRedraw()
     return old
   end
-end do -- item grid
+end do -- item grid ---------------------------------------------------------------------------------------------------------------------------------
   widgets.itemGrid = mg.proto(mg.widgetBase, {
     -- widget attributes
     isBaseWidget = true,
@@ -554,7 +554,7 @@ end do -- item grid
     end
     self:applyGeometry()
   end
-end do -- list item
+end do -- list item ---------------------------------------------------------------------------------------------------------------------------------
   widgets.listItem = mg.proto(mg.widgetBase, {
     expandMode = {1, 0}, -- assumed to be vertical list
     

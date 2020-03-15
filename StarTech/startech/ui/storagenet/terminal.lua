@@ -19,14 +19,6 @@ local function waitFor(p) -- wait for promise
   return p
 end
 
-for i=1, 120 do
-	scrollArea.children[1]:addChild {
-		type = "listItem", children = {
-			{ type = "label", text = "List item #" .. i }
-		}
-	}
-end
-
 local refreshNow = false
 local function refresh() refreshNow = true end
 metagui.startEvent(function()

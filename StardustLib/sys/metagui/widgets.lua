@@ -599,12 +599,9 @@ end do -- list item ------------------------------------------------------------
   function widgets.listItem:onMouseButtonEvent(btn, down)
     if down and not self:hasMouse() then
       self:captureMouse(btn)
-      local p = self -- stop containing scroll area
-      while p.parent do p = p.parent
-        if p.widgetType == "scrollArea" then
-          p.velocity = {0, 0} break
-        end
-      end
+      -- stop containing scroll area
+      local p = self:findParent("scrollArea")
+      if p then p.velocity = {0, 0} end
   	elseif not down then
   		if btn == self:mouseCaptureButton() then
   			self:releaseMouse()

@@ -178,6 +178,14 @@ function widgetBase:delete()
   if self.subWidgets then for _, sw in pairs(self.subWidgets) do rw(sw) end end
 end
 
+-- find parent of specific widget type
+function widgetBase:findParent(wtype)
+  local p = self
+  while p.parent do p = p.parent
+    if p.widgetType == wtype then return p end
+  end
+end
+
 -- event subscription stuff
 function widgetBase:subscribeEvent(ev, f)
   self.__event = self.__event or { }

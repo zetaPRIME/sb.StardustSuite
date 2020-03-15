@@ -102,16 +102,12 @@ networked wire I/O ports
 
 metaGUI details {
     icon support for buttons
-    - pane icon
     screen anchor
+    uniqueBy
     
     close on world change, by default
     
-    - event subcription system (subscriptions stored within widget)
     give scrollarea a "thumb mode" when middle click dragging
-    standard way of halting scrollarea velocity
-    findParent(type)
-    - fix subwidget mouseover weirdness?
     
     eventually {
         debug console pane via common-table
@@ -137,9 +133,9 @@ metaGUI details {
         - item grid
         - scrollarea
         - panel (flat, concave or convex)
+        - list item
         checkbox
         option box?
-        > list item
         
         text box {
             hybrid of horizontal scrollarea and label with input handling
@@ -152,8 +148,6 @@ metaGUI details {
             event onTabChanged
         }
     }
-    
-    - should probably add to quickbar
     
     > need universal container proxy as well (transmat terminal and such)
     for container proxy: {

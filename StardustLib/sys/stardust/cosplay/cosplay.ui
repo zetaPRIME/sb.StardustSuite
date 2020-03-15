@@ -8,7 +8,7 @@
   "children" : [
     { "mode" : "horizontal" }, // layout mode
     [ { "expandMode" : [2, 2] }, // preview pane
-      { "type" : "panel", "expandMode" : [0, 0], "style" : "concave", "children" : [ { "type" : "canvas", "id" : "preview", "size" : [84, 84] } ]},
+      { "type" : "panel", "expandMode" : [0, 0], "style" : "concave", "children" : [ { "type" : "canvas", "id" : "preview", "size" : [84, 84], "mouseTransparent" : true } ]},
       { "type" : "panel", "style" : "concave", "children" : [
         { "type" : "scrollArea", "id" : "descArea", "children" : [
           { "type" : "label", "id" : "descLabel" }

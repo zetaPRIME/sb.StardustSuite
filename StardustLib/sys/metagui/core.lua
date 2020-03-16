@@ -427,6 +427,8 @@ local function findWindowPosition()
   end
   
   mg.windowPosition = fp
+  mg.windowOffScreen = not widget.inMember(ws, vec2.add(fp, mg.cfg.totalSize))
+  pane.playSound("/sfx/interface/hoverover_bumb.ogg", 0, 0.75)
 end
 
 mg.mousePosition = {0, 0} -- default
@@ -438,10 +440,9 @@ local lastMouseOver
 function update()
   if player.worldId() ~= worldId then return pane.dismiss() end
   
-  if not mg.windowPosition then
-    findWindowPosition()
-  else
-    if not widget.inMember(bcv[1], mg.windowPosition) or not widget.inMember(bcv[1], vec2.add(mg.windowPosition, mg.cfg.totalSize)) then findWindowPosition() end
+  if not mg.windowPosition then findWindowPosition() else
+    if not widget.inMember(bcv[1], {math.max(0, mg.windowPosition[1]), math.max(0, mg.windowPosition[2])})
+    or not widget.inMember(bcv[1], vec2.add(mg.windowPosition, mg.cfg.totalSize)) then findWindowPosition() end
   end
   
   local lmp = mg.mousePosition
@@ -505,6 +506,7 @@ function cursorOverride(pos)
   if not bcvmp[0] then -- no registered mouse positions
     if mg.windowPosition then mg.mousePosition = vec2.sub(pos, mg.windowPosition) end
   else
+    if mg.windowOffScreen then mg.windowPosition = vec2.sub(pos, mg.mousePosition) end
     --
   end
 end

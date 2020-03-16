@@ -104,6 +104,10 @@ metaGUI details {
     icon support for buttons
     
     eventually {
+        > fix window finding while partially offscreen on the left or bottom {
+            - detect if offscreen and compensate via cursorOverride
+        }
+        
         debug console pane via common-table
         autoInteract for item slots
         rework preferredSize to take both a width and a height?
@@ -114,9 +118,6 @@ metaGUI details {
             maybe require only a single polling pane to be open
             exclude anything with a "systemItem" tag (nanofield static, shift-click helpers...)
         }
-        - can use knowledge of window position to make mouse-relative context menus
-        - build scripts
-        unique by tag
     }
     
     widgets needed {

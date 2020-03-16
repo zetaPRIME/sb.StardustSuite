@@ -12,7 +12,7 @@
         { "type" : "spacer", "size" : 1 }
       ]}
     ]},
-    { "type" : "button", "id" : "btn", "caption" : "(search box placeholder)" },
+    { "type" : "textBox", "id" : "btn", "caption" : "(search box placeholder)" },
     ""
   ]
 }

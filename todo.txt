@@ -103,6 +103,14 @@ networked wire I/O ports
 metaGUI details {
     icon support for buttons
     
+    before first full release {
+        do text box widget so terminal can have search back
+        bring back drive config
+        move theme-common to a module
+        settings panel with theme selection
+        starbound-default style
+    }
+    
     eventually {
         debug console pane via common-table
         autoInteract for item slots

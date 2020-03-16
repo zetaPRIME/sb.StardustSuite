@@ -650,4 +650,32 @@ end do -- list item ------------------------------------------------------------
     self:queueRedraw()
   end
   function widgets.listItem:onSelected() end
+end do -- text box 
+  widgets.textBox = mg.proto(mg.widgetBase, {
+    expandMode = {1, 0},
+    text = ": ",
+  })
+  
+  function widgets.textBox:init(base, param)
+    self.backingWidget = mkwidget(base, { type = "canvas" })
+  end
+  function widgets.textBox:preferredSize() return {96, 16} end
+  function widgets.textBox:draw()
+    local c = widget.bindCanvas(self.backingWidget)
+    c:clear() c:drawText(self.text, { position = {0, self.size[2] / 2}, horizontalAnchor = "left", verticalAnchor = "mid" }, 8)
+  end
+  function widgets.textBox:isMouseInteractable() return true end
+  function widgets.textBox:onMouseButtonEvent(btn, down)
+    if btn == 0 and down then
+      self:grabFocus()
+      return true
+    end
+  end
+  function widgets.textBox:onKeyEvent(key, down)
+    if down then
+      mg.setTitle("key: " .. key)
+      self.text = self.text .. string.char(key)
+      self:queueRedraw()
+    end
+  end
 end

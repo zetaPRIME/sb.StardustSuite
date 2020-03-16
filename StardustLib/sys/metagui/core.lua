@@ -364,10 +364,15 @@ function init() ----------------------------------------------------------------
   for w in pairs(redrawQueue) do w:draw() end
   recalcQueue, redrawQueue = { }, { }
   
+  -- TEMP
+  mg.ipc.keysub = { keyEvent = _keyEvent, master = mg }
+  player.interact("ScriptPane", "/sys/metagui/helper/keysub.config", 0)
+  
   --setmetatable(_ENV, {__index = function(_, n) if DBG then DBG:setText("unknown func " .. n) end end})
 end
 
 function uninit()
+  if mg.ipc.keysub and mg.ipc.keysub.master == mg then mg.ipc.keysub = nil end
   for _, f in pairs(scriptUninit) do f() end
   if mg.ipc.uniqueByPath and mg.cfg.configPath then mg.ipc.uniqueByPath[mg.cfg.configPath] = nil end
 end
@@ -433,8 +438,8 @@ end
 
 mg.mousePosition = {0, 0} -- default
 
-local bcv = { "_tracker", "_mouse", "_keys" }
-local bcvmp = { {0, 0}, {0, 0}, {0, 0} } -- last saved mouse position
+local bcv = { "_tracker", "_mouse" }
+local bcvmp = { {0, 0}, {0, 0} } -- last saved mouse position
 
 local lastMouseOver
 function update()
@@ -489,16 +494,7 @@ function update()
     mouseCaptor:onCaptureMouseMove(vec2.sub(mg.mousePosition, lmp))
   end
   
-  do -- handle key focus widget
-    local kf, kw = not not keyFocus, not not widget.bindCanvas(bcv[3])
-    if kf ~= kw then
-      if kf then pane.addWidget({ type = "canvas", size = {0, 0}, zlevel = -99998, captureKeyboardEvents = true }, bcv[3])
-      else pane.removeWidget(bcv[3]) end
-    end
-  end
-  
-  if keyFocus then widget.focus(bcv[3])
-  elseif mw then widget.focus(bcv[2])
+  if keyFocus or mw then widget.focus(bcv[2])
   else widget.focus(bcv[1]) end
   
   for w in pairs(recalcQueue) do w:updateGeometry() end
@@ -532,4 +528,8 @@ end
 function _clickLeft() _mouseEvent(nil, 0, true) end
 function _clickRight() _mouseEvent(nil, 2, true) end
 
-function _keyEvent(key, down) if keyFocus then keyFocus:onKeyEvent(key, down) end end
+function _keyEvent(key, down, ...)
+  mg.setTitle(util.tableToString{key, down, ...})
+  if keyFocus then keyFocus:onKeyEvent(key, down) end
+  pane.playSound("/sfx/interface/hoverover_bumb.ogg", 0, 0.75)
+end

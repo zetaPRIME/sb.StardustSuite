@@ -2,7 +2,8 @@
 
 local ipc = getmetatable ''.metagui_ipc
 local ks = ipc.keysub
-keyEvent = ks.keyEvent
+ks.accel = ks.accel or { }
+local accel = ks.accel
 
 local wid
 function init()
@@ -16,7 +17,14 @@ function update()
 end
 
 function keyEvent(key, down)
-  ks.keyEvent(key, down, char)
+  if key >= 114 and key <= 121 then
+    accel[key] = down or nil
+    accel.shift = accel[114] or accel[115] or nil
+    accel.ctrl = accel[116] or accel[117] or nil
+    accel.alt = accel[118] or accel[119] or nil
+    accel.meta = accel[120] or accel[121] or nil -- might as well
+  end
+  ks.keyEvent(key, down, accel)
 end
 
 local killed = false

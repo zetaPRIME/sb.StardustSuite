@@ -671,10 +671,10 @@ end do -- text box
       return true
     end
   end
-  function widgets.textBox:onKeyEvent(key, down)
+  function widgets.textBox:onKeyEvent(key, down, accel)
     if down then
       mg.setTitle("key: " .. key)
-      self.text = self.text .. string.char(key)
+      self.text = self.text .. (mg.keyToChar(key, accel.shift) or "")
       self:queueRedraw()
     end
   end

@@ -296,6 +296,17 @@ function mg.paneToWidgetPosition(w, pos)
   return pos
 end
 
+local function spawnKeysub(respawn)
+  if not respawn and mg.ipc.keysub and mg.ipc.keysub.master == mg then return nil end
+  mg.ipc.keysub = { keyEvent = _keyEvent, escEvent = _escEvent, master = mg, accel = mg.ipc.keysub and mg.ipc.keysub.accel or nil }
+  player.interact("ScriptPane", "/sys/metagui/helper/keysub.config", 0)
+end
+local function killKeysub()
+  if mg.ipc.keysub and mg.ipc.keysub.master == mg then
+    mg.ipc.keysub = nil
+  end
+end
+
 local keyFocus
 function mg.grabFocus(w)
   if w ~= keyFocus then
@@ -303,11 +314,14 @@ function mg.grabFocus(w)
     keyFocus = w
     if keyFocus then keyFocus:onFocus() end
   end
+  if not keyFocus then killKeysub()
+  elseif w then spawnKeysub(true) end
 end
 function mg.releaseFocus(w) if w == keyFocus or w == true then mg.grabFocus(nil) return true end end
 
 function mg.broadcast(ev, ...) paneBase:pushEvent(ev, ...) frame:pushEvent(ev, ...) end
 
+module "util"
 module "extra"
 
 -- -- --
@@ -363,10 +377,6 @@ function init() ----------------------------------------------------------------
   paneBase:updateGeometry()
   for w in pairs(redrawQueue) do w:draw() end
   recalcQueue, redrawQueue = { }, { }
-  
-  -- TEMP
-  mg.ipc.keysub = { keyEvent = _keyEvent, master = mg }
-  player.interact("ScriptPane", "/sys/metagui/helper/keysub.config", 0)
   
   --setmetatable(_ENV, {__index = function(_, n) if DBG then DBG:setText("unknown func " .. n) end end})
 end
@@ -497,9 +507,10 @@ function update()
   if keyFocus or mw then widget.focus(bcv[2])
   else widget.focus(bcv[1]) end
   
-  for w in pairs(recalcQueue) do w:updateGeometry() end
-  for w in pairs(redrawQueue) do w:draw() end
-  redrawQueue = { } recalcQueue = { }
+  local rdq, rcq = redrawQueue, recalcQueue
+  redrawQueue, recalcQueue = { }, { }
+  for w in pairs(rcq) do w:updateGeometry() end
+  for w in pairs(rdq) do w:draw() end
 end
 
 function cursorOverride(pos)
@@ -523,13 +534,19 @@ function _mouseEvent(_, btn, down)
       if not w then break end
     end
   end
-  if down and keyFocus and keyFocus ~= lastMouseOver then mg.grabFocus() end -- clear focus on clicking other widget
+  if down and keyFocus then
+    if keyFocus ~= lastMouseOver then mg.grabFocus() -- clear focus on clicking other widget
+    end--else spawnKeysub(true) end -- 
+  end
 end
 function _clickLeft() _mouseEvent(nil, 0, true) end
 function _clickRight() _mouseEvent(nil, 2, true) end
 
-function _keyEvent(key, down, ...)
-  mg.setTitle(util.tableToString{key, down, ...})
-  if keyFocus then keyFocus:onKeyEvent(key, down) end
+function _keyEvent(key, down, accel)
+  mg.setTitle(util.tableToString{key, down, mg.keyToChar(key, accel.shift), accel})
+  if keyFocus then keyFocus:onKeyEvent(key, down, accel) end
   pane.playSound("/sfx/interface/hoverover_bumb.ogg", 0, 0.75)
+end
+function _keyEscEvent()
+  
 end

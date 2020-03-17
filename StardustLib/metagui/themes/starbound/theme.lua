@@ -12,12 +12,15 @@ function theme.decorate()
   widget.addChild(frame.backingWidget, { type = "canvas", position = {0, 0}, size = frame.size }, "canvas")
   
   if (style == "window") then
-    titleBar = frame:addChild { type = "layout", position = {5, 1}, size = {frame.size[1] - 14 - 5, 24}, mode = "horizontal" }
+    titleBar = frame:addChild { type = "layout", position = {5, 2}, size = {frame.size[1] - 24 - 5, 23}, mode = "horizontal" }
     icon = titleBar:addChild { type = "image" }
     spacer = titleBar:addChild { type = "spacer", size = 0 }
     spacer.expandMode = {0, 0}
     title = titleBar:addChild { type = "label", expand = true, align = "left" }
-    close = titleBar:addChild{ type = "button", caption = "×", captionOffset = {0.5, -0.5}, color = "ff3f3f", size = {13, 13} }
+    close = frame:addChild{
+      type = "iconButton", position = {frame.size[1] - 24, 8},
+      image = "/interface/x.png", hoverImage = "/interface/xhover.png", pressImage = "/interface/xpress.png"
+    }
     function close:onClick()
       pane.dismiss()
     end

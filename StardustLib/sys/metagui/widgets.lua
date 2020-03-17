@@ -374,6 +374,38 @@ end do -- button ---------------------------------------------------------------
     self:queueRedraw()
     if self.parent then self.parent:queueGeometryUpdate() end
   end
+end do -- icon button -------------------------------------------------------------------------------------------------------------------------------
+  widgets.iconButton = mg.proto(widgets.button, {
+    expandMode = {0, 0}, -- fixed size
+    
+    image = "/assetmissing.png",
+  })
+  
+  function widgets.iconButton:init(base, param)
+    self:setImage(param.image, param.hoverImage, param.pressImage)
+    
+    self.state = "idle"
+    self.backingWidget = mkwidget(base, { type = "canvas" })
+  end
+  
+  function widgets.iconButton:preferredSize() return self.explicitSize or self.imgSize end
+  
+  function widgets.iconButton:draw() theme.drawIconButton(self) end
+  function widgets.iconButton:setImage(main, hover, press)
+    if not hover and not press and main:sub(-1, -1) == ':' then
+      self.image = main .. "idle"
+      self.hoverImage = main .. "hover"
+      self.pressImage = main .. "press"
+    else
+      self.image = mg.path(main)
+      self.hoverImage = mg.path(hover)
+      self.pressImage = mg.path(press)
+    end
+    
+    self.imgSize = root.imageSize(self.image)
+    self:queueGeometryUpdate()
+    self:queueRedraw()
+  end
 end do -- label -------------------------------------------------------------------------------------------------------------------------------------
   widgets.label = mg.proto(mg.widgetBase, {
     expandMode = {1, 0}, -- will expand horizontally, but not vertically

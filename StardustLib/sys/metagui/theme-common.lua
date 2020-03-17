@@ -62,6 +62,20 @@ function tdef.drawButtonContents(w)
   c:drawText(w.caption or "", { position = vec2.add(vec2.mul(c:size(), 0.5), w.captionOffset), horizontalAnchor = "mid", verticalAnchor = "mid", wrapWidth = w.size[1] - 4 }, 8)
 end
 
+function tdef.drawIconButton(w)
+  local c = widget.bindCanvas(w.backingWidget) c:clear()
+  local file
+  if w.state == "idle" then file = w.image
+  elseif w.pressImage and w.state == "press" then file = w.pressImage
+  else
+    file = w.hoverImage or w.image
+    if w.state == "press" then file = file .. "?brightness=-50"
+    elseif not w.hoverImage then file = file .. "?brightness=50" end
+  end
+  
+  c:drawImageDrawable(file, vec2.mul(c:size(), 0.5), 1.0)
+end
+
 function tdef.onButtonHover(w)
   pane.playSound("/sfx/interface/hoverover_bumb.ogg", 0, 0.75)
 end

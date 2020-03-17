@@ -653,7 +653,9 @@ end do -- list item ------------------------------------------------------------
 end do -- text box 
   widgets.textBox = mg.proto(mg.widgetBase, {
     expandMode = {1, 0},
-    text = ": ",
+    
+    text = "",
+    cursorPos = 0,
   })
   
   function widgets.textBox:init(base, param)
@@ -661,21 +663,98 @@ end do -- text box
   end
   function widgets.textBox:preferredSize() return {96, 16} end
   function widgets.textBox:draw()
-    local c = widget.bindCanvas(self.backingWidget)
-    c:clear() c:drawText(self.text, { position = {0, self.size[2] / 2}, horizontalAnchor = "left", verticalAnchor = "mid" }, 8)
+    local c = widget.bindCanvas(self.backingWidget) c:clear()
+    local color = self.focused and "#ffffff" or "#bfbfbf"
+    local vc = self.size[2]/2
+    if self.focused then
+      local p = mg.measureString(self.text:sub(1, self.cursorPos))[1]
+      c:drawRect({p, vc-4, p+0.5, vc+4}, color)
+    end
+    c:drawText(self.text, { position = {0, vc}, horizontalAnchor = "left", verticalAnchor = "mid" }, 8, color)
   end
+  
   function widgets.textBox:isMouseInteractable() return true end
   function widgets.textBox:onMouseButtonEvent(btn, down)
     if btn == 0 and down then
       self:grabFocus()
+      self:moveCursor(self.text:len())
       return true
     end
   end
-  function widgets.textBox:onKeyEvent(key, down, accel)
-    if down then
-      mg.setTitle("key: " .. key)
-      self.text = self.text .. (mg.keyToChar(key, accel.shift) or "")
+  
+  function widgets.textBox:setText(t)
+    local c = self.text
+    self.text = type(t) == "string" and t or ""
+    if self.text ~= c then
       self:queueRedraw()
+      mg.startEvent(self.onTextChanged, self)
     end
   end
+  
+  function widgets.textBox:setCursorPosition(p)
+    local c = self.cursorPos
+    self.cursorPos = util.clamp(p, 0, self.text:len())
+    if self.cursorPos ~= c then self:queueRedraw() end
+  end
+  function widgets.textBox:moveCursor(o) self:setCursorPosition(self.cursorPos + o) end
+  
+  function widgets.textBox:onFocus() self.focused = true self:queueRedraw() end
+  function widgets.textBox:onUnfocus() self.focused = false self:queueRedraw() end
+  function widgets.textBox:onKeyEsc() mg.startEvent(self.onEscape, self) end
+  function widgets.textBox:onKeyEvent(key, down, accel)
+    if down then
+      if key == mg.keys.enter then
+        self:releaseFocus()
+        mg.startEvent(self.onEnter, self)
+      elseif key == mg.keys.left then
+        if accel.ctrl then
+          local m = self.text:sub(1, self.cursorPos):match('^(.*%s+)%S%S-%s-$')
+          self:setCursorPosition(m and m:len() or 0)
+        else
+          self:moveCursor(-1)
+        end
+      elseif key == mg.keys.right then
+        if accel.ctrl then
+          local m = self.text:sub(self.cursorPos+1):match('^%s-%S%S-(%s+.*)$')
+          self:setCursorPosition(m and (self.text:len() - m:len()) or self.text:len())
+        else
+          self:moveCursor(1)
+        end
+      elseif key == mg.keys.home then self:setCursorPosition(0)
+      elseif key == mg.keys["end"] then self:setCursorPosition(self.text:len())
+      elseif key == mg.keys.del then
+        if accel.alt then
+          self:setText()
+        elseif accel.ctrl then
+          local m = self.text:sub(self.cursorPos+1):match('^%s-%S%S-(%s+.*)$')
+          self:setText(self.text:sub(1, self.cursorPos) .. (m or ""))
+        else
+          self:setText(self.text:sub(1, self.cursorPos) .. self.text:sub(self.cursorPos+2))
+        end
+      elseif key == mg.keys.backspace then
+        if accel.alt then
+          self:setText()
+        elseif accel.ctrl then
+          local m = self.text:sub(1, self.cursorPos):match('^(.*%s+)%S%S-%s-$')
+          self:setText(self.text:sub(1, m and m:len() or 0) .. self.text:sub(self.cursorPos+1))
+          self:setCursorPosition(m and m:len() or 0)
+        else
+          self:setText(self.text:sub(1, self.cursorPos-1) .. self.text:sub(self.cursorPos+1))
+          self:moveCursor(-1)
+        end
+      else -- try as printable key
+        local char = mg.keyToChar(key, accel.shift)
+        if char then
+          self:setText(self.text:sub(1, self.cursorPos) .. char .. self.text:sub(self.cursorPos+1))
+          self:moveCursor(1)
+        end
+      end
+      --mg.setTitle("key: " .. key)
+    end
+  end
+  
+  -- events out
+  function widgets.textBox:onTextChanged() end
+  function widgets.textBox:onEnter() end
+  function widgets.textBox:onEscape() end
 end

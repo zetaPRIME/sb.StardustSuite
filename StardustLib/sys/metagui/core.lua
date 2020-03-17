@@ -116,6 +116,7 @@ function widgetBase:releaseFocus() return mg.releaseFocus(self) end
 function widgetBase:onFocus() end
 function widgetBase:onUnfocus() end
 function widgetBase:onKeyEvent(key, down) end
+function widgetBase:onKeyEsc() end
 
 function widgetBase:applyGeometry(selfOnly)
   self.size = self.size or self:preferredSize() -- fill in default size if absent
@@ -298,7 +299,7 @@ end
 
 local function spawnKeysub(respawn)
   if not respawn and mg.ipc.keysub and mg.ipc.keysub.master == mg then return nil end
-  mg.ipc.keysub = { keyEvent = _keyEvent, escEvent = _escEvent, master = mg, accel = mg.ipc.keysub and mg.ipc.keysub.accel or nil }
+  mg.ipc.keysub = { keyEvent = _keyEvent, escEvent = _keyEscEvent, master = mg, accel = mg.ipc.keysub and mg.ipc.keysub.accel or nil }
   player.interact("ScriptPane", "/sys/metagui/helper/keysub.config", 0)
 end
 local function killKeysub()
@@ -382,7 +383,7 @@ function init() ----------------------------------------------------------------
 end
 
 function uninit()
-  if mg.ipc.keysub and mg.ipc.keysub.master == mg then mg.ipc.keysub = nil end
+  killKeysub()
   for _, f in pairs(scriptUninit) do f() end
   if mg.ipc.uniqueByPath and mg.cfg.configPath then mg.ipc.uniqueByPath[mg.cfg.configPath] = nil end
 end
@@ -548,5 +549,9 @@ function _keyEvent(key, down, accel)
   pane.playSound("/sfx/interface/hoverover_bumb.ogg", 0, 0.75)
 end
 function _keyEscEvent()
-  
+  if keyFocus then
+    local kf = keyFocus
+    kf:releaseFocus()
+    kf:onKeyEsc()
+  end
 end

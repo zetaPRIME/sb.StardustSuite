@@ -41,11 +41,11 @@ metagui.startEvent(function()
   end
 end)
 
+local search = ""
 function refreshDisplay()
   --prevShownItems = shownItems
   local shownItems = {}
   local i = 1
-  local search = "" -- TEMP
   if search == "" then
     for k,v in pairs(termItems) do
       shownItems[i] = v
@@ -122,7 +122,7 @@ function grid:onSlotMouseEvent(btn, down)
 	return true
 end
 
--- TEMP
+--[[ TEMP
 function btn:onClick()
 	--metagui.setTitle("lol " .. metagui.measureString("something")[2])
 	metagui.contextMenu {
@@ -131,4 +131,9 @@ function btn:onClick()
 		"-",
 		{"After the separator~"}
 	}
+end]]
+
+function searchBar:onTextChanged()
+	search = self.text
+	refreshDisplay()
 end

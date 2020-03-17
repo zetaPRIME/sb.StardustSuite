@@ -242,8 +242,6 @@ function init()
   for slot,sp in pairs(shared.storageProvider) do sp:commit() end
   
   -- set up messages
-  message.setHandler("getInfo", uiGetInfo)
-  message.setHandler("setInfo", uiSetInfo)
   for k,f in pairs(svc) do message.setHandler("drivebay:"..k, function(_, _, ...) return f(...) end) end
   
   updateLights()
@@ -309,21 +307,23 @@ function containerCallback()
   updateLights()
 end--]]
 
-function onStorageNetUpdate()
-  -- save memory by sharing a single cache among all things that have touched since last unload
-  itemutil.mergeConfigCache(shared.controller.id)
-end
 
-function uiGetInfo(msg, isLocal, slot)
+function svc.getInfo(slot)
   local sp = shared.storageProvider[slot]
   if not sp then return nil end
   return { slot = slot, filter = sp.item.parameters.filter or "", priority = sp.item.parameters.priority or 0 }
 end
-function uiSetInfo(msg, isLocal, slot, filter, priority)
+
+function svc.setInfo(slot, filter, priority)
   local sp = shared.storageProvider[slot]
   if not sp then return nil end
   sp.item.parameters.priority = priority
   if filter == "" then filter = nil end
   sp.item.parameters.filter = filter
   sp:commit()
+end
+
+function onStorageNetUpdate()
+  -- save memory by sharing a single cache among all things that have touched since last unload
+  itemutil.mergeConfigCache(shared.controller.id)
 end

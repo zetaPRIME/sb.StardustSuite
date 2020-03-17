@@ -1,0 +1,10 @@
+{ //  -*- grammar-ext: json -*-
+  "style" : "window", // window (has titlebar), panel (just a frame) etc.
+  "size" : [128, 32], // *internal* size (not including chrome)
+  "title" : "Drive Configuration",
+  "scripts" : [ "drivebay.config.lua" ],
+  "children" : [
+    { "type" : "textBox", "id" : "filter", "caption" : "Filter" },
+    { "type" : "textBox", "id" : "priority", "caption" : "Priority" }
+  ]
+}

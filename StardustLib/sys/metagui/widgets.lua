@@ -650,7 +650,7 @@ end do -- list item ------------------------------------------------------------
     self:queueRedraw()
   end
   function widgets.listItem:onSelected() end
-end do -- text box 
+end do -- text box ----------------------------------------------------------------------------------------------------------------------------------
   widgets.textBox = mg.proto(mg.widgetBase, {
     expandMode = {1, 0},
     
@@ -714,6 +714,13 @@ end do -- text box
     end
   end
   
+  function widgets.textBox:focus()
+    if not self.focused then
+      self:grabFocus()
+      self:moveCursor(self.text:len())
+    end
+  end
+  function widgets.textBox:blur() self:releaseFocus() end
   
   function widgets.textBox:setText(t)
     local c = self.text

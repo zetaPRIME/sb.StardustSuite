@@ -27,20 +27,47 @@ end)
 
 local swapping = false
 function grid:onSlotMouseEvent(btn, down)
-  if down and btn == 0 then
-    if swapping then return true end -- block
-    metagui.startEvent(function()
-      local item = player.swapSlotItem()
-      if item and not itemutil.getCachedConfig(item).config.driveParameters then return nil end -- only accept drives
-      player.setSwapSlotItem(nil)
-      swapping = true
-      local p = waitFor(world.sendEntityMessage(pane.sourceEntity(), "drivebay:swapDrive", player.id(), self.index, item))
-      refresh()
-      swapping = false
-    end)
-    
-    return true
+  if down then
+    if btn == 0 then
+      if swapping then return true end -- block
+      metagui.startEvent(function()
+        local item = player.swapSlotItem()
+        if item and not itemutil.getCachedConfig(item).config.driveParameters then return nil end -- only accept drives
+        player.setSwapSlotItem(nil)
+        swapping = true
+        local p = waitFor(world.sendEntityMessage(pane.sourceEntity(), "drivebay:swapDrive", player.id(), self.index, item))
+        refresh()
+        swapping = false
+      end)
+      
+      return true
+    elseif btn == 2 then
+      if self:item() then
+        metagui.contextMenu {
+          { "Configure drive...", function() openConfigPane(self.index) end }
+        }
+        return true
+      end
+    end
   end
 end
 
--- TODO: info editing
+function openConfigPane(index)
+  local p = waitFor(world.sendEntityMessage(pane.sourceEntity(), "drivebay:getInfo", index))
+  local info = p:result()
+  metagui.ipc["startech:drivebay.config"] = {
+    slot = index, filter = info.filter, priority = info.priority,
+    apply = function(...) metagui.startEvent(applyConfig, ...) end
+  }
+  --metagui.contextMenu{ {util.tableToString(p:result()) } }
+  player.interact("ScriptPane", { gui = { }, scripts = {"/metagui.lua"}, config = "startech:drivebay.config"})
+end
+
+function applyConfig(slot, filter, priority)
+  waitFor(world.sendEntityMessage(pane.sourceEntity(), "drivebay:setInfo", slot, filter, priority))
+  refresh()
+end
+
+function uninit()
+  metagui.ipc["startech:drivebay.config"] = nil -- kill config
+end

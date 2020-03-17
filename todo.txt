@@ -107,7 +107,7 @@ metaGUI details {
     
     before first full release {
         - do text box widget so terminal can have search back
-        bring back drive config
+        - bring back drive config
         move theme-common to a module
         settings panel with theme selection
         starbound-default style

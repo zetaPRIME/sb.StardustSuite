@@ -336,6 +336,7 @@ function init() ----------------------------------------------------------------
   mg.theme.id = mg.cfg.theme
   mg.theme.path = mg.cfg.themePath
   _ENV.theme = mg.theme -- alias
+  module "theme-common" -- load theme defaults and common utils
   require(mg.theme.path .. "theme.lua") -- load in theme
   
   mg.cfg.icon = mg.path(mg.cfg.icon) -- pre-resolve icon path

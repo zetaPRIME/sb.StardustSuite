@@ -1,7 +1,5 @@
 -- "Carbon" theme
 
-require "/metagui/themes/theme-common.lua"
-
 local mg = metagui
 local assets = theme.assets
 

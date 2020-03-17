@@ -661,8 +661,8 @@ end do -- text box
     frameWidth = 4,
   })
   
-  local ptLast = '^(.*%s+)%S%S-%s-$'
-  local ptNext = '^%s-%S%S-(%s+.*)$'
+  local ptLast = '^(.*%W+)%w%w-%W-$'
+  local ptNext = '^%W-%w%w-(%W+.*)$'
   
   function widgets.textBox:init(base, param)
     self.caption = param.caption

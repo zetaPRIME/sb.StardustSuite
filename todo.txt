@@ -102,7 +102,7 @@ networked wire I/O ports
 
 metaGUI details {
     icon support for buttons
-    textbox ctrl+l/r: also stop on punctuation
+    - textbox ctrl+l/r: also stop on punctuation
     textbox scrolling
     
     before first full release {

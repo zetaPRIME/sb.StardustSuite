@@ -1,13 +1,13 @@
 {
-    "name" : "Carbon",
-    "description" : "Dark, sleek and simple.",
-    "sortWeight" : -10,
+    "name" : "Starbound",
+    "description" : "Tastes like vanilla.",
+    "sortWeight" : -100,
     
-    "defaultAccentColor" : "bf7fff",
+    "defaultAccentColor" : "5de855",
     
     "metrics" : {
         "borderMargins" : { // left, top, right, bottom
-            "window" : [ 3, 22, 3, 3 ],
+            "window" : [ 3, 27, 11, 24 ],
             "panel" : [ 3, 3, 3, 3 ],
             "contextMenu" : [2, 2, 2, 2]
         }

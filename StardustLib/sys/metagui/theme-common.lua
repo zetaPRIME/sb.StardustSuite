@@ -54,6 +54,11 @@ function tdef.drawButton(w)
   c:clear() assets.button:drawToCanvas(c, w.state or "idle")
   local acc = mg.getColor(w.color)
   if acc then assets.button:drawToCanvas(c, "accent?multiply=" .. acc) end
+  theme.drawButtonContents(w)
+end
+
+function tdef.drawButtonContents(w)
+  local c = widget.bindCanvas(w.backingWidget)
   c:drawText(w.caption or "", { position = vec2.add(vec2.mul(c:size(), 0.5), w.captionOffset), horizontalAnchor = "mid", verticalAnchor = "mid", wrapWidth = w.size[1] - 4 }, 8)
 end
 

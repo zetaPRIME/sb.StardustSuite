@@ -31,3 +31,15 @@ function theme.drawFrame()
     title:setText(mg.cfg.title)
   end
 end
+
+function theme.drawCheckBox(w)
+  local c = widget.bindCanvas(w.backingWidget) c:clear()
+  local state
+  if w.state == "press" then state = ":toggle"
+  else state = ":idle" end
+  
+  local cstate = ":check?multiply=" .. mg.getColor("accent"):sub(1, 6) .. (w.state == "press" and "7f" or (w.checked and "ff" or "00"))
+  
+  c:drawImageDrawable(assets.checkBox .. state, vec2.mul(c:size(), 0.5), 1.0)
+  c:drawImageDrawable(assets.checkBox .. cstate, vec2.mul(c:size(), 0.5), 1.0)
+end

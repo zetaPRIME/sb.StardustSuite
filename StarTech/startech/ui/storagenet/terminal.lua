@@ -137,3 +137,5 @@ function searchBar:onTextChanged()
 	search = self.text
 	refreshDisplay()
 end
+-- clear text if unfocused by hitting escape
+function searchBar:onEscape() self:setText() end

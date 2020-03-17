@@ -654,7 +654,7 @@ end do -- text box
   widgets.textBox = mg.proto(mg.widgetBase, {
     expandMode = {1, 0},
     
-    text = "",
+    text = "", textWidth = 0,
     caption = "",
     cursorPos = 0,
     scrollPos = 0,
@@ -703,23 +703,42 @@ end do -- text box
         end
         self:setCursorPosition(fcp)
       end
-      return true
+      return self:captureMouse(btn)
+    elseif not down and btn == self:mouseCaptureButton() then
+      return self:releaseMouse()
     end
   end
+  function widgets.textBox:onCaptureMouseMove(delta)
+    if delta[1] ~= 0 then
+      self:setScrollPosition(self.scrollPos - delta[1])
+    end
+  end
+  
   
   function widgets.textBox:setText(t)
     local c = self.text
     self.text = type(t) == "string" and t or ""
     if self.text ~= c then
+      self.textWidth = mg.measureString(self.text)[1]
       self:queueRedraw()
       mg.startEvent(self.onTextChanged, self)
     end
   end
   
+  function widgets.textBox:setScrollPosition(p)
+    self.scrollPos = math.max(0, math.min(p, self.textWidth - (self.size[1] - self.frameWidth * 2) + 1))
+    self:queueRedraw()
+  end
   function widgets.textBox:setCursorPosition(p)
     local c = self.cursorPos
     self.cursorPos = util.clamp(p, 0, self.text:len())
-    if self.cursorPos ~= c then self:queueRedraw() end
+    if self.cursorPos ~= c then
+      self:queueRedraw()
+      local cw = self.size[1] - self.frameWidth * 2 -- content width
+      local cl = cw/2 - 3 -- content limit
+      local p = mg.measureString(self.text:sub(1, self.cursorPos))[1] - cw/2
+      self:setScrollPosition(util.clamp(self.scrollPos, p-cl, p+cl))
+    end
   end
   function widgets.textBox:moveCursor(o) self:setCursorPosition(self.cursorPos + o) end
   

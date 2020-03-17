@@ -103,7 +103,7 @@ networked wire I/O ports
 metaGUI details {
     icon support for buttons
     - textbox ctrl+l/r: also stop on punctuation
-    textbox scrolling
+    - textbox scrolling
     
     before first full release {
         - do text box widget so terminal can have search back

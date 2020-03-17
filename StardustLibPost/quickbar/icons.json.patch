@@ -5,5 +5,12 @@
     "weight" : 100, // guess shove this down in the bottom as fluff
     "icon" : "/sys/stardust/cosplay/quickbaricon.png",
     "action" : [ "ui", "stardustlib:cosplay" ]
+  } },
+  
+  { "op" : "add", "path" : "/items/stardustlib:settings", "value" : {
+    "label" : "Settings",
+    "weight" : 110,
+    "icon" : "/sys/stardust/ui/settings.icon.png",
+    "action" : [ "ui", "stardustlib:settings" ]
   } }
 ]

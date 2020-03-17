@@ -105,7 +105,7 @@ metaGUI details {
     
     before first full release {
         - move theme-common to a module
-        settings panel with theme selection
+        - settings panel with theme selection
         starbound-default style
     }
     

@@ -9,7 +9,8 @@
             "example" : "/metagui/example.ui" // addressed as "metagui:example"
         },
         "stardustlib" : {
-            "cosplay" : "/sys/stardust/cosplay/cosplay.ui"
+            "cosplay" : "/sys/stardust/cosplay/cosplay.ui",
+            "settings" : "/sys/stardust/ui/settings.ui"
         }
     }
 }

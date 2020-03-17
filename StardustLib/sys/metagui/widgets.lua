@@ -682,7 +682,7 @@ end do -- text box
       local p = mg.measureString(self.text:sub(1, self.cursorPos))[1] - self.scrollPos
       c:drawRect({p, vc-4, p+0.5, vc+4}, color)
     elseif self.text == "" then
-      c:drawText(self.caption, { position = {-self.scrollPos, vc}, horizontalAnchor = "left", verticalAnchor = "mid" }, 8, "#7f7f7f")
+      c:drawText(self.caption, { position = {0, vc}, horizontalAnchor = "left", verticalAnchor = "mid" }, 8, "#7f7f7f")
     end
     c:drawText(self.text, { position = {-self.scrollPos, vc}, horizontalAnchor = "left", verticalAnchor = "mid" }, 8, color)
   end

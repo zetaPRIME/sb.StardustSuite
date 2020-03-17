@@ -249,7 +249,7 @@ end
 
 function uninit()
   for k,sp in pairs(shared.storageProvider) do
-    sp:kill() -- nuke all existing providers
+    sp:commit() sp:kill() -- nuke all existing providers
   end
 end
 

@@ -1,6 +1,9 @@
 -
 
-for next update(s)? {
+for next update {
+    metaGUI the telepad config pane    
+    
+} then {
     pulse rifle
     flux knives
     give the glaive a light source paired with energy
@@ -14,6 +17,12 @@ for next update(s)? {
     rework phase drill to be tiered and also maybe a dynitem
     have all recipes unlocked by default
     pulse chakram similar to razorwave
+}
+
+attempt to diagnose drive corruption {
+    happens consistently after reloading if you have a second drive in the same bay as a fully loaded 256k
+    corrupts the second drive
+    does not happen with a fresh drive in a separate bay
 }
 
 ? hook engine {

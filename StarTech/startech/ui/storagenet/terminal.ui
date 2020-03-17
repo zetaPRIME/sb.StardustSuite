@@ -3,6 +3,7 @@
   "size" : [200, 232], // *internal* size (not including chrome)
   "title" : "Transmatter Terminal",
   "icon" : "terminal.icon.png",
+  "accentColor" : "bf7fff",
   "openWithInventory" : true,
   "scripts" : [ "terminal.lua" ],
   "children" : [

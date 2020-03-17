@@ -39,7 +39,7 @@ function theme.drawFrame()
     spacer.explicitSize = (not mg.cfg.icon) and -2 or 1
     icon.explicitSize = (not mg.cfg.icon) and {-1, 0} or nil
     icon:setFile(mg.cfg.icon)
-    title:setText(mg.cfg.title)
+    title:setText("^shadow;" .. mg.cfg.title:gsub('%^reset;', '^reset;^shadow;'))
   end
 end
 

@@ -13,7 +13,6 @@
         { "type" : "spacer", "size" : 1 }
       ]}
     ]},
-    { "type" : "textBox", "id" : "searchBar", "caption" : "Search..." },
-    ""
+    [{ "type" : "textBox", "id" : "searchBar", "caption" : "Search..." }]
   ]
 }

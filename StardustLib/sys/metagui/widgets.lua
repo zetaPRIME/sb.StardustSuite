@@ -406,6 +406,44 @@ end do -- icon button ----------------------------------------------------------
     self:queueGeometryUpdate()
     self:queueRedraw()
   end
+end do -- checkbox ----------------------------------------------------------------------------------------------------------------------------------
+  widgets.checkBox = mg.proto(widgets.button, {
+    expandMode = {0, 0}, -- fixed size
+    
+    checked = false,
+  })
+  
+  function widgets.checkBox:init(base, param)
+    self.state = "idle"
+    self.backingWidget = mkwidget(base, { type = "canvas" })
+  end
+  
+  function widgets.checkBox:preferredSize() return {12, 12} end
+  function widgets.checkBox:draw() theme.drawCheckBox(self) end
+  
+  function widgets.checkBox:onMouseEnter()
+    self.state = "hover"
+    self:queueRedraw()
+    --theme.onButtonHover(self)
+  end
+  function widgets.button:onMouseButtonEvent(btn, down)
+    if btn == 0 then -- left button
+      if down then
+        self.state = "press"
+        self:captureMouse(btn)
+        self:queueRedraw()
+        theme.onCheckBoxClick(self)
+      elseif self.state == "press" then
+        self.state = "hover"
+        self.checked = not self.checked
+        self:releaseMouse()
+        self:queueRedraw()
+        mg.startEvent(self.onClick, self)
+      end
+      return true
+    end
+  end
+  --
 end do -- label -------------------------------------------------------------------------------------------------------------------------------------
   widgets.label = mg.proto(mg.widgetBase, {
     expandMode = {1, 0}, -- will expand horizontally, but not vertically
@@ -710,9 +748,9 @@ end do -- text box -------------------------------------------------------------
     local c = widget.bindCanvas(self.subWidgets.content) c:clear()
     local color = self.focused and "#ffffff" or "#bfbfbf"
     local vc = self.size[2]/2
-    if self.focused then
+    if self.focused then -- cursor
       local p = mg.measureString(self.text:sub(1, self.cursorPos))[1] - self.scrollPos
-      c:drawRect({p, vc-4, p+0.5, vc+4}, color)
+      c:drawRect({p, vc-4, p+0.5, vc+4}, '#' .. mg.getColor("accent"))
     elseif self.text == "" then
       c:drawText(self.caption, { position = {0, vc}, horizontalAnchor = "left", verticalAnchor = "mid" }, 8, "#7f7f7f")
     end

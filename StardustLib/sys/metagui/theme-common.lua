@@ -11,6 +11,8 @@ theme.assets = { -- default assets
   scrollBar = mg.ninePatch "scrollBar",
   textBox = mg.ninePatch "textBox",
   
+  checkBox = mg.asset "checkBox.png",
+  
   itemSlot = mg.asset "itemSlot.png",
   itemRarity = mg.asset "itemRarity.png",
 } local assets = theme.assets
@@ -76,6 +78,15 @@ function tdef.drawIconButton(w)
   c:drawImageDrawable(file, vec2.mul(c:size(), 0.5), 1.0)
 end
 
+function tdef.drawCheckBox(w)
+  local c = widget.bindCanvas(w.backingWidget) c:clear()
+  local state
+  if w.state == "press" then state = ":toggle"
+  else state = w.checked and ":checked" or ":idle" end
+  
+  c:drawImageDrawable(assets.checkBox .. state, vec2.mul(c:size(), 0.5), 1.0)
+end
+
 function tdef.onButtonHover(w)
   pane.playSound("/sfx/interface/hoverover_bumb.ogg", 0, 0.75)
 end
@@ -83,6 +94,7 @@ end
 function tdef.onButtonClick(w)
   pane.playSound("/sfx/interface/clickon_success.ogg", 0, 1.0)
 end
+tdef.onCheckBoxClick = tdef.onButtonClick
 
 function tdef.drawTextBox(w)
   local c = widget.bindCanvas(w.backingWidget)

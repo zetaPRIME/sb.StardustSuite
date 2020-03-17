@@ -17,6 +17,7 @@
       { "type" : "button", "id" : "btn", "caption" : "This one has an ^accent;accent color^reset;.", "color" : "accent" },
       { "type" : "label", "id" : "DBG", "text" : "We also have ^accent;labels^reset;..." },
       { "type" : "label", "text" : "...including ^cyan;aligned^reset; ones.", "align" : "right" },
+      [ { "type" : "checkBox" }, { "type" : "label", "text" : "Check boxes too!" } ],
       [
         { "align" : 0 },
         { "type" : "itemGrid", "slots" : 55, "columns" : 5 },

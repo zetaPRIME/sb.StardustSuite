@@ -655,29 +655,54 @@ end do -- text box
     expandMode = {1, 0},
     
     text = "",
+    caption = "",
     cursorPos = 0,
+    scrollPos = 0,
+    frameWidth = 4,
   })
   
+  local ptLast = '^(.*%s+)%S%S-%s-$'
+  local ptNext = '^%s-%S%S-(%s+.*)$'
+  
   function widgets.textBox:init(base, param)
+    self.caption = param.caption
+    
     self.backingWidget = mkwidget(base, { type = "canvas" })
+    self.subWidgets = { content = mkwidget(base, { type = "canvas" }) }
   end
-  function widgets.textBox:preferredSize() return {96, 16} end
+  function widgets.textBox:preferredSize() return {96, 14} end
   function widgets.textBox:draw()
-    local c = widget.bindCanvas(self.backingWidget) c:clear()
+    theme.drawTextBox(self)
+    widget.setPosition(self.subWidgets.content, vec2.add(widget.getPosition(self.backingWidget), {self.frameWidth, 0}))
+    widget.setSize(self.subWidgets.content, vec2.add(widget.getSize(self.backingWidget), {self.frameWidth*-2, 0}))
+    local c = widget.bindCanvas(self.subWidgets.content) c:clear()
     local color = self.focused and "#ffffff" or "#bfbfbf"
     local vc = self.size[2]/2
     if self.focused then
-      local p = mg.measureString(self.text:sub(1, self.cursorPos))[1]
+      local p = mg.measureString(self.text:sub(1, self.cursorPos))[1] - self.scrollPos
       c:drawRect({p, vc-4, p+0.5, vc+4}, color)
+    elseif self.text == "" then
+      c:drawText(self.caption, { position = {-self.scrollPos, vc}, horizontalAnchor = "left", verticalAnchor = "mid" }, 8, "#7f7f7f")
     end
-    c:drawText(self.text, { position = {0, vc}, horizontalAnchor = "left", verticalAnchor = "mid" }, 8, color)
+    c:drawText(self.text, { position = {-self.scrollPos, vc}, horizontalAnchor = "left", verticalAnchor = "mid" }, 8, color)
   end
   
   function widgets.textBox:isMouseInteractable() return true end
   function widgets.textBox:onMouseButtonEvent(btn, down)
     if btn == 0 and down then
-      self:grabFocus()
-      self:moveCursor(self.text:len())
+      if not self.focused then
+        self:grabFocus()
+        self:moveCursor(self.text:len())
+      else -- find cursor position from mouse
+        local tp = self:relativeMousePosition()[1] + self.scrollPos - self.frameWidth
+        local fcp, len = 0, self.text:len() 
+        for i = 1, len do
+          local m = mg.measureString(self.text:sub(1, i))[1]
+          if m > tp then break end
+          fcp = i
+        end
+        self:setCursorPosition(fcp)
+      end
       return true
     end
   end
@@ -708,14 +733,14 @@ end do -- text box
         mg.startEvent(self.onEnter, self)
       elseif key == mg.keys.left then
         if accel.ctrl then
-          local m = self.text:sub(1, self.cursorPos):match('^(.*%s+)%S%S-%s-$')
+          local m = self.text:sub(1, self.cursorPos):match(ptLast)
           self:setCursorPosition(m and m:len() or 0)
         else
           self:moveCursor(-1)
         end
       elseif key == mg.keys.right then
         if accel.ctrl then
-          local m = self.text:sub(self.cursorPos+1):match('^%s-%S%S-(%s+.*)$')
+          local m = self.text:sub(self.cursorPos+1):match(ptNext)
           self:setCursorPosition(m and (self.text:len() - m:len()) or self.text:len())
         else
           self:moveCursor(1)
@@ -726,7 +751,7 @@ end do -- text box
         if accel.alt then
           self:setText()
         elseif accel.ctrl then
-          local m = self.text:sub(self.cursorPos+1):match('^%s-%S%S-(%s+.*)$')
+          local m = self.text:sub(self.cursorPos+1):match(ptNext)
           self:setText(self.text:sub(1, self.cursorPos) .. (m or ""))
         else
           self:setText(self.text:sub(1, self.cursorPos) .. self.text:sub(self.cursorPos+2))
@@ -735,7 +760,7 @@ end do -- text box
         if accel.alt then
           self:setText()
         elseif accel.ctrl then
-          local m = self.text:sub(1, self.cursorPos):match('^(.*%s+)%S%S-%s-$')
+          local m = self.text:sub(1, self.cursorPos):match(ptLast)
           self:setText(self.text:sub(1, m and m:len() or 0) .. self.text:sub(self.cursorPos+1))
           self:setCursorPosition(m and m:len() or 0)
         else

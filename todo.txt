@@ -102,9 +102,11 @@ networked wire I/O ports
 
 metaGUI details {
     icon support for buttons
+    textbox ctrl+l/r: also stop on punctuation
+    textbox scrolling
     
     before first full release {
-        do text box widget so terminal can have search back
+        - do text box widget so terminal can have search back
         bring back drive config
         move theme-common to a module
         settings panel with theme selection
@@ -127,13 +129,9 @@ metaGUI details {
         - scrollarea
         - panel (flat, concave or convex)
         - list item
+        - text box
         checkbox
         option box?
-        
-        text box {
-            hybrid of horizontal scrollarea and label with input handling
-            needs some way of checking the relative mouse position
-        }
         
         tab field! {
             probably layout with a set of panels, attached to a scrollable area of basically dressed-up buttons

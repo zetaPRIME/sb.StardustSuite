@@ -544,9 +544,9 @@ function _clickLeft() _mouseEvent(nil, 0, true) end
 function _clickRight() _mouseEvent(nil, 2, true) end
 
 function _keyEvent(key, down, accel)
-  mg.setTitle(util.tableToString{key, down, mg.keyToChar(key, accel.shift), accel})
+  --mg.setTitle(util.tableToString{key, down, mg.keyToChar(key, accel.shift), accel})
+  --pane.playSound("/sfx/interface/hoverover_bumb.ogg", 0, 0.75)
   if keyFocus then keyFocus:onKeyEvent(key, down, accel) end
-  pane.playSound("/sfx/interface/hoverover_bumb.ogg", 0, 0.75)
 end
 function _keyEscEvent()
   if keyFocus then

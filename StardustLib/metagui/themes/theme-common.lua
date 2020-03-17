@@ -9,6 +9,7 @@ theme.assets = { -- default assets
   panel = mg.ninePatch "panel",
   button = mg.ninePatch "button",
   scrollBar = mg.ninePatch "scrollBar",
+  textBox = mg.ninePatch "textBox",
   
   itemSlot = mg.asset "itemSlot.png",
   itemRarity = mg.asset "itemRarity.png",
@@ -62,6 +63,11 @@ end
 
 function tdef.onButtonClick(w)
   pane.playSound("/sfx/interface/clickon_success.ogg", 0, 1.0)
+end
+
+function tdef.drawTextBox(w)
+  local c = widget.bindCanvas(w.backingWidget)
+  c:clear() assets.textBox:drawToCanvas(c, w.focused and "focused" or "idle")
 end
 
 function tdef.drawItemSlot(w)

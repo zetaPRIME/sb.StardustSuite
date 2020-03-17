@@ -43,9 +43,10 @@ function grid:onSlotMouseEvent(btn, down)
       return true
     elseif btn == 2 then
       if self:item() then
-        metagui.contextMenu {
+        --[[metagui.contextMenu {
           { "Configure drive...", function() openConfigPane(self.index) end }
-        }
+        }]]
+        metagui.startEvent(openConfigPane, self.index) -- for now, skip the context menu
         return true
       end
     end

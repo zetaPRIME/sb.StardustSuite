@@ -102,7 +102,6 @@ function tdef.drawTextBox(w)
 end
 
 function tdef.drawItemSlot(w)
-  if w.deleted then return nil end
   local center = {9, 9}
   local c = widget.bindCanvas(w.backingWidget)
   c:clear() c:drawImage(assets.itemSlot .. ":" .. (w.hover and "hover" or "idle"), center, nil, nil, true)

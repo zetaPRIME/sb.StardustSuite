@@ -379,7 +379,7 @@ function init() ----------------------------------------------------------------
   
   frame:updateGeometry()
   paneBase:updateGeometry()
-  for w in pairs(redrawQueue) do w:draw() end
+  for w in pairs(redrawQueue) do if not w.deleted then w:draw() end end
   recalcQueue, redrawQueue = { }, { }
   
   --setmetatable(_ENV, {__index = function(_, n) if DBG then DBG:setText("unknown func " .. n) end end})
@@ -513,8 +513,8 @@ function update()
   
   local rdq, rcq = redrawQueue, recalcQueue
   redrawQueue, recalcQueue = { }, { }
-  for w in pairs(rcq) do w:updateGeometry() end
-  for w in pairs(rdq) do w:draw() end
+  for w in pairs(rcq) do if not w.deleted then w:updateGeometry() end end
+  for w in pairs(rdq) do if not w.deleted then w:draw() end end
 end
 
 function cursorOverride(pos)

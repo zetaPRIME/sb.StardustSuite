@@ -705,6 +705,7 @@ end do -- list item ------------------------------------------------------------
   		if btn == self:mouseCaptureButton() then
   			self:releaseMouse()
         self:select()
+        mg.startEvent(self.onClick, self, btn)
       end
     end
     return true
@@ -725,6 +726,7 @@ end do -- list item ------------------------------------------------------------
     self:queueRedraw()
   end
   function widgets.listItem:onSelected() end
+  function widgets.listItem:onClick() end
 end do -- text box ----------------------------------------------------------------------------------------------------------------------------------
   widgets.textBox = mg.proto(mg.widgetBase, {
     expandMode = {1, 0},

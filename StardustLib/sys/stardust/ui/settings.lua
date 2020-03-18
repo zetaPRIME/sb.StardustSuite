@@ -1,7 +1,7 @@
 -- settings UI... just theme selection for now
 
 local defaultInfo = {
-  --defaultAccentColor = "accent",
+  -- defaultAccentColor = "accent",
   name = "Default (%s)",
   description = "No preference selected",
 }
@@ -36,7 +36,7 @@ function addThemeEntry(themeId)
       { mode = "horizontal" },
       {
         { type = "label", color = theme.defaultAccentColor, text = theme.name },
-        { type = "label", --[[color = "bfbfbf",]] text = theme.description }
+        { type = "label", color = "bfbfbf", text = theme.description }
       }
     }
   }

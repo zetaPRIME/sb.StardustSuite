@@ -13,7 +13,7 @@
         { "type" : "scrollArea", "id" : "bookmarkList", "children" : [ ]}
       ]},
       { "type" : "button", "id" : "newBookmark", "caption" : "Create Bookmark" }
-    ],
+    ], 1,
     [ { "expandMode" : [1, 2] },
       { "type" : "label", "align" : "center", "text" : "Settings" },
       { "type" : "textBox", "id" : "nameField", "caption" : "Name" },

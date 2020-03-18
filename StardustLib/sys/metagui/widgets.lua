@@ -300,9 +300,13 @@ end do -- spacer ---------------------------------------------------------------
     expandMode = {2, 2} -- prefer to expand
   })
   function widgets.spacer:init(base, param)
-    if self.explicitSize then expandMode = {0, 0} end -- fixed size
+    if self.explicitSize then self.expandMode = {0, 0} end -- fixed size
   end
-  function widgets.spacer:preferredSize() local p = self.explicitSize or 0 return {p, p} end
+  function widgets.spacer:preferredSize()
+    local p = self.explicitSize or 0
+    if type(p) == "table" then return p end
+    return {p, p}
+  end
 end do -- canvas ------------------------------------------------------------------------------------------------------------------------------------
   widgets.canvas = mg.proto(mg.widgetBase, {
     expandMode = {1, 1}, -- can expand if no size specified

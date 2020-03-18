@@ -6,7 +6,7 @@
   "uniqueBy" : "path",
   "scripts" : [ "settings.lua" ],
   "children" : [
-    { "type" : "label", "text" : "UI Themes" },
+    { "type" : "label", "align" : "center", "text" : "UI Themes" },
     { "type" : "panel", "style" : "concave", "children" : [
       { "type" : "scrollArea", "id" : "themeList", "children" : [ ]}
     ]},

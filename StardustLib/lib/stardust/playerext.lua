@@ -34,7 +34,7 @@ if not playerext then
     "getPlayerConfig",
     "setPlayerConfig",
     
-    "warp",
+    "warp", "positionWarp",
     
     "giveItems",
     "giveItemToCursor",

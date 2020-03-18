@@ -1,0 +1,26 @@
+{ //  -*- grammar-ext: json -*-
+  "style" : "window",
+  "size" : [300, 200],
+  "title" : "Telepad Configuration",
+  "icon" : "/sys/stardust/ui/settings.icon.png",
+  "accentColor" : "7f7fff",
+  //"scripts" : [ "telepad.config.lua" ],
+  "children" : [
+    { "mode" : "horizontal" }, // layout mode
+    [ { "expandMode" : [1, 2] },
+      { "type" : "label", "align" : "center", "text" : "Bookmarks" },
+      { "type" : "panel", "style" : "concave", "children" : [
+        { "type" : "scrollArea", "id" : "bookmarkList", "children" : [ ]}
+      ]},
+      { "type" : "button", "id" : "newBookmark", "caption" : "Create Bookmark" }
+    ],
+    [ { "expandMode" : [1, 2] },
+      { "type" : "label", "align" : "center", "text" : "Settings" },
+      { "type" : "textBox", "id" : "nameField", "caption" : "Name" },
+      { "type" : "label", "text" : "(Note: Telepads must be named in order to bookmark.)" },
+      "spacer",
+      [{ "type" : "checkBox", "id" : "lockCheck" }, { "type" : "label", "text" : "Lock settings" },/*],
+      [*/"spacer", { "type" : "button", "id" : "apply", "color" : "accent", "caption" : "Apply" }]
+    ]
+  ]
+}

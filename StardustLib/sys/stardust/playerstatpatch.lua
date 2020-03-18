@@ -46,6 +46,10 @@ if not _stardustlib then
       return _spd(table.concat(dir))
     end
     
+    -- shove some tables into common table
+    local mt = getmetatable ''
+    mt.mcontroller = mcontroller
+    
     -- bring in global versions
     require "/sys/stardust/statusext.lua"
   end

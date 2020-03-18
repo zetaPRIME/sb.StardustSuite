@@ -2,6 +2,8 @@
   { "op" : "add", "path" : "/panes/startech", "value": {
     "drivebay" : "/startech/ui/storagenet/drivebay.ui",
     "drivebay.config" : "/startech/ui/storagenet/drivebay.config.ui",
-    "terminal" : "/startech/ui/storagenet/terminal.ui"
+    "terminal" : "/startech/ui/storagenet/terminal.ui",
+    
+    "telepad.config" : "/startech/ui/telepad.config.ui"
   }}
 ]

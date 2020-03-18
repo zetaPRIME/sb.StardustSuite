@@ -1,5 +1,8 @@
 --
 
+require "/scripts/vec2.lua"
+require "/lib/stardust/playerext.lua"
+
 function init()
   require "/lib/stardust/configurable.lua"
   object.setInteractive(true)
@@ -24,11 +27,18 @@ function onInteraction(args)
   end
   local wld = storage.config.worldId or "@@@@@"
   local dest = storage.config.destination or "OwnShip"
+  local wtype = "default"
   if string.sub(dest, 0, string.len(wld)) == wld then
     dest = string.sub(dest, string.len(wld)+1)
-    -- todo: implement some form of instant transmission within the same world
+    -- attempt instant transit
+    local e = world.loadUniqueEntity(dest:sub(2))
+    if e then -- entity found! warp over directly
+      local targetPos = vec2.add(world.entityPosition(e), world.getObjectParameter(e, "teleporterFootPosition", {0, 0}))
+      playerext.setPlayer(args.sourceId).positionWarp(targetPos)
+      return nil
+    end
   end
-  world.sendEntityMessage(args.sourceId, "playerext:warp", dest, "default") -- formerly "beam"; turns out that's not actually what normal teleporters use
+  playerext.setPlayer(args.sourceId).warp(dest, wtype) -- formerly "beam"; turns out that's not actually what normal teleporters use
 end
 
 function onWrench(msg, isLocal, player, shiftHeld)
@@ -46,7 +56,8 @@ function onWrench(msg, isLocal, player, shiftHeld)
     interact = {
       id = entity.id(),
       type = "ScriptPane",
-      config = "/startech/interface/teleporters/telepad.ui.config"
+      config = { gui = { }, scripts = {"/metagui.lua"}, config = "startech:telepad.config" }
+      --config = "/startech/interface/teleporters/telepad.ui.config"
     }
   }
 end

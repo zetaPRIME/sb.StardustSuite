@@ -3,17 +3,14 @@ require "/scripts/vec2.lua"
 
 require "/lib/stardust/sync.lua"
 
-local _init = init
-function init()
-  _init()
-  --self.previousMoves = {}
+local _init = init or function() end
+function init() _init()
   self.previousFireMode = nil
 end
 
-local _uninit = uninit
-function uninit()
-  _uninit()
-  --cancel()
+local _uninit = uninit or function() end
+function uninit() _uninit()
+  --
 end
 
 local _update = update
@@ -31,22 +28,11 @@ function update(dt, fireMode, shiftHeld, moves)
   self.previousFireMode = fireMode
 end
 
-function uninit()
-  --status.setResource("energy", 0)
-end
-
 function xfire(moves, shiftHeld)
-  -- test
-  --world.damageTileArea(activeItem.ownerAimPosition(), 10, "background", activeItem.ownerAimPosition(), "beamish", 1000000, 1000000)
-  
   local aim = activeItem.ownerAimPosition()
-  aim[1] = math.floor(aim[1])
-  aim[2] = math.floor(aim[2])
-  --local el = world.objectQuery(aim, 0)--0.01)
+  aim = {math.floor(aim[1]), math.floor(aim[2])}
   local target = world.objectAt(aim)
   if target then
-    --world.callScriptedEntity(el[1], "require", "/items/active/tools/wrtest.lua")
-    --world.containerOpen(el[1])
     local pp = world.entityPosition(activeItem.ownerEntityId())
     pp = vec2.add(pp, {0, -.5})
     local dist = world.magnitude(vec2.add(aim, {.5,-.5}), pp)
@@ -71,14 +57,12 @@ end
 
 function onInteractComplete(rpc)
   local response = rpc:result() or {}
-  sb.logInfo("response")
   if response.interact then
-    sb.logInfo("interact response")
-    activeItem.interact(response.interact.type, response.interact.customConfig or root.assetJson(response.interact.config), response.interact.id)
+    activeItem.interact(response.interact.type, type(response.interact.config) == "table" and response.interact.config or root.assetJson(response.interact.config), response.interact.id)
   end
 end
 
-if false then -- testing probe
+--[[ testing probe
   setmetatable(_ENV, { __index = function(t,k)
     sb.logInfo("missing field "..k.." accessed")
     local f = function(...)
@@ -86,4 +70,4 @@ if false then -- testing probe
     end
     return nil -- f
   end })
-end
+end--]]

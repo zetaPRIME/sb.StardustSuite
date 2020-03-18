@@ -126,6 +126,11 @@ function init(...)
   
   -- clean up remnants of playerext-as-quest
   status.clearPersistentEffects("startech:playerext")
+  status.setPersistentEffects("stardustlib:playerext", {})--{"stardustlib:tableshim"})
+  
+  -- grab tables deployment doesn't usually have access to
+  local mt = getmetatable ''
+  mcontroller = mt.mcontroller
   
   -- init configuration table
   cfg = storage["stardustlib:playerconfig"] or { }
@@ -135,9 +140,6 @@ function init(...)
   
   -- and set up techs
   svci.assertTechs()
-  
-  local m = getmetatable('')
-  m.testSvc = svc
 end
 
 local function liveMsg(msg)
@@ -169,6 +171,14 @@ end]]
 
 function svc.warp(msg, isLocal, target, animation, deploy)
   player.warp(target, animation, deploy)
+end
+
+function svc.positionWarp(msg, isLocal, targetPos)
+  mcontroller.setPosition(vec2.add(targetPos, {0, 2}))
+  status.removeEphemeralEffect("beamin")
+  status.removeEphemeralEffect("techstun")
+  status.addEphemeralEffect("beamin")
+  status.addEphemeralEffect("techstun", 0.8)
 end
 
 function svc.giveItems(msg, isLocal, ...)

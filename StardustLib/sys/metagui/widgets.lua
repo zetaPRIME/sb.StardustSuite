@@ -426,7 +426,7 @@ end do -- checkbox -------------------------------------------------------------
     self:queueRedraw()
     --theme.onButtonHover(self)
   end
-  function widgets.button:onMouseButtonEvent(btn, down)
+  function widgets.checkBox:onMouseButtonEvent(btn, down)
     if btn == 0 then -- left button
       if down then
         self.state = "press"
@@ -442,6 +442,11 @@ end do -- checkbox -------------------------------------------------------------
       end
       return true
     end
+  end
+  
+  function widgets.checkBox:setChecked(b)
+    self.checked = b
+    self:queueRedraw()
   end
   --
 end do -- label -------------------------------------------------------------------------------------------------------------------------------------

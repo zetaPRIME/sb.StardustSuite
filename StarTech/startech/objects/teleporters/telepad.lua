@@ -57,7 +57,6 @@ function onWrench(msg, isLocal, player, shiftHeld)
       id = entity.id(),
       type = "ScriptPane",
       config = { gui = { }, scripts = {"/metagui.lua"}, config = "startech:telepad.config" }
-      --config = "/startech/interface/teleporters/telepad.ui.config"
     }
   }
 end

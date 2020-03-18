@@ -1,0 +1,10 @@
+{ //  -*- grammar-ext: json -*-
+  "style" : "window",
+  "size" : [128, 32],
+  "title" : "Storage Bus Configuration",
+  "scripts" : [ "storagebus.config.lua" ],
+  "children" : [
+    { "type" : "textBox", "id" : "filter", "caption" : "Filter" },
+    { "type" : "textBox", "id" : "priority", "caption" : "Priority" }
+  ]
+}

@@ -2,7 +2,7 @@
 
 for next update {
     - metaGUI the telepad config pane
-    storage bus config too
+    - storage bus config too
     
     terminal quick stack?
     

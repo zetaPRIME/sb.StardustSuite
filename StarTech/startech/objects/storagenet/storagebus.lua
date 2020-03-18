@@ -37,7 +37,7 @@ function onWrench(msg, isLocal, player, shiftHeld)
       interact = {
         id = entity.id(),
         type = config.getParameter("interactAction"),
-        config = config.getParameter("interactData")
+        config = { gui = { }, scripts = {"/metagui.lua"}, config = "startech:storagebus.config" }
       }
     }
   else

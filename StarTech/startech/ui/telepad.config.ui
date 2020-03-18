@@ -3,7 +3,7 @@
   "size" : [300, 200],
   "title" : "Telepad Configuration",
   "icon" : "/sys/stardust/ui/settings.icon.png",
-  "accentColor" : "7f7fff",
+  "accentColor" : "40beff",
   "scripts" : [ "telepad.config.lua" ],
   "children" : [
     { "mode" : "horizontal" }, // layout mode

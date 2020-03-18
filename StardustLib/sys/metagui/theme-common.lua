@@ -142,6 +142,9 @@ function tdef.onScroll(w)
   end)
 end
 
+function tdef.errorSound()
+  pane.playSound("/sfx/interface/clickon_error.ogg", 0, 1.0)
+end
 
 -- copy in as defaults
 for k, v in pairs(tdef) do theme[k] = v theme.common[k] = v end

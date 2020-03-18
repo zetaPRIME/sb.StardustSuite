@@ -1,8 +1,10 @@
 -
 
 for next update {
-    metaGUI the telepad config pane
+    - metaGUI the telepad config pane
     storage bus config too
+    
+    terminal quick stack?
     
 } then {
     pulse rifle

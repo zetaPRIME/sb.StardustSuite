@@ -40,7 +40,7 @@ function theme.drawFrame()
     icon.explicitSize = (not mg.cfg.icon) and {-1, 0} or nil
     icon:setFile(mg.cfg.icon)
     title:setText("^shadow;" .. mg.cfg.title:gsub('%^reset;', '^reset;^shadow;'))
-  end
+  else assets.frame:drawToCanvas(c) end
 end
 
 function theme.drawButton(w)

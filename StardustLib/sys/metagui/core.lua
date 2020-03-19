@@ -126,6 +126,7 @@ function widgetBase:onFocus() end
 function widgetBase:onUnfocus() end
 function widgetBase:onKeyEvent(key, down) end
 function widgetBase:onKeyEsc() end
+function widgetBase:acceptsKeyRepeat() end
 
 function widgetBase:applyGeometry(selfOnly)
   self.size = self.size or self:preferredSize() -- fill in default size if absent
@@ -308,7 +309,7 @@ end
 
 local function spawnKeysub(respawn)
   if not respawn and mg.ipc.keysub and mg.ipc.keysub.master == mg then return nil end
-  mg.ipc.keysub = { keyEvent = _keyEvent, escEvent = _keyEscEvent, master = mg, accel = mg.ipc.keysub and mg.ipc.keysub.accel or nil }
+  mg.ipc.keysub = { keyEvent = _keyEvent, repeatEvent = _keyRepeatEvent, escEvent = _keyEscEvent, master = mg, accel = mg.ipc.keysub and mg.ipc.keysub.accel or nil }
   player.interact("ScriptPane", metagui.rootPath .. "helper/keysub.config", 0)
 end
 local function killKeysub()
@@ -559,6 +560,9 @@ function _keyEvent(key, down, accel)
   --mg.setTitle(util.tableToString{key, down, mg.keyToChar(key, accel.shift), accel})
   --pane.playSound("/sfx/interface/hoverover_bumb.ogg", 0, 0.75)
   if keyFocus then keyFocus:onKeyEvent(key, down, accel) end
+end
+function _keyRepeatEvent(key, down, accel)
+  if keyFocus and keyFocus:acceptsKeyRepeat() then keyFocus:onKeyEvent(key, down, accel, true) end
 end
 function _keyEscEvent()
   if keyFocus then

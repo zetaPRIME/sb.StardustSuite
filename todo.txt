@@ -114,10 +114,12 @@ networked wire I/O ports
 
 metaGUI details {
     icon support for buttons
+    - key repeat
     
     eventually {
         debug console pane via common-table
         autoInteract for item slots
+        figure out how to provide easy container slot proxying
         rework preferredSize to take both a width and a height?
     }
     

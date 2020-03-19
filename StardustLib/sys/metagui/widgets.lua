@@ -833,7 +833,8 @@ end do -- text box -------------------------------------------------------------
   function widgets.textBox:onFocus() self.focused = true self:queueRedraw() end
   function widgets.textBox:onUnfocus() self.focused = false self:queueRedraw() end
   function widgets.textBox:onKeyEsc() mg.startEvent(self.onEscape, self) end
-  function widgets.textBox:onKeyEvent(key, down, accel)
+  function widgets.textBox:acceptsKeyRepeat() return true end
+  function widgets.textBox:onKeyEvent(key, down, accel, rep)
     if down then
       if key == mg.keys.enter then
         self:releaseFocus()

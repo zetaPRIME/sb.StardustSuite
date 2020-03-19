@@ -271,13 +271,14 @@ function mg.createImplicitLayout(list, parent, defaults)
 end
 
 local redrawFrame = { draw = function() theme.drawFrame() end }
+function mg.queueFrameRedraw() redrawQueue[redrawFrame] = true end
 function mg.setTitle(s)
   mg.cfg.title = s
-  redrawQueue[redrawFrame] = true
+  mg.queueFrameRedraw()
 end
 function mg.setIcon(img)
   mg.cfg.icon = mg.path(img)
-  redrawQueue[redrawFrame] = true
+  mg.queueFrameRedraw()
 end
 
 local mouseCaptor, mouseCaptureBtn, mouseCapturePoint

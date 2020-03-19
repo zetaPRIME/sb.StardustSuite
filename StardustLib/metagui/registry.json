@@ -1,16 +1,3 @@
-{ 
-    "themes" : {
-        "starbound" : "/metagui/themes/starbound/",
-        "carbon" : "/metagui/themes/carbon/"
-    },
-    "panes" : { // Registration optional; this is simply for ease of addressing
-        "starbound" : { },
-        "metagui" : {
-            "example" : "/metagui/example.ui" // addressed as "metagui:example"
-        },
-        "stardustlib" : {
-            "cosplay" : "/sys/stardust/cosplay/cosplay.ui",
-            "settings" : "/sys/stardust/ui/settings.ui"
-        }
-    }
+{ // just a skeleton; actual contents in patch form to eliminate conflict between providers
+  "themes" : { }, "panes" : { } // Registration optional; this is simply for ease of addressing
 }

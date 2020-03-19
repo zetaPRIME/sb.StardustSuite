@@ -39,7 +39,7 @@ end
 
 
 -- determine theme and accent color in use
-local defaultTheme = _mgcfg.defaultTheme
+local defaultTheme = registry.defaultTheme or false
 if not registry.themes[defaultTheme] then for k in pairs(registry.themes) do defaultTheme = k break end end
 
 settings = player.getProperty("metaGUISettings") or { }

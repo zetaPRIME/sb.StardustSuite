@@ -1,0 +1,12 @@
+[ // -*- grammar-ext: json -*-
+  { "op" : "add", "path" : "/defaultTheme", "value" : "starbound" },
+  { "op" : "add", "path" : "/themes/starbound", "value" : "/metagui/themes/starbound/" },
+  { "op" : "add", "path" : "/themes/carbon", "value" : "/metagui/themes/carbon/" },
+  { "op" : "add", "path" : "/panes/metagui", "value" : {
+    "example" : "/metagui/example.ui" // addressed as "metagui:example"
+  } },
+  { "op" : "add", "path" : "/panes/stardustlib", "value" : {
+    "cosplay" : "/sys/stardust/cosplay/cosplay.ui",
+    "settings" : "/sys/stardust/ui/settings.ui"
+  } }
+]

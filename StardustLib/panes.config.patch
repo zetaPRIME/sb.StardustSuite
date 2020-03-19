@@ -1,6 +1,5 @@
 [ // -*- grammar-ext: json -*-
   { "op" : "add", "path" : "/metaGUI", "value": {
-    "providerRoot" : "/sys/metagui/",
-    "defaultTheme" : "starbound"
+    "providerRoot" : "/sys/metagui/"
   }}
 ] 

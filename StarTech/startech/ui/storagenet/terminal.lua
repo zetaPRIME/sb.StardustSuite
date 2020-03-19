@@ -41,6 +41,21 @@ metagui.startEvent(function()
   end
 end)
 
+-- heartbeat
+local src = pane.sourceEntity()
+local pid = player.id()
+metagui.startEvent(function()
+	world.sendEntityMessage(src, "playerOpen", pid)
+	while true do
+		for i=1,10 do coroutine.yield() end
+		world.sendEntityMessage(src, "playerHeartbeat", pid)
+	end
+end)
+
+function uninit()
+	world.sendEntityMessage(src, "playerClose", pid)
+end
+
 local search = ""
 function refreshDisplay()
   --prevShownItems = shownItems

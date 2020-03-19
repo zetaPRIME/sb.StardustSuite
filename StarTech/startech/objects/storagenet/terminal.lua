@@ -24,6 +24,7 @@ end
 
 function playerOpen(msg, isLocal, pid)
   openPlayers[pid] = true
+  lastUsedBy = pid
   playerTimeout = math.floor(60 * 0.5) -- give some extra time to account for potential client lag on loading
 end
 
@@ -75,19 +76,20 @@ end
 _ccdis = false
 function containerCallback(...)
   if _ccdis then return nil end
-  if not shared.controller then -- just spit items out
-    _ccdis = true
-    for i, itm in pairs(world.containerTakeAll(entity.id())) do world.spawnItem(itm, entity.position()) end
-    _ccdis = false
-    return nil
-  end
-  _ccdis = true
   
   local ejectPos = entity.position()
   for pid in pairs(openPlayers) do -- drop it on an interacting player if any exist
     ejectPos = world.entityPosition(pid) or ejectPos
     break
   end
+  
+  if not shared.controller then -- just spit items out
+    _ccdis = true
+    for i, itm in pairs(world.containerTakeAll(entity.id())) do world.spawnItem(itm, ejectPos) end
+    _ccdis = false
+    return nil
+  end
+  _ccdis = true
   
   local itemsInserted = world.containerTakeAll(entity.id())
   for i, itm in pairs(itemsInserted) do

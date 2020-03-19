@@ -6,16 +6,17 @@ local defaultInfo = {
   description = "No preference selected",
 }
 
+local registry = root.assetJson("/metagui/registry.json")
+
 local themes = { }
 function init()
-  local tl = root.assetJson("/metagui/registry.json:themes")
-  for k, p in pairs(tl) do
+  for k, p in pairs(registry.themes) do
     themes[k] = root.assetJson(p .. "theme.json")
     themes[k].id = k
     themes[k].path = p
   end
   
-  local def = root.assetJson("/panes.config").metaGUI.defaultTheme
+  local def = registry.defaultTheme
   if not themes[def] then for k in pairs(themes) do def = k break end end
   defaultInfo.name = string.format(defaultInfo.name, themes[def].name)
   

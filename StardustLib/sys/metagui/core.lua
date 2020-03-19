@@ -310,7 +310,11 @@ end
 local function spawnKeysub(respawn)
   if not respawn and mg.ipc.keysub and mg.ipc.keysub.master == mg then return nil end
   mg.ipc.keysub = { keyEvent = _keyEvent, repeatEvent = _keyRepeatEvent, escEvent = _keyEscEvent, master = mg, accel = mg.ipc.keysub and mg.ipc.keysub.accel or nil }
-  player.interact("ScriptPane", metagui.rootPath .. "helper/keysub.config", 0)
+  player.interact("ScriptPane", {
+    gui = { canvas = { type = "canvas", captureKeyboardEvents = true } },
+    canvasKeyCallbacks = { canvas = "keyEvent" },
+    scripts = {mg.rootPath .. "helper/keysub.lua"}
+  }, 0)
 end
 local function killKeysub()
   if mg.ipc.keysub and mg.ipc.keysub.master == mg then

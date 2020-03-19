@@ -1,10 +1,9 @@
 -
 
 for next update {
-    - fix stubs for registry
-    
     terminal quick stack?
     convert combustion gen and autosmelter UI
+    also configurator
     
 } then {
     pulse rifle
@@ -53,13 +52,6 @@ configurable tram stop {
 reserve material ID range somewhere
 semigloss black hull panel
 
-/ figure out how the feck to detect if shift is held (done hackishly, but at least it's there)
-implement slot-drop? drop into empty space, or maybe the selection icon area?
-somewhat redesign UI to make better use of now-unneeded tooltip area
-
-TERMINAL THEMABILITY?
-make terminal not update every tick just for animation if it's not waiting on any players
-
 x BYOS functionality as machine { // probably incompatible with FU's version
     damageTileArea with ridiculously high strength and harvest level and radius big enough to cover a t8 vanilla ship from one end, in both fg and bg
     itemDropQuery and collect into database
@@ -78,19 +70,16 @@ move tag patches to stardustlib and add some more {
 
 power stuffs {
     nanofield {
-        elytra {
-            use an actual item
-        }
+        configuration panel accessed via picking up one of the static fields
+        elytra: use an actual item
     }
     
     Resonite Reactor!
     
-    - fix phase drill aim compensation (beam start)
-    (...and flashlight)
-
-    fluxsaber (fluxpulse-charged beamsword)
-    pulse rifle (machine gun), vector rifle (railgun)
-    artemis bow?
+    fluxsaber - fluxpulse-charged beamsword, high combo potential especially when wearing nanofield or other control tech
+    pulse rifle - hitscan machine gun with shotgun secondary
+    vector rifle - railgun sniper with mechanics similar to Splatoon's chargers or Warframe's Ferrox
+    artemis bow - bouncy ray a la the shadowbeam staff from Terraria
     
     maybe a way to add a pulse battery to stock equipment
     
@@ -113,28 +102,16 @@ some item transport for automation (and library to make use of input/output conf
 networked wire I/O ports
 
 metaGUI details {
-    icon support for buttons
-    - key repeat
+    autoInteract for item slots
+    figure out how to provide easy container slot proxying
     
     eventually {
+        icon support for buttons
         debug console pane via common-table
-        autoInteract for item slots
-        figure out how to provide easy container slot proxying
         rework preferredSize to take both a width and a height?
     }
     
     widgets needed {
-        - canvas
-        - label
-        - image
-        - item slot
-        - item grid
-        - scrollarea
-        - panel (flat, concave or convex)
-        - list item
-        - text box
-        - checkbox
-        
         tab field! {
             probably layout with a set of panels, attached to a scrollable area of basically dressed-up buttons
             tabs on any edge or hidden (can be manually flipped through)

@@ -91,7 +91,7 @@ player.interact("ScriptPane", {
     _tracker = { type = "canvas", size = size, zlevel = -99999 },
     _mouse = { type = "canvas", size = size, zlevel = -99998, captureMouseEvents = true },
   },
-  scripts = { "/sys/metagui/core.lua" },
+  scripts = { _mgcfg.providerRoot .. "core.lua" },
   scriptWidgetCallbacks = { "__cb1", "__cb2", "__cb3", "__cb4", "__cb5", "_clickLeft", "_clickRight" },
   canvasClickCallbacks = { _mouse = "_mouseEvent" },
   openWithInventory = uicfg.openWithInventory,

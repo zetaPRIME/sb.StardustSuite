@@ -109,6 +109,7 @@ metaGUI details {
         icon support for buttons
         debug console pane via common-table
         rework preferredSize to take both a width and a height?
+        keyboard layouts...
     }
     
     widgets needed {

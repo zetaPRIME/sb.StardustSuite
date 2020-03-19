@@ -244,6 +244,7 @@ end do -- scroll area ----------------------------------------------------------
   function widgets.scrollArea:onCaptureMouseMove(delta)
     if self.thumbScrolling and self:mouseCaptureButton() == 1 then -- middle click, "thumb mode"
       self.velocity = {0, 0}
+      if vec2.mag(delta) == 0 then return nil end -- no scrolling without movement
       local l = self.children[1]
       local margin = 16
       local mpos, tpos = self:relativeMousePosition(), {0, 0}

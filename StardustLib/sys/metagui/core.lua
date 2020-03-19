@@ -1,8 +1,16 @@
+-- provider configuration
+local MG_ROOT = "/sys/metagui/"
+local MG_FALLBACK_PATH = "/metagui/themes/fallbackAssets/"
+
+------------------
+-- metaGUI core --
+------------------
+
 require "/scripts/util.lua"
 require "/scripts/vec2.lua"
 require "/scripts/rect.lua"
 
-local function module(s) require("/sys/metagui/" .. s .. ".lua") end -- for easy repointing if needed
+local function module(s) require(metagui.rootPath .. s .. ".lua") end -- for easy repointing if needed
 
 local debug = {
   --showLayoutBoxes = true,
@@ -11,6 +19,7 @@ local debug = {
 -- metaGUI core
 metagui = metagui or { }
 local mg = metagui
+mg.rootPath = MG_ROOT
 mg.debugFlags = debug
 
 module "gfx"
@@ -25,7 +34,7 @@ function mg.asset(path)
   if not path then return nil end
   if path:sub(1, 1) == '/' then return path end
   local ext = path:match('^.*%.(.-)$')
-  if ext == "png" and not root.nonEmptyRegion(mg.cfg.themePath .. path) then return "/metagui/themes/fallbackAssets/" .. path end
+  if ext == "png" and not root.nonEmptyRegion(mg.cfg.themePath .. path) then return MG_FALLBACK_PATH .. path end
   return mg.cfg.themePath .. path
 end
 
@@ -300,7 +309,7 @@ end
 local function spawnKeysub(respawn)
   if not respawn and mg.ipc.keysub and mg.ipc.keysub.master == mg then return nil end
   mg.ipc.keysub = { keyEvent = _keyEvent, escEvent = _keyEscEvent, master = mg, accel = mg.ipc.keysub and mg.ipc.keysub.accel or nil }
-  player.interact("ScriptPane", "/sys/metagui/helper/keysub.config", 0)
+  player.interact("ScriptPane", metagui.rootPath .. "helper/keysub.config", 0)
 end
 local function killKeysub()
   if mg.ipc.keysub and mg.ipc.keysub.master == mg then

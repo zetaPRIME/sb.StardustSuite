@@ -1,8 +1,10 @@
 -
 
 for next update {
-    - metaGUI the telepad config pane
-    - storage bus config too
+    ! provider registry for metaGUI
+    move default theme selection to registry?
+    
+    clean out some old UI files
     
     terminal quick stack?
     

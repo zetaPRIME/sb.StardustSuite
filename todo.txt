@@ -1,12 +1,10 @@
 -
 
 for next update {
-    - provider registry for metaGUI
-    - move default theme selection to registry
-    
-    - clean out some old UI files
+    - fix stubs for registry
     
     terminal quick stack?
+    convert combustion gen and autosmelter UI
     
 } then {
     pulse rifle
@@ -117,17 +115,10 @@ networked wire I/O ports
 metaGUI details {
     icon support for buttons
     
-    before first full release {
-        - move theme-common to a module
-        - settings panel with theme selection
-        > starbound-default style
-    }
-    
     eventually {
         debug console pane via common-table
         autoInteract for item slots
         rework preferredSize to take both a width and a height?
-        - ... can't detect inventory shift+click, doesn't pick up item
     }
     
     widgets needed {
@@ -140,8 +131,7 @@ metaGUI details {
         - panel (flat, concave or convex)
         - list item
         - text box
-        checkbox
-        option box?
+        - checkbox
         
         tab field! {
             probably layout with a set of panels, attached to a scrollable area of basically dressed-up buttons
@@ -152,8 +142,8 @@ metaGUI details {
     
     > need universal container proxy as well (transmat terminal and such)
     for container proxy: {
-        use ipc lib (getmetatable '' and all)
-        host can check for itembag changes every frame and push an event
+        container items are precached clientside and delta'd, can just check every frame
+        need to figure out how to shift focus from container to container without closing inventory
     }
 }
 

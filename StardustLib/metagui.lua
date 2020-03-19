@@ -15,7 +15,7 @@ function init() pane.dismiss()
     if type(fb) ~= "table" or not fb[1] then fb = { "ScriptPane", fb } end
     player.interact(fb[1], fb[2], pane.sourceEntity())
   else
-    require "/sys/metagui/build.lua"
+    require(_mgcfg.providerRoot .. "build.lua")
   end
   
   

@@ -1,6 +1,4 @@
--- metaGUI stub
--- INCOMPLETE, DO NOT COPY YET
--- this file should never need to change and can therefore be included UNMODIFIED in other mods
+-- metaGUI stub (safe to include)
 
 function init() pane.dismiss()
   _mgcfg = root.assetJson("/panes.config").metaGUI
@@ -17,6 +15,4 @@ function init() pane.dismiss()
   else
     require(_mgcfg.providerRoot .. "build.lua")
   end
-  
-  
 end

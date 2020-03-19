@@ -4,7 +4,7 @@ for next update {
     - provider registry for metaGUI
     - move default theme selection to registry
     
-    clean out some old UI files
+    - clean out some old UI files
     
     terminal quick stack?
     

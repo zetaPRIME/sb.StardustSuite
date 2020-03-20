@@ -554,11 +554,6 @@ end do -- item slot ------------------------------------------------------------
       local maxStack = itm and mg.itemMaxStack(itm) or (stm and mg.itemMaxStack(stm))
       -- right clicking with an item that doesn't stack does nothing
       if btn == 2 and stm and not canStack then return nil end
-      if btn == 0 and stm and not itm then
-        if not self:acceptsItem(itm) then return nil end
-        player.setSwapSlotItem() set(stm)
-        return nil
-      end
       local shift = mg.checkShift() -- any case beyond could potentially be affected
       if btn == 0 then
         if shift then player.giveItem(itm) set() else

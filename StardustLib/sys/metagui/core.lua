@@ -78,6 +78,7 @@ local scriptUpdate, scriptUninit = { }, { }
 mg.widgetTypes = { }
 mg.widgetBase = {
   expandMode = {0, 0}, -- default: decline to expand in either direction (1 is "can", 2 is "wants to")
+  visible = true,
 }
 local widgetTypes, widgetBase = mg.widgetTypes, mg.widgetBase
 
@@ -141,6 +142,7 @@ function widgetBase:applyGeometry(selfOnly)
   --sb.logInfo("processing " .. (self.backingWidget or "unknown") .. ", type " .. self.typeName)
   local etp
   if self.parent then etp = { tp[1], s.size[2] - (tp[2] + self.size[2]) } else etp = tp end -- if no parent, it must be a backing widget
+  if not self.visible then etp = {-99999, -99999} end -- simulate invisibility by shoving way offscreen
   if self.backingWidget then
     widget.setSize(self.backingWidget, {math.floor(self.size[1]), math.floor(self.size[2])})
     widget.setPosition(self.backingWidget, {math.floor(etp[1]), math.floor(etp[2])})
@@ -160,6 +162,7 @@ function widgetBase:queueGeometryUpdate() -- find root
   recalcQueue[w] = true
 end
 function widgetBase:updateGeometry() end
+function widgetBase:setVisible(v) self.visible = v self:queueGeometryUpdate() end
 
 function widgetBase:addChild(param) return mg.createWidget(param, self) end
 function widgetBase:clearChildren()

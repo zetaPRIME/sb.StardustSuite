@@ -102,8 +102,7 @@ some item transport for automation (and library to make use of input/output conf
 networked wire I/O ports
 
 metaGUI details {
-    - autoInteract for item slots
-    - figure out how to provide easy container slot proxying
+    - widget.visible
     
     eventually {
         icon support for buttons
@@ -118,12 +117,6 @@ metaGUI details {
             tabs on any edge or hidden (can be manually flipped through)
             event onTabChanged
         }
-    }
-    
-    > need universal container proxy as well (transmat terminal and such)
-    for container proxy: {
-        - container items are precached clientside and delta'd, can just check every frame
-        - need to figure out how to shift focus from container to container without closing inventory
     }
 }
 

@@ -68,22 +68,22 @@ end do -- layout ---------------------------------------------------------------
       local axis = self.mode == "vertical" and 2 or 1
       local opp = 3 - axis
       
-      res[axis] = self.spacing * (#(self.children) - 1)
+      res[axis] = -self.spacing --self.spacing * (#(self.children) - 1)
       
-      for _, c in pairs(self.children) do
+      for _, c in pairs(self.children) do if c.visible then
         local ps = c:preferredSize(width)
         if width and axis == 1 then width = width - ps[1] - self.spacing end
         res[opp] = math.max(res[opp], ps[opp])
-        res[axis] = res[axis] + ps[axis]
-      end
+        res[axis] = res[axis] + ps[axis] + self.spacing
+      end end
       if type(self.explicitSize) == "number" then res[opp] = self.explicitSize end
     elseif self.mode == "manual" then
       if self.explicitSize then return self.explicitSize end
-      for _, c in pairs(self.children) do
+      for _, c in pairs(self.children) do if c.visible then
         local fc = vec2.add(c.position, c:preferredSize(width))
         res[1] = math.max(res[1], fc[1])
         res[2] = math.max(res[2], fc[2])
-      end
+      end end
     end
     return res
   end
@@ -96,27 +96,29 @@ end do -- layout ---------------------------------------------------------------
       
       -- find maximum expansion level
       -- if not zero, anything that matches it gets expanded to equal size after preferred sizes are fulfilled
-      local exLv = 0
-      for _, c in pairs(self.children) do if c.expandMode[axis] > exLv then exLv = c.expandMode[axis] end end
+      -- and while we're iterating through, determine total spacing size
+      local exLv, sizeAcc = 1, -self.spacing
+      for _, c in pairs(self.children) do if c.visible then
+        sizeAcc = sizeAcc + self.spacing
+        if c.expandMode[axis] > exLv then exLv = c.expandMode[axis] end
+      end end
       local numEx = 0 -- count matching
-      for _, c in pairs(self.children) do if c.expandMode[axis] == exLv then numEx = numEx + 1 end end
+      for _, c in pairs(self.children) do if c.visible and c.expandMode[axis] == exLv then numEx = numEx + 1 end end
       
-      local sizeAcc = self.spacing * (#(self.children) - 1)
       -- size pass 1
       for _, c in pairs(self.children) do
-        if exLv == 0 or c.expandMode[axis] < exLv then
+        if c.visible and c.expandMode[axis] < exLv then
           c.size = c:preferredSize(self.size[1])
           sizeAcc = sizeAcc + c.size[axis]
         end
-        -- ...
       end
       -- and 2
-      if exLv > 0 then
+      if numEx > 0 then
         local sz = (self.size[axis] - sizeAcc) / numEx
         local szf = math.floor(sz)
         local rm = 0
         for _, c in pairs(self.children) do
-          if c.expandMode[axis] == exLv then
+          if c.visible and c.expandMode[axis] == exLv then
             -- do a remainder-accumulator to keep things integer
             rm = rm + (sz - szf)
             local rmf = math.floor(rm)
@@ -131,14 +133,16 @@ end do -- layout ---------------------------------------------------------------
       local posAcc = 0
       for _, c in pairs(self.children) do
         c.position = c.position or {0, 0}
-        c.position[axis] = posAcc
-        posAcc = posAcc + c.size[axis] + self.spacing
-        -- resize or align on opposite axis
-        if c.expandMode[opp] >= 1 then
-          c.size[opp] = self.size[opp]
-        else
-          c.size[opp] = math.min(c.size[opp], self.size[opp]) -- force fit regardless
-          c.position[opp] = math.floor(self.size[opp]*self.align - c.size[opp]*self.align)
+        if c.visible then
+          c.position[axis] = posAcc
+          posAcc = posAcc + c.size[axis] + self.spacing
+          -- resize or align on opposite axis
+          if c.expandMode[opp] >= 1 then
+            c.size[opp] = self.size[opp]
+          else
+            c.size[opp] = math.min(c.size[opp], self.size[opp]) -- force fit regardless
+            c.position[opp] = math.floor(self.size[opp]*self.align - c.size[opp]*self.align)
+          end
         end
       end
       

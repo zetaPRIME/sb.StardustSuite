@@ -20,7 +20,7 @@
       [ { "type" : "checkBox" }, { "type" : "label", "text" : "Check boxes too!" } ],
       [
         { "align" : 0 },
-        { "type" : "itemGrid", "slots" : 55, "columns" : 5 },
+        { "type" : "itemGrid", "slots" : 55, "columns" : 5, "auto" : true },
         { "type" : "label", "text" : "By the way, ^accent;this is a scroll area.^reset;\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Sed porttitor lectus vitae odio ullamcorper tincidunt. Pellentesque lacinia dui in ipsum luctus commodo. Fusce placerat velit sed tellus suscipit suscipit molestie sed velit. Pellentesque non justo eu quam imperdiet finibus. In egestas rutrum dui. Donec sodales magna cursus, sollicitudin quam ac, vestibulum erat. Mauris lobortis sapien eu risus mollis scelerisque. Duis et ipsum magna. Proin dignissim elit eget dui auctor luctus. Donec pulvinar congue est, vitae fermentum urna congue quis. Fusce pharetra diam consequat ligula vehicula iaculis. Cras placerat erat quam, vitae sagittis dolor tincidunt nec. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus." }
       ]//*/
     ]},

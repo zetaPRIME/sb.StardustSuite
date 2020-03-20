@@ -530,6 +530,66 @@ end do -- item slot ------------------------------------------------------------
     --
   })
   
+  local autoInteract = { } do -- modes
+    -- NOTE stack split floors the take
+    -- left click with same item: combines *into* slot if <=maxStack, else swaps counts
+    
+    function autoInteract.default(self, btn, container)
+      if btn == 1 or btn > 2 then return nil end -- no default behavior
+      
+      local itm, set
+      if container then
+        -- NYI
+      else
+        itm = self:item()
+        set = function(item)
+          self:setItem(item)
+          self:onItemModified()
+        end
+      end
+      
+      local stm = player.swapSlotItem()
+      if not itm and not stm then return nil end -- blank slot, blank cursor
+      local canStack = mg.itemsCanStack(itm, stm)
+      local maxStack = itm and mg.itemMaxStack(itm) or (stm and mg.itemMaxStack(stm))
+      -- right clicking with an item that doesn't stack does nothing
+      if btn == 2 and stm and not canStack then return nil end
+      if btn == 0 and stm and not itm then
+        if not self:acceptsItem(itm) then return nil end
+        player.setSwapSlotItem() set(stm)
+        return nil
+      end
+      local shift = mg.checkShift() -- any case beyond could potentially be affected
+      if btn == 0 then
+        if shift then player.giveItem(itm) set() else
+          if canStack and itm.count < maxStack then
+            local c = math.min(stm.count, maxStack - itm.count)
+            if c <= 0 then return nil end -- no change
+            itm.count = itm.count + c
+            stm.count = stm.count - c
+            if stm.count <= 0 then stm = nil end
+            player.setSwapSlotItem(stm) set(itm)
+            return nil
+          end
+          if not self:acceptsItem(itm) then return nil end
+          player.setSwapSlotItem(itm) set(stm)
+        end return nil
+      elseif btn == 2 then -- if it gets here, same item is guaranteed
+        if not stm then stm = { name = itm.name, count = 0, parameters = itm.parameters } end
+        local c = math.min(shift and math.max(1, math.floor(itm.count/2)) or 1, maxStack - stm.count)
+        if c <= 0 then return nil end -- no change
+        stm.count = stm.count + c
+        itm.count = itm.count - c
+        if itm.count <= 0 then itm = nil end
+        player.setSwapSlotItem(stm) set(itm)
+        return nil
+      end
+    end
+    function autoInteract.container(self, btn) return autoInteract.default(self, btn, true) end
+    
+    --
+  end -- end modes
+  
   function widgets.itemSlot:init(base, param)
     self.glyph = mg.path(param.glyph or param.colorGlyph)
     self.colorGlyph = not not param.colorGlyph -- some themes may want to render non-color glyphs as monochrome in their own colors
@@ -569,8 +629,19 @@ end do -- item slot ------------------------------------------------------------
   function widgets.itemSlot:onMouseEnter() self.hover = true self:queueRedraw() end
   function widgets.itemSlot:onMouseLeave() self.hover = false self:queueRedraw() end
   function widgets.itemSlot:onMouseButtonEvent(btn, down)
-    --pane.playSound("/sfx/interface/clickon_success.ogg", 0, 1.0)
+    if self.autoInteract then
+      if down then self:captureMouse(btn)
+      elseif btn == self:mouseCaptureButton() then
+        self:releaseMouse()
+        mg.startEvent(autoInteract[self.autoInteract] or autoInteract.default, self, btn)
+      end
+      return true
+    end
   end
+  widgets.itemSlot.onCaptureMouseMove = widgets.button.onCaptureMouseMove -- yoink
+  
+  function widgets.itemSlot:acceptsItem() return true end
+  function widgets.itemSlot:onItemModified() end
   
   function widgets.itemSlot:item() return widget.itemSlotItem(self.subWidgets.slot) end
   function widgets.itemSlot:setItem(itm)
@@ -609,9 +680,9 @@ end do -- item grid ------------------------------------------------------------
       autoInteract = self.autoInteract,
       item = item,
     }
-    s.onCaptureMouseMove = function(...) return self.onCaptureMouseMove(...) end
     if not self.autoInteract then
       s.onMouseButtonEvent = function(...) return self.onSlotMouseEvent(...) end
+      s.onCaptureMouseMove = function(...) return self.onCaptureMouseMove(...) end
     end
     self:queueGeometryUpdate() -- new slots need positioned
   end

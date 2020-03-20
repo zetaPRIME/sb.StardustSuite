@@ -410,9 +410,11 @@ local eventQueue = { }
 local function runEventQueue()
   local next = { }
   for _, v in pairs(eventQueue) do
-    local f, err = coroutine.resume(v)
-    if coroutine.status(v) ~= "dead" then table.insert(next, v) -- execute; insert in next-frame queue if still running
-    elseif not f then sb.logError(err) end
+    if coroutine.status(v) ~= "dead" then -- precheck; coroutine may have finished outside via IPC
+      local f, err = coroutine.resume(v)
+      if coroutine.status(v) ~= "dead" then table.insert(next, v) -- execute; insert in next-frame queue if still running
+      elseif not f then sb.logError(err) end
+    end
   end
   eventQueue = next
   theme.update()

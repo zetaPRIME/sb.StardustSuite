@@ -5,6 +5,8 @@
     "terminal" : "/startech/ui/storagenet/terminal.ui",
     "storagebus.config" : "/startech/ui/storagenet/storagebus.config.ui",
     
-    "telepad.config" : "/startech/ui/telepad.config.ui"
+    "telepad.config" : "/startech/ui/telepad.config.ui",
+    
+    "containertest" : "/startech/ui/containertest.ui"
   }}
 ]

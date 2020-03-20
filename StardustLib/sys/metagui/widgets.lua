@@ -607,6 +607,7 @@ end do -- item slot ------------------------------------------------------------
     if self.autoInteract == "container" then -- start polling loop
       mg.startEvent(function()
         local cid = pane.sourceEntity()
+        coroutine.yield()
         while not self.deleted do
           self:setItem(world.containerItemAt(cid, (self.containerSlot or 1) - 1))
           coroutine.yield()

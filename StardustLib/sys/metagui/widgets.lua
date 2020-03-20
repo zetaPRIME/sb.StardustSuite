@@ -539,13 +539,13 @@ end do -- item slot ------------------------------------------------------------
       
       local itm, set
       if container then
-        -- NYI
+        local cid = pane.sourceEntity()
+        local off = (self.containerSlot or 1) - 1
+        itm = world.containerItemAt(cid, off)
+        set = function(item) world.containerSwapItemsNoCombine(cid, item, off) self:setItem(item) self:onItemModified() end
       else
         itm = self:item()
-        set = function(item)
-          self:setItem(item)
-          self:onItemModified()
-        end
+        set = function(item) self:setItem(item) self:onItemModified() end
       end
       
       local stm = player.swapSlotItem()
@@ -595,6 +595,8 @@ end do -- item slot ------------------------------------------------------------
     self.colorGlyph = not not param.colorGlyph -- some themes may want to render non-color glyphs as monochrome in their own colors
     self.color = param.color -- might as well let themes have at this
     self.autoInteract = param.autoInteract or param.auto
+    self.containerSlot = param.containerSlot
+    if self.containerSlot then self.autoInteract = "container" end
     --
     self.backingWidget = mkwidget(base, { type = "canvas" })
     self.subWidgets = {
@@ -602,6 +604,15 @@ end do -- item slot ------------------------------------------------------------
       count = mkwidget(base, { type = "label", mouseTransparent = true, hAnchor = "right" })
     }
     if param.item then self:setItem(param.item) end
+    if self.autoInteract == "container" then -- start polling loop
+      mg.startEvent(function()
+        local cid = pane.sourceEntity()
+        while not self.deleted do
+          self:setItem(world.containerItemAt(cid, (self.containerSlot or 1) - 1))
+          coroutine.yield()
+        end
+      end)
+    end
   end
   function widgets.itemSlot:preferredSize() return {18, 18} end
   function widgets.itemSlot:applyGeometry(so)
@@ -667,6 +678,8 @@ end do -- item grid ------------------------------------------------------------
     self.spacing = param.spacing
     if type(self.spacing) == "number" then self.spacing = {self.spacing, self.spacing} end
     self.autoInteract = param.autoInteract or param.auto
+    self.containerSlot = param.containerSlot
+    if self.containerSlot then self.autoInteract = "container" end
     
     self.backingWidget = mkwidget(base, { type = "layout", layoutType = "basic", scissoring = false })
     
@@ -718,10 +731,12 @@ end do -- item grid ------------------------------------------------------------
   end
   
   function widgets.itemGrid:updateGeometry()
+    local container = self.autoInteract == "container"
     local slots = #(self.children)
     local cols = math.modf((self.size[1] + self.spacing[1]) / (18 + self.spacing[1]))
     for i, s in pairs(self.children) do
       s.index = i -- shove this in for script use
+      if container then s.containerSlot = (self.containerSlot or 1) + i - 1 end
       local row = math.modf((i-1) / cols)
       local col = i - 1 - (row*cols)
       s.position = {(18 + self.spacing[1]) * col, (18 + self.spacing[2]) * row}

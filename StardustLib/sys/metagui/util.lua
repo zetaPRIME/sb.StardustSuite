@@ -38,3 +38,35 @@ function mg.keyToChar(k, shift)
     return shift and ch:upper() or ch
   end
 end
+
+function mg.itemsCanStack(i1, i2)
+  if i1.name ~= i2.name then return nil end
+  return compare(i1.parameters, i2.parameters)
+end
+
+function mg.itemStacksToCursor(item)
+  local stm = player.swapSlotItem()
+  if not stm then return item.count end
+  if not mg.itemsCanStack(item, stm) then return 0 end
+  -- items can stack together, figure out how many
+  local cfg = root.itemConfig(item)
+  local maxStack = cfg.parameters.maxStack or cfg.config.maxStack or root.assetJson("/items/defaultParameters.config:defaultMaxStack")
+  return math.min(maxStack - stm.count, item.count)
+end
+
+function mg.checkShift()
+  local cr = coroutine.running()
+  if not cr then sb.logWarn("metagui.checkShift() called in main thread!") return nil end
+  local icon = "/assetmissing.png"
+  local stm = player.swapSlotItem()
+  if stm then -- carry over icon
+    local cfg = root.itemConfig(stm)
+    icon = util.absolutePath(cfg.directory, cfg.parameters.inventoryIcon or cfg.config.inventoryIcon or icon)
+  end
+  mg.ipc.shiftCheck = function(s) coroutine.resume(cr, 'sc', s) end
+  player.setSwapSlotItem { name = "geode", count = stm and stm.count or 1, parameters = { inventoryIcon = icon, scripts = {mg.rootPath .. "helper/shiftstub.lua"}, restore = stm } }
+  local chk, res
+  while chk ~= 'sc' do chk, res = coroutine.yield() end
+  mg.ipc.shiftCheck = nil -- clean up
+  return res
+end

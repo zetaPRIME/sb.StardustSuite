@@ -919,7 +919,7 @@ end do -- text box -------------------------------------------------------------
   function widgets.textBox:acceptsKeyRepeat() return true end
   function widgets.textBox:onKeyEvent(key, down, accel, rep)
     if down then
-      if key == mg.keys.enter then
+      if key == mg.keys.enter or key == mg.keys.kpEnter then
         self:releaseFocus()
         mg.startEvent(self.onEnter, self)
       elseif key == mg.keys.left then

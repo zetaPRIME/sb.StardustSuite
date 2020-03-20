@@ -6,6 +6,16 @@ require "/scripts/vec2.lua"
 if not _mgcfg then _mgcfg = root.assetJson("/panes.config").metaGUI end -- make sure we have this
 local registry = root.assetJson("/metagui/registry.json")
 
+if pane.containerEntityId then
+  local ipc = getmetatable ''.metagui_ipc
+  if not ipc then ipc = { } getmetatable ''.metagui_ipc = ipc end
+  if ipc.openContainerProxy then -- close and reopen next frame to prevent inventory from just closing due to openWithInventory
+    player.interact("OpenContainer", nil, pane.sourceEntity())
+    return pane.dismiss()
+  end
+  ipc.openContainerProxy = true
+end
+
 -- determine UI json
 local uicfg = inputcfg or config.getParameter("config")
 if type(uicfg) == "string" then
@@ -74,6 +84,8 @@ if uicfg.uniqueBy == "path" and uicfg.configPath then
   end
 end
 
+if pane.containerEntityId then uicfg.isContainer = true end
+
 local pf = { type = "panefeature" }
 if type(uicfg.anchor) == "table" then
   pf.anchor = uicfg.anchor[1]
@@ -94,6 +106,6 @@ player.interact("ScriptPane", {
   scripts = { _mgcfg.providerRoot .. "core.lua" },
   scriptWidgetCallbacks = { "__cb1", "__cb2", "__cb3", "__cb4", "__cb5", "_clickLeft", "_clickRight" },
   canvasClickCallbacks = { _mouse = "_mouseEvent" },
-  openWithInventory = uicfg.openWithInventory,
+  openWithInventory = uicfg.openWithInventory or uicfg.isContainer,
   ___ = uicfg
 }, pane.sourceEntity())

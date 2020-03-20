@@ -404,6 +404,7 @@ function uninit()
   killKeysub()
   for _, f in pairs(scriptUninit) do f() end
   if mg.ipc.uniqueByPath and mg.cfg.configPath then mg.ipc.uniqueByPath[mg.cfg.configPath] = nil end
+  if mg.cfg.isContainer then mg.ipc.openContainerProxy = nil end
 end
 
 local eventQueue = { }

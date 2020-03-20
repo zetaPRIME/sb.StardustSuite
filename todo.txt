@@ -102,8 +102,8 @@ some item transport for automation (and library to make use of input/output conf
 networked wire I/O ports
 
 metaGUI details {
-    autoInteract for item slots
-    figure out how to provide easy container slot proxying
+    - autoInteract for item slots
+    - figure out how to provide easy container slot proxying
     
     eventually {
         icon support for buttons
@@ -122,8 +122,8 @@ metaGUI details {
     
     > need universal container proxy as well (transmat terminal and such)
     for container proxy: {
-        container items are precached clientside and delta'd, can just check every frame
-        need to figure out how to shift focus from container to container without closing inventory
+        - container items are precached clientside and delta'd, can just check every frame
+        - need to figure out how to shift focus from container to container without closing inventory
     }
 }
 

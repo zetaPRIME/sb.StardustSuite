@@ -107,8 +107,6 @@ local paletteFor do
       color.fromHsl { h, c(s * 1.04), c(l * 0.125), bgAlpha }, -- bg shadow
     })
     
-    sb.logInfo(col .. " sat: " .. s)
-    
     --local hd = s > 0 and h - baseHue or 0
     local hd = (mg.cfg["frackin:hueShift"] or 0) / 360
     if hd ~= 0 then -- adjust frame colors
@@ -140,7 +138,7 @@ function theme.decorate()
   widget.addChild(frame.backingWidget, { type = "canvas", position = {0, 0}, size = frame.size }, "canvas")
   
   if (style == "window") then
-    titleBar = frame:addChild { type = "layout", position = {6, 2}, size = {frame.size[1] - 24 - 5, 23}, mode = "horizontal" }
+    titleBar = frame:addChild { type = "layout", position = {6, 2}, size = {frame.size[1] - 24 - 5, 23}, mode = "horizontal", align = 0.55 }
     icon = titleBar:addChild { type = "image" }
     spacer = titleBar:addChild { type = "spacer", size = 0 }
     spacer.expandMode = {0, 0}

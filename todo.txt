@@ -101,8 +101,13 @@ renamer (custom shortdescription, put vanilla one as category because tooltip)
 some item transport for automation (and library to make use of input/output configuration)
 networked wire I/O ports
 
-metaGUI details {
-    - widget.visible
+metaGUI {
+    FU contrib checklist {
+        > some work on theme frame
+        license
+        primer
+        test and send PR
+    }
     
     eventually {
         icon support for buttons

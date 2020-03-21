@@ -82,41 +82,52 @@ local color = { } do -- mini version of StardustLib's color.lua
     hsl[4] = c[4]
     return hsl
   end
-end
+end -- color lib
 
-local td = 360
-sb.logInfo("rgb hues: " .. util.tableToString {
-  color.toHsl "ff0000"[1] * td,
-  color.toHsl "00ff00"[1] * td,
-  color.toHsl "0000ff"[1] * td
-})
-
-local hueShift do
+local paletteFor do
   local baseHue = color.toHsl(theme.defaultAccentColor)[1]
-  local accHsl = color.toHsl(mg.getColor("accent"))
-  local accHue = accHsl[2] > 0 and accHsl[1] or baseHue
-  --sb.logInfo(util.tableToString{baseHue, accHue})
-  hueShift = string.format("?hueshift=%d", math.floor((1.0 + accHue - baseHue) * 360))
-end
-
-local basePal = { "588adb", "123166", "0d1f40" }
-local pals = { }--[theme.defaultAccentColor] = "" }
-local bgAlpha = 0.9
-local function paletteFor(col)
-  col = mg.getColor(col)
-  if pals[col] then return pals[col] end
-  local h, s, l = table.unpack(color.toHsl(col))
-  local function c(v) return util.clamp(v, 0, 1) end
-  local r = color.replaceDirective(basePal, {
-    col, -- highlight
-    color.fromHsl{h, c(s * 1.11), c(l * 0.39), bgAlpha}, -- bg
-    color.fromHsl{h, c(s * 1.04), c(l * 0.25), bgAlpha} -- bg dark
-  })
   
-  --
-  
-  pals[col] = r
-  return r
+  local basePal = { "588adb", "123166", "0d1f40", "060f1f" }
+  local framePal = {
+    "ffe15c", "ffbd00", "c78b05", "875808", -- yellow bands
+    "b3eeff", "7be1ff", "00c6ff", -- gems
+  }
+  local pals = { }--[theme.defaultAccentColor] = "" }
+  local bgAlpha = 0.9
+  paletteFor = function(col)
+    col = mg.getColor(col)
+    if pals[col] then return pals[col] end
+    local h, s, l = table.unpack(color.toHsl(col))
+    local function c(v) return util.clamp(v, 0, 1) end
+    local r = color.replaceDirective(basePal, {
+      col, -- highlight
+      color.fromHsl { h, c(s * 1.11), c(l * 0.39), bgAlpha }, -- bg
+      color.fromHsl { h, c(s * 1.04), c(l * 0.25), bgAlpha }, -- bg dark
+      color.fromHsl { h, c(s * 1.04), c(l * 0.125), bgAlpha }, -- bg shadow
+    })
+    
+    local hd = 0--s > 0 and h - baseHue or 0
+    if hd ~= 0 then -- adjust frame colors
+      hd = (hd+0.5 % 1) - 0.5
+      -- tone down some of the harsher results
+      local mp = math.min(math.abs(hd), 0.4)
+      local sm = 1.0 - mp * 1.5
+      local lm = 1.0 - math.min(mp, 0.2) * 1.0
+      local frp = { }
+      for i, pc in pairs(framePal) do
+        local nc = color.toHsl(pc)
+        nc[1] = nc[1] + hd -- hue shift
+        nc[2] = nc[2] * sm -- sat mult
+        nc[3] = nc[3] * lm -- lum mult
+        frp[i] = color.fromHsl(nc)
+      end
+      r = r .. color.replaceDirective(framePal, frp, true)
+    end
+    --
+    
+    pals[col] = r
+    return r
+  end
 end
 
 local titleBar, icon, title, close, spacer
@@ -150,25 +161,47 @@ function theme.drawFrame()
   if (style == "window") then
     local bgClipWindow = rect.withSize({4, 4}, vec2.sub(c:size(), {4+6, 4+4}))
     c:drawTiledImage(assets.windowBg .. pal, {0, 0}, bgClipWindow)
-    
-    --assets.windowBorder:drawToCanvas(c, "frame?multiply=" .. mg.getColor("accent"))
-    assets.windowBorder:drawToCanvas(c, "frame" .. hueShift)
+    assets.windowBorder:drawToCanvas(c, "frame" .. pal)
     
     spacer.explicitSize = (not mg.cfg.icon) and -2 or 1
     icon.explicitSize = (not mg.cfg.icon) and {-1, 0} or nil
     icon:setFile(mg.cfg.icon)
     title:setText("^shadow;" .. mg.cfg.title:gsub('%^reset;', '^reset;^shadow;'))
-  else assets.frame:drawToCanvas(c) end
+  else assets.frame:drawToCanvas(c, "default" .. pal) end
+end
+
+function theme.drawPanel(w)
+  local c = widget.bindCanvas(w.backingWidget)
+  c:clear() assets.panel:drawToCanvas(c, (w.style or "convex") .. paletteFor("accent"))
 end
 
 function theme.drawButton(w)
   local c = widget.bindCanvas(w.backingWidget)
-  c:clear()
-  local acc = mg.getColor(w.color)
+  c:clear() local pal = paletteFor(w.color or "accent")
+  --local acc = mg.getColor(w.color)
   if acc then
     assets.buttonColored:drawToCanvas(c, (w.state or "idle") .. "?multiply=" .. acc)
   else
-    assets.button:drawToCanvas(c, w.state or "idle")
+    assets.button:drawToCanvas(c, (w.state or "idle") .. pal .. (w.state == "presse" and "?brightness=-25" or ""))
   end
   theme.drawButtonContents(w)
+end
+
+-- checkbox
+
+function theme.drawTextBox(w)
+  local c = widget.bindCanvas(w.backingWidget)
+  c:clear() assets.textBox:drawToCanvas(c, (w.focused and "focused" or "idle") .. paletteFor("accent"))
+end
+
+function theme.drawItemSlot(w)
+  local center = {9, 9}
+  local c = widget.bindCanvas(w.backingWidget)
+  c:clear() c:drawImage(assets.itemSlot .. ":" .. (w.hover and "hover" or "idle") .. paletteFor("accent"), center, nil, nil, true)
+  if w.glyph then c:drawImage(w.glyph, center, nil, nil, true) end
+  local ic = root.itemConfig(w:item())
+  if ic then
+    local rarity = (ic.parameters.rarity or ic.config.rarity or "Common"):lower()
+    c:drawImage(assets.itemRarity .. ":" .. rarity .. (w.hover and "?brightness=50" or ""), center, nil, nil, true)
+  end
 end

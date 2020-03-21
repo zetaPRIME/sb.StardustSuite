@@ -1,5 +1,4 @@
 -- provider configuration
-local MG_ROOT = "/sys/metagui/"
 local MG_FALLBACK_PATH = "/metagui/themes/fallbackAssets/"
 
 ------------------
@@ -19,7 +18,7 @@ local debug = {
 -- metaGUI core
 metagui = metagui or { }
 local mg = metagui
-mg.rootPath = MG_ROOT
+mg.rootPath = getmetatable ''.metagui_root
 mg.debugFlags = debug
 
 module "gfx"

@@ -5,6 +5,7 @@ require "/scripts/vec2.lua"
 
 if not _mgcfg then _mgcfg = root.assetJson("/panes.config").metaGUI end -- make sure we have this
 local registry = root.assetJson("/metagui/registry.json")
+getmetatable ''.metagui_root = _mgcfg.providerRoot -- shove this in here so we don't need to configure this
 
 if pane.containerEntityId then
   local ipc = getmetatable ''.metagui_ipc

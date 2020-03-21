@@ -43,6 +43,7 @@ function pack {
   rm -rf ./_release/$1/
   mkdir -p ./_release/$1/
   cp -Rf ./$1/* ./_release/$1/
+  cp -f ./LICENSE.md ./_release/$1/
   jq ".version |= . + \"-$cmthash\"" ./$1/_metadata > ./_release/$1/_metadata
   asset_packer ./_release/$1/ ./_release/$1.pak
   if [ ! -z "$_steamupload" ] ; then
@@ -98,5 +99,5 @@ function pack {
 
 pack StardustLibPost
 pack StardustLib
-pack StardustTweaks
+#pack StardustTweaks
 pack StarTech

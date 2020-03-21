@@ -104,7 +104,7 @@ networked wire I/O ports
 metaGUI {
     FU contrib checklist {
         > some work on theme frame
-        license
+        - license
         primer
         test and send PR
     }

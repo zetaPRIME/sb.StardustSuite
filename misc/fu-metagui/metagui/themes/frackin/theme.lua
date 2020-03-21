@@ -180,11 +180,9 @@ end
 function theme.drawButton(w)
   local c = widget.bindCanvas(w.backingWidget)
   c:clear() local pal = paletteFor(w.color or "accent")
-  --local acc = mg.getColor(w.color)
-  if acc then
-    assets.buttonColored:drawToCanvas(c, (w.state or "idle") .. "?multiply=" .. acc)
-  else
-    assets.button:drawToCanvas(c, (w.state or "idle") .. pal .. (w.state == "presse" and "?brightness=-25" or ""))
+  assets.button:drawToCanvas(c, (w.state or "idle") .. pal)
+  if w.color == "accent" then
+    assets.button:drawToCanvas(c, "accent" .. pal .. "?multiply=ffffff7f")
   end
   theme.drawButtonContents(w)
 end

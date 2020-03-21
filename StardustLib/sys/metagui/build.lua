@@ -10,6 +10,7 @@ if pane.containerEntityId then
   local ipc = getmetatable ''.metagui_ipc
   if not ipc then ipc = { } getmetatable ''.metagui_ipc = ipc end
   if ipc.openContainerProxy then -- close and reopen next frame to prevent inventory from just closing due to openWithInventory
+    ipc.openContainerProxy = nil -- dismiss this here to guard against infinite loops
     player.interact("OpenContainer", nil, pane.sourceEntity())
     return pane.dismiss()
   end

@@ -347,6 +347,10 @@ module "extra"
 
 local worldId
 function init() -------------------------------------------------------------------------------------------------------------------------------------
+  -- guard against wonky reloads
+  if widget.getData("_tracker") then return pane.dismiss() end
+  widget.setData("_tracker", "open")
+  
   mg.cfg = config.getParameter("___") -- window config
   mg.inputData = mg.cfg.inputData -- alias
   

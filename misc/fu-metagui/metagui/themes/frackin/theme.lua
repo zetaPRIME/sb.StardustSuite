@@ -106,7 +106,8 @@ local paletteFor do
       color.fromHsl { h, c(s * 1.04), c(l * 0.125), bgAlpha }, -- bg shadow
     })
     
-    local hd = 0--s > 0 and h - baseHue or 0
+    --local hd = s > 0 and h - baseHue or 0
+    local hd = (mg.cfg["frackin:hueShift"] or 0) / 360
     if hd ~= 0 then -- adjust frame colors
       hd = (hd+0.5 % 1) - 0.5
       -- tone down some of the harsher results
@@ -187,7 +188,15 @@ function theme.drawButton(w)
   theme.drawButtonContents(w)
 end
 
--- checkbox
+function theme.drawCheckBox(w)
+  local c = widget.bindCanvas(w.backingWidget) c:clear()
+  local state
+  if w.state == "press" then state = ":toggle"
+  else state = w.checked and ":checked" or ":idle" end
+  state = state .. paletteFor("accent")
+  
+  c:drawImageDrawable(assets.checkBox .. state, vec2.mul(c:size(), 0.5), 1.0)
+end
 
 function theme.drawTextBox(w)
   local c = widget.bindCanvas(w.backingWidget)

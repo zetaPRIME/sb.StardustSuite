@@ -4,6 +4,7 @@
   "title" : "Transmatter Terminal",
   "icon" : "terminal.icon.png",
   "accentColor" : "bf7fff",
+  "frackin:hueShift" : 220,
   "openWithInventory" : true,
   "scripts" : [ "terminal.lua" ],
   "children" : [

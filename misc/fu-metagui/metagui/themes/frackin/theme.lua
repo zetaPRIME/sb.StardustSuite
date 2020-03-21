@@ -98,6 +98,7 @@ local paletteFor do
     col = mg.getColor(col)
     if pals[col] then return pals[col] end
     local h, s, l = table.unpack(color.toHsl(col))
+    s = math.min(s, 0.64532019704433)
     local function c(v) return util.clamp(v, 0, 1) end
     local r = color.replaceDirective(basePal, {
       col, -- highlight
@@ -105,6 +106,8 @@ local paletteFor do
       color.fromHsl { h, c(s * 1.04), c(l * 0.25), bgAlpha }, -- bg dark
       color.fromHsl { h, c(s * 1.04), c(l * 0.125), bgAlpha }, -- bg shadow
     })
+    
+    sb.logInfo(col .. " sat: " .. s)
     
     --local hd = s > 0 and h - baseHue or 0
     local hd = (mg.cfg["frackin:hueShift"] or 0) / 360

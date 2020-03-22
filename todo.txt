@@ -105,8 +105,8 @@ metaGUI {
     FU contrib checklist {
         - some work on theme frame
         - license
-        > primer
-        test and send PR
+        - primer
+        > test and send PR
     }
     
     eventually {

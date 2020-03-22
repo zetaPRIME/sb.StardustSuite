@@ -41,9 +41,9 @@ A pane using metaGUI is a JSON document (as with vanilla panes), typically with 
   "children" : [ // Finally, the layout syntax. Notice how this is an *array*, unlike vanilla panes;
     // widget names are optional, as metaGUI is largely heirarchy- and layout-based.
     { "mode" : "horizontal" }, // If the "type" field is omitted, the first object is used as parameters
-    // for the layout itself. Here, we set the root layout to horizontal (default is vertical).
+    // for the layout itself. Here, we set the root layout to horizontal (default for root is vertical).
     [ // Arrays (with at least one item) are treated as sub-layouts; if the parent layout is in vertical
-      // mode, sub-layouts default to horizontal, otherwise they default to vertical as usual.
+      // mode, sub-layouts default to horizontal (and vice versa), otherwise they default to manual.
       { "type" : "label", "text" : "Here is a simple label. Formatting works as usual." },
       { "type" : "image", "file" : "picture.png" } // Widgets can use relative paths as well.
     ], [ // Our second implicit sub-layout, on the right-hand side.
@@ -109,7 +109,7 @@ In a Quickbar entry:
 ```
 
 ## Widget reference
-#### General attributes
+##### General attributes
 ```js
 "type" : "button", // As you'd expect, the type of widget. Case sensitive; generally in camelCase.
 "id" : "btnApply", // Key of the widget's global reference; if omitted, none is created.
@@ -118,8 +118,9 @@ In a Quickbar entry:
 "expandMode" : [1, 0], // Only available for some widget types; how eager the widget is to expand on each
 // axis. 0 is fixed size; otherwise widget will expand if none in the layout have higher priority.
 ```
-#### General functions
+##### General methods
 ```lua
+widget:center() -- Returns the widget's center position.
 widget:queueRedraw()
 widget:queueGeometryUpdate()
 
@@ -142,16 +143,41 @@ widget:broadcast(name, ...) -- Push event to widget's parent (and likely sibling
 ```
 
 ### Layout
+##### Attributes
+```js
+"mode" : "horizontal", // How the layout arranges its children. Defaults to manual if explicitly declared.
+// "horizontal", "vertical" ("h", "v"): Automatically arranges children in a row or column.
+// "manual": Children are explicitly placed; layout expands to fit.
+"spacing" : 2, // Spacing between child elements in automatic layout modes, in pixels. Defaults to 2px.
+"align" : 0.5, // Proportion of alignment for fixed-size children on opposite axis in automatic modes.
+// 0 is aligned with left or top edge; 1 with bottom or right. Defaults to 0.5 (centered).
+```
 
 ### Panel
 Essentially a layout with a background.
-#### Attributes
+##### Attributes
 ```js
 "style" : "concave", // "convex" (default), "concave", "flat"
 ```
+
 ### Scroll Area
+Another layout-proxy, this time with drag-scrolling; left or right click for touch-style "fling" scrolling, middle click for "thumb" (absolute) mode.
+##### Attributes
+```js
+"scrollDirections" : [0, 1], // Whether the contents can be scrolled on each axis. Defaults to vertical.
+"scrollBars" : true, // Whether to show scroll bars after scrolling. Defaults to true.
+"thumbScrolling" : true, // Whether "thumb" (absolute) scrolling is enabled. Defaults to true.
+```
+##### Methods
+```lua
+scrollArea:scrollBy(vec, suppressAnimation) -- Attempts to scroll contents by [vec] pixels. Shows scroll
+-- bars if suppressAnimation is false or omitted.
+scrollArea:scrollTo(pos, suppressAnimation) -- Attempts to center viewport on [pos]. Shows scroll bars if
+-- suppressAnimation is false or omitted.
+```
 
 ### Spacer
+*(no additional attributes or methods)*
 
 ### Label
 

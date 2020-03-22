@@ -255,7 +255,7 @@ end do -- scroll area ----------------------------------------------------------
       for i=1,2 do -- calculate relative position
         tpos[i] = util.clamp((mpos[i] - margin) / math.max(1, self.size[i] - margin*2), 0.0, 1.0) * (l.size[i] - self.size[i])
       end
-      self:scrollTo(tpos)
+      self:scrollTo(vec2.add(tpos, vec2.mul(self.size, 0.5)))
     else -- normal delta scrolling
       self.velocity = delta
       self:scrollBy(delta)
@@ -272,6 +272,7 @@ end do -- scroll area ----------------------------------------------------------
     end
   end
   function widgets.scrollArea:scrollTo(pos, suppressAnimation)
+    pos = vec2.sub(pos, vec2.mul(self.size, 0.5))
     local l = self.children[1]
     l.position = vec2.mul(vec2.mul(pos, -1), self.scrollDirections)
     l.position = rect.ll(rect.bound(rect.fromVec2(l.position, l.position), {0, math.max(0, l.size[2] - self.size[2]) * -1, math.max(0, l.size[1] - self.size[1]), 0}))

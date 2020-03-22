@@ -84,6 +84,8 @@ local widgetTypes, widgetBase = mg.widgetTypes, mg.widgetBase
 function widgetBase:minSize() return {0, 0} end
 function widgetBase:preferredSize() return {0, 0} end
 
+function widgetBase:center() return vec2.add(self.position, vec2.mul(self.size, 0.5)) end
+
 function widgetBase:init() end
 
 function widgetBase:queueRedraw() redrawQueue[self] = true end

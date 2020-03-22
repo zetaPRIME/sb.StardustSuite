@@ -105,7 +105,7 @@ metaGUI {
     FU contrib checklist {
         - some work on theme frame
         - license
-        primer
+        > primer
         test and send PR
     }
     
@@ -114,6 +114,8 @@ metaGUI {
         debug console pane via common-table
         rework preferredSize to take both a width and a height?
         keyboard layouts...
+        
+        it's technically possible to use metatable shenanigans to have the pane script survive a f8 reload?
     }
     
     widgets needed {

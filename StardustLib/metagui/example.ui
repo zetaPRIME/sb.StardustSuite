@@ -8,7 +8,6 @@
   
   // implicit layout stacking by nesting arrays (if outermost is vertical, then next in is treated as horizontal etc.)
   // layout properties can be specified as first object within (if "type" not specified)
-  // most notably, "span"
   "children" : [
     // color attribute: none (default, generally gray), accent (window accent color), color name(?) or hexcode
     { "type" : "button", "id" : "btn", "caption" : "This is a button." },

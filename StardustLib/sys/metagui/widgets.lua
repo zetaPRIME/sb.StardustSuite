@@ -529,6 +529,10 @@ end do -- image ----------------------------------------------------------------
     self.imgSize = root.imageSize(self.file)
     if parent then parent:queueGeometryUpdate() end
   end
+  function widgets.image:setScale(v)
+    self.scale = v
+    if parent then parent:queueGeometryUpdate() end
+  end
 end do -- item slot ---------------------------------------------------------------------------------------------------------------------------------
   widgets.itemSlot = mg.proto(mg.widgetBase, {
     storedCount = 0
@@ -536,9 +540,6 @@ end do -- item slot ------------------------------------------------------------
   })
   
   local autoInteract = { } do -- modes
-    -- NOTE stack split floors the take
-    -- left click with same item: combines *into* slot if <=maxStack, else swaps counts
-    
     function autoInteract.default(self, btn, container)
       if btn == 1 or btn > 2 then return nil end -- no default behavior
       

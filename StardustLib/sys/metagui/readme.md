@@ -73,6 +73,14 @@ metagui.startEvent(function()
 end)
 ```
 - Certain widget functions are actually events, such as `button:onClick()` and `textBox:onEnter()`
+- Context menus are available:
+```lua
+metagui.contextMenu {
+  {"Item name", function() --[[item action]] end},
+  "separator",
+  {"Second item", someFunction}
+}
+```
 
 #### Registering your panes
 While not mandatory (as you can address panes by path), it's generally a good idea to add your panes to the registry,
@@ -180,21 +188,156 @@ scrollArea:scrollTo(pos, suppressAnimation) -- Attempts to center viewport on [p
 *(no additional attributes or methods)*
 
 ### Label
+A simple text display.
+##### Attributes
+```js
+"text" : "Hello ^accent;world^reset;!", // The text to display. Supports formatting codes.
+"fontSize" : 8, // Defaults to 8.
+"color" : "3f3fff", // The unformatted text color, either "accent" or a hexcode.
+"align" : "center", // Horizontal alignment (left, center, right). Defaults to "left".
+"inline" : false, // If true, makes label fixed-size.
+"expand" : false, // If true, gives (horizontal) expansion priority.
+```
+##### Methods
+```lua
+label:setText(string)
+```
 
 ### Image
+A simple image display. Centers image within widget area if given explicit size.
+##### Attributes
+```js
+"file" : "image.png", // The image to display. Can be absolute or relative.
+"scale" : 2, // Scale proportion for the image. Defaults to 1.
+```
+##### Methods
+```lua
+image:setFile(path)
+image:setScale(value)
+```
 
 ### Canvas
+A raw canvas. Override `draw()` and optionally the various mouse functions to use.
 
 ### Button
+A simple push button. Can be given an accent color.
+##### Attributes
+```js
+"caption" : "Button text", // Text to draw on the button.
+"captionOffset" : [0, 0], // Pixel offset for caption.
+"color" : "accent", // Accent color. Rendering dependent on theme.
+```
+##### Methods
+```lua
+button:setText(string) -- Sets the button's caption.
+```
+##### Events
+```lua
+button:onClick() -- Called when button released after pressing (left click).
+```
 
 ### Icon Button
+A button that renders as a given icon.
+##### Attributes
+```js
+"image" : "icon.png:", // The idle image to use. If suffixed with a colon, file is treated as a sprite
+// sheet with the frames "idle", "hover" and "press". Relative or absolute paths accepted.
+"hoverImage" : "hover.png",
+"pressImage" : "press.png",
+```
+##### Methods
+```lua
+iconButton:setImage(idle, hover, press) -- Sets the button's icon drawables.
+```
 
 ### Check Box
+A check box. Uses the same `onClick` event as the button types.
+##### Methods
+```lua
+checkBox:setChecked(b)
+local bool = checkBox.checked
+```
 
 ### Text Box
+A text entry field.
+##### Attributes
+```js
+"caption" : "Search...", // Text to display when unfocused and no text is entered.
+```
+##### Methods
+```lua
+textBox:focus() -- Grabs keyboard focus.
+textBox:blur() -- Releases focus.
+textBox:setText(string) -- Sets contents.
+
+textBox:setCursorPosition(int) -- Sets the position of the text cursor, in characters.
+textBox:moveCursor(int) -- Moves the cursor by a given number of characters.
+textBox:setScrollPosition(int) -- Sets how far the text field is scrolled, if contents overflow.
+```
+##### Events
+```lua
+textBox:onTextChanged() -- Called on any change to the entered text.
+textBox:onEnter() -- Called when unfocused by hitting enter.
+textBox:onEscape() -- Called when unfocused by hitting escape.
+```
 
 ### List Item
+A list item; essentially a layout, selectable by mouse click. Deselects siblings when selected.
+##### Methods
+```lua
+listItem:select()
+listItem:deselect()
+```
+##### Events
+```lua
+listItem:onSelected()
+listItem:onClick(button)
+```
 
 ### Item Slot
+An item slot. Functions the way you'd expect.
+##### Attributes
+```js
+"autoInteract" : true, // Whether the item slot handles interactions automatically. True, false, or a
+// mode string. Can also be specified as "auto". Current supported modes:
+// default (true): Acts like a container's item slots.
+// container: Acts as a proxy to a container slot belonging to the source entity.
+"containerSlot" : 1, // If specified, the container slot index to proxy. Implies "container" mode.
+"glyph" : "icon.png", // Glyph to display on slot background. Defaults to none.
+"colorGlyph" : true, // Specifies if the glyph is in color. Can also be specified as the glyph path.
+"color" : "accent", // Entirely theme-dependent; the slot's accent color, if the theme supports it.
+"item" : { "name" : "perfectlygenericitem", "count" : 1, "parameters" : { } } // Sets a starting item.
+```
+##### Methods
+```lua
+itemSlot:item() -- Returns the current item.
+itemSlot:setItem(descriptor)
+itemSlot:acceptsItem(item) -- Override to filter items accepted by autoInteract.
+```
+##### Events
+```lua
+itemSlot:onItemModified() -- Called when contents modified by user interaction.
+```
 
 ### Item Grid
+A grid of item slots.
+##### Attributes
+```js
+"slots" : 5, // Starting number of slots.
+"columns" : 5, // Number of slots per row. If not specified, fills given space.
+"spacing" : 2, // Spacing between slots. Integer or vector. Defaults to 2.
+
+"autoInteract" : true, // Passed to child slots.
+"containerSlot" : 1, // Starting slot for container proxying. Implies "container" mode.
+```
+##### Methods
+```lua
+itemGrid:addSlot(item)
+itemGrid:removeSlot(index)
+itemGrid:setNumSlots(num)
+
+itemGrid:item(index)
+itemGrid:setItem(index, item)
+
+itemGrid:onSlotMouseEvent(button, down) -- Mouse event for children, if no autoInteract  mode specified.
+```

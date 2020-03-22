@@ -1,3 +1,2 @@
-{ // just a skeleton; actual contents in patch form to eliminate conflict between providers
-  "themes" : { }, "panes" : { } // Registration optional; this is simply for ease of addressing
-}
+// just a skeleton; actual contents in patch form to eliminate conflict between providers
+{ "themes" : { }, "panes" : { } }

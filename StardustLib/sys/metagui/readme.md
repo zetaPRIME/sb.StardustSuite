@@ -1,5 +1,20 @@
 # metaGUI - a primer
-(highly WIP)
+- [Your first UI](#your-first-ui)
+- [Widget reference](#widget-reference)
+  - [Layout](#layout)
+  - [Panel](#panel)
+  - [Scroll Area](#scroll-area)
+  - [Spacer](#spacer)
+  - [Label](#label)
+  - [Image](#image)
+  - [Canvas](#canvas)
+  - [Button](#button)
+  - [Icon Button](#icon-button)
+  - [Check Box](#check-box)
+  - [Text Box](#text-box)
+  - [List Item](#list-item)
+  - [Item Slot](#item-slot)
+  - [Item Grid](#item-grid)
 
 ## Your first UI
 A pane using metaGUI is a JSON document (as with vanilla panes), typically with the extension `.ui`, though this is not required.
@@ -47,14 +62,17 @@ A pane using metaGUI is a JSON document (as with vanilla panes), typically with 
 #### Scripting notes
 - Your scripts are loaded in during the pane's init call, so you're free to do your init outside of an `init()` function.
 - Scripts' `init()`, `update()` and `uninit()` functions are handled individually and can't overwrite each other.
-- You can use system-handled coroutines as follows:
+- `util.lua`, `vec2.lua` and `rect.lua` are preloaded, so no need to `require` them yourself.
+- You can use system-handled coroutines ("events") as follows:
 ```lua
 metagui.startEvent(function()
-  for i=1,60 do coroutine.yield() end -- wait one full second
+  for i=1,60 do coroutine.yield() end -- wait 1sec
+  util.wait(1.0) -- also wait 1sec
+  local blah = util.await(world.sendEntityMessage(pane.sourceEntity(), "blah")):result() -- query and wait for result
   -- etc.
 end)
 ```
-- `util.lua`, `vec2.lua` and `rect.lua` are preloaded, so no need to `require` them yourself.
+- Certain widget functions are actually events, such as `button:onClick()` and `textBox:onEnter()`
 
 #### Registering your panes
 While not mandatory (as you can address panes by path), it's generally a good idea to add your panes to the registry,
@@ -89,3 +107,68 @@ In a Quickbar entry:
 ```js
 "uiConfig" : "/metagui/container.config", "ui" : "modname:pane"
 ```
+
+## Widget reference
+#### General attributes
+```js
+"type" : "button", // As you'd expect, the type of widget. Case sensitive; generally in camelCase.
+"id" : "btnApply", // Key of the widget's global reference; if omitted, none is created.
+"position" : [32, 8], // Explicit position; ignored in automatic layouts. Top to bottom, left to right.
+"size" : [16, 16], // Explicit size.
+"expandMode" : [1, 0], // Only available for some widget types; how eager the widget is to expand on each
+// axis. 0 is fixed size; otherwise widget will expand if none in the layout have higher priority.
+```
+#### General functions
+```lua
+widget:queueRedraw()
+widget:queueGeometryUpdate()
+
+widget:relativeMousePosition()
+
+widget:setVisible(bool)
+
+widget:addChild(parameters) -- Only recommended to use on layout, panel, or scrollArea.
+widget:clearChildren()
+widget:delete()
+
+widget:findParent(type) -- Find most immediate parent of a specific type.
+
+widget:subscribeEvent(name, function) -- Subscribe to a named event on behalf of a widget.
+widget:pushEvent(name, ...) -- Push event to widget with given parameters.
+widget:broadcast(name, ...) -- Push event to widget's parent (and likely siblings).
+-- Subscribed events propagate to children if not caught (subscription exists and returns true).
+
+-- (more in core.lua, if you want to create your own widget types)
+```
+
+### Layout
+
+### Panel
+Essentially a layout with a background.
+#### Attributes
+```js
+"style" : "concave", // "convex" (default), "concave", "flat"
+```
+### Scroll Area
+
+### Spacer
+
+### Label
+
+### Image
+
+### Canvas
+
+### Button
+
+### Icon Button
+
+### Check Box
+
+### Text Box
+
+### List Item
+
+### Item Slot
+
+### Item Grid

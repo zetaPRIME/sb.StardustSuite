@@ -2,6 +2,7 @@ NOTE TO SERVER OWNERS: this mod contains a second .pak! make sure this is loaded
 
 Library code and system features for the modded experience.
 This mod contains the Quickbar; you don't need QuickbarMini with it.
+This mod is a metaGUI provider (the primary one, in fact).
 
 Other features:
 - Costume system

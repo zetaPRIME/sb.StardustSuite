@@ -4,7 +4,7 @@
 ## Your first UI
 A pane using metaGUI is a JSON document (as with vanilla panes), typically with the extension `.ui`, though this is not required.
 #### Document structure
-```jsonc
+```js
 { // Basic attributes:
   "style" : "window", // This can be: window (default, has a titlebar), panel (just a simple frame)
   "size" : [320, 200], // This is the *internal* size of your UI layout, excluding window decorations.
@@ -43,6 +43,33 @@ A pane using metaGUI is a JSON document (as with vanilla panes), typically with 
   ]
 }
 ```
-
-
-mention registry
+#### Scripting basics
+todo
+#### Registering your panes
+While not mandatory (as you can address panes by path), it's generally a good idea to add your panes to the registry,
+especially if you use the same pane for more than one object, or intend other mods to be able to open them without
+needing to keep track of the path. Registering your pane allows you to keep track of all your various UIs in one place,
+and to reorganize your files if desired without needing to go back and change the path in all your objects.
+```js
+[ // in file: /metagui/registry.json.patch
+  { "op" : "add", "path" : "/panes/modname", "value" : {
+    "pane1" : "/path/to/pane1.ui", // addressed as "modname:pane1"
+    "pane2" : "/path/to/pane2.ui",
+    // ...
+  } }
+]
+```
+#### Opening your panes
+In an object definition or interact call:
+```js
+"interactAction" : "ScriptPane",
+"interactData" : { "gui" : { }, "scripts" : ["/metagui.lua"], "ui" : "modname:pane" }
+```
+In a Quickbar entry:
+```js
+"action" : [ "ui", "modname:pane" ]
+```
+*But what if it's a container?* Simple:
+```js
+"uiConfig" : "/metagui/container.config", "ui" : "modname:pane"
+```

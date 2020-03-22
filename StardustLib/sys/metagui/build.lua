@@ -19,7 +19,7 @@ if pane.containerEntityId then
 end
 
 -- determine UI json
-local uicfg = inputcfg or config.getParameter("config")
+local uicfg = inputcfg or config.getParameter("ui") or config.getParameter("config")
 if type(uicfg) == "string" then
   while uicfg and uicfg:sub(1, 1) ~= "/" do -- not path; resolve from registry
     local modname = uicfg:match('^(.-):')

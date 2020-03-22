@@ -965,7 +965,7 @@ end do -- text box -------------------------------------------------------------
           self:moveCursor(-1)
         end
       else -- try as printable key
-        local char = mg.keyToChar(key, accel.shift)
+        local char = mg.keyToChar(key, accel)
         if char then
           self:setText(self.text:sub(1, self.cursorPos) .. char .. self.text:sub(self.cursorPos+1))
           self:moveCursor(1)

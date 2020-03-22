@@ -1,4 +1,5 @@
 # metaGUI - a primer
+##### As of StardustLib Alpha v0.51
 - [Your first UI](#your-first-ui)
 - [Widget reference](#widget-reference)
   - [Layout](#layout)
@@ -15,6 +16,7 @@
   - [List Item](#list-item)
   - [Item Slot](#item-slot)
   - [Item Grid](#item-grid)
+- [Utility functions](#utility-functions)
 
 ## Your first UI
 A pane using metaGUI is a JSON document (as with vanilla panes), typically with the extension `.ui`, though this is not required.
@@ -68,7 +70,8 @@ A pane using metaGUI is a JSON document (as with vanilla panes), typically with 
 metagui.startEvent(function()
   for i=1,60 do coroutine.yield() end -- wait 1sec
   util.wait(1.0) -- also wait 1sec
-  local blah = util.await(world.sendEntityMessage(pane.sourceEntity(), "blah")):result() -- query and wait for result
+  -- query and wait for result
+  local blah = util.await(world.sendEntityMessage(pane.sourceEntity(), "blah")):result()
   -- etc.
 end)
 ```
@@ -340,4 +343,36 @@ itemGrid:item(index)
 itemGrid:setItem(index, item)
 
 itemGrid:onSlotMouseEvent(button, down) -- Mouse event for children, if no autoInteract  mode specified.
+```
+
+## Utility functions
+```lua
+metagui.path(path) -- Asset path relative to the current pane.
+metagui.asset(path) -- Asset path relative to the theme. If .png, searches for fallback if not found.
+
+metagui.setTitle(string) -- Sets the window title.
+metagui.setIcon(path) -- Sets the window icon.
+metagui.queueFrameRedraw() -- Marks the window decorations for redraw.
+
+metagui.startEvent(function, ...) -- Starts an event with the specified parameters.
+metagui.broadcast(name, ...) -- Broadcasts a named event to the entire window with specified parameters.
+
+metagui.contextMenu(list) -- Opens a context menu with a list of elements: {name, function}
+-- A separator can be placed by inserting the string "separator".
+
+metagui.createWidget(def, parent) -- Attempts to create a metaGUI widget from the given definition table.
+-- Returns the widget table, or nil if one could not be created.
+metagui.createImplicitLayout(list, parent, defaults) -- Creates a layout from an array of definitions.
+-- Uses the first-element parameter object if present, then a defaults table if provided.
+
+metagui.mkwidget(parent, def) -- Makes a new vanilla (backing) widget and returns the full path.
+
+metagui.paneToWidgetPosition(widget, pos) -- Turns a pane-relative position into a widget-relative one.
+metagui.screenToWidgetPosition(widget, pos) -- Turns a screen position into a widget-relative one.
+
+metagui.keyToChar(keycode, accel) -- Returns the character a given keycode should print, or nil if none.
+
+metagui.itemsCanStack(item1, item2) -- Check if two item descriptors can stack together.
+metagui.itemMaxStack(item) -- Returns the maximum stack size of an item descriptor.
+metagui.itemStacksToCursor(item) -- Returns how many of an item can fit on the cursor, if any.
 ```

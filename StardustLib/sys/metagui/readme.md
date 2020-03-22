@@ -3,6 +3,7 @@
 
 ## Your first UI
 A pane using metaGUI is a JSON document (as with vanilla panes), typically with the extension `.ui`, though this is not required.
+
 #### Document structure
 ```js
 { // Basic attributes:
@@ -20,7 +21,7 @@ A pane using metaGUI is a JSON document (as with vanilla panes), typically with 
   // screen. Positions are left to right and top to bottom; the above anchor has the edges of the window
   // 16 pixels away from the right, and 24 pixels from the bottom.
   "uniqueBy" : "path", // Closes any previous window with the same document path when a new one is opened.
-  // Most useful for UI not bound to an entity, such as with Quickbar entries.
+  // Most useful for UI not bound to an entity, such as with activeitems or Quickbar entries.
   
   "children" : [ // Finally, the layout syntax. Notice how this is an *array*, unlike vanilla panes;
     // widget names are optional, as metaGUI is largely heirarchy- and layout-based.
@@ -43,8 +44,18 @@ A pane using metaGUI is a JSON document (as with vanilla panes), typically with 
   ]
 }
 ```
-#### Scripting basics
-todo
+#### Scripting notes
+- Your scripts are loaded in during the pane's init call, so you're free to do your init outside of an `init()` function.
+- Scripts' `init()`, `update()` and `uninit()` functions are handled individually and can't overwrite each other.
+- You can use system-handled coroutines as follows:
+```lua
+metagui.startEvent(function()
+  for i=1,60 do coroutine.yield() end -- wait one full second
+  -- etc.
+end)
+```
+- `util.lua`, `vec2.lua` and `rect.lua` are preloaded, so no need to `require` them yourself.
+
 #### Registering your panes
 While not mandatory (as you can address panes by path), it's generally a good idea to add your panes to the registry,
 especially if you use the same pane for more than one object, or intend other mods to be able to open them without
@@ -59,11 +70,16 @@ and to reorganize your files if desired without needing to go back and change th
   } }
 ]
 ```
+
 #### Opening your panes
 In an object definition or interact call:
 ```js
 "interactAction" : "ScriptPane",
 "interactData" : { "gui" : { }, "scripts" : ["/metagui.lua"], "ui" : "modname:pane" }
+```
+```lua
+player.interact("ScriptPane", { gui = { }, scripts = {"/metagui.lua"}, ui = "modname:pane" }) -- item/pane
+return {"ScriptPane", { gui = { }, scripts = {"/metagui.lua"}, ui = "modname:pane" }} -- object.onInteract
 ```
 In a Quickbar entry:
 ```js

@@ -375,4 +375,6 @@ metagui.keyToChar(keycode, accel) -- Returns the character a given keycode shoul
 metagui.itemsCanStack(item1, item2) -- Check if two item descriptors can stack together.
 metagui.itemMaxStack(item) -- Returns the maximum stack size of an item descriptor.
 metagui.itemStacksToCursor(item) -- Returns how many of an item can fit on the cursor, if any.
+
+metagui.checkShift() -- Only available in events; checks if player is holding shift.
 ```

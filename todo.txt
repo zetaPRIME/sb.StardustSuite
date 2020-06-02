@@ -1,6 +1,59 @@
 -
 
-for next update {
+the BIG IDEA UPDATE {
+    backend stuff {
+        metaGUI module system (requires some slight reworks) {
+            container layout, immediately containing module UI
+            script loaded just before containing UI
+            ... nesting?
+            need to make it possible for named stuff to place its proxy elsewhere...?
+            actually, needs to be basically a widget subclass in order to have multiple of the same module?
+        }
+        
+        move slot lock functionality into playerext and give it a proper hook API
+    }
+    dialogue tree system {
+        metagui, fixed window; can intercept escape due to how keyboard capture works
+        dialogue is just lua coroutines
+        informal function call syntax makes a lot of sense for this
+        "accumulator" with active word wrap, processed on addition?
+        choice system, responds both to mouse and keyboard; option to have last choice as "default no" (escape)
+        letter-by-letter display is just part of the coroutine workings
+        customizable name heading, portrait display, talkboops
+        automatic paging
+        by default, automatic spacing between puts ("word array"-ish mechanics)
+        all spacing and newlines autocollapsed to a single space; explicit newline tag
+        specialized wait command that skips over if in "rush mode" {
+            triggered by hitting escape during display *or* at page wait
+            instant display until page
+        }
+    }
+    complete pulse equipment rework {
+        Aetheri-style trees but tied to the item (and in a metaGUI window)
+        global AP system (gathered from combat and the like; basically Aetheri's but usable for multiple things)
+        reset catalyst refunds everything invested into an item's progression
+        is AP gifting a bug or a feature?
+        
+        elytra rework; separate socketable components (slots as part of the nanofield tree?)
+        heat gauge for flight
+        heat rises very slowly with hovering, at a normal pace when moving, and much faster when boosting
+        cooldown starts upon landing on the ground, or after a certain time passes with *no* heat generation, or while underwater
+        maybe cooldown ramp similar to Terraria mana regen; cool down faster at lower heat levels
+        
+        separate heat values for space and atmosphere (you want to be able to navigate space)
+        maybe heat rises faster when pulling against gravity?
+        
+        heat disabled entirely on player ships
+    }
+    eidolon hunting {
+        something you can build at endgame to enable queuing (within the same map)? can build lobbies on mp servers
+        huge, ancient crystalline constructs, maybe Aetheri-related?
+        scales independently of tier system, drops a lot of AP and components for things (Kinetic Field Cores anyone?)
+        unlimited elytra flight in atmosphere gated behind your first few eidolons (or at least someone's)
+    }
+}
+
+for (maybe not) next update {
     terminal quick stack?
     convert combustion gen and autosmelter UI
     also configurator

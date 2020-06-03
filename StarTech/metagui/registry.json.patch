@@ -7,6 +7,8 @@
     
     "telepad.config" : "/startech/ui/telepad.config.ui",
     
+    "configurator.nanofield" : "/startech/ui/configurator/nanofield.ui",
+    
     "containertest" : "/startech/ui/containertest.ui"
   }}
 ]

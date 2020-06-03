@@ -11,6 +11,22 @@ the BIG IDEA UPDATE {
         }
         
         move slot lock functionality into playerext and give it a proper hook API
+        
+        skill tree system {
+            very similar backend to aetheri, but with smarter rendering and... cleaner? node handling
+            more than one type of socket
+            socket types defined in defs config
+            can choose whether socket applies item-specified bonuses (default is enabled)
+            
+            - item mode, manual mode
+            pass in a canvas widget, optionally a stats display widget, and a setter and getter for item
+            
+            config files for each tree, which specify one for their definitions (stat names etc.)
+            
+            standard method for defining how to display stats
+            so armor, for example: 100 armor (50% damage reduction)
+            guess that would need to be a script definition (array of functions? or. hm)
+        }
     }
     dialogue tree system {
         metagui, fixed window; can intercept escape due to how keyboard capture works

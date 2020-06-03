@@ -6,6 +6,12 @@
     "action" : [ "exec", "/startech/quickbar/configurator.lua" ]
   } },
   
+  { "op" : "add", "path" : "/items/startech:nfconfigurator", "value" : {
+    "label" : "Nanofield",
+    "icon" : "/startech/interface/configurator/icon.png",
+    "action" : [ "ui", "startech:configurator.nanofield" ]
+  } },
+  
   { "op" : "add", "path" : "/items/startech:recharge", "value" : {
     "label" : "^admin;Recharge worn items",
     "icon" : "/startech/objects/power/generator.creative.png",

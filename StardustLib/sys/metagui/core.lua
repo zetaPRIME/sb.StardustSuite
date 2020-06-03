@@ -431,8 +431,9 @@ local function runEventQueue()
 end
 function mg.startEvent(func, ...)
   local c = coroutine.create(func)
-  coroutine.resume(c, ...)
-  if coroutine.status(c) ~= "dead" then table.insert(eventQueue, c) end
+  local f, err = coroutine.resume(c, ...)
+  if coroutine.status(c) ~= "dead" then table.insert(eventQueue, c)
+  elseif not f then sb.logError(err) end
   return c -- might as well
 end
 

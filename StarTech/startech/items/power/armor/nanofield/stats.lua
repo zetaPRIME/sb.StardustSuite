@@ -77,7 +77,12 @@ function stats.update(p)
         count = 1
       })
       -- clear out static if picked up
-      if (playerext.getEquip("cursor") or { }).name == staticitm .. slot then playerext.setEquip("cursor", { name = "", count = 0 }) end
+      if (playerext.getEquip("cursor") or { }).name == staticitm .. slot then
+        playerext.setEquip("cursor", { name = "", count = 0 })
+        if slot == "legs" then
+          playerext.openUI("startech:configurator.nanofield")
+        end
+      end
     end
   end
   

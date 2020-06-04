@@ -223,6 +223,11 @@ function svc.openInterface(msg, isLocal, info)
   player.interact(info.interactionType or "ScriptPane", info.config or "/sys/stardust/tablet/tablet.ui.config")
 end
 
+function svc.openUI(msg, isLocal, info)
+  if type(info) ~= "table" then info = {config = info} end
+  player.interact(info.interactionType or "ScriptPane", { gui = { }, scripts = {"/metagui.lua"}, config = info.config, data = info.data })
+end
+
 local patternMatch
 patternMatch = function(match, tbl)
   for k, v in pairs(match) do

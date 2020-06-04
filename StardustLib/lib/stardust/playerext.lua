@@ -30,6 +30,7 @@ if not playerext then
   local commands = {
     "message",
     "openInterface",
+    "openUI",
     
     "getPlayerConfig",
     "setPlayerConfig",

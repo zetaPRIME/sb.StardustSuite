@@ -8,14 +8,19 @@ skilltree = skilltree or { }
 local needsRedraw = true
 local skillData, itemData, saveData
 local defs, nodes, connections, decorations
+local apToSpend = 0
+local nodesToUnlock = { }
 
 local scrollPos = {0, 0}
 local scrollBounds = {0, 0, 0, 0}
-local nodeSpacing = 16
+local nodeSpacing = 24
+
+local mouseOverNode
 
 function skilltree.init(canvas, treePath, data, saveFunc)
   saveData = saveFunc
   skillData = data or { }
+  skillData.unlocks = skillData.unlocks or { }
   
   do -- load skill tree
     local td = root.assetJson(treePath)
@@ -109,9 +114,43 @@ end
 
 function skilltree.redraw() needsRedraw = true end
 
+function skilltree.recalculateStats()
+  
+end
+
+function skilltree.resetChanges()
+  apToSpend = 0
+  nodesToUnlock = { }
+end
+function skilltree.applyChanges()
+  -- commit nodes
+  for k,v in pairs(nodesToUnlock) do skillData.unlocks[k] = v end
+  -- TODO actually implement AP
+  skilltree.resetChanges()
+  skilltree.saveChanges()
+  skilltree.redraw()
+end
 function skilltree.saveChanges()
-  -- TODO calculate stuffs!
+  -- TODO figure out separate calc and display, since we need to save any time a module is changed
+  skilltree.recalculateStats()
   saveData(skillData)
+end
+
+function skilltree.nodeUnlockLevel(n)
+  n = type(n) == "table" and n or nodes[n]
+  if not n then return 0 end
+  if n.default or skillData.unlocks[n.path] then return 1 end
+  if nodesToUnlock[n.path] then return 0.5 end
+  return 0
+end
+
+function skilltree.canAffordNode(n)
+  return true -- TODO actually implement AP
+end
+
+function skilltree.tryUnlockNode(n)
+  n = type(n) == "table" and n or nodes[n]
+  if not n or not skilltree.canAffordNode(n) then return false end
 end
 
 function skilltree.draw()
@@ -140,21 +179,88 @@ function skilltree.draw()
     {255, 255, 255, 127},
   }
   for _, cn in pairs(connections) do
-    sb.logInfo(string.format("drawing line \"%s\" between %s and %s", _, cn[1].path, cn[2].path))
+    --sb.logInfo(string.format("drawing line \"%s\" between %s and %s", _, cn[1].path, cn[2].path))
     local lc = 1
-    --if isNodeUnlocked(cn[1]) then lc = lc + 1 end
-    --if isNodeUnlocked(cn[2]) then lc = lc + 1 end
+    if skilltree.nodeUnlockLevel(cn[1]) > 0 then lc = lc + 1 end
+    if skilltree.nodeUnlockLevel(cn[2]) > 0 then lc = lc + 1 end
     c:drawLine(ndp(cn[1]), ndp(cn[2]), lineColors[lc], 2)
   end
   
+  -- nodes
+  for _, n in pairs(nodes) do
+    local nc = {127, 127, 127}
+    if mouseOverNode == n then nc = {255, 127, 127} end
+    c:drawRect(rect.withCenter(ndp(n), {3, 3}), nc)
+  end
+  
+end
+
+function skilltree.scroll(d)
+  scrollPos = {
+    util.clamp(scrollPos[1] + d[1], scrollBounds[1] * nodeSpacing, scrollBounds[3] * nodeSpacing),
+    util.clamp(scrollPos[2] + d[2], scrollBounds[2] * nodeSpacing, scrollBounds[4] * nodeSpacing),
+  }
+  skilltree.redraw()
+end
+
+function findMouseOver(mp)
+  local old = mouseOverNode
+  mouseOverNode = nil
+  local buf = 0.4
+  local mtp = vec2.div(vec2.add(vec2.sub(mp, vec2.mul(skilltree.canvasWidget.size, 0.5)), scrollPos), nodeSpacing)
+  if old and vec2.mag(vec2.sub(mtp, old.position)) <= buf then
+    mouseOverNode = old
+    return nil -- still on previous node, no change
+  end
+  for _, n in pairs(nodes) do
+    if vec2.mag(vec2.sub(mtp, n.position)) <= buf then
+      mouseOverNode = n
+      break
+    end
+  end
+  if mouseOverNode ~= old then skilltree.redraw() end
+end
+function clearMouseOver()
+  if mouseOverNode then skilltree.redraw() end
+  mouseOverNode = nil
 end
 
 function skilltree.initUI()
   local w = skilltree.canvasWidget
   metagui.startEvent(function()
+    local omp = {0, 0} -- old mouse pos
     while true do
       coroutine.yield()
+      
+      -- handle mouse movement
+      local mp = w:relativeMousePosition()
+      if not vec2.eq(mp, omp) then
+        if not rect.contains(rect.withSize({0, 0}, w.size), mp) then
+          clearMouseOver()
+        else
+          findMouseOver(mp)
+        end
+      end omp = mp
+      
+      -- and redrawing
       if needsRedraw then skilltree.draw() end
     end
   end)
+  
+  function w:onMouseButtonEvent(btn, down)
+    if down then
+      if btn == 1 then -- TODO node interactions
+        
+      end
+      self:captureMouse(btn)
+    elseif btn == self:mouseCaptureButton() then
+      self:releaseMouse()
+    end
+  end
+  
+  function w:onCaptureMouseMove(d)
+    if d[1] ~= 0 or d[2] ~= 0 then
+      skilltree.scroll(vec2.mul(d, {-1, 1}))
+    end
+  end
 end

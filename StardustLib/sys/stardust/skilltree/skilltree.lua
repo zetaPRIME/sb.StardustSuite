@@ -30,6 +30,7 @@ function skilltree.init(canvas, treePath, data, saveFunc)
     local defsPath = util.absolutePath(util.pathDirectory(treePath), td.definitions)
     defs = root.assetJson(defsPath)
     defs.directory = util.pathDirectory(defsPath)
+    skilltree.defs = defs -- provide to other modules
     
     -- make sure tables exist, set defaults
     defs.icons = defs.icons or { }
@@ -111,7 +112,7 @@ function skilltree.init(canvas, treePath, data, saveFunc)
       if not ext or ext == "" then node.icon = node.icon .. ".png" end
       
       if node.type == "link" then node.fixedCost = 0 end
-      --TODO generateNodeToolTip(node) -- delegated to module so build scripts can reuse it
+      skilltree.generateNodeToolTip(node) -- delegated to module so build scripts can reuse it
       if node.itemCost then -- assemble information for item requirement tooltips
         for _, d in pairs(node.itemCost) do
           d.displayName, d.rarity = itemutil.property(d, "shortdescription"), itemutil.property(d, "rarity") or "Common"
@@ -178,6 +179,9 @@ function skilltree.nodeUnlockLevel(n)
   return 0
 end
 
+function skilltree.currentAP()
+  return 1
+end
 function skilltree.nodeCost(n)
   return 1 -- TEMP, TODO
 end
@@ -190,9 +194,34 @@ function skilltree.tryUnlockNode(n)
   n = type(n) == "table" and n or nodes[n]
   if not n or not skilltree.canAffordNode(n) then return false end
   nodesToUnlock[n.path] = { skilltree.nodeCost(n), n.itemCost }
+  skilltree.recalculateStats()
   skilltree.redraw()
 end
 
+local border = {
+  {-1, 0},
+  {1, 0},
+  {0, -1},
+  {0, 1},
+}
+local lineColors = {
+  {127, 63, 63, 63},
+  {127, 127, 255, 127},
+  {255, 255, 255, 127},
+}
+local rarityColors = {
+  common = "",
+  uncommon = "^#42c53e;",
+  rare = "^#3ea8c5;",
+  legendary = "^#893ec5;",
+  essential = "^#c3c53e;"
+}
+local nodeDirectives = {
+  [0] = "?multiply=7f7f7f",
+  h = "?border=1=ffffff5f",
+  [0.5] = "?border=1=ffac61bf",
+  [1] = "",
+}
 function skilltree.draw()
   needsRedraw = false
   local c = skilltree.canvas
@@ -213,11 +242,6 @@ function skilltree.draw()
   c:drawRect({0, 0, s[1], s[2]}, {15, 0, 23})
   
   -- connections
-  local lineColors = {
-    {127, 63, 63, 63},
-    {127, 127, 255, 127},
-    {255, 255, 255, 127},
-  }
   for _, cn in pairs(connections) do
     --sb.logInfo(string.format("drawing line \"%s\" between %s and %s", _, cn[1].path, cn[2].path))
     local lc = 1
@@ -227,12 +251,6 @@ function skilltree.draw()
   end
   
   -- nodes
-  local nodeDirectives = {
-    [0] = "?multiply=7f7f7f",
-    h = "?border=1=ffffff5f",
-    [0.5] = "?border=1=ffac61bf",
-    [1] = "",
-  }
   for _, node in pairs(nodes) do
     local pos = ndp(node)
     local dm = nodeDirectives[skilltree.nodeUnlockLevel(node)]
@@ -242,6 +260,41 @@ function skilltree.draw()
       c:drawImage(node.contentsIcon, pos, 1, {255, 255, 255}, true)
     end
   end
+  
+  -- tooltip
+  if mouseOverNode then
+    local ttPos = vec2.add(ndp(mouseOverNode), {12, 4})
+    local tt = mouseOverNode.toolTip
+    if skilltree.nodeUnlockLevel(mouseOverNode) == 0 then
+      if mouseOverNode.itemCost then
+        local ctt = { }
+        local hasAll = true
+        for _, d in pairs(mouseOverNode.itemCost) do
+          local has = player.hasCountOfItem(d, true) >= d.count
+          hasAll = has and hasAll
+          table.insert(ctt, string.format("- %s%d ^reset;%s%s^reset;\n", has and "^white;" or "^red;", d.count, has and rarityColors[d.rarity:lower()] or "^red;", d.displayName))
+        end
+        table.insert(ctt, 1, string.format("%sMaterial cost^reset;:\n", hasAll and "" or "^red;"))
+        tt = tt .. table.concat(ctt)
+      end
+      local cost, fixed = skilltree.nodeCost(mouseOverNode)
+      if cost > 0 then -- only display nonzero costs
+        tt = string.format("%s%s: %s%d ^violet;AP^reset;\n", tt, fixed and "Fixed cost" or "Cost", skilltree.currentAP() >= cost and "^white;" or "^red;", cost)
+      end
+    end
+    local btt = tt:gsub("(%b^;)", "") -- strip codes for border
+    for _, off in pairs(border) do
+      c:drawText(btt, { position = vec2.add(ttPos, off), horizontalAnchor = "left", verticalAnchor = "top", wrapWidth = toolTipWidth }, 8, {0, 0, 0, 200})
+    end
+    c:drawText(tt, { position = ttPos, horizontalAnchor = "left", verticalAnchor = "top", wrapWidth = toolTipWidth }, 8, {191, 191, 191})
+    
+  end
+
+  --[[c:drawText(
+  string.format("^shadow;^white;%d ^violet;AP^reset;", math.floor(currentAP())),
+  { position = {480.0, 508.0}, horizontalAnchor = "mid", verticalAnchor = "top" },
+  8, {191, 191, 191}
+)]]
   
 end
 

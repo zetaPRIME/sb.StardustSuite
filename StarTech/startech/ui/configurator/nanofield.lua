@@ -8,6 +8,8 @@ local function loadItem()
 end
 
 local function saveItem(itm)
+  local c = player.equippedItem("chest")
+  itm.parameters.batteryStats = c.parameters.batteryStats or { } -- retain energy levels
   player.setEquippedItem("chest", itm)
 end
 

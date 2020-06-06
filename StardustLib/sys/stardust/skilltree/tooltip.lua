@@ -6,7 +6,7 @@ local function numStr(n) -- friendly string representation of number
 end
 
 function skilltree.generateGrantToolTip(gl, name)
-  if not statNames then statNames = root.assetJson("/aetheri/species/skilltree.config:statNames") end
+  local statNames = (skilltree.defs or { }).statNames or { }
   
   local tt = { }
   if name then table.insert(tt, string.format("^violet;%s^reset;\n", name)) end
@@ -26,5 +26,5 @@ function skilltree.generateGrantToolTip(gl, name)
 end
 
 function skilltree.generateNodeToolTip(node)
-  node.toolTip = generateGrantToolTip(node.grants, node.name)
+  node.toolTip = skilltree.generateGrantToolTip(node.grants, node.name)
 end

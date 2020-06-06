@@ -4,8 +4,11 @@ skill tree next things {
     - icons, actual node drawing
     - node unlocking
     - real apply/reset functionality
+    - port over the tooltip stuff (still separate module so buildscripts can use it)
     stat calc
-    port over the tooltip stuff (still separate module so buildscripts can use it)
+    
+    socketing
+    link/jump nodes
     
     all the audio crap
 }

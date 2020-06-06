@@ -3,6 +3,9 @@ require "/lib/stardust/color.lua"
 
 require "/sys/stardust/quickbar/conditions.lua"
 
+require "/sys/stardust/skilltree/tooltip.lua"
+require "/sys/stardust/skilltree/calc.lua"
+
 skilltree = skilltree or { }
 
 local needsRedraw = true
@@ -136,8 +139,8 @@ function skilltree.initFromItem(canvas, loadItem, saveItem)
   local treePath = itemutil.relativePath(itemData, itemutil.property(itemData, "stardustlib:skillTree"))
   
   --itemData["stardustlib:skillData"] = itemData["stardustlib:skillData"] or { }
-  skilltree.init(canvas, treePath, itemData["stardustlib:skillData"], function(data)
-    itemData["stardustlib:skillData"] = data
+  skilltree.init(canvas, treePath, itemData.parameters["stardustlib:skillData"], function(data)
+    itemData.parameters["stardustlib:skillData"] = data
     saveItem(itemData)
   end)
 end
@@ -151,6 +154,7 @@ end
 function skilltree.resetChanges()
   apToSpend = 0
   nodesToUnlock = { }
+  skilltree.redraw()
 end
 function skilltree.applyChanges()
   -- commit nodes
@@ -174,6 +178,10 @@ function skilltree.nodeUnlockLevel(n)
   return 0
 end
 
+function skilltree.nodeCost(n)
+  return 1 -- TEMP, TODO
+end
+
 function skilltree.canAffordNode(n)
   return true -- TODO actually implement AP
 end
@@ -181,6 +189,8 @@ end
 function skilltree.tryUnlockNode(n)
   n = type(n) == "table" and n or nodes[n]
   if not n or not skilltree.canAffordNode(n) then return false end
+  nodesToUnlock[n.path] = { skilltree.nodeCost(n), n.itemCost }
+  skilltree.redraw()
 end
 
 function skilltree.draw()
@@ -225,9 +235,9 @@ function skilltree.draw()
   }
   for _, node in pairs(nodes) do
     local pos = ndp(node)
-    local dm = skilltree.nodeUnlockLevel(node)
-    if mouseOverNode == node then dm = "h" end
-    c:drawImage(node.icon .. nodeDirectives[dm], pos, 1, {255, 255, 255}, true)
+    local dm = nodeDirectives[skilltree.nodeUnlockLevel(node)]
+    if mouseOverNode == node then dm = dm .. nodeDirectives["h"] end
+    c:drawImage(node.icon .. dm, pos, 1, {255, 255, 255}, true)
     if node.contentsIcon then
       c:drawImage(node.contentsIcon, pos, 1, {255, 255, 255}, true)
     end
@@ -266,7 +276,12 @@ function clearMouseOver()
 end
 
 function skilltree.clickNode(n)
+  n = type(n) == "table" and n or nodes[n]
   -- TODO
+  local lv = skilltree.nodeUnlockLevel(n)
+  if lv == 0 then
+    local s = skilltree.tryUnlockNode(n)
+  end
 end
 
 function skilltree.initUI()

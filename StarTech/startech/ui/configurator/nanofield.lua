@@ -13,5 +13,7 @@ end
 
 function init()
   skilltree.initFromItem(treeCanvas, loadItem, saveItem)
-  
 end
+
+function apply:onClick() skilltree.applyChanges() end
+function reset:onClick() skilltree.resetChanges() end

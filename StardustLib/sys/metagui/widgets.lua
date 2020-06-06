@@ -340,6 +340,7 @@ end do -- button ---------------------------------------------------------------
     self.color = param.color
     self.state = "idle"
     self.backingWidget = mkwidget(base, { type = "canvas" })
+    if type(self.explicitSize) == "number" then self.explicitSize = {self.explicitSize, 16} end
   end
   
   function widgets.button:minSize() return {16, 16} end

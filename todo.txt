@@ -1,5 +1,15 @@
 -
 
+skill tree next things {
+    - icons, actual node drawing
+    node unlocking
+    real apply/reset functionality
+    stat calc
+    port over the tooltip stuff (still separate module so buildscripts can use it)
+    
+    all the audio crap
+}
+
 the BIG IDEA UPDATE {
     backend stuff {
         metaGUI module system (requires some slight reworks) {

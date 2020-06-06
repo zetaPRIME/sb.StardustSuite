@@ -24,7 +24,7 @@
     { "stat" : "deployWithoutMech", "amount" : 1 }
   ],
   
-  "stardustlib:skillTree" : "nanofield/skilltree.config",
+  "stardustlib:skillTree" : "/startech/skilltree/nanofield.config",
   
   "batteryStats" : {
     "capacity" : 320000,

@@ -24,7 +24,13 @@ function skilltree.init(canvas, treePath, data, saveFunc)
   
   do -- load skill tree
     local td = root.assetJson(treePath)
-    defs = root.assetJson(util.absolutePath(util.pathDirectory(treePath), td.definitions))
+    local defsPath = util.absolutePath(util.pathDirectory(treePath), td.definitions)
+    defs = root.assetJson(defsPath)
+    defs.directory = util.pathDirectory(defsPath)
+    
+    -- make sure tables exist, set defaults
+    defs.icons = defs.icons or { }
+    defs.iconBasePath = defs.iconBasePath or defs.directory
     
     -- parse through nodeset
     nodes, connections = { }, { }
@@ -52,7 +58,7 @@ function skilltree.init(canvas, treePath, data, saveFunc)
             path = path, type = type, default = n.default,
             position = pos, connectsTo = { },
             name = n.name, icon = n.icon, unlockedIcon = n.unlockedIcon,
-            grants = n.grants, skill = n.skill, target = n.target or n.to,
+            grants = n.grants or { }, skill = n.skill, target = n.target or n.to,
             fixedCost = n.fixedCost, costMult = n.costMult, itemCost = n.itemCost,
             condition = n.condition,
           }
@@ -87,8 +93,32 @@ function skilltree.init(canvas, treePath, data, saveFunc)
       for p in pairs(node.connectsTo) do
         if nodes[p] then nodes[p].connectsTo[node.path] = true end
       end
+      
+      -- visuals
+      if not node.icon then -- automatic icon assignment
+        node.icon = "point" -- prefill with a "just a path" thing
+        local modeHasIcon = { flat = true, increased = true, more = true }
+        for _, g in pairs(node.grants) do
+          if modeHasIcon[g[1]] then node.icon = g[2] break end
+        end
+      end
+      while defs.icons[node.icon] do node.icon = defs.icons[node.icon] end -- icon defs
+      node.icon = util.absolutePath(defs.iconBasePath, node.icon)
+      local ext = node.icon:match('^.*%.(.-)$')
+      if not ext or ext == "" then node.icon = node.icon .. ".png" end
+      
+      if node.type == "link" then node.fixedCost = 0 end
+      --TODO generateNodeToolTip(node) -- delegated to module so build scripts can reuse it
+      if node.itemCost then -- assemble information for item requirement tooltips
+        for _, d in pairs(node.itemCost) do
+          d.displayName, d.rarity = itemutil.property(d, "shortdescription"), itemutil.property(d, "rarity") or "Common"
+        end
+      end
     end
     
+    scrollBounds = rect.pad(scrollBounds, 3)
+    
+    -- convert connections from paths to nodes
     for p, c in pairs(connections) do
       c[1] = nodes[c[1]]
       c[2] = nodes[c[2]]
@@ -170,7 +200,7 @@ function skilltree.draw()
   
   -- bg
   c:clear()
-  c:drawRect({0, 0, s[1], s[2]}, {256, 0, 0})
+  c:drawRect({0, 0, s[1], s[2]}, {15, 0, 23})
   
   -- connections
   local lineColors = {
@@ -187,10 +217,20 @@ function skilltree.draw()
   end
   
   -- nodes
-  for _, n in pairs(nodes) do
-    local nc = {127, 127, 127}
-    if mouseOverNode == n then nc = {255, 127, 127} end
-    c:drawRect(rect.withCenter(ndp(n), {3, 3}), nc)
+  local nodeDirectives = {
+    [0] = "?multiply=7f7f7f",
+    h = "?border=1=ffffff5f",
+    [0.5] = "?border=1=ffac61bf",
+    [1] = "",
+  }
+  for _, node in pairs(nodes) do
+    local pos = ndp(node)
+    local dm = skilltree.nodeUnlockLevel(node)
+    if mouseOverNode == node then dm = "h" end
+    c:drawImage(node.icon .. nodeDirectives[dm], pos, 1, {255, 255, 255}, true)
+    if node.contentsIcon then
+      c:drawImage(node.contentsIcon, pos, 1, {255, 255, 255}, true)
+    end
   end
   
 end
@@ -225,6 +265,10 @@ function clearMouseOver()
   mouseOverNode = nil
 end
 
+function skilltree.clickNode(n)
+  -- TODO
+end
+
 function skilltree.initUI()
   local w = skilltree.canvasWidget
   metagui.startEvent(function()
@@ -249,8 +293,11 @@ function skilltree.initUI()
   
   function w:onMouseButtonEvent(btn, down)
     if down then
-      if btn == 1 then -- TODO node interactions
-        
+      if btn == 0 then
+        if mouseOverNode then
+          skilltree.clickNode(mouseOverNode)
+          return nil
+        end
       end
       self:captureMouse(btn)
     elseif btn == self:mouseCaptureButton() then

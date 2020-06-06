@@ -1,11 +1,12 @@
 { //  -*- grammar-ext: json -*-
   "style" : "window", // window (has titlebar), panel (just a frame) etc.
-  "size" : [320, 240], // *internal* size (not including chrome)
+  "size" : [400, 280], // *internal* size (not including chrome)
   "title" : "Skill Tree",
   //"icon" : "settings.icon.png",
   "uniqueBy" : "path",
   "scripts" : [ "nanofield.lua" ],
   "children" : [
-    { "type" : "canvas", "id" : "treeCanvas" }
+    { "type" : "canvas", "id" : "treeCanvas" },
+    ["spacer", { "type" : "button", "id" : "reset", "caption" : "Reset" }, { "type" : "button", "id" : "apply", "caption" : "Apply" }]
   ]
 }

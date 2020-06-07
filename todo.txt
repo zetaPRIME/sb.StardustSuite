@@ -6,7 +6,7 @@ skill tree next things {
     - real apply/reset functionality
     - port over the tooltip stuff (still separate module so buildscripts can use it)
     - stat calc
-    AP costs
+    - AP costs
     AP granting (properly)
     
     socketing

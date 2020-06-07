@@ -12,6 +12,7 @@ local needsRedraw = true
 local skillData, itemData, saveData
 local defs, nodes, connections, decorations
 local apToSpend = 0
+local fixedCosts = 0
 local nodesToUnlock = { }
 
 local scrollPos = {0, 0}
@@ -36,6 +37,8 @@ function skilltree.init(canvas, treePath, data, saveFunc)
     defs.icons = defs.icons or { }
     defs.iconBasePath = defs.iconBasePath or defs.directory
     defs.baseStats = defs.baseStats or { }
+    defs.baseNodeCost = defs.baseNodeCost or 1000
+    defs.costExponent = defs.costExponent or 1.1
     
     -- merge in overrides from tree
     util.mergeTable(defs.baseStats, td.baseStats or { })
@@ -164,7 +167,8 @@ function skilltree.recalculateStats()
   for path, unlock in pairs(skillData.unlocks) do
     local node = nodes[path]
     if node then -- TODO: sockets
-      skillData.spentAP = skillData.spentAP + unlock[1] -- keep track of total spent AP
+      -- keep track of total AP spent on non-fixed-cost nodes
+      if not unlock[2] then skillData.spentAP = skillData.spentAP + unlock[1] end
       for _, g in pairs(node.grants or { }) do
         local mode, stat, amt = table.unpack(g)
         if isStatMod[mode] and stat then
@@ -188,14 +192,18 @@ end
 
 function skilltree.resetChanges()
   apToSpend = 0
+  fixedCosts = 0
   nodesToUnlock = { }
+  skilltree.recalculateStats()
   skilltree.redraw()
 end
 function skilltree.applyChanges()
   -- commit nodes
   for k,v in pairs(nodesToUnlock) do skillData.unlocks[k] = v end
   -- TODO actually implement AP
-  skilltree.resetChanges()
+  apToSpend = 0
+  fixedCosts = 0
+  nodesToUnlock = { }
   skilltree.saveChanges()
   skilltree.redraw()
 end
@@ -217,7 +225,13 @@ function skilltree.currentAP()
   return (status.statusProperty("stardustlib:ap") or 0) - apToSpend
 end
 function skilltree.nodeCost(n)
-  return 1 -- TEMP, TODO
+  if n.fixedCost then return n.fixedCost, true end
+  local spent = skillData.spentAP + apToSpend - fixedCosts
+  local bcost = defs.baseNodeCost
+  local ncost = bcost * (n.costMult or 1)
+  
+  return ncost * (1.0 + (spent/bcost) * (defs.costExponent-1))
+  --return math.floor(defs.baseNodeCost * (n.costMult or 1) * defs.costExponent ^ (spent / defs.baseNodeCost)) -- TEMP, TODO
 end
 
 function skilltree.canAffordNode(n)
@@ -231,7 +245,14 @@ end
 function skilltree.tryUnlockNode(n)
   n = type(n) == "table" and n or nodes[n]
   if not n or not skilltree.canAffordNode(n) then return false end
-  nodesToUnlock[n.path] = { skilltree.nodeCost(n), n.itemCost }
+  local cost = skilltree.nodeCost(n)
+  apToSpend = apToSpend + cost
+  if n.fixedCost then fixedCosts = fixedCosts + cost end
+  local u = { cost, not not n.fixedCost, n.itemCost }
+  if not u[3] and not u[2] then -- truncate
+    u[2] = nil u[3] = nil
+  end
+  nodesToUnlock[n.path] = u
   skilltree.recalculateStats()
   skilltree.redraw()
 end
@@ -278,6 +299,7 @@ function skilltree.draw()
   -- bg
   c:clear()
   c:drawRect({0, 0, s[1], s[2]}, {15, 0, 23})
+  skilltree.drawBackground(scrollPos)
   
   -- connections
   for _, cn in pairs(connections) do
@@ -300,8 +322,11 @@ function skilltree.draw()
   end
   
   -- tooltip
-  if mouseOverNode then
+  if mouseOverNode and (skilltree.canvasWidget:mouseCaptureButton() or -1) < 1 then
     local ttPos = vec2.add(ndp(mouseOverNode), {12, 4})
+    --local toolTipWidth = s[1] - ttPos[1]
+    local toolTipWidth = s[1]/2 - 24
+    toolTipWidth = util.clamp(s[1] - ttPos[1] - 1, toolTipWidth*0.6, toolTipWidth) -- autoscale down, to a reasonable point
     local tt = mouseOverNode.toolTip
     if skilltree.nodeUnlockLevel(mouseOverNode) == 0 then
       if mouseOverNode.itemCost then
@@ -317,7 +342,7 @@ function skilltree.draw()
       end
       local cost, fixed = skilltree.nodeCost(mouseOverNode)
       if cost > 0 then -- only display nonzero costs
-        tt = string.format("%s%s: %s%d ^violet;AP^reset;\n", tt, fixed and "Fixed cost" or "Cost", skilltree.currentAP() >= cost and "^white;" or "^red;", cost)
+        tt = string.format("%s%s: %s%s ^violet;AP^reset;\n", tt, fixed and "Fixed cost" or "Cost", skilltree.currentAP() >= cost and "^white;" or "^red;", tonumber(math.floor(cost)))
       end
     end
     local btt = tt:gsub("(%b^;)", "") -- strip codes for border
@@ -335,6 +360,9 @@ function skilltree.draw()
 )]]
 end
 
+function skilltree.drawBackground() end -- stub
+
+function skilltree.scrollPosition() return scrollPos end
 function skilltree.scroll(d)
   scrollPos = {
     util.clamp(scrollPos[1] + d[1], scrollBounds[1] * nodeSpacing, scrollBounds[3] * nodeSpacing),
@@ -405,8 +433,10 @@ function skilltree.initUI()
         end
       end
       self:captureMouse(btn)
+      skilltree.redraw()
     elseif btn == self:mouseCaptureButton() then
       self:releaseMouse()
+      skilltree.redraw()
     end
   end
   

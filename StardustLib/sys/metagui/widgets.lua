@@ -77,6 +77,13 @@ end do -- layout ---------------------------------------------------------------
         res[axis] = res[axis] + ps[axis] + self.spacing
       end end
       if type(self.explicitSize) == "number" then res[opp] = self.explicitSize end
+    elseif self.mode == "stack" then
+      if self.explicitSize then return self.explicitSize end
+      for _, c in pairs(self.children) do if c.visible then
+        local fc = c:preferredSize(width)
+        res[1] = math.max(res[1], fc[1])
+        res[2] = math.max(res[2], fc[2])
+      end end
     elseif self.mode == "manual" then
       if self.explicitSize then return self.explicitSize end
       for _, c in pairs(self.children) do if c.visible then
@@ -146,6 +153,16 @@ end do -- layout ---------------------------------------------------------------
         end
       end
       
+    elseif self.mode == "stack" then -- stacked on top of each other
+      for _, c in pairs(self.children) do
+        if c.visible then
+          c.position = {0, 0}
+          c.size = c:preferredSize(self.size[1])
+          for a=1,2 do
+            if c.expandMode[a] >= 1 then c.size[a] = self.size[a] end
+          end
+        end
+      end
     end
     
     -- propagate

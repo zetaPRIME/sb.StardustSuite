@@ -95,6 +95,7 @@ function widgetBase:isMouseInteractable() return false end
 function widgetBase:onMouseEnter() end
 function widgetBase:onMouseLeave() end
 function widgetBase:onMouseButtonEvent(btn, down) end
+function widgetBase:isMouseOver() return self == lastMouseOver end
 
 function widgetBase:captureMouse(btn) return mg.captureMouse(self, btn) end
 function widgetBase:releaseMouse() return mg.releaseMouse(self) end
@@ -185,7 +186,7 @@ function widgetBase:delete()
   -- unhook from events and drawing
   redrawQueue[self] = nil
   recalcQueue[self] = nil
-  if lastMouseOver == this then lastMouseOver = nil end
+  if lastMouseOver == self then lastMouseOver = nil end
   self:releaseMouse()
   
   -- clear out backing widgets
@@ -482,7 +483,6 @@ mg.mousePosition = {0, 0} -- default
 local bcv = { "_tracker", "_mouse" }
 local bcvmp = { {0, 0}, {0, 0} } -- last saved mouse position
 
-local lastMouseOver
 function update()
   if player.worldId() ~= worldId then return pane.dismiss() end
   

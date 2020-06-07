@@ -35,6 +35,10 @@ function skilltree.init(canvas, treePath, data, saveFunc)
     -- make sure tables exist, set defaults
     defs.icons = defs.icons or { }
     defs.iconBasePath = defs.iconBasePath or defs.directory
+    defs.baseStats = defs.baseStats or { }
+    
+    -- merge in overrides from tree
+    util.mergeTable(defs.baseStats, td.baseStats or { })
     
     -- parse through nodeset
     nodes, connections = { }, { }
@@ -100,7 +104,7 @@ function skilltree.init(canvas, treePath, data, saveFunc)
       
       -- visuals
       if not node.icon then -- automatic icon assignment
-        node.icon = "point" -- prefill with a "just a path" thing
+        node.icon = node.type -- prefill with a "just a path" thing
         local modeHasIcon = { flat = true, increased = true, more = true }
         for _, g in pairs(node.grants) do
           if modeHasIcon[g[1]] then node.icon = g[2] break end
@@ -128,6 +132,7 @@ function skilltree.init(canvas, treePath, data, saveFunc)
       c[2] = nodes[c[2]]
     end
     
+    skilltree.recalculateStats() -- update all the things    
   end
   
   skilltree.canvasWidget = canvas
@@ -149,7 +154,36 @@ end
 function skilltree.redraw() needsRedraw = true end
 
 function skilltree.recalculateStats()
+  skillData.spentAP = 0
+  skillData.stats, skillData.flags, skillData.effects = { }, { }, { }
+  for stat, v in pairs(defs.baseStats) do
+    skillData.stats[stat] = { v[1] or 0, v[2] or 1, v[3] or 1 }
+  end
   
+  local isStatMod = { flat = true, increased = true, more = true }
+  for path, unlock in pairs(skillData.unlocks) do
+    local node = nodes[path]
+    if node then -- TODO: sockets
+      skillData.spentAP = skillData.spentAP + unlock[1] -- keep track of total spent AP
+      for _, g in pairs(node.grants or { }) do
+        local mode, stat, amt = table.unpack(g)
+        if isStatMod[mode] and stat then
+          if not skillData.stats[stat] then skillData.stats[stat] = {0, 1, 1} end
+          if mode == "flat" then skillData.stats[stat][1] = skillData.stats[stat][1] + amt
+          elseif mode == "increased" then skillData.stats[stat][2] = skillData.stats[stat][2] + amt
+          elseif mode == "more" then skillData.stats[stat][3] = skillData.stats[stat][3] * (1.0 + amt)
+          end
+        elseif mode == "flag" and stat then skillData.flags[stat] = true
+        elseif mode == "effect" and stat then table.insert(skillData.effects, stat)
+        end --
+      end
+    end
+  end
+  
+  -- update displays
+  if apDisplay then
+    apDisplay:setText(string.format("^white;%d ^violet;AP^reset;", math.floor(skilltree.currentAP())))
+  end
 end
 
 function skilltree.resetChanges()
@@ -180,14 +214,18 @@ function skilltree.nodeUnlockLevel(n)
 end
 
 function skilltree.currentAP()
-  return 1
+  return (status.statusProperty("stardustlib:ap") or 0) - apToSpend
 end
 function skilltree.nodeCost(n)
   return 1 -- TEMP, TODO
 end
 
 function skilltree.canAffordNode(n)
-  return true -- TODO actually implement AP
+  if skilltree.nodeCost(n) > skilltree.currentAP() then return false end
+  if n.itemCost then for _, d in pairs(n.itemCost) do
+      if player.hasCountOfItem(d, true) < d.count then return false end
+  end end
+  return true
 end
 
 function skilltree.tryUnlockNode(n)
@@ -295,7 +333,6 @@ function skilltree.draw()
   { position = {480.0, 508.0}, horizontalAnchor = "mid", verticalAnchor = "top" },
   8, {191, 191, 191}
 )]]
-  
 end
 
 function skilltree.scroll(d)

@@ -5,7 +5,9 @@ skill tree next things {
     - node unlocking
     - real apply/reset functionality
     - port over the tooltip stuff (still separate module so buildscripts can use it)
-    stat calc
+    - stat calc
+    AP costs
+    AP granting (properly)
     
     socketing
     link/jump nodes
@@ -15,6 +17,7 @@ skill tree next things {
 
 the BIG IDEA UPDATE {
     backend stuff {
+        metaGUI - stacking layout mode
         metaGUI module system (requires some slight reworks) {
             container layout, immediately containing module UI
             script loaded just before containing UI

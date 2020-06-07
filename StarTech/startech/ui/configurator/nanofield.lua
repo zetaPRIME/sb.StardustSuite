@@ -19,3 +19,10 @@ end
 
 function apply:onClick() skilltree.applyChanges() end
 function reset:onClick() skilltree.resetChanges() end
+
+if debugAP then
+  function debugAP:onEnter()
+    status.setStatusProperty("stardustlib:ap", tonumber(debugAP.text))
+    skilltree.recalculateStats()
+  end
+end

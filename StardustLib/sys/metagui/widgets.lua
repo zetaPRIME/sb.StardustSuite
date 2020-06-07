@@ -180,6 +180,8 @@ end do -- panel ----------------------------------------------------------------
   function widgets.panel:init(base, param)
     self.children = self.children or { }
     
+    if type(self.explicitSize) == "number" then self.explicitSize = {self.explicitSize, 0} end
+    
     self.style = param.style
     self.expandMode = param.expandMode
     

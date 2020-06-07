@@ -266,7 +266,11 @@ function mg.createImplicitLayout(list, parent, defaults)
   local p = { type = "layout", children = list }
   if parent then -- inherit some defaults off parent
     if parent.mode == "horizontal" then p.mode = "vertical"
-    elseif parent.mode == "vertical" then p.mode = "horizontal" end
+    elseif parent.mode == "vertical" then p.mode = "horizontal"
+    elseif parent.mode == "stack" then
+      p.mode = "horizontal"
+      p.expandMode = {2, 2}
+    end
     p.spacing = parent.spacing
   end
   

@@ -158,6 +158,7 @@ widget:broadcast(name, ...) -- Push event to widget's parent (and likely sibling
 ```js
 "mode" : "horizontal", // How the layout arranges its children. Defaults to manual if explicitly declared.
 // "horizontal", "vertical" ("h", "v"): Automatically arranges children in a row or column.
+// "stack" : Children are stacked on top of each other and expanded to fit layout space.
 // "manual": Children are explicitly placed; layout expands to fit.
 "spacing" : 2, // Spacing between child elements in automatic layout modes, in pixels. Defaults to 2px.
 "align" : 0.5, // Proportion of alignment for fixed-size children on opposite axis in automatic modes.

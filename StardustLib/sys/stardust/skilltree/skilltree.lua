@@ -62,6 +62,7 @@ function skilltree.init(canvas, treePath, data, saveFunc)
     -- parse through nodeset
     nodes, connections = { }, { }
     local iterateTree iterateTree = function(tree, pfx, offset)
+      if pfx:sub(-1) ~= "/" then pfx = pfx .. "/" end -- directorize path
       for k, n in pairs(tree) do
         -- apply templates
         if n.template and defs.templates[n.template] then
@@ -160,6 +161,11 @@ function skilltree.init(canvas, treePath, data, saveFunc)
   
   skilltree.canvasWidget = canvas
   skilltree.canvas = widget.bindCanvas(canvas.backingWidget)
+  if not skillData.uuid then
+    skillData.uuid = sb.makeUuid()
+    skilltree.saveChanges()
+  end
+  skilltree.uuid = skillData.uuid
   skilltree.initUI()
 end
 
@@ -236,7 +242,6 @@ function skilltree.applyChanges(silent)
   skilltree.redraw()
 end
 function skilltree.saveChanges()
-  -- TODO figure out separate calc and display, since we need to save any time a module is changed
   skilltree.recalculateStats()
   saveData(skillData)
 end

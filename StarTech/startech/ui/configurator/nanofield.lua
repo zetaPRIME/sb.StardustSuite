@@ -26,3 +26,13 @@ if debugAP then
     skilltree.recalculateStats()
   end
 end
+
+function update()
+  -- canary
+  local function nope() skilltree.playSound "reset" pane.dismiss() end
+  local itm = player.equippedItem("chest")
+  if not itm or itm.name ~= "startech:nanofield" then return nope() end
+  local sd = itm.parameters["stardustlib:skillData"]
+  if not sd then return nope() end
+  if sd.uuid ~= skilltree.uuid then return nope() end
+end

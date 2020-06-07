@@ -13,6 +13,9 @@ skill tree next things {
     socketing
     - link/jump nodes (including tweening)
     
+    - automatic UID generation
+    
+    stats display
 }
 
 the BIG IDEA UPDATE {

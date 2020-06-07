@@ -155,12 +155,10 @@ end do -- layout ---------------------------------------------------------------
       
     elseif self.mode == "stack" then -- stacked on top of each other
       for _, c in pairs(self.children) do
-        if c.visible then
-          c.position = {0, 0}
-          c.size = c:preferredSize(self.size[1])
-          for a=1,2 do
-            if c.expandMode[a] >= 1 then c.size[a] = self.size[a] end
-          end
+        c.position = {0, 0}
+        c.size = c:preferredSize(self.size[1])
+        for a=1,2 do
+          if c.expandMode[a] >= 1 then c.size[a] = self.size[a] end
         end
       end
     end
@@ -191,7 +189,9 @@ end do -- panel ----------------------------------------------------------------
   
   function widgets.panel:preferredSize(width)
     if width then width = width - padding*2 end
-    return vec2.add(self.children[1]:preferredSize(width), {padding*2, padding*2})
+    local res = vec2.add(self.children[1]:preferredSize(width), {padding*2, padding*2})
+    if self.explicitSize then res[1] = self.explicitSize[1] end
+    return res
   end
   function widgets.panel:updateGeometry(noApply)
     local l = self.children[1]

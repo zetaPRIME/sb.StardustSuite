@@ -241,6 +241,7 @@ function mg.createWidget(param, parent)
   w.position = param.position or {0, 0}
   w.explicitSize = param.size
   w.size = param.size
+  if param.visible ~= nil then w.visible = param.visible end
   
   local base
   if parent then -- find base widget

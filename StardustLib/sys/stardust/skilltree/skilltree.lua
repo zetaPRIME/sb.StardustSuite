@@ -21,6 +21,20 @@ local nodeSpacing = 24
 
 local mouseOverNode
 
+local soundEffects = {
+  unlock = "/sfx/objects/ancientenergy_chord.ogg",
+  error = "/sfx/interface/clickon_error.ogg",
+  apply = "/sfx/objects/essencechest_open3.ogg",
+  reset = "/sfx/interface/nav_insufficient_fuel.ogg",
+}
+
+function skilltree.playSound(sfx)
+  local s = soundEffects[sfx]
+  if type(s) == "string" then s = {s} end
+  for _, s in pairs(s) do pane.playSound(s) end
+end
+local sfx = skilltree.playSound -- alias
+
 function skilltree.init(canvas, treePath, data, saveFunc)
   saveData = saveFunc
   skillData = data or { }
@@ -190,20 +204,28 @@ function skilltree.recalculateStats()
   end
 end
 
-function skilltree.resetChanges()
+function skilltree.resetChanges(silent)
+  local found
+  for _ in pairs(nodesToUnlock) do found = true break end
+  if not found then return nil end
   apToSpend = 0
   fixedCosts = 0
   nodesToUnlock = { }
+  if not silent then sfx "reset" end
   skilltree.recalculateStats()
   skilltree.redraw()
 end
-function skilltree.applyChanges()
+function skilltree.applyChanges(silent)
+  local found
+  for _ in pairs(nodesToUnlock) do found = true break end
+  if not found then return nil end
   -- commit nodes
   for k,v in pairs(nodesToUnlock) do skillData.unlocks[k] = v end
-  -- TODO actually implement AP
+  status.setStatusProperty("stardustlib:ap", (status.statusProperty("stardustlib:ap") or 0) - apToSpend)
   apToSpend = 0
   fixedCosts = 0
   nodesToUnlock = { }
+  if not silent then sfx "apply" end
   skilltree.saveChanges()
   skilltree.redraw()
 end
@@ -244,7 +266,7 @@ end
 
 function skilltree.tryUnlockNode(n)
   n = type(n) == "table" and n or nodes[n]
-  if not n or not skilltree.canAffordNode(n) then return false end
+  if not n or not skilltree.canAffordNode(n) then sfx "error" return false end
   local cost = skilltree.nodeCost(n)
   apToSpend = apToSpend + cost
   if n.fixedCost then fixedCosts = fixedCosts + cost end
@@ -253,6 +275,7 @@ function skilltree.tryUnlockNode(n)
     u[2] = nil u[3] = nil
   end
   nodesToUnlock[n.path] = u
+  sfx "unlock"
   skilltree.recalculateStats()
   skilltree.redraw()
 end

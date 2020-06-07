@@ -5,14 +5,14 @@ skill tree next things {
     - node unlocking
     - real apply/reset functionality
     - port over the tooltip stuff (still separate module so buildscripts can use it)
+    - all the audio crap
     - stat calc
     - AP costs
     AP granting (properly)
     
     socketing
-    link/jump nodes
+    - link/jump nodes (including tweening)
     
-    all the audio crap
 }
 
 the BIG IDEA UPDATE {

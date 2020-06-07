@@ -26,6 +26,8 @@ local soundEffects = {
   error = "/sfx/interface/clickon_error.ogg",
   apply = "/sfx/objects/essencechest_open3.ogg",
   reset = "/sfx/interface/nav_insufficient_fuel.ogg",
+  
+  link = { "/sfx/interface/stationtransponder_stationpulse.ogg", "/sfx/tech/tech_dash.ogg" },
 }
 
 function skilltree.playSound(sfx)
@@ -88,6 +90,10 @@ function skilltree.init(canvas, treePath, data, saveFunc)
             condition = n.condition,
           }
           nodes[path] = node
+          if node.type == "link" then
+            node.default = true -- no reason for one of these to be locked
+            node.target = util.absolutePath(pfx, node.target or "")
+          end
           --if node.type == "socket" then jewelSockets[node] = true end
           --setNodeVisuals(node)
           if n.connectsTo then -- premake connections
@@ -393,6 +399,13 @@ function skilltree.scroll(d)
   }
   skilltree.redraw()
 end
+function skilltree.scrollTo(d)
+  scrollPos = {
+    util.clamp(d[1], scrollBounds[1] * nodeSpacing, scrollBounds[3] * nodeSpacing),
+    util.clamp(d[2], scrollBounds[2] * nodeSpacing, scrollBounds[4] * nodeSpacing),
+  }
+  skilltree.redraw()
+end
 
 function findMouseOver(mp)
   local old = mouseOverNode
@@ -416,12 +429,29 @@ function clearMouseOver()
   mouseOverNode = nil
 end
 
+local mouseRefresh
 function skilltree.clickNode(n)
   n = type(n) == "table" and n or nodes[n]
-  -- TODO
-  local lv = skilltree.nodeUnlockLevel(n)
-  if lv == 0 then
-    local s = skilltree.tryUnlockNode(n)
+  if n.type == "link" then
+    if nodes[n.target] then
+      sfx "link"
+      metagui.startEvent(function()
+        local f = 10 -- frames for jump
+        local op = scrollPos
+        local tp = vec2.mul(nodes[n.target].position, nodeSpacing)
+        local diff = vec2.sub(tp, op)
+        for i=1,f do
+          skilltree.scrollTo(vec2.add(op, vec2.mul(diff, i/f)))
+          mouseRefresh = true
+          coroutine.yield()
+        end
+      end)
+    end
+  else -- plain node
+    local lv = skilltree.nodeUnlockLevel(n)
+    if lv == 0 then
+      local s = skilltree.tryUnlockNode(n)
+    end
   end
 end
 
@@ -434,7 +464,8 @@ function skilltree.initUI()
       
       -- handle mouse movement
       local mp = w:relativeMousePosition()
-      if not vec2.eq(mp, omp) then
+      if mouseRefresh or not vec2.eq(mp, omp) then
+        mouseRefresh = false
         if not rect.contains(rect.withSize({0, 0}, w.size), mp) then
           clearMouseOver()
         else

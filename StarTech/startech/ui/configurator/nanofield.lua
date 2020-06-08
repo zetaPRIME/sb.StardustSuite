@@ -10,6 +10,20 @@ end
 local function saveItem(itm)
   local c = player.equippedItem("chest")
   itm.parameters.batteryStats = c.parameters.batteryStats or { } -- retain energy levels
+  
+  -- apply stats
+  local skillData = itm.parameters["stardustlib:skillData"]
+  local calc = skilltree.calculateFinalStat
+  local stats = { }
+  util.appendLists(stats, itemutil.baseProperty(itm, "statusEffects"))
+  util.appendLists(stats, {
+    { stat = "protection", amount = calc(skillData.stats.armor) },
+    { stat = "maxHealth", amount = calc(skillData.stats.health) - 100 },
+    { stat = "maxEnergy", amount = calc(skillData.stats.energy) - 100 },
+    { stat = "powerMultiplier", baseMultiplier = calc(skillData.stats.damage) },
+  })
+  itm.parameters.statusEffects = stats
+  
   player.setEquippedItem("chest", itm)
 end
 

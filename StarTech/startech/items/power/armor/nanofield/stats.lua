@@ -98,10 +98,10 @@ function stats.postUpdate(p)
     { stat = "breathProtection", amount = 1 },
     --{ stat = "nude", amount = -100 },
     
-    { stat = "protection", amount = stats.stat.armor },
+    --[[{ stat = "protection", amount = stats.stat.armor },
     { stat = "maxHealth", amount = stats.stat.health - 100 },
     { stat = "maxEnergy", amount = stats.stat.energy - 100 },
-    { stat = "powerMultiplier", baseMultiplier = stats.stat.damageMult },
+    { stat = "powerMultiplier", baseMultiplier = stats.stat.damageMult },]]
   }
   movement.call("updateEffectiveStats", sg)
   tech.setStats(sg)

@@ -159,16 +159,16 @@ function skilltree.init(canvas, treePath, data, saveFunc)
       c[2] = nodes[c[2]]
     end
     
-    skilltree.recalculateStats() -- update all the things    
+    skilltree.recalculateStats() -- update all the things
   end
   
   skilltree.canvasWidget = canvas
   skilltree.canvas = widget.bindCanvas(canvas.backingWidget)
   if not skillData.uuid then
     skillData.uuid = sb.makeUuid()
-    skilltree.saveChanges()
   end
   skilltree.uuid = skillData.uuid
+  skilltree.saveChanges()
   skilltree.initUI()
 end
 

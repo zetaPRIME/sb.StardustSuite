@@ -220,6 +220,24 @@ end
 
 function svc.giveAP(msg, isLocal, ap)
   status.setStatusProperty("stardustlib:ap", math.max(0, status.statusProperty("stardustlib:ap", 0) + ap))
+  if ap >= 50 then
+    local bossAp = ap >= 10000
+    localAnimator.spawnParticle {
+      type = "text",
+      text = string.format("^shadow;^violet;+^white;%d ^violet;AP", ap),
+      size = bossAp and 0.8 or 0.6,
+      fade = 0.5,
+      destructionAction = "fade",
+      destructionTime = 0.4,
+      position = vec2.add(entity.position(), {0, 2.5}),
+      offsetRegion = {0, 0, 0, 0},
+      initialVelocity = bossAp and {0, 1} or {0, 8},
+      finalVelocity = {0, 5},
+      approach = {0, 10},
+      timeToLive = bossAp and 1.5 or 0.3,
+      variance = { }
+    }
+  end
 end
 
 function svc.openInterface(msg, isLocal, info)

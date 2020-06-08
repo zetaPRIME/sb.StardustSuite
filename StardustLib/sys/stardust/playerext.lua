@@ -3,6 +3,8 @@
 require "/lib/stardust/itemutil.lua"
 require "/lib/stardust/power.item.lua"
 
+getmetatable ''.clientSide = true
+
 --[[setmetatable(_ENV, { __index = function(t,k)
   sb.logInfo("missing field "..k.." accessed")
   local f = function(...)

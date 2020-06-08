@@ -24,8 +24,8 @@
   
   "objectType" : "container",
   "slotCount" : 9, // not sure if I want it to be not-a-container, so I'll just avoid later breakage
-  //"uiConfig" : "/interface/chests/chest9.config",
-  "uiConfig" : "/metagui/container.config", "ui" : "startech:containertest",
+  "uiConfig" : "/interface/chests/chest9.config",
+  //"uiConfig" : "/metagui/container.config", "ui" : "startech:containertest",
   "frameCooldown" : 5,
   "autoCloseCooldown" : 3600,
   

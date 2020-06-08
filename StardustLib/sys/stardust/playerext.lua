@@ -218,6 +218,10 @@ function svc.giveItemToCursor(msg, isLocal, itm, shiftable)
   end
 end
 
+function svc.giveAP(msg, isLocal, ap)
+  status.setStatusProperty("stardustlib:ap", math.max(0, status.statusProperty("stardustlib:ap", 0) + ap))
+end
+
 function svc.openInterface(msg, isLocal, info)
   if type(info) ~= "table" then info = {config = info} end
   player.interact(info.interactionType or "ScriptPane", info.config or "/sys/stardust/tablet/tablet.ui.config")

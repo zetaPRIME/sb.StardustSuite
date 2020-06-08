@@ -39,6 +39,7 @@ if not playerext then
     
     "giveItems",
     "giveItemToCursor",
+    "giveAP",
     "getEquip",
     "setEquip",
     "updateEquip",

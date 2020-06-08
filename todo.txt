@@ -8,7 +8,7 @@ skill tree next things {
     - all the audio crap
     - stat calc
     - AP costs
-    AP granting (properly)
+    > AP granting (properly)
     
     - stats display
     

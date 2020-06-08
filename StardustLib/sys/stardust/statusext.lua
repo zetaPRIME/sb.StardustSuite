@@ -6,6 +6,17 @@ local entityType = world.entityType(entity.id())
 local isSpaceMonster = not not __spaceMonster
 local hasFU = root.hasTech("fuhealzone") -- quick and easy detection
 
+local initDone
+local _update = update
+function update(...)
+  if not initDone then initDone = true
+    if entityType ~= "player" then -- inject entity-space code
+      world.callScriptedEntity(entity.id(), "require", "/sys/stardust/entityext.lua")
+    end
+  end
+  (_update or function() end)(...)
+end
+
 local function resultOf(promise)
   err = nil
   if not promise:finished() then return promise end

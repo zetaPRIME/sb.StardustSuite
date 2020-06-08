@@ -316,6 +316,10 @@ end
 function skilltree.tryUnlockNode(n)
   n = type(n) == "table" and n or nodes[n]
   if not n or not skilltree.canAffordNode(n) then sfx "error" return false end
+  local pass for cn in pairs(n.connectsTo) do
+    if skilltree.nodeUnlockLevel(cn) > 0 then pass = true break end
+  end
+  if not pass then sfx "error" return false end
   local cost = skilltree.nodeCost(n)
   apToSpend = apToSpend + cost
   if n.fixedCost then fixedCosts = fixedCosts + cost end
@@ -327,6 +331,7 @@ function skilltree.tryUnlockNode(n)
   sfx "unlock"
   skilltree.recalculateStats()
   skilltree.redraw()
+  return true
 end
 
 local border = {

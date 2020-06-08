@@ -220,7 +220,7 @@ end
 
 function svc.giveAP(msg, isLocal, ap)
   status.setStatusProperty("stardustlib:ap", math.max(0, status.statusProperty("stardustlib:ap", 0) + ap))
-  if ap >= 50 then
+  if ap >= 50 then -- don't display tiny gains
     local bossAp = ap >= 10000
     localAnimator.spawnParticle {
       type = "text",

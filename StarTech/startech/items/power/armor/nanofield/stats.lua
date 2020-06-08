@@ -2,7 +2,7 @@
 
 stats = { stat = { }, item = { } }
 
-local tierBaseStats = {
+local tierBaseStats = { -- keeping this temporarily for reference
   { -- T1 (Iron)
     armor = 20,
     health = 110,
@@ -62,6 +62,12 @@ function stats.update(p)
     stats.item.parameters.level = stats.level
     stats.itemModified = true
   end
+  stats.skillData = stats.item.parameters["stardustlib:skillData"] or { }
+  stats.flags = stats.skillData.flags or { }
+  stats.stat = { }
+  for k,v in pairs(stats.skillData.stats) do
+    stats.stat[k] = (v[1] or 0) * (v[2] or 1) * (v[3] or 1)
+  end
   
   -- maintain other slots
   for _, slot in pairs{"head", "legs"} do
@@ -85,8 +91,6 @@ function stats.update(p)
       end
     end
   end
-  
-  util.mergeTable(stats.stat, tierBaseStats[util.clamp(math.floor(0.5 + stats.level), 1, #tierBaseStats)])
   
 end
 

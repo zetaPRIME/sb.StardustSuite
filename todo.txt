@@ -1,16 +1,8 @@
 -
 
 skill tree next things {
-    - icons, actual node drawing
-    - node unlocking
-    - real apply/reset functionality
-    - port over the tooltip stuff (still separate module so buildscripts can use it)
-    - all the audio crap
-    - stat calc
-    - AP costs
-    > AP granting (properly)
-    
-    - stats display
+    some way of toggling AP gain display
+    auto refund for nonexistent nodes?
     
     socketing
     toggles

@@ -42,7 +42,7 @@ local currentDamageRequest
 local _applyDamageRequest = applyDamageRequest
 function applyDamageRequest(damageRequest)
   currentDamageRequest = damageRequest
-  do -- resparth the F r ackle
+  do -- decode any encoded status effects
     local se = { }
     for _, s in pairs(damageRequest.statusEffects) do
       s = decodeStatus(s)

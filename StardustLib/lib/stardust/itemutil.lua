@@ -93,11 +93,15 @@ do
   -- returns a given property of an item, overridden where applicable
   function itemutil.property(itm, path)
     if not itm or not path then return nil end
-    --return (itm.parameters and itm.parameters[prop]) or itemutil.getCachedConfig(itm).config[prop]
     local res = nil
     if itm.parameters then res = dive(itm.parameters, path) end
     if res == nil then res = dive(itemutil.getCachedConfig(itm).config, path) end
     return res
+  end
+  -- same, but only the base config
+  function itemutil.baseProperty(itm, path)
+    if not itm or not path then return nil end
+    return dive(itemutil.getCachedConfig(itm).config, path)
   end
   
   -- resolve path relative to item

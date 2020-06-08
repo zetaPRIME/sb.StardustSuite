@@ -375,7 +375,6 @@ function skilltree.draw()
   
   -- bg
   c:clear()
-  c:drawRect({0, 0, s[1], s[2]}, {15, 0, 23})
   skilltree.drawBackground(scrollPos)
   
   -- connections

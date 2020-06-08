@@ -6,7 +6,18 @@
   "uniqueBy" : "path",
   "scripts" : [ "nanofield.lua" ],
   "children" : [
-    { "type" : "panel", "style" : "concave", "children" : [{ "type" : "canvas", "id" : "treeCanvas" }] },
+    { "type" : "panel", "style" : "concave", "children" : [
+      {"mode" : "stack"},
+      { "type" : "canvas", "id" : "treeCanvas" },
+      [
+        { "id" : "sidebarContainer", "visible" : false },
+        { "type" : "panel", "style" : "concave", "size" : 128, "children" : [
+          { "type" : "scrollArea", "children" : [
+            { "type" : "label", "id" : "statsDisplay" }
+          ]}
+        ]}, "spacer"
+      ]
+    ] },
     [
       { "type" : "button", "id" : "toggleStats", "size" : 16, "caption" : ">" },
       { "type" : "label", "id" : "apDisplay" },

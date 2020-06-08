@@ -7,10 +7,11 @@ require "/sys/stardust/skilltree/tooltip.lua"
 require "/sys/stardust/skilltree/calc.lua"
 
 skilltree = skilltree or { }
+skilltree.modifyStatDisplay = { }
 
 local needsRedraw = true
 local skillData, itemData, saveData
-local defs, nodes, connections, decorations
+local defs, nodes, connections, decorations, defaultUnlocks
 local apToSpend = 0
 local fixedCosts = 0
 local nodesToUnlock = { }
@@ -58,9 +59,10 @@ function skilltree.init(canvas, treePath, data, saveFunc)
     
     -- merge in overrides from tree
     util.mergeTable(defs.baseStats, td.baseStats or { })
+    defs.statsDisplay = td.statsDisplay or defs.statsDisplay or { }
     
     -- parse through nodeset
-    nodes, connections = { }, { }
+    nodes, connections, defaultUnlocks = { }, { }, { }
     local iterateTree iterateTree = function(tree, pfx, offset)
       if pfx:sub(-1) ~= "/" then pfx = pfx .. "/" end -- directorize path
       for k, n in pairs(tree) do
@@ -95,6 +97,7 @@ function skilltree.init(canvas, treePath, data, saveFunc)
             node.default = true -- no reason for one of these to be locked
             node.target = util.absolutePath(pfx, node.target or "")
           end
+          if node.default then defaultUnlocks[node.path] = true end
           --if node.type == "socket" then jewelSockets[node] = true end
           --setNodeVisuals(node)
           if n.connectsTo then -- premake connections
@@ -186,33 +189,68 @@ function skilltree.recalculateStats()
   skillData.spentAP = 0
   skillData.stats, skillData.flags, skillData.effects = { }, { }, { }
   for stat, v in pairs(defs.baseStats) do
+    if type(v) == "number" then v = {v} end
     skillData.stats[stat] = { v[1] or 0, v[2] or 1, v[3] or 1 }
   end
   
   local isStatMod = { flat = true, increased = true, more = true }
+  local function doGrants(node, stats)
+    local doFlags = stats == nil
+    stats = stats or skillData.stats
+    for _, g in pairs(node.grants or { }) do
+      local mode, stat, amt = table.unpack(g)
+      if isStatMod[mode] and stat then
+        if not stats[stat] then stats[stat] = {0, 1, 1} end
+        if mode == "flat" then stats[stat][1] = stats[stat][1] + amt
+        elseif mode == "increased" then stats[stat][2] = stats[stat][2] + amt
+        elseif mode == "more" then stats[stat][3] = stats[stat][3] * (1.0 + amt)
+        end
+      elseif not doFlags then
+      elseif mode == "flag" and stat then skillData.flags[stat] = true
+      elseif mode == "effect" and stat then table.insert(skillData.effects, stat)
+      end --
+    end
+  end
+  for path in pairs(defaultUnlocks) do
+    local node = nodes[path]
+    if node then doGrants(node) end
+  end
   for path, unlock in pairs(skillData.unlocks) do
     local node = nodes[path]
     if node then -- TODO: sockets
       -- keep track of total AP spent on non-fixed-cost nodes
       if not unlock[2] then skillData.spentAP = skillData.spentAP + unlock[1] end
-      for _, g in pairs(node.grants or { }) do
-        local mode, stat, amt = table.unpack(g)
-        if isStatMod[mode] and stat then
-          if not skillData.stats[stat] then skillData.stats[stat] = {0, 1, 1} end
-          if mode == "flat" then skillData.stats[stat][1] = skillData.stats[stat][1] + amt
-          elseif mode == "increased" then skillData.stats[stat][2] = skillData.stats[stat][2] + amt
-          elseif mode == "more" then skillData.stats[stat][3] = skillData.stats[stat][3] * (1.0 + amt)
-          end
-        elseif mode == "flag" and stat then skillData.flags[stat] = true
-        elseif mode == "effect" and stat then table.insert(skillData.effects, stat)
-        end --
-      end
+      doGrants(node)
     end
   end
   
   -- update displays
   if apDisplay then
     apDisplay:setText(string.format("^white;%d ^violet;AP^reset;", math.floor(skilltree.currentAP())))
+  end
+  if statsDisplay then
+    -- calculate display stat values
+    local displayStats = util.mergeTable({ }, skillData.stats)
+    for path in pairs(nodesToUnlock) do doGrants(nodes[path], displayStats) end
+    
+    local statNames = (skilltree.defs or { }).statNames or { }
+    local statPercent = (skilltree.defs or { }).statPercent or { }
+    local tt = { }
+    for _, stat in pairs(defs.statsDisplay) do
+      if stat ~= "" then
+        local calc = skilltree.calculateFinalStat(displayStats[stat] or {0, 0, 0})
+        local txt = string.format("^white;%s ^cyan;%s^reset;", skilltree.displayNumber(calc, statPercent[stat]), statNames[stat] or stat)
+        local f = skilltree.modifyStatDisplay[stat]
+        txt = f and f(txt, calc) or txt
+        if txt ~= "" then
+          table.insert(tt, txt)
+          table.insert(tt, "\n")
+        end
+      else
+        table.insert(tt, "\n")
+      end
+    end
+    statsDisplay:setText(table.concat(tt))
   end
 end
 
@@ -471,7 +509,7 @@ function skilltree.initUI()
       local mp = w:relativeMousePosition()
       if mouseRefresh or not vec2.eq(mp, omp) then
         mouseRefresh = false
-        if not rect.contains(rect.withSize({0, 0}, w.size), mp) then
+        if not w:isMouseOver() then
           clearMouseOver()
         else
           findMouseOver(mp)

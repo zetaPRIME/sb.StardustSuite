@@ -27,6 +27,17 @@ if debugAP then
   end
 end
 
+function toggleStats:onClick()
+  sidebarContainer:setVisible(not sidebarContainer.visible)
+  self:setText(sidebarContainer.visible and "<" or ">")
+end
+
+function skilltree.modifyStatDisplay.armor(txt, v)
+  local dr = 1.0 - (.5 ^ (v / 100))
+  dr = math.floor(dr*10000+0.5)/10000 -- limit to two decimal places
+  return txt .. string.format(" ^lightgray;(%s damage reduction)^reset;", skilltree.displayNumber(dr, true))
+end
+
 function update()
   -- canary
   local function nope() skilltree.playSound "reset" pane.dismiss() end

@@ -10,12 +10,11 @@ skill tree next things {
     - AP costs
     AP granting (properly)
     
+    - stats display
+    
     socketing
-    - link/jump nodes (including tweening)
-    
-    - automatic UID generation
-    
-    stats display
+    toggles
+    selectors (like PoE scion ascendancy)
 }
 
 the BIG IDEA UPDATE {

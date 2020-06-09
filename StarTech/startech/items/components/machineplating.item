@@ -11,5 +11,12 @@
   "jewelGrants" : [
     ["flat", "armor", 5],
     ["description", "Huh. I guess that works."]
-  ]
+  ],
+  
+  "stardustlib:moduleStats" : {
+    "nanofield" : [
+      ["flat", "armor", 5],
+      ["description", "It'll do in a pinch."]
+    ]
+  }
 }

@@ -7,7 +7,7 @@ skill tree next things {
     
     sync ID
     
-    socketing
+    - socketing
     toggles
     selectors (like PoE scion ascendancy)
 }

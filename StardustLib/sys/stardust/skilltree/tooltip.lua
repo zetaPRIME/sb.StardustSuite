@@ -30,5 +30,5 @@ function skilltree.generateGrantToolTip(gl, name)
 end
 
 function skilltree.generateNodeToolTip(node)
-  node.toolTip = skilltree.generateGrantToolTip(node.grants, node.name)
+  node.toolTip = skilltree.generateGrantToolTip(node.moduleGrants or node.grants, node.moduleName or node.name)
 end

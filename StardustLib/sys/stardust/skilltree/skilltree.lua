@@ -28,7 +28,18 @@ local soundEffects = {
   apply = "/sfx/objects/essencechest_open3.ogg",
   reset = "/sfx/interface/nav_insufficient_fuel.ogg",
   
+  socketPlace = { "/sfx/melee/sword_parry.ogg", "/sfx/objects/essencechest_open2.ogg" },
+  socketRemove = { },--"/sfx/objects/ancientenergy_pickup1.ogg",
+  
   link = { "/sfx/interface/stationtransponder_stationpulse.ogg", "/sfx/tech/tech_dash.ogg" },
+}
+
+local rarityColors = {
+  common = "",
+  uncommon = "^#42c53e;",
+  rare = "^#3ea8c5;",
+  legendary = "^#893ec5;",
+  essential = "^#c3c53e;"
 }
 
 function skilltree.playSound(sfx)
@@ -42,6 +53,7 @@ function skilltree.init(canvas, treePath, data, saveFunc)
   saveData = saveFunc
   skillData = data or { }
   skillData.unlocks = skillData.unlocks or { }
+  skillData.modules = skillData.modules or { }
   
   do -- load skill tree
     local td = root.assetJson(treePath)
@@ -90,7 +102,7 @@ function skilltree.init(canvas, treePath, data, saveFunc)
             name = n.name, icon = n.icon, unlockedIcon = n.unlockedIcon,
             grants = n.grants or { }, skill = n.skill, target = n.target or n.to,
             fixedCost = n.fixedCost, costMult = n.costMult, itemCost = n.itemCost,
-            condition = n.condition,
+            condition = n.condition, moduleTypes = n.moduleTypes,
           }
           nodes[path] = node
           if node.type == "link" then
@@ -143,7 +155,7 @@ function skilltree.init(canvas, treePath, data, saveFunc)
       if not ext or ext == "" then node.icon = node.icon .. ".png" end
       
       if node.type == "link" then node.fixedCost = 0 end
-      skilltree.generateNodeToolTip(node) -- delegated to module so build scripts can reuse it
+      skilltree.refreshNodeProperties(node)
       if node.itemCost then -- assemble information for item requirement tooltips
         for _, d in pairs(node.itemCost) do
           d.displayName, d.rarity = itemutil.property(d, "shortdescription"), itemutil.property(d, "rarity") or "Common"
@@ -185,6 +197,24 @@ end
 
 function skilltree.redraw() needsRedraw = true end
 
+function skilltree.refreshNodeProperties(node)
+  if node.type == "socket" then
+    local m = skillData.modules[node.path]
+    if m then -- 
+      node.moduleName = string.format("^lightgray;%s%s^reset;", rarityColors[string.lower(itemutil.property(m, "rarity") or "common")], itemutil.property(m, "shortdescription"))
+      node.contentsIcon = itemutil.relativePath(m, itemutil.property(m, "inventoryIcon"))
+      node.moduleGrants = nil
+      local ms = itemutil.property(m, "stardustlib:moduleStats") or { }
+      for _, t in pairs(node.moduleTypes or { }) do
+        if ms[t] then node.moduleGrants = ms[t] break end
+      end
+    else -- socket empty
+      node.moduleName, node.moduleGrants, node.contentsIcon = nil
+    end
+  end
+  skilltree.generateNodeToolTip(node) -- delegated to module so build scripts can reuse it
+end
+
 function skilltree.recalculateStats()
   skillData.spentAP = 0
   skillData.stats, skillData.flags, skillData.effects = { }, { }, { }
@@ -197,7 +227,7 @@ function skilltree.recalculateStats()
   local function doGrants(node, stats)
     local doFlags = stats == nil
     stats = stats or skillData.stats
-    for _, g in pairs(node.grants or { }) do
+    for _, g in pairs(node.moduleGrants or node.grants or { }) do
       local mode, stat, amt = table.unpack(g)
       if isStatMod[mode] and stat then
         if not stats[stat] then stats[stat] = {0, 1, 1} end
@@ -334,6 +364,47 @@ function skilltree.tryUnlockNode(n)
   return true
 end
 
+function skilltree.trySocketNode(node, itm)
+  if node.type ~= "socket" then return itm end -- nope
+  local cur = skillData.modules[node.path]
+  local count = 0
+  if itm then count = itm.count end
+  if count > 1 and cur and cur.count >= 1 then -- reject, no multifill
+    sfx "error"
+    return itm
+  end
+  if count == 0 then -- just pull out what's in there
+    if not cur then return nil end -- nothing to remove
+    sfx "socketRemove"
+    skillData.modules[node.path] = nil
+    skilltree.refreshNodeProperties(node)
+    skilltree.recalculateStats()
+    skilltree.saveChanges() -- store immediately
+    skilltree.redraw()
+    return cur
+  else -- swap
+    -- check if it's a valid module for the socket
+    local fits = false
+    local ms = itemutil.property(itm, "stardustlib:moduleStats") or { }
+    for _, t in pairs(node.moduleTypes or { }) do
+      if ms[t] then fits = true break end
+    end
+    if not fits then
+      sfx "error"
+      return itm
+    end
+    sfx "socketPlace"
+    skillData.modules[node.path] = { name = itm.name, count = 1, parameters = itm.parameters }
+    skilltree.refreshNodeProperties(node)
+    skilltree.recalculateStats()
+    skilltree.saveChanges() -- store immediately
+    skilltree.redraw()
+    -- can only get here with a count >1 if there's nothing in there already
+    if count > 1 then return { name = itm.name, count = itm.count - 1, parameters = itm.parameters } end
+    return cur
+  end
+end
+
 local border = {
   {-1, 0},
   {1, 0},
@@ -344,13 +415,6 @@ local lineColors = {
   {127, 63, 63, 63},
   {127, 127, 255, 127},
   {255, 255, 255, 127},
-}
-local rarityColors = {
-  common = "",
-  uncommon = "^#42c53e;",
-  rare = "^#3ea8c5;",
-  legendary = "^#893ec5;",
-  essential = "^#c3c53e;"
 }
 local nodeDirectives = {
   [0] = "?multiply=7f7f7f",
@@ -494,6 +558,14 @@ function skilltree.clickNode(n)
         end
       end)
     end
+  elseif n.type == "socket" and skilltree.nodeUnlockLevel(n) == 1 then
+    local itm = player.swapSlotItem()
+    local cur = skilltree.trySocketNode(n, itm)
+    -- allow shift+click if cursor empty
+    if cur and not itm and metagui.checkShift() then
+      player.setSwapSlotItem(nil)
+      player.giveItem(cur)
+    else player.setSwapSlotItem(cur) end
   else -- plain node
     local lv = skilltree.nodeUnlockLevel(n)
     if lv == 0 then
@@ -529,7 +601,7 @@ function skilltree.initUI()
     if down then
       if btn == 0 then
         if mouseOverNode then
-          skilltree.clickNode(mouseOverNode)
+          metagui.startEvent(skilltree.clickNode, mouseOverNode)
           return nil
         end
       end

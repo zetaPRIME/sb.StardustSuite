@@ -206,7 +206,7 @@ function skilltree.recalculateStats()
         elseif mode == "more" then stats[stat][3] = stats[stat][3] * (1.0 + amt)
         end
       elseif not doFlags then
-      elseif mode == "flag" and stat then skillData.flags[stat] = true
+      elseif mode == "flag" and stat then skillData.flags[stat] = amt == nil or amt
       elseif mode == "effect" and stat then table.insert(skillData.effects, stat)
       end --
     end

@@ -8,8 +8,11 @@ local function loadItem()
 end
 
 local function saveItem(itm)
-  local c = player.equippedItem("chest")
-  itm.parameters.batteryStats = c.parameters.batteryStats or { } -- retain energy levels
+  do -- all we need to modify from the current item is the skill tree data
+    local c = player.equippedItem("chest")
+    c.parameters["stardustlib:skillData"] = itm.parameters["stardustlib:skillData"]
+    itm = c
+  end
   
   -- apply stats
   local skillData = itm.parameters["stardustlib:skillData"]

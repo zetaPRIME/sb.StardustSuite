@@ -8,8 +8,8 @@ skill tree next things {
     sync ID
     
     - socketing
+    > selectors (like PoE scion ascendancy)
     toggles
-    selectors (like PoE scion ascendancy)
 }
 
 the BIG IDEA UPDATE {

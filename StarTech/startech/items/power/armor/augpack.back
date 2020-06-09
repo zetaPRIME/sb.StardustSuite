@@ -26,6 +26,11 @@
   },
   
   "startech:configuratorUi" : "augpackcfg.config",
+  "stardustlib:moduleStats" : {
+    "nanofield" : [
+      ["description", "This definitely doesn't go here."]
+    ]
+  },
 
   "colorOptions" : [
     // DEFAULT

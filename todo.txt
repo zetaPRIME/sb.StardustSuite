@@ -3,6 +3,9 @@
 skill tree next things {
     some way of toggling AP gain display
     auto refund for nonexistent nodes?
+    make AP display constantly sync
+    
+    sync ID
     
     socketing
     toggles
@@ -11,7 +14,6 @@ skill tree next things {
 
 the BIG IDEA UPDATE {
     backend stuff {
-        metaGUI - stacking layout mode
         metaGUI module system (requires some slight reworks) {
             container layout, immediately containing module UI
             script loaded just before containing UI
@@ -20,23 +22,7 @@ the BIG IDEA UPDATE {
             actually, needs to be basically a widget subclass in order to have multiple of the same module?
         }
         
-        move slot lock functionality into playerext and give it a proper hook API
-        
-        skill tree system {
-            very similar backend to aetheri, but with smarter rendering and... cleaner? node handling
-            more than one type of socket
-            socket types defined in defs config
-            can choose whether socket applies item-specified bonuses (default is enabled)
-            
-            - item mode, manual mode
-            pass in a canvas widget, optionally a stats display widget, and a setter and getter for item
-            
-            config files for each tree, which specify one for their definitions (stat names etc.)
-            
-            standard method for defining how to display stats
-            so armor, for example: 100 armor (50% damage reduction)
-            guess that would need to be a script definition (array of functions? or. hm)
-        }
+        ? move slot lock functionality into playerext and give it a proper hook API
     }
     dialogue tree system {
         metagui, fixed window; can intercept escape due to how keyboard capture works
@@ -70,6 +56,10 @@ the BIG IDEA UPDATE {
         maybe heat rises faster when pulling against gravity?
         
         heat disabled entirely on player ships
+        
+        t1 elytra is just a pair of rocket boosters; very quick overheat, but immune to disruption
+        move sphere mode to double tapping down
+        swappable spheres
     }
     eidolon hunting {
         something you can build at endgame to enable queuing (within the same map)? can build lobbies on mp servers

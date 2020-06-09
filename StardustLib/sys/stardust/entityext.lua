@@ -23,7 +23,7 @@ function die(...)
   local level = nn.level()
   -- first calculate granted AP
   local ap = config.getParameter("stardustlib:givesAP", nil)
-  local apConfig --= monster and root.assetJson("/aetheri/species/ap.config:monsters")[monster.type()]
+  local apConfig = monster and root.assetJson("/sys/stardust/ap.config:monsters")[monster.type()]
   if apConfig then -- predefined AP gain from certain monsters
     ap = apConfig.baseAmount
   elseif ap then -- configured in the entity itself

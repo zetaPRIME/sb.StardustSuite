@@ -97,7 +97,7 @@ do local s = movement.state("ground")
     --
     tech.setParentState() -- default to no state override
     
-    if mcontroller.groundMovement() or mcontroller.liquidMovement() then self.airJumps = 1 end
+    if mcontroller.groundMovement() or mcontroller.liquidMovement() then self.airJumps = stats.stat.airJump end
     
     if input.keyDown.t1 then
       input.keyDown.t1 = false -- consume press
@@ -111,10 +111,10 @@ do local s = movement.state("ground")
       local v = input.dir[1]
       if v ~= 0 then
         mcontroller.controlMove(v, true)
-        mcontroller.controlModifiers({ speedModifier = 1.75 })
+        mcontroller.controlModifiers({ speedModifier = stats.stat.sprint or 1 })
       end
       if input.keyDown.jump and mcontroller.onGround() then -- slight bunnyhop effect
-        mcontroller.setXVelocity(mcontroller.velocity()[1] * 1.5)
+        mcontroller.setXVelocity(mcontroller.velocity()[1] * (1 + (((stats.stat.sprint or 1) - 1)*0.5)))
       end
     end
     

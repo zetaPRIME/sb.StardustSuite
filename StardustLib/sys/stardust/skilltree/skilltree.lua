@@ -275,10 +275,7 @@ function skilltree.recalculateStats()
     end
   end
   
-  -- update displays
-  if apDisplay then
-    apDisplay:setText(string.format("^white;%d ^violet;AP^reset;", math.floor(skilltree.currentAP())))
-  end
+  -- update display
   if statsDisplay then
     -- calculate display stat values
     local displayStats = util.mergeTable({ }, skillData.stats)
@@ -645,6 +642,10 @@ function skilltree.initUI()
   metagui.startEvent(function()
     local omp = {0, 0} -- old mouse pos
     while true do
+      if apDisplay then -- handle AP label
+        apDisplay:setText(string.format("^white;%d ^violet;AP^reset;", math.floor(skilltree.currentAP())))
+      end
+      
       coroutine.yield()
       
       -- handle mouse movement

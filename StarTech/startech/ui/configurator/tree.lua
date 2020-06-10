@@ -17,8 +17,6 @@ end
 
 local function saveItem(itm)
   --[[ apply stats
-  local skillData = itm.parameters["stardustlib:skillData"]
-  local calc = skilltree.calculateFinalStat
   local stats = { }
   util.appendLists(stats, itemutil.baseProperty(itm, "statusEffects"))
   util.appendLists(stats, {
@@ -31,6 +29,22 @@ local function saveItem(itm)
   })
   util.appendLists(stats, skillData.effects) -- carry over node status effects
   itm.parameters.statusEffects = stats -- ]]
+  local skillData = itm.parameters["stardustlib:skillData"]
+  local calc = skilltree.calculateFinalStat
+  
+  itm.parameters.tooltipFields = itm.parameters.tooltipFields or { }
+  
+  local category = itemutil.property(itm, "category")
+  if category == "startech:power.weapon" then -- pulse weapon
+    local dmg = calc(skillData.stats.damage)
+    local tier = dmg*2 - 1
+    itm.parameters.level = tier
+    itm.parameters.tooltipFields.bottomLabel = string.format(
+      "%s ^lightgray;power (tier ^white;%s^lightgray;)",
+      skilltree.displayNumber(dmg, true),
+      skilltree.displayNumber(tier)
+    )
+  end
   
   cfgSlot:setItem(itm)
 end
@@ -52,6 +66,11 @@ end
 function toggleStats:onClick()
   sidebarContainer:setVisible(not sidebarContainer.visible)
   self:setText(sidebarContainer.visible and "<" or ">")
+end
+
+function skilltree.modifyStatDisplay.damage(txt, v)
+  local tier = v*2 - 1
+  return txt .. string.format(" ^lightgray;(tier %s)^reset;", skilltree.displayNumber(tier))
 end
 
 function update()

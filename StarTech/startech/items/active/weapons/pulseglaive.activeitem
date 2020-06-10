@@ -10,13 +10,13 @@
   "itemTags" : ["weapon", "melee", "spear", "energy"],
   "tooltipKind" : "stardustlib.withPreview",
   "largeImage" : "/startech/items/active/weapons/pulseglaive-preview.png",
-  "builder" : "/startech/items/active/weapons/buildpulseweapon.lua",
+  //"builder" : "/startech/items/active/weapons/buildpulseweapon.lua",
   
   "startech:configuratorUI" : "startech:configurator.tree",
   "stardustlib:skillTree" : "/startech/skilltree/pulseglaive.config",
   
-  "level" : 2,
-  "acceptsUpgradeCatalyst" : true,
+  "level" : 1,
+  //"acceptsUpgradeCatalyst" : true,
 
   "animation" : "pulseglaive.animation",
   "scripts" : ["pulseglaive.lua"]

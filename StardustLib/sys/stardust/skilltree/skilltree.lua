@@ -340,7 +340,7 @@ function skilltree.saveChanges()
   saveData(skillData)
 end
 
-function skilltree.nodeUnlockLevel(n)
+function skilltree.nodeUnlockLevel(n, visual)
   n = type(n) == "table" and n or nodes[n]
   if not n then return 0 end
   if n.type == "selection" then
@@ -353,6 +353,9 @@ function skilltree.nodeUnlockLevel(n)
   end
   if n.default or skillData.unlocks[n.path] then return 1 end
   if nodesToUnlock[n.path] then return 0.5 end
+  if visual then for c in pairs(n.connectsTo) do
+    if skilltree.nodeUnlockLevel(c) >= 0.5 then return -0.1 end
+  end end
   return 0
 end
 
@@ -473,6 +476,7 @@ local lineColors = {
   selector = {127, 191, 255, 127},
 }
 local nodeDirectives = {
+  [-0.1] = "?multiply=bfbfbf?border=1=ffffff1f", -- unlock path available
   [0] = "?multiply=7f7f7f",
   h = "?border=1=ffffff5f",
   [0.5] = "?border=1=ffac61bf",
@@ -513,7 +517,7 @@ function skilltree.draw()
   -- nodes
   for _, node in pairs(nodes) do
     local pos = ndp(node)
-    local dm = nodeDirectives[skilltree.nodeUnlockLevel(node)]
+    local dm = nodeDirectives[skilltree.nodeUnlockLevel(node, true)]
     if mouseOverNode == node then dm = dm .. nodeDirectives["h"] end
     c:drawImage(node.icon .. dm, pos, 1, {255, 255, 255}, true)
     if node.contentsIcon then
@@ -528,7 +532,7 @@ function skilltree.draw()
     local toolTipWidth = s[1]/2 - 24
     toolTipWidth = util.clamp(s[1] - ttPos[1] - 1, toolTipWidth*0.6, toolTipWidth) -- autoscale down, to a reasonable point
     local tt = mouseOverNode.toolTip
-    if skilltree.nodeUnlockLevel(mouseOverNode) == 0 then
+    if skilltree.nodeUnlockLevel(mouseOverNode, true) < 0 then
       if mouseOverNode.itemCost then
         local ctt = { }
         local hasAll = true
@@ -642,7 +646,7 @@ function skilltree.clickNode(n)
     else player.setSwapSlotItem(cur) end
   else -- plain node
     local lv = skilltree.nodeUnlockLevel(n)
-    if lv == 0 then
+    if lv <= 0 then
       local s = skilltree.tryUnlockNode(n)
     end
   end

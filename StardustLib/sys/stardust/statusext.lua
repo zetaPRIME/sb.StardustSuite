@@ -2,7 +2,8 @@
 require "/scripts/util.lua"
 require "/lib/stardust/json.lua"
 
-local entityType = world.entityType(entity.id())
+local entityId = entity.id()
+local entityType = world.entityType(entityId)
 local isSpaceMonster = not not __spaceMonster
 local hasFU = root.hasTech("fuhealzone") -- quick and easy detection
 
@@ -10,8 +11,9 @@ local initDone
 local _update = update
 function update(...)
   if not initDone then initDone = true
-    if entityType ~= "player" then -- inject entity-space code
-      world.callScriptedEntity(entity.id(), "require", "/sys/stardust/entityext.lua")
+    entityType = world.entityType(entityId) -- refresh this
+    if entityType and entityType ~= "player" then -- inject entity-space code
+      world.callScriptedEntity(entityId, "require", "/sys/stardust/entityext.lua")
     end
   end
   (_update or function() end)(...)

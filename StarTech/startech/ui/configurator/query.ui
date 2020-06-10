@@ -1,0 +1,10 @@
+{ //  -*- grammar-ext: json -*-
+  "style" : "panel",
+  "size" : [128, 8],
+  "anchor" : ["centerBottom", [0, -12]],
+  "uniqueBy" : "path",
+  "scripts" : [ "query.lua" ],
+  "children" : [
+    { "type" : "label", "id" : "lbl", "align" : "center", "text" : "Click an item to configure..." }
+  ]
+}

@@ -1,9 +1,9 @@
 [ // -*- grammar-ext: json -*-
   // TODO: switch this back to admin once configurator exists inworld
   { "op" : "add", "path" : "/items/startech:configurator", "value" : {
-    "label" : "Configurator",
-    "icon" : "/startech/interface/configurator/icon.png",
-    "action" : [ "exec", "/startech/quickbar/configurator.lua" ]
+    "label" : "^cyan;Configurator",
+    "icon" : "/startech/ui/configurator/skilltree.png",
+    "action" : [ "ui", "startech:configurator.query" ]
   } },
   
   { "op" : "add", "path" : "/items/startech:recharge", "value" : {

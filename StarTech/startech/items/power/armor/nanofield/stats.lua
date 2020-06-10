@@ -84,6 +84,8 @@ function stats.update(p)
         playerext.setEquip("cursor", { name = "", count = 0 })
         if slot == "legs" then
           playerext.openUI("startech:configurator.nanofield")
+        else
+          playerext.openUI("startech:configurator.query")
         end
       end
     end

@@ -1,15 +1,15 @@
 { // -*- grammar-ext: json -*-
   "itemName" : "startech:nanofieldstatichead",
   "shortdescription" : "^gray;Nanofield Static^reset;",
-  "description" : "Locked; your ^yellow;Nanofield^reset; projects a kinetic field for protection.",
+  "description" : "Click here to access your ^cyan;Configurator^reset;.",
   "inventoryIcon" : [
-    { "image" : "/sys/stardust/itemSlotCover-dark.png" },
-    { "image" : "/interface/lockicon.png" }
+    { "image" : "/sys/stardust/itemSlotCover.png" },
+    { "image" : "/startech/ui/configurator/skilltree.png" }
   ],
   "rarity" : "Essential",
   "maxStack" : 1,
   "category" : "Ephemera",
-  "tooltipKind" : "stardustlib.simple.256",
+  "tooltipKind" : "stardustlib.simple.192",
   
   "statusEffects" : [ ],
   

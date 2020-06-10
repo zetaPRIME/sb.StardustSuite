@@ -350,6 +350,9 @@ function mg.releaseFocus(w) if w == keyFocus or w == true then mg.grabFocus(nil)
 
 function mg.broadcast(ev, ...) paneBase:pushEvent(ev, ...) frame:pushEvent(ev, ...) end
 
+-- register an action on pane close
+function mg.registerUninit(f) if type(f) == "function" then table.insert(scriptUninit, f) end end
+
 module "util"
 module "extra"
 

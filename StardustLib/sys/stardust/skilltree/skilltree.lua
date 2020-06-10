@@ -318,6 +318,10 @@ function skilltree.applyChanges(silent)
   local found
   for _ in pairs(nodesToUnlock) do found = true break end
   if not found then return nil end
+  if skilltree.currentAP() < 0 then -- no trying to game the system :|
+    if not silent then sfx "error" end
+    return nil
+  end
   -- commit nodes
   for k,v in pairs(nodesToUnlock) do skillData.unlocks[k] = v end
   status.setStatusProperty("stardustlib:ap", (status.statusProperty("stardustlib:ap") or 0) - apToSpend)

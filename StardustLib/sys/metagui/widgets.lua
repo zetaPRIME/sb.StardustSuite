@@ -517,9 +517,12 @@ end do -- label ----------------------------------------------------------------
   end
   
   function widgets.label:setText(t)
+    local old = self.text
     self.text = mg.formatText(t)
-    self:queueRedraw()
-    if self.parent then self.parent:queueGeometryUpdate() end
+    if self.text ~= old then -- only do expensive parts if text actually changed
+      self:queueRedraw()
+      if self.parent then self.parent:queueGeometryUpdate() end
+    end
   end
 end do -- image -------------------------------------------------------------------------------------------------------------------------------------
   widgets.image = mg.proto(mg.widgetBase, {

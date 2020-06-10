@@ -6,5 +6,11 @@
   "inventoryIcon" : "resonitebar.png",
   "description" : "A highly conductive crystal which resonates powerfully when used as a pulse conduit.",
   "shortdescription" : "Resonite Crystal",
-  "itemTags" : [ "reagent", "gem", "ingot" ]
+  "itemTags" : [ "reagent", "gem", "ingot" ],
+  
+  "stardustlib:moduleStats" : {
+    "startech:nanofield" : [
+      ["increased", "energy", 0.15]
+    ]
+  }
 }

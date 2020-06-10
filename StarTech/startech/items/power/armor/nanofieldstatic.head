@@ -1,7 +1,8 @@
 { // -*- grammar-ext: json -*-
   "itemName" : "startech:nanofieldstatichead",
   "shortdescription" : "^gray;Nanofield Static^reset;",
-  "description" : "Click here to access your ^cyan;Configurator^reset;.",
+  "description" : "Click here to access ^yellow;Nanofield^reset; configuration.",
+  "tooltipKind" : "stardustlib.simple.192",
   "inventoryIcon" : [
     { "image" : "/sys/stardust/itemSlotCover.png" },
     { "image" : "/startech/ui/configurator/skilltree.png" }
@@ -9,7 +10,6 @@
   "rarity" : "Essential",
   "maxStack" : 1,
   "category" : "Ephemera",
-  "tooltipKind" : "stardustlib.simple.192",
   
   "statusEffects" : [ ],
   

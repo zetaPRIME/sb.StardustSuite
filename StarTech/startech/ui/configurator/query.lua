@@ -14,6 +14,7 @@ local silly = {
 }
 
 metagui.startEvent(function()
+  pane.playSound "/sfx/interface/stationtransponder_stationpulse.ogg"
   for t = 0,60*5 do
     local itm = player.swapSlotItem()
     if itm then
@@ -38,7 +39,7 @@ metagui.startEvent(function()
       end
       pane.playSound "/sfx/objects/outpostbutton.ogg"
       --pane.playSound "/sfx/interface/stationtransponder_stationpulse.ogg"
-      if math.random(1, 10) == 1 then
+      if math.random(1, 10) < 2 then
         lbl:setText(util.randomChoice(silly))
       else
         lbl:setText("Opening interface...")

@@ -2,7 +2,7 @@
   // TODO: switch this back to admin once configurator exists inworld
   { "op" : "add", "path" : "/items/startech:configurator", "value" : {
     "label" : "^cyan;Configurator",
-    "icon" : "/startech/ui/configurator/skilltree.png",
+    "icon" : "/startech/ui/configurator/skilltree-target.png",
     "action" : [ "ui", "startech:configurator.query" ]
   } },
   

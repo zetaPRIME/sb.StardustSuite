@@ -302,7 +302,12 @@ end
 
 function skilltree.resetChanges(silent)
   local found
-  for _ in pairs(nodesToUnlock) do found = true break end
+  for _, c in pairs(nodesToUnlock) do
+    found = true
+    if c[3] then
+      for _, itm in pairs(c[3]) do player.giveItem(itm) end
+    end
+  end
   if not found then return nil end
   apToSpend = 0
   fixedCosts = 0
@@ -387,6 +392,9 @@ function skilltree.tryUnlockNode(n)
     u[2] = nil u[3] = nil
   end
   nodesToUnlock[n.path] = u
+  if n.itemCost then -- actually take material costs now
+    for _, d in pairs(n.itemCost) do player.consumeItem(d, false, true) end
+  end
   sfx "unlock"
   skilltree.recalculateStats()
   skilltree.redraw()
@@ -667,6 +675,10 @@ function skilltree.initUI()
       -- and redrawing
       if needsRedraw then skilltree.draw() end
     end
+  end)
+  metagui.registerUninit(function()
+    -- refund any item costs incurred but not committed
+    skilltree.resetChanges()
   end)
   
   function w:onMouseButtonEvent(btn, down)

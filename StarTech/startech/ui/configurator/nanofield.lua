@@ -68,7 +68,7 @@ end
 
 function update()
   -- canary
-  local function nope() skilltree.playSound "reset" pane.dismiss() end
+  local function nope() --[[] ]skilltree.playSound "reset"--[[]] pane.dismiss() end
   local itm = player.equippedItem("chest")
   if not itm or itm.name ~= "startech:nanofield" then return nope() end
   local sd = itm.parameters["stardustlib:skillData"]

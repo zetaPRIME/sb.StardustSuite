@@ -180,6 +180,14 @@ function skilltree.init(canvas, treePath, data, saveFunc)
       c[2] = nodes[c[2]]
     end
     
+    -- refund nonexistent nodes
+    for p in pairs(skillData.unlocks) do
+      if not nodes[p] then skilltree.refundNode(p, true) end
+    end
+    for p in pairs(skillData.modules) do -- take care of formerly default-unlocked sockets too
+      if not nodes[p] then skilltree.refundNode(p, true) end
+    end
+    
     skilltree.recalculateStats() -- update all the things
   end
   
@@ -383,6 +391,23 @@ function skilltree.tryUnlockNode(n)
   skilltree.recalculateStats()
   skilltree.redraw()
   return true
+end
+
+function skilltree.refundNode(path, batch)
+  path = type(path) == "table" and path.path or path -- we need specifically the path for this
+  local c = skillData.unlocks[path] or {0}
+  if c[1] ~= 0 then status.setStatusProperty("stardustlib:ap", status.statusProperty("stardustlib:ap", 0) + c[1]) end
+  for k, i in pairs(c[3] or { }) do player.giveItem(i) end
+  skillData.unlocks[path] = nil
+  local m = skillData.modules[path]
+  if m then player.giveItem(m) end
+  skillData.modules[path] = nil
+  skillData.selectors[path] = nil -- clear this too to prevent accretion
+  if not batch then
+    skilltree.recalculateStats()
+    skilltree.saveChanges()
+    skilltree.redraw()
+  end
 end
 
 function skilltree.trySocketNode(node, itm)

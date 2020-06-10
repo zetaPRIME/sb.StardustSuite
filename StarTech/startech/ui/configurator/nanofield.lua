@@ -27,6 +27,7 @@ local function saveItem(itm)
     --{ stat = "healthRegen", amount = 1 },
     { stat = "stardustlib:leech", amount = calc(skillData.stats.leech) },
   })
+  util.appendLists(stats, skillData.effects) -- carry over node status effects
   itm.parameters.statusEffects = stats
   
   player.setEquippedItem("chest", itm)

@@ -221,7 +221,10 @@ function svc.giveItemToCursor(msg, isLocal, itm, shiftable)
 end
 
 function svc.giveAP(msg, isLocal, ap)
-  status.setStatusProperty("stardustlib:ap", math.max(0, status.statusProperty("stardustlib:ap", 0) + ap))
+  if type(ap) ~= "number" then return nil end -- malformed request
+  local curAp = status.statusProperty("stardustlib:ap")
+  if type(curAp) ~= "number" then curAp = 0 end -- correct
+  status.setStatusProperty("stardustlib:ap", math.max(0, curAp + ap))
   if ap >= 50 then -- don't display tiny gains
     local bossAp = ap >= 10000
     localAnimator.spawnParticle {

@@ -13,18 +13,20 @@ local tierReqs = {
 
 do
   local itm = player.swapSlotItem() or { }
-  local uiDef = itemutil.property(itm, "/startech:configuratorUi")
-  if not uiDef then
+  local paneDef = itemutil.property(itm, "/startech:configuratorPane")
+  local uiDef = itemutil.property(itm, "/startech:configuratorUI")
+  if uiDef then
+    player.interact("ScriptPane", { gui = { }, scripts = {"/metagui.lua"}, config = uiDef })
+  elseif paneDef then
+    if type(paneDef) == "string" then
+      local dir = root.itemConfig(itm.name).directory
+      player.interact("ScriptPane", util.absolutePath(dir, paneDef))
+    elseif type(paneDef) == "table" then
+      player.interact(table.unpack(paneDef))
+    end
+  else
     pane.playSound("/sfx/interface/clickon_error.ogg")
     playerext.message("Must be holding configurable item in cursor.")
     return nil
   end
-  if type(uiDef) == "string" then
-    local dir = root.itemConfig(itm.name).directory
-    player.interact("ScriptPane", util.absolutePath(dir, uiDef))
-  elseif type(uiDef) == "table" then
-    player.interact(table.unpack(uiDef))
-  end
-  
-  
 end

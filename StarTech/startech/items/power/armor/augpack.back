@@ -25,7 +25,7 @@
     "ioRate" : 0
   },
   
-  "startech:configuratorUi" : "augpackcfg.config",
+  "startech:configuratorPane" : "augpackcfg.config",
   "stardustlib:moduleStats" : {
     "nanofield" : [
       ["description", "This definitely doesn't go here."]

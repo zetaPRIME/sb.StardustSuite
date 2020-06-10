@@ -3,9 +3,7 @@
 skill tree next things {
     some way of toggling AP gain display
     
-    - sync ID
-    
-    toggles
+    toggle nodes
 }
 
 the BIG IDEA UPDATE {

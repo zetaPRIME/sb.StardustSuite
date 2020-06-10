@@ -12,6 +12,9 @@
   "largeImage" : "/startech/items/active/weapons/pulseglaive-preview.png",
   "builder" : "/startech/items/active/weapons/buildpulseweapon.lua",
   
+  "startech:configuratorUI" : "startech:configurator.tree",
+  "stardustlib:skillTree" : "/startech/skilltree/pulseglaive.config",
+  
   "level" : 2,
   "acceptsUpgradeCatalyst" : true,
 

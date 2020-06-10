@@ -249,7 +249,7 @@ end
 
 function svc.openUI(msg, isLocal, info)
   if type(info) ~= "table" then info = {config = info} end
-  player.interact(info.interactionType or "ScriptPane", { gui = { }, scripts = {"/metagui.lua"}, config = info.config, data = info.data })
+  player.interact("ScriptPane", { gui = { }, scripts = {"/metagui.lua"}, config = info.config, data = info.data })
 end
 
 local patternMatch

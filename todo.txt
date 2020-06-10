@@ -2,10 +2,8 @@
 
 skill tree next things {
     some way of toggling AP gain display
-    - auto refund for nonexistent nodes
-    - make AP display constantly sync
     
-    sync ID
+    - sync ID
     
     toggles
 }

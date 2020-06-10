@@ -329,6 +329,7 @@ function skilltree.applyChanges(silent)
 end
 function skilltree.saveChanges()
   skilltree.recalculateStats()
+  skillData.syncId = sb.makeUuid()
   saveData(skillData)
 end
 

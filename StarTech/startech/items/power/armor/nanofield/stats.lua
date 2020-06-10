@@ -49,24 +49,21 @@ local tierBaseStats = { -- keeping this temporarily for reference
 
 local staticitm = "startech:nanofieldstatic"
 
+local syncId
 function stats.update(p)
   stats.item = playerext.getEquip("chest") or { }
   stats.itemModified = false
   if stats.item.name ~= "startech:nanofield" then
     return nil -- abort when no longer equipped
   end
-  stats.level = itemutil.property(stats.item, "level") or 2
-  if stats.item.parameters.moduleSystem then -- carry over old leveling
-    stats.level = stats.item.parameters.moduleSystem.tierCatalyst or stats.level
-    stats.item.parameters.moduleSystem = nil
-    stats.item.parameters.level = stats.level
-    stats.itemModified = true
-  end
   stats.skillData = stats.item.parameters["stardustlib:skillData"] or { }
-  stats.flags = stats.skillData.flags or { }
-  stats.stat = { }
-  for k,v in pairs(stats.skillData.stats) do
-    stats.stat[k] = (v[1] or 0) * (v[2] or 1) * (v[3] or 1)
+  if stats.skillData.syncId ~= syncId then -- item updated
+    syncId = stats.skillData.syncId
+    stats.flags = stats.skillData.flags or { }
+    stats.stat = { }
+    for k,v in pairs(stats.skillData.stats) do
+      stats.stat[k] = (v[1] or 0) * (v[2] or 1) * (v[3] or 1)
+    end
   end
   
   -- maintain other slots

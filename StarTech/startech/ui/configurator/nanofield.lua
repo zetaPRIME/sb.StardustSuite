@@ -24,6 +24,8 @@ local function saveItem(itm)
     { stat = "maxHealth", amount = calc(skillData.stats.health) - 100 },
     { stat = "maxEnergy", amount = calc(skillData.stats.energy) - 100 },
     { stat = "powerMultiplier", baseMultiplier = calc(skillData.stats.damage) },
+    --{ stat = "healthRegen", amount = 1 },
+    { stat = "stardustlib:leech", amount = calc(skillData.stats.leech) },
   })
   itm.parameters.statusEffects = stats
   
@@ -55,8 +57,12 @@ function skilltree.modifyStatDisplay.armor(txt, v)
   return txt .. string.format(" ^lightgray;(%s damage reduction)^reset;", skilltree.displayNumber(dr, true))
 end
 function skilltree.modifyStatDisplay.healthRegen(txt, v)
-  --if v == 0 then return "" end
+  if v == 0 then return "" end
   return txt .. " ^lightgray;per second^reset;"
+end
+function skilltree.modifyStatDisplay.leech(txt, v)
+  if v == 0 then return "" end
+  return skilltree.displayNumber(v, true) .. " ^lightgray;of damage dealt ^cyan;leeched as health^reset;"
 end
 
 function update()

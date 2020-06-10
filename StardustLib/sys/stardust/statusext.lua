@@ -41,6 +41,11 @@ message.setHandler("stardustlib:getStatusImbue", function()
   return imbue
 end)
 
+message.setHandler("stardustlib:damagedEntity", function(msg, isLocal, id, srcDmg, effDmg, kind)
+  local leech = status.stat("stardustlib:leech", 0)
+  status.modifyResource("health", effDmg * leech)
+end)
+
 local pfx = "::"
 local function decodeStatus(s)
   if string.sub(s.effect, 1, 2) ~= pfx then return s end

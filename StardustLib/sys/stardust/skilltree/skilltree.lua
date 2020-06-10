@@ -31,7 +31,7 @@ local soundEffects = {
   socketPlace = { "/sfx/melee/sword_parry.ogg", "/sfx/objects/essencechest_open2.ogg" },
   socketRemove = { },--"/sfx/objects/ancientenergy_pickup1.ogg",
   
-  selector = { "/sfx/interface/stationtransponder_stationpulse.ogg" },
+  selector = { "/sfx/objects/outpostbutton.ogg", "/sfx/objects/ancientenergy_pickup1.ogg" },
   
   link = { "/sfx/interface/stationtransponder_stationpulse.ogg", "/sfx/tech/tech_dash.ogg" },
 }

@@ -1,4 +1,5 @@
 --
+require "/scripts/util.lua"
 
 local function nf() end -- null function
 local nn = monster or npc
@@ -14,6 +15,8 @@ end
 local _damage = damage or nf
 function damage(args)
   addHitBy(args.sourceId)
+  -- send a notification for leech purposes
+  world.sendEntityMessage(args.sourceId, "stardustlib:damagedEntity", entity.id(), args.sourceDamage, args.damage, args.sourceKind)
   _damage(args)
 end
 

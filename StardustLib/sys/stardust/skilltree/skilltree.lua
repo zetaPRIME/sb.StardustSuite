@@ -114,8 +114,6 @@ function skilltree.init(canvas, treePath, data, saveFunc)
             node.target = util.absolutePath(pfx, node.target or "")
           end
           if node.default then defaultUnlocks[node.path] = true end
-          --if node.type == "socket" then jewelSockets[node] = true end
-          --setNodeVisuals(node)
           if n.connectsTo then -- premake connections
             for _, cn in pairs(n.connectsTo) do
               local p1, p2 = path, util.absolutePath(pfx, cn)
@@ -125,7 +123,6 @@ function skilltree.init(canvas, treePath, data, saveFunc)
               sb.logInfo("connection between "..p1.." and "..p2)
             end
           end
-          sb.logInfo("finished node " .. node.path)
         end
         --
       end

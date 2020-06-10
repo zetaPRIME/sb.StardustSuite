@@ -2,7 +2,7 @@
 require "/lib/stardust/itemutil.lua"
 
 metagui.startEvent(function()
-  for t = 0,60*15 do
+  for t = 0,60*5 do
     local itm = player.swapSlotItem()
     if itm then
       local paneDef = itemutil.property(itm, "/startech:configuratorPane")
@@ -17,13 +17,15 @@ metagui.startEvent(function()
           player.interact(table.unpack(paneDef))
         end
       else
-        pane.playSound("/sfx/interface/clickon_error.ogg")
+        pane.playSound "/sfx/interface/clickon_error.ogg"
         lbl:setText("Item has no configuration.")
         for t = 0,60*3 do
           coroutine.yield()
         end
         return pane.dismiss()
       end
+      pane.playSound "/sfx/objects/outpostbutton.ogg"
+      --pane.playSound "/sfx/interface/stationtransponder_stationpulse.ogg"
       return pane.dismiss()
     end
     coroutine.yield()

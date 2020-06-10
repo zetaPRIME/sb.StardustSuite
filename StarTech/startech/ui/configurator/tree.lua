@@ -8,9 +8,10 @@ local function loadItem()
   player.setSwapSlotItem()
   local title = itemutil.property(itm, "shortdescription") or "(unknown item)"
   metagui.startEvent(function()
-    metagui.setTitle(title)
-    coroutine.yield()
-    metagui.setTitle(title)
+    for i=0,5 do
+      metagui.setTitle(title)
+      coroutine.yield()
+    end
   end)
   return itm
 end

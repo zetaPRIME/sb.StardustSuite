@@ -26,7 +26,7 @@
   
   "stardustlib:skillTree" : "/startech/skilltree/nanofield.config",
   "stardustlib:moduleStats" : {
-    "nanofield" : [
+    "startech:nanofield" : [
       ["flat", "pointless recursion", 1]
     ]
   },

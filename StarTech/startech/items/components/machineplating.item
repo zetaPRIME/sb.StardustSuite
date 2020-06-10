@@ -14,7 +14,7 @@
   ],
   
   "stardustlib:moduleStats" : {
-    "nanofield" : [
+    "startech:nanofield" : [
       ["flat", "armor", 5],
       ["description", "It'll do in a pinch."]
     ]

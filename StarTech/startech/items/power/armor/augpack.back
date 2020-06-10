@@ -27,7 +27,7 @@
   
   "startech:configuratorPane" : "augpackcfg.config",
   "stardustlib:moduleStats" : {
-    "nanofield" : [
+    "startech:nanofield" : [
       ["description", "This definitely doesn't go here."]
     ]
   },

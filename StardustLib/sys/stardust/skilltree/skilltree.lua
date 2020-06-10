@@ -75,6 +75,7 @@ function skilltree.init(canvas, treePath, data, saveFunc)
     -- merge in overrides from tree
     util.mergeTable(defs.baseStats, td.baseStats or { })
     defs.statsDisplay = td.statsDisplay or defs.statsDisplay or { }
+    for k,v in pairs(td.templates or { }) do defs.templates[k] = v end -- template overrides
     
     -- parse through nodeset
     nodes, connections, defaultUnlocks = { }, { }, { }

@@ -19,7 +19,7 @@
       ]
     ] },
     [
-      { "type" : "button", "id" : "toggleStats", "size" : 16, "caption" : ">" },
+      { "type" : "button", "id" : "toggleStats", "size" : 16, "caption" : ">", "toolTip" : "Toggle stats panel" },
       { "type" : "label", "id" : "apDisplay" },
       { "type" : "textBox", "id" : "debugAP" },
       "spacer",

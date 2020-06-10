@@ -123,6 +123,8 @@ function widgetBase:relativeMousePosition() return mg.paneToWidgetPosition(self,
 function widgetBase:relativePanePosition(pos) return mg.paneToWidgetPosition(self, pos) end
 function widgetBase:relativeScreenPosition(pos) return mg.screenToWidgetPosition(self, pos) end
 
+function widgetBase:getToolTip() return self.toolTip or nil end
+
 function widgetBase:grabFocus() return mg.grabFocus(self) end
 function widgetBase:releaseFocus() return mg.releaseFocus(self) end
 function widgetBase:onFocus() end
@@ -242,6 +244,7 @@ function mg.createWidget(param, parent)
   w.explicitSize = param.size
   w.size = param.size
   if param.visible ~= nil then w.visible = param.visible end
+  w.toolTip = param.toolTip
   
   local base
   if parent then -- find base widget
@@ -559,7 +562,7 @@ function cursorOverride(pos)
 end
 
 function createTooltip()
-  --return "lol"
+  if lastMouseOver then return lastMouseOver:getToolTip() end
 end
 
 function _mouseEvent(_, btn, down)

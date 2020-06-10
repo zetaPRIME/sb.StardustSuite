@@ -9,8 +9,8 @@ local function loadItem()
   local title = itemutil.property(itm, "shortdescription") or "(unknown item)"
   metagui.startEvent(function()
     for i=0,5 do
-      metagui.setTitle(title)
       coroutine.yield()
+      metagui.setTitle(title)
     end
   end)
   return itm

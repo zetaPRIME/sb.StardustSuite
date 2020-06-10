@@ -1,6 +1,18 @@
 -- configurator query window
 require "/lib/stardust/itemutil.lua"
 
+local silly = {
+  "All your base are belong to us.",
+  "Mischief managed!",
+  "Running in the nineties...",
+  "]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]]",
+  "And a step to the right!",
+  "Reticulating splines...",
+  "Was yea ra chs hymmnos mea...",
+  "=(^_^)=",
+  "OwO",
+}
+
 metagui.startEvent(function()
   for t = 0,60*5 do
     local itm = player.swapSlotItem()
@@ -26,6 +38,12 @@ metagui.startEvent(function()
       end
       pane.playSound "/sfx/objects/outpostbutton.ogg"
       --pane.playSound "/sfx/interface/stationtransponder_stationpulse.ogg"
+      if math.random(1, 10) == 1 then
+        lbl:setText(util.randomChoice(silly))
+      else
+        lbl:setText("Opening interface...")
+      end
+      for t = 0,15 do coroutine.yield() end
       return pane.dismiss()
     end
     coroutine.yield()

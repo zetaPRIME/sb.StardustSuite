@@ -649,7 +649,9 @@ function skilltree.initUI()
     local omp = {0, 0} -- old mouse pos
     while true do
       if apDisplay then -- handle AP label
-        apDisplay:setText(string.format("^white;%d ^violet;AP^reset;", math.floor(skilltree.currentAP())))
+        local txt = string.format("^white;%d ^violet;AP^reset;", math.floor(skilltree.currentAP()))
+        if apToSpend > 0 then txt = string.format("%s ^lightgray;(^white;%d^lightgray; spent)", txt, math.floor(apToSpend)) end
+        apDisplay:setText(txt)
       end
       
       coroutine.yield()

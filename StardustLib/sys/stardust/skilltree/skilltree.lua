@@ -31,6 +31,8 @@ local soundEffects = {
   socketPlace = { "/sfx/melee/sword_parry.ogg", "/sfx/objects/essencechest_open2.ogg" },
   socketRemove = { },--"/sfx/objects/ancientenergy_pickup1.ogg",
   
+  selector = { "/sfx/interface/stationtransponder_stationpulse.ogg" },
+  
   link = { "/sfx/interface/stationtransponder_stationpulse.ogg", "/sfx/tech/tech_dash.ogg" },
 }
 
@@ -54,6 +56,7 @@ function skilltree.init(canvas, treePath, data, saveFunc)
   skillData = data or { }
   skillData.unlocks = skillData.unlocks or { }
   skillData.modules = skillData.modules or { }
+  skillData.selectors = skillData.selectors or { }
   
   do -- load skill tree
     local td = root.assetJson(treePath)
@@ -130,16 +133,16 @@ function skilltree.init(canvas, treePath, data, saveFunc)
     
     -- post-pass now that groups are expanded
     for k, node in pairs(nodes) do
+      -- reciprocate connections
+      for p in pairs(node.connectsTo) do
+        if nodes[p] then nodes[p].connectsTo[node.path] = true end
+      end
+    end for k, node in pairs(nodes) do -- another one since some of this needs connections statted out
       -- calculate/expand scroll bounds
       scrollBounds[1] = math.min(scrollBounds[1], node.position[1])
       scrollBounds[3] = math.max(scrollBounds[3], node.position[1])
       scrollBounds[2] = math.min(scrollBounds[2], node.position[2])
       scrollBounds[4] = math.max(scrollBounds[4], node.position[2])
-      
-      -- reciprocate connections
-      for p in pairs(node.connectsTo) do
-        if nodes[p] then nodes[p].connectsTo[node.path] = true end
-      end
       
       -- visuals
       if not node.icon then -- automatic icon assignment
@@ -154,7 +157,13 @@ function skilltree.init(canvas, treePath, data, saveFunc)
       local ext = node.icon:match('^.*%.(.-)$')
       if not ext or ext == "" then node.icon = node.icon .. ".png" end
       
-      if node.type == "link" then node.fixedCost = 0 end
+      if node.type == "link" or node.type == "selection" then node.fixedCost = 0 end
+      if node.type == "selection" then -- find master
+        for p in pairs(node.connectsTo) do
+          local n = nodes[p]
+          if n and n.type == "selector" then node.selector = p break end
+        end
+      end
       skilltree.refreshNodeProperties(node)
       if node.itemCost then -- assemble information for item requirement tooltips
         for _, d in pairs(node.itemCost) do
@@ -198,6 +207,7 @@ end
 function skilltree.redraw() needsRedraw = true end
 
 function skilltree.refreshNodeProperties(node)
+  node = type(node) == "table" and node or nodes[node]
   if node.type == "socket" then
     local m = skillData.modules[node.path]
     if m then -- 
@@ -211,6 +221,9 @@ function skilltree.refreshNodeProperties(node)
     else -- socket empty
       node.moduleName, node.moduleGrants, node.contentsIcon = nil
     end
+  elseif node.type == "selector" then
+    local s = nodes[skillData.selectors[node.path] or false]
+    node.effGrants = s and s.grants
   end
   skilltree.generateNodeToolTip(node) -- delegated to module so build scripts can reuse it
 end
@@ -227,7 +240,7 @@ function skilltree.recalculateStats()
   local function doGrants(node, stats)
     local doFlags = stats == nil
     stats = stats or skillData.stats
-    for _, g in pairs(node.moduleGrants or node.grants or { }) do
+    for _, g in pairs(node.effGrants or node.moduleGrants or node.grants or { }) do
       local mode, stat, amt = table.unpack(g)
       if isStatMod[mode] and stat then
         if not stats[stat] then stats[stat] = {0, 1, 1} end
@@ -317,6 +330,14 @@ end
 function skilltree.nodeUnlockLevel(n)
   n = type(n) == "table" and n or nodes[n]
   if not n then return 0 end
+  if n.type == "selection" then
+    if skilltree.nodeUnlockLevel(n.selector) < 1 then return 0 end
+    if skillData.selectors[n.selector] == n.path then
+      return 1
+    else
+      return 0.9
+    end
+  end
   if n.default or skillData.unlocks[n.path] then return 1 end
   if nodesToUnlock[n.path] then return 0.5 end
   return 0
@@ -415,11 +436,14 @@ local lineColors = {
   {127, 63, 63, 63},
   {127, 127, 255, 127},
   {255, 255, 255, 127},
+  
+  selector = {127, 191, 255, 127},
 }
 local nodeDirectives = {
   [0] = "?multiply=7f7f7f",
   h = "?border=1=ffffff5f",
   [0.5] = "?border=1=ffac61bf",
+  [0.9] = "?multiply=7f7f7f?border=1=bfdfff3f", -- inactive selections
   [1] = "",
 }
 function skilltree.draw()
@@ -447,6 +471,9 @@ function skilltree.draw()
     local lc = 1
     if skilltree.nodeUnlockLevel(cn[1]) > 0 then lc = lc + 1 end
     if skilltree.nodeUnlockLevel(cn[2]) > 0 then lc = lc + 1 end
+    if (cn[1].type == "selection" and cn[2].type == "selector") or (cn[1].type == "selector" and cn[2].type == "selection") then
+      lc = "selector"
+    end
     c:drawLine(ndp(cn[1]), ndp(cn[2]), lineColors[lc], 2)
   end
   
@@ -484,6 +511,9 @@ function skilltree.draw()
       if cost > 0 then -- only display nonzero costs
         tt = string.format("%s%s: %s%s ^violet;AP^reset;\n", tt, fixed and "Fixed cost" or "Cost", skilltree.currentAP() >= cost and "^white;" or "^red;", tonumber(math.floor(cost)))
       end
+    elseif mouseOverNode.type == "selection" then
+      local sel = skillData.selectors[mouseOverNode.selector] == mouseOverNode.path
+      tt = string.format("%s^violet;%s^reset;\n", tt, sel and "(selected option)" or "(click to select this option)")
     end
     local btt = tt:gsub("(%b^;)", "") -- strip codes for border
     for _, off in pairs(border) do
@@ -557,6 +587,17 @@ function skilltree.clickNode(n)
           coroutine.yield()
         end
       end)
+    end
+  elseif n.type == "selection" then
+    if skilltree.nodeUnlockLevel(n.selector) < 1 then
+      sfx "error"
+    elseif skillData.selectors[n.selector] ~= n.path then
+      sfx "selector"
+      skillData.selectors[n.selector] = n.path
+      skilltree.refreshNodeProperties(n.selector)
+      skilltree.recalculateStats()
+      skilltree.saveChanges()
+      skilltree.redraw()
     end
   elseif n.type == "socket" and skilltree.nodeUnlockLevel(n) == 1 then
     local itm = player.swapSlotItem()

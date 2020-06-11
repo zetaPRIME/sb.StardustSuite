@@ -133,7 +133,9 @@ function skilltree.init(canvas, treePath, data, saveFunc)
     for k, node in pairs(nodes) do
       -- reciprocate connections
       for p in pairs(node.connectsTo) do
-        if nodes[p] then nodes[p].connectsTo[node.path] = true end
+        if nodes[p] then
+          nodes[p].connectsTo[node.path] = true
+        else node.connectsTo[p] = nil end -- delete invalid
       end
     end for k, node in pairs(nodes) do -- another one since some of this needs connections statted out
       -- calculate/expand scroll bounds
@@ -174,8 +176,9 @@ function skilltree.init(canvas, treePath, data, saveFunc)
     
     -- convert connections from paths to nodes
     for p, c in pairs(connections) do
-      c[1] = nodes[c[1]]
-      c[2] = nodes[c[2]]
+      c[1], c[2] = nodes[c[1]], nodes[c[2]]
+      -- delete invalid connections
+      if not c[1] or not c[2] then connections[p] = nil end 
     end
     
     -- refund nonexistent nodes
@@ -504,7 +507,6 @@ function skilltree.draw()
   
   -- connections
   for _, cn in pairs(connections) do
-    --sb.logInfo(string.format("drawing line \"%s\" between %s and %s", _, cn[1].path, cn[2].path))
     local lc = 1
     if skilltree.nodeUnlockLevel(cn[1]) > 0 then lc = lc + 1 end
     if skilltree.nodeUnlockLevel(cn[2]) > 0 then lc = lc + 1 end

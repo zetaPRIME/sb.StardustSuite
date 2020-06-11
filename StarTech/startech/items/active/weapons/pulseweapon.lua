@@ -5,13 +5,24 @@ require "/lib/stardust/playerext.lua"
 require "/lib/stardust/color.lua"
 require "/lib/stardust/power.item.lua"
 
+require "/sys/stardust/skilltree/calc.lua"
+
 --
 
-cfg = (type(cfg) == "table") and cfg or { }
-setmetatable(cfg, { __call = util.mergeTable })
+do
+  cfg = (type(cfg) == "table") and cfg or { }
+  stats = (type(stats) == "table") and stats or { }
+  local mt = { __call = util.mergeTable }
+  setmetatable(cfg, mt) setmetatable(stats, mt)
+end
 
 cfg { -- defaults
   baseDps = 15,
+}
+
+stats { -- default stats
+  damage = 1.0,
+  charge = 1.0,
 }
 
 function assetPath(s) cfg.assetPath = s end
@@ -47,7 +58,7 @@ end
 
 function initPulseWeapon()
   cfg.hasFU = root.hasTech("fuhealzone")
-  cfg.levelDpsMult = root.evalFunction("weaponDamageLevelMultiplier", config.getParameter("level", 1))
+  --cfg.levelDpsMult = root.evalFunction("weaponDamageLevelMultiplier", config.getParameter("level", 1))
   activeItem.setDamageSources()
   setEnergy(0)
   
@@ -56,6 +67,12 @@ function initPulseWeapon()
     weaponUtil.tag "antiSpace",
   }
   
+  local skillData = config.getParameter("stardustlib:skillData")
+  local stat = skillData and skillData.stats
+  if stat then
+    for k,v in pairs(stat) do stats[k] = skilltree.calculateFinalStat(v) end
+  end
+  
   refreshEnergyColor()
   message.setHandler("startech:refreshEnergyColor", refreshEnergyColor)
 end
@@ -63,7 +80,7 @@ end
 function dmgtype(t) return "electric" .. t end -- visual damage type
 function drawPower(amt) return power.drawEquipEnergy(amt, false, 50) >= amt end
 function baseStatus() return table.unpack(cfg.baseStatus) end
-function damage(m) return m * (cfg.baseDps or 1.0) * cfg.levelDpsMult * status.stat("powerMultiplier", 1.0) end
+function damage(m) return m * (cfg.baseDps or 1.0) * stats.damage * status.stat("powerMultiplier", 1.0) end
 
 do -- energy pulse
   local pulseId = -1

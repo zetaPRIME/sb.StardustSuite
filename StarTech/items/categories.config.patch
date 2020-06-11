@@ -8,6 +8,9 @@
   { "op" : "add", "path" : "/labels/startech:power.weapon", "value" : "^violet;Pulse Weapon^reset;" },
   { "op" : "add", "path" : "/labels/startech:power.armor", "value" : "^violet;Pulse Gear^reset;" },
   
+  { "op" : "add", "path" : "/labels/startech:elytra", "value" : "^violet;Elytra Module^reset;" },
+  { "op" : "add", "path" : "/labels/startech:nanosphere", "value" : "^violet;Nanosphere Module^reset;" },
+  
   { "op" : "add", "path" : "/labels/startech:catalyst", "value" : "^violet;Upgrade Catalyst^reset;" },
   
   { "op" : "add", "path" : "/labels/storagenet", "value" : "Transmatter Network" },

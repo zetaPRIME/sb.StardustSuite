@@ -315,7 +315,7 @@ end
 function beamOpen()
   local md = 0.3
   animator.playSound("open")
-  for v in dynItem.tween(cfg.openTime) do
+  for v in dynItem.tween(cfg.openTime / stats.charge) do
     local sv = 0.5 + math.cos(v * math.pi) * -0.5
     dynItem.aimAt(dynItem.aimDir, dynItem.aimAngle - md)
     animBlade(sv)
@@ -346,7 +346,7 @@ function beamCharge()
   animator.setSoundVolume("charge", 0)
   animator.playSound("charge", -1)
   local cancel
-  for v in dynItem.tween(cfg.chargeTime) do
+  for v in dynItem.tween(cfg.chargeTime / stats.charge) do
     if not dynItem.fire then cancel = true break end
     dynItem.aimAt(dynItem.aimDir, dynItem.aimAngle - md)
     animator.setSoundPitch("charge", util.lerp(v ^ 2, 0.5, 2.0))

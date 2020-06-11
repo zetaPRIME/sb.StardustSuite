@@ -487,6 +487,7 @@ local nodeDirectives = {
   [0.9] = "?multiply=7f7f7f?border=1=bfdfff3f", -- inactive selections
   [1] = "",
 }
+local toolTipBG = metagui.theme.assets.panel--metagui.ninePatch("/metagui/themes/fallbackAssets/panel")
 function skilltree.draw()
   needsRedraw = false
   local c = skilltree.canvas
@@ -534,7 +535,7 @@ function skilltree.draw()
   
   -- tooltip
   if mouseOverNode and (skilltree.canvasWidget:mouseCaptureButton() or -1) < 1 then
-    local ttPos = vec2.add(ndp(mouseOverNode), {12, 4})
+    local ttPos = vec2.add(ndp(mouseOverNode), {14, 4})
     --local toolTipWidth = s[1] - ttPos[1]
     local toolTipWidth = s[1]/2 - 24
     toolTipWidth = util.clamp(s[1] - ttPos[1] - 1, toolTipWidth*0.6, toolTipWidth) -- autoscale down, to a reasonable point
@@ -563,10 +564,17 @@ function skilltree.draw()
       local sel = skillData.selectors[mouseOverNode.selector] == mouseOverNode.path
       tt = string.format("%s^gray;%s^reset;\n", tt, sel and "(selected option)" or "(click to select this option)")
     end
-    local btt = tt:gsub("(%b^;)", "") -- strip codes for border
+    --[[] ]local btt = tt:gsub("(%b^;)", "") -- strip codes for border
     for _, off in pairs(border) do
       c:drawText(btt, { position = vec2.add(ttPos, off), horizontalAnchor = "left", verticalAnchor = "top", wrapWidth = toolTipWidth }, 8, {0, 0, 0, 200})
+    end--]]
+    local ttSize = metagui.measureString(tt, toolTipWidth)
+    if vec2.mag(ttSize) > 2 then -- only display if there's actual text
+      local ttc = vec2.add(ttPos, vec2.mul(ttSize, {0.5, -0.5}))
+      local ttr = rect.withCenter(ttc, vec2.add(ttSize, 2*3))
+      toolTipBG:drawToCanvas(c, "concave", ttr)
     end
+    
     c:drawText(tt, { position = ttPos, horizontalAnchor = "left", verticalAnchor = "top", wrapWidth = toolTipWidth }, 8, {191, 191, 191})
     
   end

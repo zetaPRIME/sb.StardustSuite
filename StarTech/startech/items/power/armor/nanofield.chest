@@ -2,7 +2,12 @@
   "itemName" : "startech:nanofield",
   "shortdescription" : "Nanofield Resonator",
   "description" : "Forego traditional armor for a ^violet;fluxpulse-powered force field^reset;. Also provides ^violet;enhanced mobility^reset;.",
-  "inventoryIcon" : "/interface/deployhover.png",
+  "inventoryIcon" : [
+    { "image" : "/sys/stardust/itemSlotCover.png" },
+    { "image" : "/items/generic/crafting/teleportercore.png" }
+    //{ "image" : "/startech/items/ores/resonitebar.png" }
+  ],
+  "directives" : "?replace;7ee9ff=d2bfff;40beff=a099ff;0058aa=503c80",
   "rarity" : "Essential",
   "maxStack" : 1,
   //"price" : 68000,

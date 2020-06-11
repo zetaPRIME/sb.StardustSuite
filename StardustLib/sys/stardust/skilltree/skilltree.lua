@@ -511,13 +511,13 @@ function skilltree.draw()
   
   -- connections
   for _, cn in pairs(connections) do
-    local lc = 1
+    local lc, lw = 1, 2
     if skilltree.nodeUnlockLevel(cn[1]) > 0 then lc = lc + 1 end
     if skilltree.nodeUnlockLevel(cn[2]) > 0 then lc = lc + 1 end
     if (cn[1].type == "selection" and cn[2].type == "selector") or (cn[1].type == "selector" and cn[2].type == "selection") then
-      lc = "selector"
+      lc, lw = "selector", 4
     end
-    c:drawLine(ndp(cn[1]), ndp(cn[2]), lineColors[lc], 2)
+    c:drawLine(ndp(cn[1]), ndp(cn[2]), lineColors[lc], lw)
   end
   
   -- nodes

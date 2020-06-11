@@ -71,7 +71,7 @@ end
 
 function skilltree.modifyStatDisplay.damage(txt, v)
   local tier = v*2 - 1
-  return txt .. string.format(" ^lightgray;(tier %s)^reset;", skilltree.displayNumber(tier))
+  return txt .. string.format(" ^lightgray;(tier ^white;%s^lightgray;)^reset;", skilltree.displayNumber(tier))
 end
 
 function update()

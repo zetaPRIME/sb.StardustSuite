@@ -38,7 +38,6 @@ metagui.startEvent(function()
         return pane.dismiss()
       end
       pane.playSound "/sfx/objects/outpostbutton.ogg"
-      --pane.playSound "/sfx/interface/stationtransponder_stationpulse.ogg"
       if math.random(1, 10) < 2 then
         lbl:setText(util.randomChoice(silly))
       else

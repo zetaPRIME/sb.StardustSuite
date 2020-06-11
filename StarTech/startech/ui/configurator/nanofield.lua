@@ -35,6 +35,7 @@ end
 
 function init()
   skilltree.initFromItem(treeCanvas, loadItem, saveItem)
+  pane.playSound "/sfx/objects/outpostbutton.ogg"
 end
 
 function apply:onClick() skilltree.applyChanges() end

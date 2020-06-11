@@ -107,6 +107,7 @@ function skilltree.init(canvas, treePath, data, saveFunc)
             grants = n.grants or { }, skill = n.skill, target = n.target or n.to,
             fixedCost = n.fixedCost, costMult = n.costMult, itemCost = n.itemCost,
             condition = n.condition, moduleTypes = n.moduleTypes,
+            canDeselect = n.canDeselect,
           }
           nodes[path] = node
           if node.type == "link" then
@@ -492,6 +493,8 @@ function skilltree.draw()
   local s = c:size()
   local cp = vec2.mul(s, 0.5)
   
+  local visRect = rect.withCenter(vec2.div(scrollPos, nodeSpacing), vec2.add(vec2.div(s, nodeSpacing), 1))
+  
   local function apos(p)
     return vec2.add(cp, vec2.mul(p, {1, -1}))
   end
@@ -518,12 +521,14 @@ function skilltree.draw()
   
   -- nodes
   for _, node in pairs(nodes) do
-    local pos = ndp(node)
-    local dm = nodeDirectives[skilltree.nodeUnlockLevel(node, true)]
-    if mouseOverNode == node then dm = dm .. nodeDirectives["h"] end
-    c:drawImage(node.icon .. dm, pos, 1, {255, 255, 255}, true)
-    if node.contentsIcon then
-      c:drawImage(node.contentsIcon, pos, 1, {255, 255, 255}, true)
+    if rect.contains(visRect, node.position) then
+      local pos = ndp(node)
+      local dm = nodeDirectives[skilltree.nodeUnlockLevel(node, true)]
+      if mouseOverNode == node then dm = dm .. nodeDirectives["h"] end
+      c:drawImage(node.icon .. dm, pos, 1, {255, 255, 255}, true)
+      if node.contentsIcon then
+        c:drawImage(node.contentsIcon, pos, 1, {255, 255, 255}, true)
+      end
     end
   end
   
@@ -550,9 +555,13 @@ function skilltree.draw()
       if cost > 0 then -- only display nonzero costs
         tt = string.format("%s%s: %s%s ^violet;AP^reset;\n", tt, fixed and "Fixed cost" or "Cost", skilltree.currentAP() >= cost and "^white;" or "^red;", tonumber(math.floor(cost)))
       end
+    elseif mouseOverNode.type == "selector" and mouseOverNode.canDeselect then
+      if skilltree.nodeUnlockLevel(mouseOverNode) == 1 and skillData.selectors[mouseOverNode.path] then
+        tt = string.format("%s^gray;%s^reset;\n", tt, "(click to deselect)")
+      end
     elseif mouseOverNode.type == "selection" then
       local sel = skillData.selectors[mouseOverNode.selector] == mouseOverNode.path
-      tt = string.format("%s^violet;%s^reset;\n", tt, sel and "(selected option)" or "(click to select this option)")
+      tt = string.format("%s^gray;%s^reset;\n", tt, sel and "(selected option)" or "(click to select this option)")
     end
     local btt = tt:gsub("(%b^;)", "") -- strip codes for border
     for _, off in pairs(border) do
@@ -634,6 +643,15 @@ function skilltree.clickNode(n)
       sfx "selector"
       skillData.selectors[n.selector] = n.path
       skilltree.refreshNodeProperties(n.selector)
+      skilltree.recalculateStats()
+      skilltree.saveChanges()
+      skilltree.redraw()
+    end
+  elseif n.type == "selector" and skilltree.nodeUnlockLevel(n) == 1 then
+    if n.canDeselect and skillData.selectors[n.path] then
+      sfx "selector"
+      skillData.selectors[n.path] = nil
+      skilltree.refreshNodeProperties(n)
       skilltree.recalculateStats()
       skilltree.saveChanges()
       skilltree.redraw()

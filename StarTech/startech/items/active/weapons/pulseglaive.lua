@@ -179,7 +179,7 @@ function cooldown() -- ...with a flourish
   local start = dynItem.armAngle
   local apex = math.pi * 0.5
   
-  local flipTime = 3/7
+  local flipTime = 3/7 / stats.speed
   
   for v in dynItem.tween(flipTime * 0.3) do
     dynItem.aimAt(dynItem.aimDir, util.lerp(v^0.5, start, apex))
@@ -216,7 +216,7 @@ function thrust(finisher)
   local m = 0.05
   local mx = 1.7
   local md = 0.3
-  for v in dynItem.tween(cfg.thrustTime*0.2) do inp()
+  for v in dynItem.tween(cfg.thrustTime*0.2 / stats.speed) do inp()
     local vv = v^0.125
     local a = util.lerp(vv, mx, m)
     dynItem.aimAt(dynItem.aimDir, dynItem.aimAngle - a)
@@ -237,7 +237,7 @@ function thrust(finisher)
   -- fx
   throwFx("thrustfx", dynItem.aimDir, dynItem.aimAngle, {6, -2/8}, finisher and 1.25 or 1.0)
   
-  for v, f in dynItem.tween(cfg.thrustTime*0.8) do inp()
+  for v, f in dynItem.tween(cfg.thrustTime*0.8 / stats.speed) do inp()
     local rv = v
     v = util.clamp(v*1.5 - 0.5, 0.0, 1.0)
     local a = util.lerp(v^3, m, md)
@@ -286,7 +286,7 @@ function slash(num)
   strike(cfg.slashTime, dmgtype "shortsword", dynItem.offsetPoly(polyFan(sweepWidth, 11), true, dynItem.aimAngle))
   throwFx("slashfx", dynItem.aimDir, dynItem.aimAngle, {6.5, 0}, 0.9) -- 0.8 == 1/1.25
   
-  for v in dynItem.tween(cfg.slashTime * 0.2) do inp() -- main swing
+  for v in dynItem.tween(cfg.slashTime * 0.2 / stats.speed) do inp() -- main swing
     --v = math.sin(v * math.pi)
     local sv = 0.5 + math.cos(v * math.pi) * -0.5
     dynItem.aimAt(dir, aim - util.lerp(sv, -1.0, 1.0) * sweepWidth * slashDir)
@@ -296,7 +296,7 @@ function slash(num)
     animator.rotateTransformationGroup("weapon", math.pi * (-0.5 + (1.0-v) * slashDir * 0.15 ))]]
   end
   
-  for v in dynItem.tween(cfg.slashTime * 0.8) do inp() -- overswing
+  for v in dynItem.tween(cfg.slashTime * 0.8 / stats.speed) do inp() -- overswing
     dynItem.aimAt(dir, aim - (sweepWidth + math.sin(((v^0.75)*0.75)*math.pi) * 0.075 * math.pi) * slashDir)
   end
   

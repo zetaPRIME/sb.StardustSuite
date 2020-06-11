@@ -22,6 +22,7 @@ cfg { -- defaults
 
 stats { -- default stats
   damage = 1.0,
+  speed = 1.0,
   charge = 1.0,
 }
 

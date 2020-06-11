@@ -8,7 +8,7 @@ skill tree next things {
 
 the BIG IDEA UPDATE {
     backend stuff {
-        metaGUI module system (requires some slight reworks) {
+        ? metaGUI module system (requires some slight reworks) {
             container layout, immediately containing module UI
             script loaded just before containing UI
             ... nesting?
@@ -35,8 +35,8 @@ the BIG IDEA UPDATE {
         }
     }
     complete pulse equipment rework {
-        Aetheri-style trees but tied to the item (and in a metaGUI window)
-        global AP system (gathered from combat and the like; basically Aetheri's but usable for multiple things)
+        - Aetheri-style trees but tied to the item (and in a metaGUI window)
+        - global AP system (gathered from combat and the like; basically Aetheri's but usable for multiple things)
         reset catalyst refunds everything invested into an item's progression
         is AP gifting a bug or a feature?
         
@@ -52,7 +52,7 @@ the BIG IDEA UPDATE {
         heat disabled entirely on player ships
         
         t1 elytra is just a pair of rocket boosters; very quick overheat, but immune to disruption
-        move sphere mode to double tapping down
+        - move sphere mode to double tapping down
         swappable spheres
     }
     eidolon hunting {

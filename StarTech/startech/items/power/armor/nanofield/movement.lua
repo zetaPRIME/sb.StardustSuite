@@ -83,6 +83,8 @@ do local s = movement.state("ground")
     mcontroller.clearControls()
     
     self.airJumps = 0
+    
+    self.sphereTap = 100
   end
   
   function s:uninit()
@@ -101,11 +103,17 @@ do local s = movement.state("ground")
     
     if input.keyDown.t1 then
       input.keyDown.t1 = false -- consume press
-      if input.key.down and not zeroG then
+      if false and input.key.down and not zeroG then
         movement.switchState("sphere")
       else
         movement.switchState("flight", true)
       end
+    end
+    self.sphereTap = self.sphereTap + 1
+    if input.keyDown.down then
+      sb.logInfo("sphere tap " .. self.sphereTap)
+      if self.sphereTap < 12 then movement.switchState("sphere") end
+      self.sphereTap = 0
     end
     if input.key.sprint then -- sprint instead of slow walk!
       local v = input.dir[1]
@@ -175,9 +183,13 @@ end
 
 do local s = movement.state("sphere")
   function s:init()
+    local ground = mcontroller.onGround()
     self.collisionPoly = { {-0.85, -0.45}, {-0.45, -0.85}, {0.45, -0.85}, {0.85, -0.45}, {0.85, 0.45}, {0.45, 0.85}, {-0.45, 0.85}, {-0.85, 0.45} }
     mcontroller.controlParameters({ collisionPoly = self.collisionPoly })
-    mcontroller.setYPosition(mcontroller.position()[2]-(29/16))
+    
+    local y = mcontroller.position()[2]-(26/16)
+    mcontroller.setYPosition(y)
+    self.yLock, self.yLockTime = y, ground and 10 or -1
     
     tech.setToolUsageSuppressed(true)
     tech.setParentHidden(true)
@@ -193,7 +205,7 @@ do local s = movement.state("sphere")
     tech.setParentHidden(false)
     tech.setToolUsageSuppressed(false)
     sound.play("/sfx/tech/tech_sphere_transform.ogg")
-    mcontroller.setYPosition(mcontroller.position()[2]+(29/16))
+    mcontroller.setYPosition(mcontroller.position()[2]+(27/16))
     mcontroller.clearControls()
   end
   
@@ -202,6 +214,11 @@ do local s = movement.state("sphere")
   end
 
   function s:main()
+    if self.yLockTime >= 0 then
+      mcontroller.setYPosition(self.yLock)
+      mcontroller.setYVelocity(0.0)
+      self.yLockTime = self.yLockTime - 1
+    end
     if input.keyDown.t1 then -- unmorph
       input.keyDown.t1 = false -- consume press
       movement.switchState(movement.zeroG and "flight" or "ground")
@@ -219,6 +236,8 @@ do local s = movement.state("sphere")
     while self.rot < 0 do self.rot = self.rot + 8 end
     while self.rot >= 8 do self.rot = self.rot - 8 end
     self.ball:setFrame(math.floor(self.rot))
+    
+    if input.dir[1] == 0 and math.abs(mcontroller.xVelocity()) < 5 then mcontroller.setXVelocity(0) end
     
     coroutine.yield()
   end

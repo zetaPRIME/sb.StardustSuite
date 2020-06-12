@@ -1,9 +1,0 @@
-{ // -*- grammar-ext: json -*-
-  "input" : [
-    { "item" : "titaniumbar", "count" : 7 },
-    { "item" : "corefragmentore", "count" : 3 },
-    { "item" : "solidfuel", "count" : 15 }
-  ],
-  "output" : { "item" : "startech:titaniumcatalyst", "count" : 1 },
-  "groups" : [ "startech:tinkertable", "tools", "all" ]
-}

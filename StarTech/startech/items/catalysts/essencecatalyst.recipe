@@ -1,9 +1,0 @@
-{ // -*- grammar-ext: json -*-
-  "input" : [
-    { "item" : "essence", "count" : 2250 },
-    { "item" : "prisilitestar", "count" : 15 },
-    { "item" : "startech:resonitebar", "count" : 3 }
-  ],
-  "output" : { "item" : "startech:essencecatalyst", "count" : 1 },
-  "groups" : [ "startech:tinkertable", "tools", "all" ]
-}

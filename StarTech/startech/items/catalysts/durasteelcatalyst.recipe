@@ -1,9 +1,0 @@
-{ // -*- grammar-ext: json -*-
-  "input" : [
-    { "item" : "durasteelbar", "count" : 10 },
-    { "item" : "corefragmentore", "count" : 3 },
-    { "item" : "salvagetier4", "count" : 1 }
-  ],
-  "output" : { "item" : "startech:durasteelcatalyst", "count" : 1 },
-  "groups" : [ "startech:tinkertable", "tools", "all" ]
-}

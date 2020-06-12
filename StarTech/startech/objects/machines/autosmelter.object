@@ -100,14 +100,14 @@
       "count" : 2,
       "result" : [
         { "name" : "solariumstar" },
-        { "name" : "startech:resoniteore", "chance" : 0.15 }
+        { "name" : "startech:resoniteore", "chance" : 0.25 }
       ]
     },
     
     // vanilla-unused and non-vanilla materials
     "solidfuel" : { "count" : 25, "time" : 40, "result" : { "name" : "supermatter" } },
-    "supermatter" : { "count" : 1, "time" : 600, "result" : { "name" : "startech:resoniteore", "chance" : 0.1 } }, // if you're that desperate for resonite...
-    "prisiliteore" : { "count" : 3, "time" : 30, "result" : [ { "name" : "prisilitestar" }, { "name" : "startech:resoniteore", "chance" : 0.15 } ] },
+    "supermatter" : { "count" : 1, "time" : 300, "result" : { "name" : "startech:resoniteore", "chance" : 0.2 } }, // if you're that desperate for resonite...
+    "prisiliteore" : { "count" : 3, "time" : 30, "result" : [ { "name" : "prisilitestar" }, { "name" : "startech:resoniteore", "chance" : 0.2 } ] },
     "startech:resoniteore" : { "count" : 5, "time" : 30, "result" : { "name" : "startech:resonitebar" } },
     
     // miscellany

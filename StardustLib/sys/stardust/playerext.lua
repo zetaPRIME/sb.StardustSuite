@@ -69,9 +69,14 @@ local hudBasePos = {
 }
 local hudPos = { top = 0, bottom = 0 }
 
+local lastFood
+
 local lastPos = { 0, 0 }
 local _update = update or function() end
 function update(dt, ...)
+  local food = status.resource("food")
+  if lastFood and not player.isAdmin() and food > 0 then status.setStatusProperty("stardustlib:hungerEnabled", food ~= lastFood) end
+  lastFood = food
   --[[screenMetricsUpdateTime = screenMetricsUpdateTime - 1
   if screenMetricsUpdateTime <= 0 then
     screenMetricsUpdateTime = 60

@@ -1,0 +1,8 @@
+{ // -*- grammar-ext: json -*-
+  "frameGrid" : {
+    "size" : [18, 18],
+    "dimensions" : [2, 1],
+    "names" : [ [ "locked", "unlocked" ] ]
+  },
+  "aliases" : { "pending" : "locked" }
+}

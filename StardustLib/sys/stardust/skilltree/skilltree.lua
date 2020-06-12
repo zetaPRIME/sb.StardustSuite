@@ -527,9 +527,12 @@ function skilltree.draw()
   for _, node in pairs(nodes) do
     if rect.contains(visRect, node.position) then
       local pos = ndp(node)
-      local dm = nodeDirectives[skilltree.nodeUnlockLevel(node, true)]
+      local ul = skilltree.nodeUnlockLevel(node, true)
+      local dm = nodeDirectives[ul]
       if mouseOverNode == node then dm = dm .. nodeDirectives["h"] end
-      c:drawImage(node.icon .. dm, pos, 1, {255, 255, 255}, true)
+      local icon = node.icon
+      if icon:sub(-1) == ":" then icon = icon .. (ul <= 0 and "locked" or ul <= 0.5 and "pending" or "unlocked") end
+      c:drawImage(icon .. dm, pos, 1, {255, 255, 255}, true)
       if node.contentsIcon then
         c:drawImage(node.contentsIcon, pos, 1, {255, 255, 255}, true)
       end

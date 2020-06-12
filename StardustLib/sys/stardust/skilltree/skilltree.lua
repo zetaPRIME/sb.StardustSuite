@@ -32,6 +32,7 @@ local soundEffects = {
   socketRemove = { },--"/sfx/objects/ancientenergy_pickup1.ogg",
   
   selector = { "/sfx/objects/outpostbutton.ogg", "/sfx/objects/ancientenergy_pickup1.ogg" },
+  deselect = { "/sfx/objects/outpostbutton.ogg", "/sfx/interface/nav_insufficient_fuel.ogg" },
   
   link = { "/sfx/interface/stationtransponder_stationpulse.ogg", "/sfx/tech/tech_dash.ogg" },
 }
@@ -659,7 +660,7 @@ function skilltree.clickNode(n)
     end
   elseif n.type == "selector" and skilltree.nodeUnlockLevel(n) == 1 then
     if n.canDeselect and skillData.selectors[n.path] then
-      sfx "selector"
+      sfx "deselect"
       skillData.selectors[n.path] = nil
       skilltree.refreshNodeProperties(n)
       skilltree.recalculateStats()

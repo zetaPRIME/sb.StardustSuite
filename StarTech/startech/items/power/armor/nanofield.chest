@@ -30,11 +30,11 @@
   ],
   
   "stardustlib:skillTree" : "/startech/skilltree/nanofield.config",
-  "stardustlib:moduleStats" : {
+  /*"stardustlib:moduleStats" : {
     "startech:nanofield" : [
       ["flat", "pointless recursion", 1]
     ]
-  },
+  },*/
   
   "batteryStats" : {
     "capacity" : 320000,

@@ -106,7 +106,7 @@
     
     // vanilla-unused and non-vanilla materials
     "liquidfuel" : { // can burn a bunch of this in search of materials
-      "count" : 250, "time" : 300,
+      "count" : 200, "time" : 300,
       "result" : [
         { "name" : "startech:resoniteore", "chance" : 0.25 },
         { "name" : "startech:resoniteore", "chance" : 0.25 },

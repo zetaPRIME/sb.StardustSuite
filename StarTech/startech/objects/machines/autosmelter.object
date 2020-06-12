@@ -105,6 +105,16 @@
     },
     
     // vanilla-unused and non-vanilla materials
+    "liquidfuel" : { // can burn a bunch of this in search of materials
+      "count" : 250, "time" : 300,
+      "result" : [
+        { "name" : "startech:resoniteore", "chance" : 0.25 },
+        { "name" : "startech:resoniteore", "chance" : 0.25 },
+        { "name" : "startech:resoniteore", "chance" : 0.25 },
+        { "name" : "startech:resoniteore", "chance" : 0.25 },
+        { "name" : "startech:resoniteore", "chance" : 0.25 }
+      ]
+    },
     "solidfuel" : { "count" : 25, "time" : 40, "result" : { "name" : "supermatter" } },
     "supermatter" : { "count" : 1, "time" : 300, "result" : { "name" : "startech:resoniteore", "chance" : 0.2 } }, // if you're that desperate for resonite...
     "prisiliteore" : { "count" : 3, "time" : 30, "result" : [ { "name" : "prisilitestar" }, { "name" : "startech:resoniteore", "chance" : 0.2 } ] },

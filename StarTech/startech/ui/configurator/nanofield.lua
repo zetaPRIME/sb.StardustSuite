@@ -26,6 +26,7 @@ local function saveItem(itm)
     { stat = "powerMultiplier", baseMultiplier = calc(skillData.stats.damage) },
     --{ stat = "healthRegen", amount = 1 },
     { stat = "stardustlib:leech", amount = calc(skillData.stats.leech) },
+    { stat = "stardustlib:bloodthirst", amount = calc(skillData.stats.bloodthirst) },
   })
   util.appendLists(stats, skillData.effects) -- carry over node status effects
   itm.parameters.statusEffects = stats
@@ -64,7 +65,11 @@ function skilltree.modifyStatDisplay.healthRegen(txt, v)
 end
 function skilltree.modifyStatDisplay.leech(txt, v)
   if v == 0 then return "" end
-  return skilltree.displayNumber(v, true) .. " ^lightgray;of damage dealt ^cyan;leeched as health^reset;"
+  return string.format("%s ^lightgray;of damage dealt ^cyan;leeched as health^reset;", skilltree.displayNumber(v, true))
+end
+function skilltree.modifyStatDisplay.bloodthirst(txt, v)
+  if v == 0 or not status.statusProperty("stardustlib:hungerEnabled") then return "" end
+  return string.format("%s ^lightgray;of damage dealt ^cyan;leeched as hunger^reset;", skilltree.displayNumber(v, true))
 end
 
 function update()

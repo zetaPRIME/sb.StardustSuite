@@ -15,7 +15,7 @@
     }
   ],
   
-  "itemAgingScripts" : ["/startech/agedestroy.lua"],
+  //"itemAgingScripts" : ["/startech/agedestroy.lua"],
 
   "scripts" : [ "objtester.lua" ],
   "scriptDelta" : 1,

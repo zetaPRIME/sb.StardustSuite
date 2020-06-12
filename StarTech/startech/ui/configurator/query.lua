@@ -31,7 +31,7 @@ metagui.startEvent(function()
         end
       else
         pane.playSound "/sfx/interface/clickon_error.ogg"
-        lbl:setText("Item has no configuration.")
+        lbl:setText("Item is not configurable.")
         for t = 0,60*3 do
           coroutine.yield()
         end

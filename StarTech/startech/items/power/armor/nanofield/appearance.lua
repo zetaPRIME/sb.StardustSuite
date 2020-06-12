@@ -67,8 +67,8 @@ function appearance.pulseForceField(amt)
 end
 
 function appearance.setWings(w)
-  wingFront:setImage("elytra.png")
-  wingBack:setImage("elytra.png")
+  wingFront:setImage(w.imgFront)
+  wingBack:setImage(w.imgBack)
   wingEnergyColor = w.energyColor
   wingBaseRot = w.baseRotation or 0
   

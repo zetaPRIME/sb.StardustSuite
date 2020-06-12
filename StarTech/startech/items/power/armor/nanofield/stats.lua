@@ -64,6 +64,8 @@ function stats.update(p)
     for k,v in pairs(stats.skillData.stats) do
       stats.stat[k] = (v[1] or 0) * (v[2] or 1) * (v[3] or 1)
     end
+    stats.elytra = stats.skillData.modules["/elytra"]
+    stats.elytraVanity = stats.skillData.modules["/elytraVanity"]
   end
   
   -- maintain other slots

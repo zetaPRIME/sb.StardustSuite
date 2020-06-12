@@ -103,9 +103,7 @@ do local s = movement.state("ground")
     
     if input.keyDown.t1 then
       input.keyDown.t1 = false -- consume press
-      if false and input.key.down and not zeroG then
-        movement.switchState("sphere")
-      else
+      if stats.elytra then
         movement.switchState("flight", true)
       end
     end
@@ -144,7 +142,7 @@ do local s = movement.state("ground")
       end
     end
     
-    if movement.zeroG and not movement.zeroGPrev then movement.switchState("flight") end
+    if movement.zeroG and not movement.zeroGPrev and stats.elytra then movement.switchState("flight") end
     
     coroutine.yield()
   end
@@ -255,8 +253,14 @@ do local s = movement.state("flight")
     flightPowerCost = 250,
     boostPowerCost = 1000,
     
+    force = 1.0,
+    boostForce = 1.0,
+    
     energyColor = "ff0354",
     baseRotation = 0.0,
+    imgFront = "elytra.png",
+    imgBack = "elytra.png",
+    
     soundActivate = "/sfx/objects/ancientlightplatform_on.ogg",
     soundDeactivate = "/sfx/objects/ancientlightplatform_off.ogg",
     soundThrust = "/sfx/npc/boss/kluexboss_vortex_windy.ogg",--"/sfx/objects/steel_elevator_loop.ogg",--"/sfx/tech/tech_sonicsphere_charge1.ogg",
@@ -264,6 +268,21 @@ do local s = movement.state("flight")
     soundThrustPitch = 1.0,
     soundThrustBoostPitch = 1.22,
   }
+  
+  local vanityProp = {
+    imgFront = "",
+    imgBack = "",
+    baseRotation = true,
+    energyColor = true,
+    
+    soundActivate = "",
+    soundDeactivate = "",
+    soundThrust = "",
+    soundThrustVolume = true,
+    soundThrustPitch = true,
+    soundThrustBoostPitch = true,
+  }
+  
   --[[ testing: Poptra
   wingDefaults.baseRotation = 0.3
   wingDefaults.soundThrust = "nyan.ogg"
@@ -276,7 +295,23 @@ do local s = movement.state("flight")
     self.hEff = 0
     self.vEff = 0
     
-    self.stats = wingDefaults
+    self.stats = { } --wingDefaults
+    util.mergeTable(self.stats, wingDefaults)
+    local istats = itemutil.property(stats.elytra, "startech:elytraStats") or { }
+    local vstats = stats.elytraVanity and itemutil.property(stats.elytraVanity, "startech:elytraStats") or { }
+    util.mergeTable(self.stats, istats)
+    
+    for k,v in pairs(vanityProp) do
+      if type(v) == "string" then -- path
+        if vstats[k] then
+          self.stats[k] = itemutil.relativePath(stats.elytraVanity, vstats[k])
+        elseif istats[k] then
+          self.stats[k] = itemutil.relativePath(stats.elytra, istats[k])
+        end
+      else
+        self.stats[k] = vstats[k] or self.stats[k]
+      end
+    end
     
     if summoned then
       if not stats.drawEnergy(self.stats.boostPowerCost, true, 60) then -- out of power already
@@ -378,9 +413,11 @@ do local s = movement.state("flight")
     if input.dir[1] ~= 0 then forceFacing(input.dir[1]) end
     
     -- for now this is just taken straight from the Aetheri
+    local sMult = self.stats.force
+    if boosting then sMult = sMult * self.stats.boostForce end
     local forceMult = util.lerp((1.0 - vec2.dot(input.dirN, vec2.norm(mcontroller.velocity()))) * 0.5, 0.5, 1.0)
     if vec2.mag(input.dirN) < 0.25 then forceMult = 0.25 end
-    mcontroller.controlApproachVelocity(vec2.mul(input.dirN, thrustSpeed), 12500 * forceMult * dt)
+    mcontroller.controlApproachVelocity(vec2.mul(input.dirN, thrustSpeed), 12500 * forceMult * sMult * dt)
     
     setPose()
     self.hEff = towards(self.hEff, util.clamp(mcontroller.velocity()[1] / 55, -1.0, 1.0), dt * 8)

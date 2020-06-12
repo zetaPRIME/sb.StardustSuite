@@ -1,6 +1,11 @@
 --
 
-stats = { stat = { }, item = { } }
+stats = {
+  stat = { }, item = { },
+}
+
+local heat = 0
+local cooldownTimer = 0
 
 local tierBaseStats = { -- keeping this temporarily for reference
   { -- T1 (Iron)
@@ -93,6 +98,13 @@ function stats.update(p)
     end
   end
   
+  -- heat
+  cooldownTimer = math.max(0, cooldownTimer - p.dt)
+  if cooldownTimer == 0 then
+    local cdr = util.lerp(heat, 1.5, 0.3)
+    heat = math.max(0, heat - cdr*p.dt)
+  end
+  
 end
 
 function stats.postUpdate(p)
@@ -114,6 +126,18 @@ function stats.postUpdate(p)
   if stats.itemModified then
     playerext.setEquip("chest", stats.item)
   end
+  
+  --if world.getProperty("ship.maxFuel") ~= nil or playerext.isAdmin() then heat = 0 end -- disable heat on player ships
+  -- heat HUD
+  if heat > 0 then
+    local x, y = 0, playerext.getHUDPosition("bottom", 1)
+    playerext.queueDrawable {
+      position = {x, y},
+      fullbright = true,
+      renderLayer = "foregroundEntity+5",
+      image = string.format("/interface/foodbar.png?scalebicubic=%f;1", heat)
+    }
+  end
 end
 
 function stats.uninit()
@@ -133,6 +157,12 @@ function stats.drawEnergy(amount, testOnly, ioMult)
     stats.item.parameters.batteryStats = playerext.getEquip("chest").parameters.batteryStats
   end
   return res >= amount
+end
+
+function stats.buildHeat(amt)
+  heat = util.clamp(heat + amt, 0.0, 1.0)
+  if amt > 0 then cooldownTimer = 1.5 end
+  return heat == 1.0
 end
 
 message.setHandler("stardustlib:modifyDamageTaken", function(msg, isLocal, damageRequest)

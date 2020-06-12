@@ -9,6 +9,7 @@
   
   "startech:elytraStats" : {
     //"flightSpeed" : 40, "boostSpeed" : 60, "force" : 1.5
+    //"imgFront" : "/interface/options.png"
   },
   
   "stardustlib:moduleStats" : {

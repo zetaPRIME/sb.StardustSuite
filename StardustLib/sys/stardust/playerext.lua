@@ -165,6 +165,8 @@ function svc.setPlayerConfig(msg, isLocal, key, value)
   cfg[key] = value
 end
 
+function svc.isAdmin() return player.isAdmin() end
+
 --[[function svc.startTabletEngine()
   local questName = "stardustlib:tablet.engine"
   if not player.hasQuest(questName) then

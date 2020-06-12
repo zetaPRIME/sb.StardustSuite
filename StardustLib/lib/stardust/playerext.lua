@@ -35,6 +35,8 @@ if not playerext then
     "getPlayerConfig",
     "setPlayerConfig",
     
+    "isAdmin",
+    
     "warp", "positionWarp",
     
     "giveItems",

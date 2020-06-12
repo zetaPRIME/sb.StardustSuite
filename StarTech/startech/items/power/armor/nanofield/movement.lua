@@ -256,6 +256,18 @@ do local s = movement.state("flight")
     force = 1.0,
     boostForce = 1.0,
     
+    heatIdle = 0.0000001,--0.05,
+    heatThrust = 1.0,
+    heatBoost = 1.1,
+    
+    heatSpaceIdle = 0,
+    heatSpaceThrust = 0,
+    heatSpaceBoost = 0,
+    
+    heatWaterIdle = 0,
+    heatWaterThrust = -0.05,
+    heatWaterBoost = 0.2,
+    
     energyColor = "ff0354",
     baseRotation = 0.0,
     imgFront = "elytra.png",
@@ -311,6 +323,11 @@ do local s = movement.state("flight")
       else
         self.stats[k] = vstats[k] or self.stats[k]
       end
+    end
+    
+    if stats.buildHeat(0) then
+      sound.play("/sfx/interface/energy_out2.ogg")
+      return movement.switchState("ground")
     end
     
     if summoned then
@@ -446,6 +463,21 @@ do local s = movement.state("flight")
     self.thrustLoop:setPitch(pitch)
     
     appearance.positionWings(rot2)
+    
+    -- heat build
+    local heatEnv = ""
+    local heatType = "Idle"
+    if movement.zeroG then
+      heatEnv = "Space"
+    elseif mcontroller.liquidPercentage() > 0.25 then
+      heatEnv = "Water"
+    end
+    if vec2.mag(input.dir) > 0 then
+      heatType = boosting and "Boost" or "Thrust"
+    end
+    if stats.buildHeat(self.stats[string.format("heat%s%s", heatEnv, heatType)] * dt) then
+      movement.switchState("ground")
+    end
     
     if not summoned and not movement.zeroG and movement.zeroGPrev then movement.switchState("ground") end
     

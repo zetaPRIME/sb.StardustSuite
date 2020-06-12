@@ -129,7 +129,7 @@ function skilltree.init(canvas, treePath, data, saveFunc)
         --
       end
     end
-    iterateTree(td.tree, "/", {0, 0}) -- and start at root level
+    iterateTree(td.tree, "/", td.rootPosition or {0, 0}) -- and start at root level
     
     -- post-pass now that groups are expanded
     for k, node in pairs(nodes) do

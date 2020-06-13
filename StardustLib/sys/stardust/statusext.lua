@@ -43,9 +43,11 @@ end)
 
 message.setHandler("stardustlib:damagedEntity", function(msg, isLocal, id, srcDmg, effDmg, kind)
   local leech = status.stat("stardustlib:leech", 0)
-  local bloodthirst = status.stat("stardustlib:bloodthirst", 0)
   status.modifyResource("health", effDmg * leech)
-  status.modifyResource("food", effDmg * bloodthirst)
+  if status.isResource("food") then
+    local bloodthirst = status.stat("stardustlib:bloodthirst", 0)
+    status.modifyResource("food", effDmg * bloodthirst)
+  end
 end)
 
 local pfx = "::"

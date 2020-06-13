@@ -1,0 +1,40 @@
+{ // -*- grammar-ext: json -*-
+  "itemName" : "startech:rcspack",
+  "shortdescription" : "RCS Pack",
+  "inventoryIcon" : "/items/generic/mechparts/booster/mechboostersimple.png?flipy",
+  "description" : "A basic set of rocket thrusters. Overheats quickly, but good for quick boosts.",
+  "category" : "startech:elytra",
+  "rarity" : "Legendary",
+  "tooltipKind" : "stardustlib.withPreview",
+  "largeImage" : "/startech/items/power/armor/nanofield/finwing.png?scalenearest=2",
+  "price" : 1000,
+  
+  "startech:elytraStats" : {
+    "flightSpeed" : 32, "force" : 1.1, "boostForce" : 1.2,
+    
+    // very heat-inefficient but also very powerful
+    "heatAirIdle" : 0.2, "heatAirThrust" : 1.0, "heatAirBoost" : 1.1,
+    "forceMultAir" : 1.25, "speedMultAir" : 1.25,
+    
+    // lot of drag, not very fast in water but also doesn't heat up nearly as much
+    "heatWaterIdle" : 0, "heatWaterThrust" : 0.1, "heatWaterBoost" : 0.15,
+    "speedMultWater" : 0.64, "forceMultWater" : 0.75,
+    
+    // space has some heat issues, but nowhere as much as air
+    "heatSpaceIdle" : -0.2, "heatSpaceThrust" : 0.064, "heatSpaceBoost" : 0.2,
+    "forceMultSpace" : 0.8,
+    
+    "energyColor" : "3f7fff",
+    "imgFront" : "/assetmissing.png",
+    "imgBack" : "/assetmissing.png",
+    
+    "soundActivate" : "/sfx/tech/mech_jetpack_thrust3.ogg",
+    "soundDeactivate" : "/sfx/tech/mech_jetpack_off.ogg",
+    "soundThrust" : "/sfx/tech/mech_jetpack_loop4.ogg",
+    "soundThrustBoostPitch" : 1.0
+  },
+  
+  "stardustlib:moduleStats" : {
+    "startech:elytra" : [ ]
+  }
+}

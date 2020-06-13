@@ -12,14 +12,9 @@
     // startech components
     { "op" : "add", "path" : "/defaultBlueprints/tier1/-", "value" : { "item" : "startech:machineplating" } },
     
-    // catalysts
-    { "op" : "add", "path" : "/defaultBlueprints/tier1/-", "value" : { "item" : "startech:titaniumcatalyst" } },
-    { "op" : "add", "path" : "/defaultBlueprints/tier1/-", "value" : { "item" : "startech:durasteelcatalyst" } },
-    { "op" : "add", "path" : "/defaultBlueprints/tier1/-", "value" : { "item" : "startech:aegisaltcatalyst" } },
-    { "op" : "add", "path" : "/defaultBlueprints/tier1/-", "value" : { "item" : "startech:feroziumcatalyst" } },
-    { "op" : "add", "path" : "/defaultBlueprints/tier1/-", "value" : { "item" : "startech:violiumcatalyst" } },
-    { "op" : "add", "path" : "/defaultBlueprints/tier1/-", "value" : { "item" : "startech:solariumcatalyst" } },
-    { "op" : "add", "path" : "/defaultBlueprints/tier1/-", "value" : { "item" : "startech:essencecatalyst" } },
+    // modules and stuff
+    { "op" : "add", "path" : "/defaultBlueprints/tier1/-", "value" : { "item" : "startech:rcspack" } },
+    { "op" : "add", "path" : "/defaultBlueprints/tier1/-", "value" : { "item" : "startech:finwing" } },
     
     // weapons
     { "op" : "add", "path" : "/defaultBlueprints/tier1/-", "value" : { "item" : "startech:pulseglaive" } },

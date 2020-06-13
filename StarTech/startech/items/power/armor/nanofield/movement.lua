@@ -291,8 +291,8 @@ do local s = movement.state("flight")
     soundThrustIdleVolume = 0.0,
     soundThrustIdlePitch = 0.25,
     
-    status = { },
-    visualStatus = { },
+    status = false,
+    visualStatus = false,
   }
   
   local vanityProp = {
@@ -360,7 +360,7 @@ do local s = movement.state("flight")
         movement.switchState("ground")
       end
       self.summoned = true
-      if mcontroller.groundMovement() then -- lift off ground a bit
+      if mcontroller.groundMovement() and not input.key.down then -- lift off ground a bit
         mcontroller.setYVelocity(12)
       end
     else -- if automatic, restore last frame's momentum (bypass FU's momentum kill)
@@ -400,8 +400,8 @@ do local s = movement.state("flight")
       { stat = "gasImmunity", amount = 1.0 },
       { stat = "helium3Immunity", amount = 1.0 },
     })
-    util.appendLists(sg, self.stats.status)
-    util.appendLists(sg, self.stats.visualStatus)
+    util.appendLists(sg, self.stats.status or { })
+    util.appendLists(sg, self.stats.visualStatus or { })
     
     -- deploy without mech if already in flight (which is nice since heat is disabled on your ship)
     table.insert(psg, { stat = "stardustlib:deployWithoutMech", amount = 1.0 })

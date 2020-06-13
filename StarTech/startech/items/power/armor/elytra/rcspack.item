@@ -41,7 +41,7 @@
     "soundThrustIdlePitch" : 0.8,
     
     "status" : [ ],
-    "visualStatus" : [ ]
+    "visualStatus" : [ "startech:rcspack.vis" ]
   },
   
   "stardustlib:moduleStats" : {

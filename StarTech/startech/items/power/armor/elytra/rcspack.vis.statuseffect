@@ -1,0 +1,8 @@
+{ // -*- grammar-ext: json -*-
+  "name" : "startech:rcspack.vis",
+  "effectConfig" : { },
+
+  "scripts" : [ "rcspack.vis.lua" ],
+
+  "animationConfig" : "rcspack.vis.animation"
+}

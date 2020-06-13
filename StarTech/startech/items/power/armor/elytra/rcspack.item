@@ -12,6 +12,9 @@
   "startech:elytraStats" : {
     "flightSpeed" : 32, "force" : 1.1, "boostForce" : 1.2,
     
+    // not exactly power efficient
+    "flightPowerCost" : 750, "boostPowerCost" : 1250,
+    
     // very heat-inefficient but also very powerful
     "heatAirIdle" : 0.2, "heatAirThrust" : 1.0, "heatAirBoost" : 1.1,
     "forceMultAir" : 1.25, "speedMultAir" : 1.25,
@@ -24,7 +27,8 @@
     "heatSpaceIdle" : -0.2, "heatSpaceThrust" : 0.064, "heatSpaceBoost" : 0.2,
     "forceMultSpace" : 0.8,
     
-    "energyColor" : "3f7fff",
+    "providesEnergyColor" : false, // no reason for this to override energy color
+    "energyColor" : "ff2f00", // red-orange in case anything actually uses this
     "imgFront" : "/assetmissing.png",
     "imgBack" : "/assetmissing.png",
     

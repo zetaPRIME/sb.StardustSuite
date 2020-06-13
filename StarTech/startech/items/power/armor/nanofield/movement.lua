@@ -276,6 +276,7 @@ do local s = movement.state("flight")
     heatWaterThrust = -0.05,
     heatWaterBoost = 0.2,
     
+    providesEnergyColor = true,
     energyColor = "ff0354",
     baseRotation = 0.0,
     imgFront = "elytra.png",
@@ -296,6 +297,7 @@ do local s = movement.state("flight")
     imgBack = "",
     baseRotation = true,
     energyColor = true,
+    providesEnergyColor = true,
     
     soundActivate = "",
     soundDeactivate = "",
@@ -334,7 +336,11 @@ do local s = movement.state("flight")
           self.stats[k] = wingDefaults[k]
         end
       else
-        self.stats[k] = vstats[k] or wingDefaults[k]
+        if vstats[k] ~= nil then
+          self.stats[k] = vstats[k]
+        else
+          self.stats[k] = wingDefaults[k]
+        end
       end
     end
     

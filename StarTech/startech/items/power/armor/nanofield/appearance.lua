@@ -72,7 +72,7 @@ function appearance.setWings(w)
   wingEnergyColor = w.energyColor
   wingBaseRot = w.baseRotation or 0
   
-  appearance.setEnergyColor(w.energyColor)
+  if w.providesEnergyColor then appearance.setEnergyColor(w.energyColor) end
   wingAlpha = wingAlpha - 0.001 -- kick things a bit
 end
 

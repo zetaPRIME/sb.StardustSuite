@@ -1,7 +1,7 @@
 { // -*- grammar-ext: json -*-
   "input" : [
     { "item" : "startech:machineplating", "count" : 10 },
-    { "item" : "siliconboard", "count" : 5 },
+    { "item" : "titaniumbar", "count" : 5 },
     { "item" : "salvagebooster", "count" : 15 },
     { "item" : "salvagelegs", "count" : 5 },
     { "item" : "salvagetier4", "count" : 3 },

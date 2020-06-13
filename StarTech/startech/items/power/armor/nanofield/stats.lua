@@ -131,13 +131,23 @@ function stats.postUpdate(p)
   --if world.getProperty("ship.maxFuel") ~= nil or playerext.isAdmin() then heat = 0 end -- disable heat on player ships
   -- heat HUD
   if heat > 0 then
+    local gran = 4
+    local img = "/startech/items/power/armor/nanofield/heatbar.png"
+    local dim = root.imageSize(img)
     local x, y = 0, playerext.getHUDPosition("bottom", 1)
-    playerext.queueDrawable {
+    local f = math.floor((1.0-heat) * dim[1] * gran/2)
+    playerext.queueDrawable({
       position = {x, y},
       fullbright = true,
       renderLayer = "foregroundEntity+5",
-      image = string.format("/interface/foodbar.png?scalebicubic=%f;1", heat)
-    }
+      image = string.format("%s?setcolor=ffffff?multiply=0000007f?border=1;000000;00000000", img)
+    }, {
+      position = {x, y},
+      fullbright = true,
+      renderLayer = "foregroundEntity+5",
+      scale = 1/gran,
+      image = string.format("%s?scalenearest=%d?crop=%d;0;%d;%d", img, gran, f, dim[1]*gran - f, dim[2]*gran)
+    })
   end
 end
 

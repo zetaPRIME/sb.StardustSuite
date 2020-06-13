@@ -4,10 +4,24 @@ next things {
     figure out a good generalist endgame elytra (pre-eidolon)
     heat gauge stats in nanofield? efficiency, cooldown rate, cooldown delay reduction?
     
-    look into custom crafting system
+    look into custom crafting system {
+        part of stardustlib, duh
+        
+        standard location for craft definitions, or just pass in a path?
+        accordion sections containing listitems
+        sort strings!
+        
+        left pane for recipe list, right for details
+        ingredients listed out with icon (slot), name, count
+        hint strings for ingredients as tooltip (maybe a nice ? icon)
+        
+        bother with crafting times? or just instant
+    }
     
     some way of toggling AP gain display
     toggle nodes
+    
+    currency item costs
 }
 
 the BIG IDEA UPDATE {

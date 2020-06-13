@@ -27,7 +27,7 @@
     "imgBack" : "finwing.png",
     
     "soundThrust" : "/sfx/objects/steel_elevator_loop.ogg",
-    "soundThrustVolume" : 2.0
+    "soundThrustVolume" : 3.5
   },
   
   "stardustlib:moduleStats" : {

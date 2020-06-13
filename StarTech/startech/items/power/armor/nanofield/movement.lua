@@ -290,6 +290,9 @@ do local s = movement.state("flight")
     soundThrustBoostPitch = 1.22,
     soundThrustIdleVolume = 0.0,
     soundThrustIdlePitch = 0.25,
+    
+    status = { },
+    visualStatus = { },
   }
   
   local vanityProp = {
@@ -307,6 +310,8 @@ do local s = movement.state("flight")
     soundThrustBoostPitch = true,
     soundThrustIdleVolume = true,
     soundThrustIdlePitch = true,
+    
+    visualStatus = true,
   }
   
   --[[ testing: Poptra
@@ -389,12 +394,17 @@ do local s = movement.state("flight")
     world.sendEntityMessage(entity.id(), "playerext:reinstateFRStatus")
   end
   
-  function s:updateEffectiveStats(sg)
+  function s:updateEffectiveStats(sg, psg)
     util.appendLists(sg, {
       -- glide effortlessly through most FU gases
       { stat = "gasImmunity", amount = 1.0 },
       { stat = "helium3Immunity", amount = 1.0 },
     })
+    util.appendLists(sg, self.stats.status)
+    util.appendLists(sg, self.stats.visualStatus)
+    
+    -- deploy without mech if already in flight (which is nice since heat is disabled on your ship)
+    table.insert(psg, { stat = "stardustlib:deployWithoutMech", amount = 1.0 })
   end
   
   -- couple functions from Aetheri

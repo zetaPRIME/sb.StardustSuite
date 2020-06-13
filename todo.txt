@@ -6,8 +6,6 @@ next things {
     
     look into custom crafting system
     
-    - remove awkward helmet from mechs as part of stardustlib
-    
     some way of toggling AP gain display
     toggle nodes
 }

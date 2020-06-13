@@ -109,7 +109,7 @@ end
 
 function stats.postUpdate(p)
   
-  local sg = {
+  local sg, psg = {
     { stat = "startech:wearingNanofield", amount = 1 },
     
     { stat = "breathProtection", amount = 1 },
@@ -120,9 +120,15 @@ function stats.postUpdate(p)
     { stat = "maxHealth", amount = stats.stat.health - 100 },
     { stat = "maxEnergy", amount = stats.stat.energy - 100 },
     { stat = "powerMultiplier", baseMultiplier = stats.stat.damageMult },]]
-  }
-  movement.call("updateEffectiveStats", sg)
-  tech.setStats(sg)
+  }, { }
+  movement.call("updateEffectiveStats", sg, psg)
+  status.setPersistentEffects("startech:nanofield", sg)
+  do -- place effects that need to apply on world load in the ephemera
+    local slot = "head"
+    local itm = playerext.getEquip(slot)
+    itm.parameters.statusEffects = psg
+    playerext.setEquip(slot, itm)
+  end
   
   if stats.itemModified then
     playerext.setEquip("chest", stats.item)
@@ -158,6 +164,11 @@ function stats.uninit()
     if itm.name == staticitm .. slot then
       playerext.setEquip(slot, { name = "", count = 0 }) -- clear item
     end
+  end
+  
+  local ch = playerext.getEquip("chest")
+  if not ch or ch.name ~= "startech:nanofield" then
+    status.setPersistentEffects("startech:nanofield", { })
   end
 end
 

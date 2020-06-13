@@ -38,7 +38,10 @@
     "soundThrustBoostPitch" : 1.0,
     
     "soundThrustIdleVolume" : 0.75,
-    "soundThrustIdlePitch" : 0.8
+    "soundThrustIdlePitch" : 0.8,
+    
+    "status" : [ ],
+    "visualStatus" : [ ]
   },
   
   "stardustlib:moduleStats" : {

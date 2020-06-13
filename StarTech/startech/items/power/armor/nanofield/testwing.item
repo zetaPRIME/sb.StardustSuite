@@ -1,10 +1,12 @@
 { // -*- grammar-ext: json -*-
   "itemName" : "startech:testwing",
   "shortdescription" : "Elytra Tester",
-  "inventoryIcon" : "/interface/beamuphover.png",
+  "inventoryIcon" : "/items/generic/mechparts/booster/mechboostersimple.png?flipy",
   "description" : "Take flight upon wings of testing.",
   "category" : "startech:elytra",
   "rarity" : "Legendary",
+  "tooltipKind" : "stardustlib.withPreview",
+  //"largeImage" : "/startech/items/power/armor/nanofield/finwing.png?scalenearest=2",
   "price" : 1000,
   
   "startech:elytraStats" : {

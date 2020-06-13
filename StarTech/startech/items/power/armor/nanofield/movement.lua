@@ -256,9 +256,17 @@ do local s = movement.state("flight")
     force = 1.0,
     boostForce = 1.0,
     
-    heatIdle = 0.0000000001, -- prevent cooldown
-    heatThrust = 1.0,
-    heatBoost = 1.1,
+    forceMultAir = 1.0,
+    forceMultSpace = 1.0,
+    forceMultWater = 1.0,
+    
+    speedMultAir = 1.0,
+    speedMultSpace = 1.0,
+    speedMultWater = 1.0,
+    
+    heatAirIdle = 0.0000000001, -- prevent cooldown
+    heatAirThrust = 1.0,
+    heatAirBoost = 1.1,
     
     heatSpaceIdle = 0,
     heatSpaceThrust = 0,
@@ -417,8 +425,17 @@ do local s = movement.state("flight")
     
     local dt = script.updateDt()
     
+    local statEnv = "Air"
+    if movement.zeroG then
+      statEnv = "Space"
+    elseif mcontroller.liquidPercentage() > 0.25 then
+      statEnv = "Water"
+    end
+    local speedMult = self.stats[string.format("speedMult%s", statEnv)]
+    local forceMult = self.stats[string.format("forceMult%s", statEnv)]
+    
     local boosting = input.key.sprint
-    local thrustSpeed = boosting and self.stats.boostSpeed or self.stats.flightSpeed
+    local thrustSpeed = (boosting and self.stats.boostSpeed or self.stats.flightSpeed) * speedMult
     if input.dir[1] ~= 0 or input.dir[2] ~= 0 then
       local cm = 1.0
       if movement.zeroG or self.onShip then cm = 0.1 elseif mcontroller.liquidMovement() then cm = 0.25 end
@@ -430,7 +447,7 @@ do local s = movement.state("flight")
     if input.dir[1] ~= 0 then forceFacing(input.dir[1]) end
     
     -- for now this is just taken straight from the Aetheri
-    local sMult = self.stats.force
+    local sMult = self.stats.force * forceMult
     if boosting then sMult = sMult * self.stats.boostForce end
     local forceMult = util.lerp((1.0 - vec2.dot(input.dirN, vec2.norm(mcontroller.velocity()))) * 0.5, 0.5, 1.0)
     if vec2.mag(input.dirN) < 0.25 then forceMult = 0.25 end
@@ -465,17 +482,11 @@ do local s = movement.state("flight")
     appearance.positionWings(rot2)
     
     -- heat build
-    local heatEnv = ""
     local heatType = "Idle"
-    if movement.zeroG then
-      heatEnv = "Space"
-    elseif mcontroller.liquidPercentage() > 0.25 then
-      heatEnv = "Water"
-    end
     if vec2.mag(input.dir) > 0 then
       heatType = boosting and "Boost" or "Thrust"
     end
-    if stats.buildHeat(self.stats[string.format("heat%s%s", heatEnv, heatType)] * dt) then
+    if stats.buildHeat(self.stats[string.format("heat%s%s", statEnv, heatType)] * dt) then
       movement.switchState("ground")
     end
     

@@ -1,7 +1,7 @@
 { // -*- grammar-ext: json -*-
   "itemName" : "startech:finwing",
   "shortdescription" : "Leviathan",
-  "inventoryIcon" : "/interface/beamuphover.png",
+  "inventoryIcon" : "/items/generic/mechparts/booster/mechboostersimple.png",
   "description" : "Cut through the water with unparalleled grace with this precision-crafted set of fins.",
   "category" : "startech:elytra",
   "rarity" : "Legendary",
@@ -13,7 +13,7 @@
     //"flightSpeed" : 40, "boostSpeed" : 60, "force" : 1.5
     
     // not optimized for air at all
-    "heatIdle" : 0.2, "heatThrust" : 0.75, "heatBoost" : 1.0,
+    "heatAirIdle" : 0.2, "heatAirThrust" : 0.75, "heatAirBoost" : 1.0,
     
     // extremely effective in water
     "heatWaterIdle" : 0, "heatWaterThrust" : -0.2, "heatWaterBoost" : -0.3,

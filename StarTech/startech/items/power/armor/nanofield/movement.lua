@@ -256,13 +256,13 @@ do local s = movement.state("flight")
     force = 1.0,
     boostForce = 1.0,
     
-    heatIdle = 0.0000001,--0.05,
+    heatIdle = 0.0000000001, -- prevent cooldown
     heatThrust = 1.0,
     heatBoost = 1.1,
     
     heatSpaceIdle = 0,
     heatSpaceThrust = 0,
-    heatSpaceBoost = 0,
+    heatSpaceBoost = 0.0000000001, -- prevent cooldown
     
     heatWaterIdle = 0,
     heatWaterThrust = -0.05,

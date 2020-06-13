@@ -1,0 +1,29 @@
+{ // -*- grammar-ext: json -*-
+  "itemName" : "startech:finwing",
+  "shortdescription" : "Leviathan",
+  "inventoryIcon" : "/interface/beamuphover.png",
+  "description" : "Cut through the water with unparalleled grace with this precision-crafted set of fins.",
+  "category" : "startech:elytra",
+  "rarity" : "Legendary",
+  "tooltipKind" : "stardustlib.withPreview",
+  "largeImage" : "/startech/items/power/armor/nanofield/finwing.png?scalenearest=2",
+  "price" : 1000,
+  
+  "startech:elytraStats" : {
+    //"flightSpeed" : 40, "boostSpeed" : 60, "force" : 1.5
+    
+    // not optimized for air at all
+    "heatIdle" : 0.2, "heatThrust" : 0.75, "heatBoost" : 1.0,
+    
+    // extremely effective in water
+    "heatWaterIdle" : 0, "heatWaterThrust" : -0.2, "heatWaterBoost" : -0.3,
+    
+    "energyColor" : "3f7fff",
+    "imgFront" : "finwing.png",
+    "imgBack" : "finwing.png"
+  },
+  
+  "stardustlib:moduleStats" : {
+    "startech:elytra" : [ ]
+  }
+}

@@ -113,6 +113,7 @@ function stats.postUpdate(p)
     { stat = "startech:wearingNanofield", amount = 1 },
     
     { stat = "breathProtection", amount = 1 },
+    --{ stat = "stardustlib:deployWithoutMech", amount = 1.0 },
     --{ stat = "nude", amount = -100 },
     
     --[[{ stat = "protection", amount = stats.stat.armor },

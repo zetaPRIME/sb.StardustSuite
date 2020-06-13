@@ -383,12 +383,7 @@ function svc.getHUDPosition(_, _, loc, size)
 end
 
 local function deployWithoutMech()
-  return status.statPositive("deployWithoutMech")
-  --[[for _, slot in pairs{"chest", "back", "legs", "head"} do
-    local itm = player.equippedItem(slot) or { }
-    if itm.count == 1 and itemutil.property(itm, "deployWithoutMech") then return true end
-  end
-  return false]]
+  return status.statPositive("stardustlib:deployWithoutMech")
 end
 
 local _canDeploy = canDeploy
@@ -399,7 +394,7 @@ end
 
 local _deploy = deploy
 function deploy(...)
-  if deployWithoutMech() then
+  if deployWithoutMech() and world.gravity(mcontroller.position()) == 0 then
     -- hmm. do something to signal deployment mode to equipment
   else pcall(_deploy, ...) end
 end

@@ -287,6 +287,8 @@ do local s = movement.state("flight")
     soundThrustVolume = 1.0,
     soundThrustPitch = 1.0,
     soundThrustBoostPitch = 1.22,
+    soundThrustIdleVolume = 0.0,
+    soundThrustIdlePitch = 0.25,
   }
   
   local vanityProp = {
@@ -301,6 +303,8 @@ do local s = movement.state("flight")
     soundThrustVolume = true,
     soundThrustPitch = true,
     soundThrustBoostPitch = true,
+    soundThrustIdleVolume = true,
+    soundThrustIdlePitch = true,
   }
   
   --[[ testing: Poptra
@@ -471,12 +475,14 @@ do local s = movement.state("flight")
     rot2 = rot2 + self.vEff * 0.75
     
     -- sound
-    self.thrustLoop:setVolume(self.stats.soundThrustVolume * util.clamp(vec2.mag(mcontroller.velocity()) / 20, 0.0, 1.0))
+    local fspd = (self.stats.flightSpeed * speedMult * 4/5)
+    local spd = vec2.mag(mcontroller.velocity()) / fspd
+    self.thrustLoop:setVolume(util.lerp(util.clamp(spd, 0.0, 1.0), self.stats.soundThrustIdleVolume, self.stats.soundThrustVolume))
     local pitch = vec2.mag(mcontroller.velocity())
-    if pitch <= 25 then
-      pitch = util.lerp(util.clamp(pitch / 20, 0.0, self.stats.soundThrustPitch), 0.25, 1.0)
+    if pitch <= self.stats.flightSpeed * speedMult then
+      pitch = util.lerp(util.clamp(spd, 0.0, self.stats.soundThrustPitch), self.stats.soundThrustIdlePitch, 1.0)
     else
-      pitch = util.lerp(util.clamp((pitch - 25) / (45-25), 0.0, 1.0), self.stats.soundThrustPitch, self.stats.soundThrustBoostPitch)
+      pitch = util.lerp(util.clamp((pitch - self.stats.flightSpeed * speedMult) / (self.stats.boostSpeed*speedMult-self.stats.flightSpeed*speedMult), 0.0, 1.0), self.stats.soundThrustPitch, self.stats.soundThrustBoostPitch)
     end
     self.thrustLoop:setPitch(pitch)
     

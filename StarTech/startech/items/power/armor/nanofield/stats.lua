@@ -128,7 +128,7 @@ function stats.postUpdate(p)
     playerext.setEquip("chest", stats.item)
   end
   
-  --if world.getProperty("ship.maxFuel") ~= nil or playerext.isAdmin() then heat = 0 end -- disable heat on player ships
+  if world.getProperty("ship.maxFuel") ~= nil or playerext.isAdmin() then heat = 0 end -- disable heat on player ships
   -- heat HUD
   if heat >= 0.01 then
     local gran = 4

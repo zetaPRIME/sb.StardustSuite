@@ -31,7 +31,10 @@
     "soundActivate" : "/sfx/tech/mech_jetpack_thrust3.ogg",
     "soundDeactivate" : "/sfx/tech/mech_jetpack_off.ogg",
     "soundThrust" : "/sfx/tech/mech_jetpack_loop4.ogg",
-    "soundThrustBoostPitch" : 1.0
+    "soundThrustBoostPitch" : 1.0,
+    
+    "soundThrustIdleVolume" : 0.75,
+    "soundThrustIdlePitch" : 0.8
   },
   
   "stardustlib:moduleStats" : {

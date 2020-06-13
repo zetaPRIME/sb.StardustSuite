@@ -130,7 +130,7 @@ function stats.postUpdate(p)
   
   --if world.getProperty("ship.maxFuel") ~= nil or playerext.isAdmin() then heat = 0 end -- disable heat on player ships
   -- heat HUD
-  if heat > 0 then
+  if heat >= 0.01 then
     local gran = 4
     local img = "/startech/items/power/armor/nanofield/heatbar.png"
     local dim = root.imageSize(img)

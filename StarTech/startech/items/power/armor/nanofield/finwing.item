@@ -12,12 +12,15 @@
   "startech:elytraStats" : {
     "flightSpeed" : 32, "force" : 1.1, "boostForce" : 1.2,
     
-    // not optimized for air at all
+    // not optimized for air at all; quick boost but also quick overheat
     "heatAirIdle" : 0.2, "heatAirThrust" : 0.75, "heatAirBoost" : 1.0,
     
     // extremely effective in water
     "heatWaterIdle" : 0, "heatWaterThrust" : -0.2, "heatWaterBoost" : -0.3,
     "speedMultWater" : 1.25, "forceMultWater" : 1.1,
+    
+    // does fine in space, but doesn't get extra power from water jets
+    "forceMultSpace" : 0.9,
     
     "energyColor" : "3f7fff",
     "imgFront" : "finwing.png",

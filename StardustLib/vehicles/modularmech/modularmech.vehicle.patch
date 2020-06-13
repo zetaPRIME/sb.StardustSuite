@@ -1,0 +1,4 @@
+[ // -*- grammar-ext: json -*-
+  // nuke awkward helm override
+  { "op" : "add", "path" : "/loungePositions/seat/armorCosmeticOverrides", "value" : { } }
+]

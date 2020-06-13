@@ -1,8 +1,14 @@
 -
 
-skill tree next things {
-    some way of toggling AP gain display
+next things {
+    figure out a good generalist endgame elytra (pre-eidolon)
+    heat gauge stats in nanofield? efficiency, cooldown rate, cooldown delay reduction?
     
+    look into custom crafting system
+    
+    - remove awkward helmet from mechs as part of stardustlib
+    
+    some way of toggling AP gain display
     toggle nodes
 }
 
@@ -17,6 +23,9 @@ the BIG IDEA UPDATE {
         }
         
         ? move slot lock functionality into playerext and give it a proper hook API
+        
+        tabs for metaGUI
+        list sections?
     }
     dialogue tree system {
         metagui, fixed window; can intercept escape due to how keyboard capture works
@@ -40,18 +49,18 @@ the BIG IDEA UPDATE {
         reset catalyst refunds everything invested into an item's progression
         is AP gifting a bug or a feature?
         
-        elytra rework; separate socketable components (slots as part of the nanofield tree?)
-        heat gauge for flight
-        heat rises very slowly with hovering, at a normal pace when moving, and much faster when boosting
-        cooldown starts upon landing on the ground, or after a certain time passes with *no* heat generation, or while underwater
-        maybe cooldown ramp similar to Terraria mana regen; cool down faster at lower heat levels
+        - elytra rework; separate socketable components (slots as part of the nanofield tree?)
+        - heat gauge for flight
+        - heat rises very slowly with hovering, at a normal pace when moving, and much faster when boosting
+        - cooldown starts upon landing on the ground, or after a certain time passes with *no* heat generation, or while underwater
+        - maybe cooldown ramp similar to Terraria mana regen; cool down faster at lower heat levels
         
-        separate heat values for space and atmosphere (you want to be able to navigate space)
+        - separate heat values for space and atmosphere (you want to be able to navigate space)
         maybe heat rises faster when pulling against gravity?
         
-        heat disabled entirely on player ships
+        - heat disabled entirely on player ships
         
-        t1 elytra is just a pair of rocket boosters; very quick overheat, but immune to disruption
+        - t1 elytra is just a pair of rocket boosters; very quick overheat, but immune to disruption
         - move sphere mode to double tapping down
         swappable spheres
     }

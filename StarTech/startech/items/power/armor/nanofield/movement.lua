@@ -25,7 +25,7 @@ do -- core private
   
   function movement.update(p)
     movement.zeroGPrev = movement.zeroG
-    movement.zeroG = (world.gravity(mcontroller.position()) == 0) or status.statusProperty("fu_byosnogravity", false)
+    movement.zeroG = ((world.gravity(mcontroller.position()) == 0) or status.statusProperty("fu_byosnogravity", false)) and not tech.parentLounging()
     
     if not st or not cr or coroutine.status(cr) == "dead" then movement.switchState("ground") end
     local f, err = coroutine.resume(cr)

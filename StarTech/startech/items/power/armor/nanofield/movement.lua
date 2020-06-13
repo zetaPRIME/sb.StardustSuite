@@ -318,18 +318,19 @@ do local s = movement.state("flight")
     self.stats = { } --wingDefaults
     util.mergeTable(self.stats, wingDefaults)
     local istats = itemutil.property(stats.elytra, "startech:elytraStats") or { }
-    local vstats = stats.elytraVanity and itemutil.property(stats.elytraVanity, "startech:elytraStats") or { }
+    local vstats = stats.elytraVanity and itemutil.property(stats.elytraVanity, "startech:elytraStats") or istats
+    local vitm = stats.elytraVanity or stats.elytra
     util.mergeTable(self.stats, istats)
     
     for k,v in pairs(vanityProp) do
       if type(v) == "string" then -- path
         if vstats[k] then
-          self.stats[k] = itemutil.relativePath(stats.elytraVanity, vstats[k])
-        elseif istats[k] then
-          self.stats[k] = itemutil.relativePath(stats.elytra, istats[k])
+          self.stats[k] = itemutil.relativePath(vitm, vstats[k])
+        else
+          self.stats[k] = wingDefaults[k]
         end
       else
-        self.stats[k] = vstats[k] or self.stats[k]
+        self.stats[k] = vstats[k] or wingDefaults[k]
       end
     end
     

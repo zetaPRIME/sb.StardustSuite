@@ -24,7 +24,10 @@
     
     "energyColor" : "3f7fff", // nice ocean blue
     "imgFront" : "finwing.png",
-    "imgBack" : "finwing.png"
+    "imgBack" : "finwing.png",
+    
+    "soundThrust" : "/sfx/objects/steel_elevator_loop.ogg",
+    "soundThrustVolume" : 2.0
   },
   
   "stardustlib:moduleStats" : {

@@ -1,0 +1,16 @@
+{ // -*- grammar-ext: json -*-
+  "input" : [
+    { "item" : "startech:machineplating", "count" : 10 },
+    { "item" : "siliconboard", "count" : 5 },
+    { "item" : "salvagebooster", "count" : 5 },
+    { "item" : "salvagelegs", "count" : 3 },
+    { "item" : "salvagetier4", "count" : 3 },
+    { "item" : "wire", "count" : 5 }
+  ],
+  "output" : {
+    "item" : "startech:finwing",
+    "count" : 1
+  },
+  "duration" : 1,
+  "groups" : [ "startech:tinkertable", "tools", "all" ]
+}

@@ -412,6 +412,7 @@ end do -- icon button ----------------------------------------------------------
   })
   
   function widgets.iconButton:init(base, param)
+    self.size = nil -- force recalculate
     self:setImage(param.image, param.hoverImage, param.pressImage)
     
     self.state = "idle"
@@ -615,7 +616,7 @@ end do -- item slot ------------------------------------------------------------
   end -- end modes
   
   function widgets.itemSlot:init(base, param)
-    self.size = {18, 18} -- preassert so we don't end up invisible from default size
+    self.size = nil -- force recalculate
     self.glyph = mg.path(param.glyph or param.colorGlyph)
     self.colorGlyph = not not param.colorGlyph -- some themes may want to render non-color glyphs as monochrome in their own colors
     self.color = param.color -- might as well let themes have at this

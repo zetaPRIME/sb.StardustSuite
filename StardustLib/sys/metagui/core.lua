@@ -242,7 +242,7 @@ function mg.createWidget(param, parent)
   w.id = param.id
   w.position = param.position or {0, 0}
   w.explicitSize = param.size
-  w.size = param.size
+  w.size = param.size or {0, 0}
   if param.visible ~= nil then w.visible = param.visible end
   w.toolTip = param.toolTip
   

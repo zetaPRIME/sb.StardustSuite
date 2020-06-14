@@ -126,7 +126,7 @@ function stats.postUpdate(p)
   do -- place effects that need to apply on world load in the ephemera
     local slot = "head"
     local itm = playerext.getEquip(slot)
-    itm.parameters.statusEffects = psg
+    itm.parameters.statusEffects = psg[1] and psg
     playerext.setEquip(slot, itm)
   end
   

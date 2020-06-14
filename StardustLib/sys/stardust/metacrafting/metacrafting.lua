@@ -53,7 +53,7 @@ function init()
     end table.sort(recipes, entrySort)
     
     for _, recipe in pairs(recipes) do
-      if not currentRecipe then currentRecipe = recipe end
+      --if not currentRecipe then currentRecipe = recipe end
       local listItem = subList:addChild { type = "listItem", size = {200, 42}, children = { { mode = "vertical", scissoring = false } } }
       listItem.recipe = recipe
       listItem.onSelected = onRecipeSelected
@@ -77,7 +77,7 @@ function init()
     end
   end
   
-  --if currentRecipe then selectRecipe(currentRecipe) end
+  if currentRecipe then selectRecipe(currentRecipe) end
   
   -- refresh counts periodically
   metagui.startEvent(function()
@@ -94,6 +94,16 @@ function hasItem(itm)
   return player.hasCountOfItem(itm, not not itm.parameters)
 end
 
+function consumeItem(itm, mult)
+  mult = mult or 1
+  local currency = itemutil.property(itm, "currency")
+  if currency then
+    player.consumeCurrency(currency, itm.count * mult)
+  else
+    player.consumeItem({ name = itm.name, count = itm.count * mult, parameters = itm.parameters }, true, not not itm.parameters)
+  end
+end
+
 function craftableCount(recipe)
   local cc = math.huge
   for _, itm in pairs(recipe.input) do
@@ -104,6 +114,7 @@ function craftableCount(recipe)
 end
 
 function selectRecipe(recipe)
+  local prev = currentRecipe
   currentRecipe = recipe
   
   -- populate info
@@ -144,4 +155,28 @@ function selectRecipe(recipe)
     end)
     countLabel:pushEvent("updateCraftableCounts")
   end
+  
+  if recipe ~= prev then
+    -- TODO: scroll up
+  end
+end
+
+function craftItem(recipe, count)
+  if not recipe then return nil end
+  count = count or 1
+  if not player.isAdmin() then count = math.min(count, craftableCount(recipe)) end
+  if count <= 0 then
+    pane.playSound "/sfx/interface/clickon_error.ogg"
+    return nil
+  end
+  if not player.isAdmin() then
+    for _, itm in pairs(recipe.input) do
+      consumeItem(itm, count)
+    end
+  end
+  player.giveItem { name = recipe.output.name, count = recipe.output.count * count, parameters = recipe.output.parameters }
+end
+
+function btnCraft:onClick()
+  craftItem(currentRecipe)
 end

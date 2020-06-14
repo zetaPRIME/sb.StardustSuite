@@ -175,6 +175,7 @@ function craftItem(recipe, count)
     end
   end
   player.giveItem { name = recipe.output.name, count = recipe.output.count * count, parameters = recipe.output.parameters }
+  metagui.broadcast("updateCraftableCounts")
 end
 
 function btnCraft:onClick()

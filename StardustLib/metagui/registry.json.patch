@@ -7,6 +7,7 @@
   } },
   { "op" : "add", "path" : "/panes/stardustlib", "value" : {
     "cosplay" : "/sys/stardust/cosplay/cosplay.ui",
+    "metacrafting" : "/sys/stardust/metacrafting/metacrafting.ui",
     "settings" : "/sys/stardust/ui/settings.ui"
   } }
 ]

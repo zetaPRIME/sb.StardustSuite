@@ -3,8 +3,7 @@
   "colonyTags" : ["crafting","electronic"],
   "rarity" : "Legendary",
   "price" : 1250,
-  "interactAction" : /*"ScriptPane", "fallbackInteractAction" :*/ "OpenCraftingInterface",
-  "interactData" : /*"/metagui-common/proxy.config", "fallbackInteractData" :*/ {
+  /*"interactAction" : "OpenCraftingInterface", "interactData" : {
     "config" : "/startech/interface/crafting/tinkertable.config",
     "paneLayoutOverride" : {
       "windowtitle" : {
@@ -16,7 +15,11 @@
       }
     },
     "filter" : [ "startech:tinkertable" ]
-  },
+  },*/
+  "interactAction" : "ScriptPane",
+  "interactData" : { "gui" : { }, "scripts" : ["/metagui.lua"], "config" : "stardustlib:metacrafting", "data" : {
+    "recipes" : "/startech/crafting/tinkertable.config"
+  } },
   "printable" : false,
   "description" : "^violet;(StarTech crafting station)^reset;\nUsed to produce various electronics.",
   "shortdescription" : "^#bf7fff;Tinkerer's Workshop^reset;",

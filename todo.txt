@@ -2,9 +2,11 @@
 
 next things {
     figure out a good generalist endgame elytra (pre-eidolon)
+    ^ Essentia Booster; decent flight time but not unlimited, probably has blink
+    ^ essence spark particle effect?
     heat gauge stats in nanofield? efficiency, cooldown rate, cooldown delay reduction?
     
-    look into custom crafting system {
+    > look into custom crafting system {
         part of stardustlib, duh
         
         standard location for craft definitions, or just pass in a path?

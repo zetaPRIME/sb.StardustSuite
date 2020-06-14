@@ -1,0 +1,23 @@
+{ //  -*- grammar-ext: json -*-
+  "style" : "window", // window (has titlebar), panel (just a frame) etc.
+  "size" : [360, 260], // *internal* size (not including chrome)
+  "title" : "^#00000000;cr aft ing",
+  //"icon" : "settings.icon.png",
+  "uniqueBy" : "path",
+  "scripts" : [ "metacrafting.lua" ],
+  "layoutMode" : "horizontal",
+  "children" : [
+    [
+      { "expandMode" : [1, 2] },
+      { "type" : "label", "align" : "center", "text" : "Recipes" },
+      { "type" : "panel", "style" : "concave", "children" : [
+        { "type" : "scrollArea", "id" : "recipeList", "children" : [ { "spacing" : 1 } ]}
+      ] }
+      
+    ], [
+      { "expandMode" : [1, 2] },
+      "spacer",
+      ["spacer", { "type" : "button", "id" : "btnCraft", "caption" : "Craft" }]
+    ]
+  ]
+}

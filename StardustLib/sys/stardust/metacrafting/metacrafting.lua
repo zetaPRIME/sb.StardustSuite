@@ -125,6 +125,15 @@ function selectRecipe(recipe)
   category = category and root.assetJson("/items/categories.config").labels[category] or category or ""
   curCategory:setText(string.format("^shadow;^lightgray;%s", category))
   
+  local preview = itemutil.property(recipe.output, "largeImage")
+  if preview then
+    preview = itemutil.relativePath(recipe.output, preview)
+    curPreview:setFile(preview)
+    -- enforce maximum width
+    local sc = math.min(1, 100 / curPreview.imgSize[1])
+    curPreview:setScale {sc, sc}
+    curPreview:setVisible(true)
+  else curPreview:setVisible(false) end
   curDescription:setText(itemutil.property(recipe.output, "extendedDescription") or itemutil.property(recipe.output, "description"))
   
   -- ingredients
@@ -156,13 +165,16 @@ function selectRecipe(recipe)
     countLabel:pushEvent("updateCraftableCounts")
   end
   
-  if recipe ~= prev then
-    -- TODO: scroll up
+  if recipe ~= prev then -- scroll up on recipe switch
+    infoPane:scrollTo({0, 0}, true)
   end
 end
 
 function craftItem(recipe, count)
-  if not recipe then return nil end
+  if not recipe then
+    pane.playSound "/sfx/interface/clickon_error.ogg"
+    return nil
+  end
   count = count or 1
   if not player.isAdmin() then count = math.min(count, craftableCount(recipe)) end
   if count <= 0 then
@@ -179,5 +191,7 @@ function craftItem(recipe, count)
 end
 
 function btnCraft:onClick()
-  craftItem(currentRecipe)
+  craftItem(currentRecipe, tonumber(txtCount.text))
+  txtCount:setText("")
 end
+txtCount.onEnter = btnCraft.onClick

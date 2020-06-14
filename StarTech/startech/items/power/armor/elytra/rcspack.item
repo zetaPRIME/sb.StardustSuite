@@ -6,7 +6,7 @@
   "category" : "startech:elytra",
   "rarity" : "Legendary",
   "tooltipKind" : "stardustlib.withPreview",
-  "largeImage" : "/startech/items/power/armor/nanofield/finwing.png?scalenearest=2",
+  //"largeImage" : "/startech/items/power/armor/nanofield/finwing.png?scalenearest=2",
   "price" : 1000,
   
   "startech:elytraStats" : {

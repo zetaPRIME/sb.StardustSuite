@@ -24,10 +24,18 @@
           { "type" : "label", "id" : "curCategory" }
         ]
       ],
-      { "type" : "label", "id" : "curDescription" },
-      { "type" : "label", "align" : "center", "text" : "Ingredients:" },
-      { "type" : "scrollArea", "id" : "ingredientList", "expandMode" : [1, 2], "children" : [ { "spacing" : 1 } ]},
-      ["spacer", { "type" : "button", "id" : "btnCraft", "caption" : "Craft" }]
+      { "type" : "scrollArea", "id" : "infoPane", "expandMode" : [1, 2], "children" : [
+        { "spacing" : 1 },
+        [ "spacer", { "type" : "image", "id" : "curPreview", "expandMode" : [0, 0] }, "spacer" ],
+        { "type" : "label", "id" : "curDescription" },
+        { "type" : "label", "align" : "center", "text" : "Ingredients:" },
+        { "type" : "layout", "id" : "ingredientList", "mode" : "vertical", "spacing" : 1, "scissoring" : false, "expandMode" : [1, 2] }
+      ] },
+      [ // bottom bar
+        //"spacer",
+        { "type" : "textBox", "id" : "txtCount", "caption" : "(count)", "expand" : true },
+        { "type" : "button", "id" : "btnCraft", "caption" : "Craft" }
+      ]
     ]
   ]
 }

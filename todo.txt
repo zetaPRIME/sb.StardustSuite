@@ -28,6 +28,8 @@ next things {
 
 the BIG IDEA UPDATE {
     backend stuff {
+        metaGUI custom tooltip system (very similar to context menus)
+        
         ? metaGUI module system (requires some slight reworks) {
             container layout, immediately containing module UI
             script loaded just before containing UI

@@ -8,6 +8,8 @@
   "shortdescription" : "Resonite Crystal",
   "itemTags" : [ "reagent", "gem", "ingot" ],
   
+  "craftingHint" : "Autosmelter: Aegisalt, Ferozium, Violium, Solarium, Prisilite...",
+  
   "stardustlib:moduleStats" : {
     "startech:nanofield" : [
       ["increased", "energy", 0.15]

@@ -65,14 +65,27 @@ function init()
       topRow:addChild { type = "spacer", size = -1 }
       local lbl = string.format("^shadow;%s", itemutil.property(recipe.output, "shortdescription"))
       if recipe.output.count > 1 then lbl = string.format("%s ^lightgray;(x^reset;^shadow;%d^lightgray;)", lbl, recipe.output.count) end
-      topRow:addChild { type = "label", text = lbl, color = craftableCount(recipe) < 1 and "7f7f7f" }
+      local nameLabel = topRow:addChild { type = "label", text = lbl }
+      nameLabel:subscribeEvent("updateCraftableCounts", function()
+        local col = craftableCount(recipe) < 1 and "7f7f7f"
+        if nameLabel.color ~= col then nameLabel.color = col nameLabel:queueRedraw() end
+      end)
+      nameLabel:pushEvent("updateCraftableCounts")
       for _, itm in pairs(recipe.input) do
         bottomRow:addChild { type = "itemSlot", item = itm }.isMouseInteractable = funcFalse
       end
     end
   end
   
-  if currentRecipe then selectRecipe(currentRecipe) end
+  --if currentRecipe then selectRecipe(currentRecipe) end
+  
+  -- refresh counts periodically
+  metagui.startEvent(function()
+    while true do
+      for i=0,60 do coroutine.yield() end
+      metagui.broadcast("updateCraftableCounts")
+    end
+  end)
 end
 
 function hasItem(itm)
@@ -106,16 +119,29 @@ function selectRecipe(recipe)
   -- ingredients
   ingredientList:clearChildren()
   for _, itm in pairs(recipe.input) do
-    local hasCount = hasItem(itm)
-    
-    ingredientList:addChild {
+    local entry = ingredientList:addChild {
       type = "layout", mode = "horizontal", scissoring = false, children = {
         { type = "itemSlot", item = itm },
         { type = "spacer", size = -1 },
         { type = "label", text = itemutil.property(itm, "shortdescription") },
         "spacer",
-        { type = "label", text = string.format("%d^lightgray;/^reset;%d", hasCount, itm.count), color = hasCount < itm.count and "ff3f3f" }
+        --{ type = "label", text = string.format("%d^lightgray;/^reset;%d", hasCount, itm.count), color = hasCount < itm.count and "ff3f3f" }
       }
     }
+    local hint = itemutil.property(itm, "craftingHint")
+    if hint then
+      local tt = hint
+      local h = entry:addChild {
+        type = "image", file = "/interface/quests/questreceiver.png", scale = 0.5, toolTip = tt
+      }
+      function h:isMouseInteractable() return true end
+    end
+    local countLabel = entry:addChild { type = "label" }
+    countLabel:subscribeEvent("updateCraftableCounts", function()
+      local hasCount = hasItem(itm)
+      countLabel.color = hasCount < itm.count and "ff3f3f"
+      countLabel:setText(string.format("%d^lightgray;/^reset;%d", hasCount, itm.count))
+    end)
+    countLabel:pushEvent("updateCraftableCounts")
   end
 end

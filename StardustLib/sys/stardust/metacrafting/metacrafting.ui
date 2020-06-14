@@ -20,7 +20,7 @@
         { "scissoring" : false, "expandMode" : [2, 0] },
         { "type" : "itemSlot", "id" : "curOutput" }, -1,
         [
-          { "type" : "label", "id" : "curName" },
+          { "type" : "label", "id" : "curName", "text" : "^shadow;^gray;No recipe selected" },
           { "type" : "label", "id" : "curCategory" }
         ]
       ],

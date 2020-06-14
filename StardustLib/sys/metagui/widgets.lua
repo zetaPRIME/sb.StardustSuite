@@ -533,8 +533,15 @@ end do -- image ----------------------------------------------------------------
   })
   
   function widgets.image:init(base, param)
+    self.size = nil -- force recalculate
+    self.noAutoCrop = param.noAutoCrop
     self.file = mg.path(param.file)
-    self.imgSize = root.imageSize(self.file)
+    if self.noAutoCrop then
+      self.imgSize = root.imageSize(self.file)
+    else
+      local r = root.nonEmptyRegion(self.file) or {0, 0, 0, 0}
+      self.imgSize = rect.size(r)
+    end
     self.scale = param.scale
     if type(self.scale) == "number" then self.scale = {self.scale, self.scale} end
     
@@ -546,11 +553,22 @@ end do -- image ----------------------------------------------------------------
   end
   function widgets.image:draw()
     local c = widget.bindCanvas(self.backingWidget)
-    c:clear() c:drawImageDrawable(self.file, vec2.mul(c:size(), 0.5), self.scale)
+    c:clear()
+    if self.noAutoCrop then
+      c:drawImageDrawable(self.file, vec2.mul(c:size(), 0.5), self.scale)
+    else
+      c:drawImageRect(self.file, root.nonEmptyRegion(self.file) or {0, 0, 0, 0}, rect.withCenter(vec2.mul(self.size, 0.5), vec2.mul(self.imgSize, self.scale)))
+    end
   end
-  function widgets.image:setFile(f)
+  function widgets.image:setFile(f, noAutoCrop)
     self.file = mg.path(f)
-    self.imgSize = root.imageSize(self.file)
+    if noAutoCrop ~= nil then self.noAutoCrop = noAutoCrop end
+    if self.noAutoCrop then
+      self.imgSize = root.imageSize(self.file)
+    else
+      local r = root.nonEmptyRegion(self.file) or {0, 0, 0, 0}
+      self.imgSize = rect.size(r)
+    end
     if parent then parent:queueGeometryUpdate() end
   end
   function widgets.image:setScale(v)

@@ -2,7 +2,7 @@
   "itemName" : "startech:finwing",
   "shortdescription" : "Leviathan",
   "inventoryIcon" : "finwing.icon.png",
-  "description" : "Cut through the water with unparalleled grace with this precision-crafted set of fins.",
+  "description" : "Cut through the water with unparalleled grace using this precision-crafted set of fins.",
   "category" : "startech:elytra",
   "rarity" : "Legendary",
   "tooltipKind" : "stardustlib.withPreview",

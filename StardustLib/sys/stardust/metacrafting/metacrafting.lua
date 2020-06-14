@@ -1,8 +1,10 @@
 --
 require "/lib/stardust/itemutil.lua"
 
+local currentRecipe
+
 local function normalizeItem(itm)
-  itm.parameters = itm.parameters or { }
+  --itm.parameters = itm.parameters or { }
   itm.count = itm.count or 1
   itm.name = itm.name or itm.item
   itm.item = nil
@@ -11,29 +13,109 @@ end
 function init()
   local recipeData = root.assetJson(metagui.inputData.recipes)
   
-  metagui.setTitle(recipeData.title or "Crafting")
+  metagui.startEvent(function()
+    local title = recipeData.title or "Crafting"
+    coroutine.yield()
+    metagui.setTitle(title)
+  end)
   
   local funcFalse = function() return false end
+  local function entrySort(a, b) return (a.sortId or a.id) < (b.sortId or b.id) end
   
+  local function onRecipeSelected(self)
+    recipeList:pushEvent("listItemSelected", self)
+    selectRecipe(self.recipe)
+  end
+  
+  
+  -- assemble sorted section list
+  local sections = { }
   for sid, section in pairs(recipeData.sections) do
-    sb.logInfo("section " .. sid)
+    section.id = sid
+    table.insert(sections, section)
+  end table.sort(sections, entrySort)
+  
+  for _, section in pairs(sections) do
+    local sectionBtn = recipeList:addChild { type = "button", expand = true, caption = section.name or sid }
     local subList = recipeList:addChild { type = "layout", mode = "vertical", spacing = 1, expand = true }
+    subList:setVisible(false)
+    function sectionBtn:onClick()
+      subList:setVisible(not subList.visible)
+    end
+    
+    -- assemble sorted recipe list
+    local recipes = { }
     for rid, recipe in pairs(section.recipes) do
-      sb.logInfo("processing recipe \"%s\" in section \"%s\"", rid, sid)
       recipe.id = rid
       normalizeItem(recipe.output)
+      for _, itm in pairs(recipe.input) do normalizeItem(itm) end
+      table.insert(recipes, recipe)
+    end table.sort(recipes, entrySort)
+    
+    for _, recipe in pairs(recipes) do
+      if not currentRecipe then currentRecipe = recipe end
       local listItem = subList:addChild { type = "listItem", size = {200, 42}, children = { { mode = "vertical", scissoring = false } } }
-      listItem.expandMode = {2, 0}
-      local topRow = listItem:addChild { type = "layout", mode = "horizontal", align = 0.5 }
-      topRow:addChild { type = "itemSlot", item = recipe.output }.isMouseInteractable = funcFalse
-      topRow:addChild { type = "label", text = itemutil.property(recipe.output, "shortdescription") }
+      listItem.recipe = recipe
+      listItem.onSelected = onRecipeSelected
+      
+      -- populate info rows
+      local topRow = listItem:addChild { type = "layout", mode = "horizontal", align = 0.5, scissoring = false }
       local bottomRow = listItem:addChild { type = "layout", mode = "horizontal", align = 0, scissoring = false }
+      topRow:addChild { type = "itemSlot", item = recipe.output }.isMouseInteractable = funcFalse
+      topRow:addChild { type = "spacer", size = -1 }
+      local lbl = string.format("^shadow;%s", itemutil.property(recipe.output, "shortdescription"))
+      if recipe.output.count > 1 then lbl = string.format("%s ^lightgray;(x^reset;^shadow;%d^lightgray;)", lbl, recipe.output.count) end
+      topRow:addChild { type = "label", text = lbl, color = craftableCount(recipe) < 1 and "7f7f7f" }
       for _, itm in pairs(recipe.input) do
-        normalizeItem(itm)
         bottomRow:addChild { type = "itemSlot", item = itm }.isMouseInteractable = funcFalse
       end
     end
   end
   
-  recipeList:queueGeometryUpdate()
+  if currentRecipe then selectRecipe(currentRecipe) end
+end
+
+function hasItem(itm)
+  local currency = itemutil.property(itm, "currency")
+  if currency then return player.currency(currency) end
+  return player.hasCountOfItem(itm, not not itm.parameters)
+end
+
+function craftableCount(recipe)
+  local cc = math.huge
+  for _, itm in pairs(recipe.input) do
+    if itm.count > 0 then cc = math.min(cc, math.floor(hasItem(itm) / itm.count)) end
+    if cc <= 0 then return 0 end
+  end
+  return cc
+end
+
+function selectRecipe(recipe)
+  currentRecipe = recipe
+  
+  -- populate info
+  curOutput:setItem(recipe.output)
+  local name = itemutil.property(recipe.output, "shortdescription") or recipe.output.name
+  curName:setText(string.format("^shadow;%s", name))
+  local category = itemutil.property(recipe.output, "category")
+  category = category and root.assetJson("/items/categories.config").labels[category] or category or ""
+  curCategory:setText(string.format("^shadow;^lightgray;%s", category))
+  
+  curDescription:setText(itemutil.property(recipe.output, "extendedDescription") or itemutil.property(recipe.output, "description"))
+  
+  -- ingredients
+  ingredientList:clearChildren()
+  for _, itm in pairs(recipe.input) do
+    local hasCount = hasItem(itm)
+    
+    ingredientList:addChild {
+      type = "layout", mode = "horizontal", scissoring = false, children = {
+        { type = "itemSlot", item = itm },
+        { type = "spacer", size = -1 },
+        { type = "label", text = itemutil.property(itm, "shortdescription") },
+        "spacer",
+        { type = "label", text = string.format("%d^lightgray;/^reset;%d", hasCount, itm.count), color = hasCount < itm.count and "ff3f3f" }
+      }
+    }
+  end
 end

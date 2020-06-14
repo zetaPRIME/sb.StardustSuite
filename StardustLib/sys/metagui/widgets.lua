@@ -862,6 +862,10 @@ end do -- text box -------------------------------------------------------------
   function widgets.textBox:init(base, param)
     self.caption = param.caption
     
+    self.expandMode = param.expandMode
+    if param.inline then self.expandMode = {0, 0} end
+    if param.expand then self.expandMode = {2, 0} end
+    
     self.backingWidget = mkwidget(base, { type = "canvas" })
     self.subWidgets = { content = mkwidget(base, { type = "canvas" }) }
   end

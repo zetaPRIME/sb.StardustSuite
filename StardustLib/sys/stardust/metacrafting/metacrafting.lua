@@ -37,6 +37,7 @@ function init()
   local sections = { }
   for sid, section in pairs(recipeData.sections) do
     section.id = sid
+    section.sortId = section.sortId or recipeData.defaultSectionSortId
     table.insert(sections, section)
   end table.sort(sections, entrySort)
   
@@ -55,6 +56,7 @@ function init()
     local recipes = { }
     for rid, recipe in pairs(section.recipes) do
       recipe.id = rid
+      recipe.sortId = recipe.sortId or section.defaultSortId or recipeData.defaultRecipeSortId
       normalizeItem(recipe.output)
       for _, itm in pairs(recipe.input) do normalizeItem(itm) end
       recipe.name = itemutil.property(recipe.output, "shortdescription")

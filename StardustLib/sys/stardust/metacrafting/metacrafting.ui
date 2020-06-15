@@ -26,11 +26,12 @@
       ],
       { "type" : "scrollArea", "id" : "infoPane", "expandMode" : [1, 2], "children" : [
         { "spacing" : 1 },
-        [ "spacer", { "type" : "image", "id" : "curPreview", "expandMode" : [0, 0] }, "spacer" ],
+        [ { "mode" : "vertical", "id" : "previewArea", "align" : 0.5 } ],
         { "type" : "label", "id" : "curDescription" },
         3,
         { "type" : "label", "align" : "center", "text" : "^lightgray;Ingredients:" },
-        { "type" : "layout", "id" : "ingredientList", "mode" : "vertical", "spacing" : 1, "scissoring" : false, "expandMode" : [1, 2] }
+        { "type" : "layout", "id" : "ingredientList", "mode" : "vertical", "spacing" : 1, "scissoring" : false, "expandMode" : [1, 2] },
+        1
       ] },
       [ // bottom bar
         //"spacer",

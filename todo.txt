@@ -9,7 +9,7 @@ next things {
     
     heat gauge stats in nanofield? efficiency, cooldown rate, cooldown delay reduction?
     
-    more robust preview system for metacrafting
+    > more robust preview system for metacrafting
     
     some way of toggling AP gain display
     toggle nodes

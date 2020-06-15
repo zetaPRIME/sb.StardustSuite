@@ -146,16 +146,26 @@ function selectRecipe(recipe)
   category = category and root.assetJson("/items/categories.config").labels[category] or category or ""
   curCategory:setText(string.format("^shadow;^lightgray;%s", category))
   
+  previewArea:clearChildren()
+  local orientation = itemutil.property(recipe.output, "orientations") orientation = orientation and orientation[1]
   local preview = itemutil.property(recipe.output, "largeImage")
+  if orientation and not preview then
+    if orientation.image then preview = orientation.image
+    elseif orientation.dualImage then
+      preview = orientation.dualImage .. "?flipx"
+    --elseif orientation.imageLayers then preview = orientation.imageLayers[1].image
+    end
+  end
   if preview then
     preview = itemutil.relativePath(recipe.output, preview)
-    curPreview:setVisible(false)
+    previewArea:addChild { type = "spacer", size = 3 }
+    local curPreview = previewArea:addChild { type = "image" }
+    previewArea:addChild { type = "spacer", size = 3 }
     curPreview:setFile(preview)
     -- enforce maximum width
-    local sc = math.min(1, 100 / curPreview.imgSize[1])
+    local sc = math.min(70 / curPreview.imgSize[1], 100 / curPreview.imgSize[1])
     curPreview:setScale {sc, sc}
-    curPreview:setVisible(true)
-  else curPreview:setVisible(false) end
+  end
   curDescription:setText(itemutil.property(recipe.output, "extendedDescription") or itemutil.property(recipe.output, "description"))
   
   -- ingredients

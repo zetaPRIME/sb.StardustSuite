@@ -146,25 +146,54 @@ function selectRecipe(recipe)
   category = category and root.assetJson("/items/categories.config").labels[category] or category or ""
   curCategory:setText(string.format("^shadow;^lightgray;%s", category))
   
+  -- preview stuff
+  function getScale(size, obj)
+    local min, max = {70, 45}, {100, 45}
+    if obj then max = min end
+    local s = 1
+    s = math.max(s, min[1]/size[1])
+    s = math.max(s, min[2]/size[2])
+    s = math.min(s, max[1]/size[1])
+    s = math.min(s, max[2]/size[2])
+    return {s, s}
+  end
   previewArea:clearChildren()
+  local padding = { type = "spacer", size = 3 }
   local orientation = itemutil.property(recipe.output, "orientations") orientation = orientation and orientation[1]
   local preview = itemutil.property(recipe.output, "largeImage")
   if orientation and not preview then
-    if orientation.image then preview = orientation.image
+    if type(orientation.image) == "string" then preview = orientation.image
     elseif orientation.dualImage then
       preview = orientation.dualImage .. "?flipx"
-    --elseif orientation.imageLayers then preview = orientation.imageLayers[1].image
+    elseif orientation.imageLayers then
+      preview = util.mergeTable({ }, orientation.imageLayers)
     end
   end
-  if preview then
+  if not preview then preview = itemutil.property(recipe.output, "inventoryIcon") end
+  if type(preview) == "string" then -- single image
     preview = itemutil.relativePath(recipe.output, preview)
-    previewArea:addChild { type = "spacer", size = 3 }
+    previewArea:addChild(padding)
     local curPreview = previewArea:addChild { type = "image" }
-    previewArea:addChild { type = "spacer", size = 3 }
+    previewArea:addChild(padding)
     curPreview:setFile(preview)
     -- enforce maximum width
-    local sc = math.min(70 / curPreview.imgSize[1], 100 / curPreview.imgSize[1])
-    curPreview:setScale {sc, sc}
+    curPreview:setScale(getScale(curPreview.imgSize, orientation))
+  elseif type(preview) == "table" then -- composite
+    local bb = {math.huge, math.huge, -math.huge, -math.huge}
+    for _, l in pairs(preview) do
+      l.image = itemutil.relativePath(recipe.output, l.image)
+      local r = rect.translate(root.nonEmptyRegion(l.image), l.offset or {0, 0})
+      bb[1] = math.min(bb[1], r[1]) bb[2] = math.min(bb[2], r[2]) bb[3] = math.max(bb[3], r[3]) bb[4] = math.max(bb[4], r[4])
+    end
+    local off = vec2.mul(rect.ll(bb), -1)
+    local scale = getScale(rect.size(bb), orientation)
+    
+    previewArea:addChild(padding)
+    local img = previewArea:addChild { type = "layout", mode = "manual", size = vec2.mul(rect.size(bb), scale) }
+    previewArea:addChild(padding)
+    for _, l in pairs(preview) do
+      img:addChild { type = "image", file = l.image, noAutoCrop = true, position = vec2.mul(vec2.mul(vec2.add(off, l.offset or {0, 0}), {1, -1}), scale), scale = scale }
+    end
   end
   curDescription:setText(itemutil.property(recipe.output, "extendedDescription") or itemutil.property(recipe.output, "description"))
   

@@ -171,7 +171,7 @@ function selectRecipe(recipe)
   end
   if not preview then preview = itemutil.property(recipe.output, "inventoryIcon") end
   if type(preview) == "string" then -- single image
-    preview = itemutil.relativePath(recipe.output, preview)
+    preview = itemutil.relativePath(recipe.output, preview) .. (itemutil.property(recipe.output, "directives") or "")
     previewArea:addChild(padding)
     local curPreview = previewArea:addChild { type = "image" }
     previewArea:addChild(padding)
@@ -180,8 +180,9 @@ function selectRecipe(recipe)
     curPreview:setScale(getScale(curPreview.imgSize, orientation))
   elseif type(preview) == "table" then -- composite
     local bb = {math.huge, math.huge, -math.huge, -math.huge}
+    local directives = itemutil.property(recipe.output, "directives") or ""
     for _, l in pairs(preview) do
-      l.image = itemutil.relativePath(recipe.output, l.image)
+      l.image = itemutil.relativePath(recipe.output, l.image) .. directives
       local r = rect.translate(root.nonEmptyRegion(l.image), l.offset or {0, 0})
       bb[1] = math.min(bb[1], r[1]) bb[2] = math.min(bb[2], r[2]) bb[3] = math.max(bb[3], r[3]) bb[4] = math.max(bb[4], r[4])
     end

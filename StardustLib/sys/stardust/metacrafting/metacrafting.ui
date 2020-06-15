@@ -28,7 +28,7 @@
         { "spacing" : 1 },
         [ "spacer", { "type" : "image", "id" : "curPreview", "expandMode" : [0, 0] }, "spacer" ],
         { "type" : "label", "id" : "curDescription" },
-        { "type" : "label", "align" : "center", "text" : "Ingredients:" },
+        { "type" : "label", "align" : "center", "text" : "^lightgray;Ingredients:" },
         { "type" : "layout", "id" : "ingredientList", "mode" : "vertical", "spacing" : 1, "scissoring" : false, "expandMode" : [1, 2] }
       ] },
       [ // bottom bar

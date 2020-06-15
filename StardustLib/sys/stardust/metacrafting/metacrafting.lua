@@ -41,6 +41,9 @@ function init()
     subList:setVisible(false)
     function sectionBtn:onClick()
       subList:setVisible(not subList.visible)
+      -- show scroll indicators
+      coroutine.yield() coroutine.yield()
+      recipeList:scrollBy {1, 0}
     end
     
     -- assemble sorted recipe list
@@ -128,6 +131,7 @@ function selectRecipe(recipe)
   local preview = itemutil.property(recipe.output, "largeImage")
   if preview then
     preview = itemutil.relativePath(recipe.output, preview)
+    curPreview:setVisible(false)
     curPreview:setFile(preview)
     -- enforce maximum width
     local sc = math.min(1, 100 / curPreview.imgSize[1])

@@ -147,9 +147,11 @@ function selectRecipe(recipe)
   curCategory:setText(string.format("^shadow;^lightgray;%s", category))
   
   -- preview stuff
-  function getScale(size, obj)
-    local min, max = {70, 45}, {100, 45}
-    if obj then max = min end
+  function getScale(size, ttk)
+    local min, max = {70, 45}, {70, 45}
+    if ttk == "stardustlib.withPreview" then
+      min, max = {1, 1}, {100, 45}
+    end
     local s = 1
     s = math.max(s, min[1]/size[1])
     s = math.max(s, min[2]/size[2])
@@ -159,6 +161,8 @@ function selectRecipe(recipe)
   end
   previewArea:clearChildren()
   local padding = { type = "spacer", size = 3 }
+  local ttk = itemutil.property(recipe.output, "tooltipKind")
+  local directives = itemutil.property(recipe.output, "directives") or ""
   local orientation = itemutil.property(recipe.output, "orientations") orientation = orientation and orientation[1]
   local preview = itemutil.property(recipe.output, "largeImage")
   if orientation and not preview then
@@ -171,23 +175,22 @@ function selectRecipe(recipe)
   end
   if not preview then preview = itemutil.property(recipe.output, "inventoryIcon") end
   if type(preview) == "string" then -- single image
-    preview = itemutil.relativePath(recipe.output, preview) .. (itemutil.property(recipe.output, "directives") or "")
+    preview = itemutil.relativePath(recipe.output, preview) .. directives
     previewArea:addChild(padding)
     local curPreview = previewArea:addChild { type = "image" }
     previewArea:addChild(padding)
     curPreview:setFile(preview)
     -- enforce maximum width
-    curPreview:setScale(getScale(curPreview.imgSize, orientation))
+    curPreview:setScale(getScale(curPreview.imgSize, ttk))
   elseif type(preview) == "table" then -- composite
     local bb = {math.huge, math.huge, -math.huge, -math.huge}
-    local directives = itemutil.property(recipe.output, "directives") or ""
     for _, l in pairs(preview) do
       l.image = itemutil.relativePath(recipe.output, l.image) .. directives
       local r = rect.translate(root.nonEmptyRegion(l.image), l.offset or {0, 0})
       bb[1] = math.min(bb[1], r[1]) bb[2] = math.min(bb[2], r[2]) bb[3] = math.max(bb[3], r[3]) bb[4] = math.max(bb[4], r[4])
     end
     local off = vec2.mul(rect.ll(bb), -1)
-    local scale = getScale(rect.size(bb), orientation)
+    local scale = getScale(rect.size(bb), ttk)
     
     previewArea:addChild(padding)
     local img = previewArea:addChild { type = "layout", mode = "manual", size = vec2.mul(rect.size(bb), scale) }

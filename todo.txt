@@ -19,6 +19,8 @@ next things {
 
 the BIG IDEA UPDATE {
     backend stuff {
+        - figure out why multiline labels occasionally cut off a pixel on the bottom
+        
         metaGUI custom tooltip system (very similar to context menus)
         
         ? metaGUI module system (requires some slight reworks) {

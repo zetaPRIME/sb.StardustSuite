@@ -501,7 +501,10 @@ end do -- label ----------------------------------------------------------------
   
   function widgets.label:preferredSize(width)
     if self.explicitSize then return self.explicitSize end
-    return mg.measureString(self.text, width, self.fontSize)
+    local s = mg.measureString(self.text, width, self.fontSize)
+    -- extra pixel to fit cut-off descenders in multiline text
+    if s[2] > math.ceil(self.fontSize or 8) then s[2] = s[2] + 1 end
+    return s
   end
   
   function widgets.label:draw()

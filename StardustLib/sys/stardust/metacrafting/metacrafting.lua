@@ -21,7 +21,7 @@ function init()
   
   local funcFalse = function() return false end
   local function entrySort(a, b)
-    local sa, sb = (a.sortId or a.id), (b.sortId or b.id)
+    local sa, sb = (a.sortId or a.name), (b.sortId or b.name)
     if sa == sb then
       return a.name < b.name
     end return sa < sb

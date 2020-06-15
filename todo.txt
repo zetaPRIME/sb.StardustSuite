@@ -4,21 +4,12 @@ next things {
     figure out a good generalist endgame elytra (pre-eidolon)
     ^ Essentia Booster; decent flight time but not unlimited, probably has blink
     ^ essence spark particle effect?
+    
+    need a t4 or t5 one to go in between
+    
     heat gauge stats in nanofield? efficiency, cooldown rate, cooldown delay reduction?
     
-    > look into custom crafting system {
-        part of stardustlib, duh
-        
-        standard location for craft definitions, or just pass in a path?
-        accordion sections containing listitems
-        sort strings!
-        
-        left pane for recipe list, right for details
-        ingredients listed out with icon (slot), name, count
-        hint strings for ingredients as tooltip (maybe a nice ? icon)
-        
-        bother with crafting times? or just instant
-    }
+    more robust preview system for metacrafting
     
     some way of toggling AP gain display
     toggle nodes
@@ -38,10 +29,7 @@ the BIG IDEA UPDATE {
             actually, needs to be basically a widget subclass in order to have multiple of the same module?
         }
         
-        ? move slot lock functionality into playerext and give it a proper hook API
-        
-        tabs for metaGUI
-        list sections?
+        tabs for metaGUI (eventually)
     }
     dialogue tree system {
         metagui, fixed window; can intercept escape due to how keyboard capture works

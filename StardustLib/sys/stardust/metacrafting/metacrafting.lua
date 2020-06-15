@@ -20,7 +20,12 @@ function init()
   end)
   
   local funcFalse = function() return false end
-  local function entrySort(a, b) return (a.sortId or a.id) < (b.sortId or b.id) end
+  local function entrySort(a, b)
+    local sa, sb = (a.sortId or a.id), (b.sortId or b.id)
+    if sa == sb then
+      return a.name < b.name
+    end return sa < sb
+  end
   
   local function onRecipeSelected(self)
     recipeList:pushEvent("listItemSelected", self)
@@ -52,8 +57,15 @@ function init()
       recipe.id = rid
       normalizeItem(recipe.output)
       for _, itm in pairs(recipe.input) do normalizeItem(itm) end
+      recipe.name = itemutil.property(recipe.output, "shortdescription")
       table.insert(recipes, recipe)
     end table.sort(recipes, entrySort)
+    
+    if not recipes[1] then
+      subList:addChild { type = "layout", mode = "horizontal", size = {0, 16}, expandMode = {2, 0}, align = 0.5, children = {
+        { type = "label", align = "center", text = "^gray;(no recipes unlocked)" }
+      } }
+    end
     
     for _, recipe in pairs(recipes) do
       --if not currentRecipe then currentRecipe = recipe end
@@ -63,7 +75,8 @@ function init()
       
       -- populate info rows
       local topRow = listItem:addChild { type = "layout", mode = "horizontal", align = 0.5, scissoring = false }
-      local bottomRow = listItem:addChild { type = "layout", mode = "horizontal", align = 0, scissoring = false }
+      local bottomRow = listItem:addChild { type = "layout", mode = "horizontal", align = 0.5, scissoring = false }
+      
       topRow:addChild { type = "itemSlot", item = recipe.output }.isMouseInteractable = funcFalse
       topRow:addChild { type = "spacer", size = -1 }
       local lbl = string.format("^shadow;%s", itemutil.property(recipe.output, "shortdescription"))
@@ -74,6 +87,9 @@ function init()
         if nameLabel.color ~= col then nameLabel.color = col nameLabel:queueRedraw() end
       end)
       nameLabel:pushEvent("updateCraftableCounts")
+      
+      --bottomRow:addChild { type = "image", file = "/interface/objectcrafting/arrow.png" }
+      bottomRow:addChild { type = "label", text = "^gray;>", inline = true }
       for _, itm in pairs(recipe.input) do
         bottomRow:addChild { type = "itemSlot", item = itm }.isMouseInteractable = funcFalse
       end

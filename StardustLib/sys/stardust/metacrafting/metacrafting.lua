@@ -14,6 +14,13 @@ end
 
 function init()
   local recipeData = root.assetJson(metagui.inputData.recipes)
+  recipeData.conditions = recipeData.conditions or { }
+  
+  local function ccon(cond)
+    if type(cond) == "string" then cond = recipeData.conditions[cond] end
+    if type(cond) ~= "table" then return true end
+    return condition(table.unpack(cond))
+  end
   
   metagui.startEvent(function()
     local title = recipeData.title or "Crafting"
@@ -40,9 +47,7 @@ function init()
   for sid, section in pairs(recipeData.sections) do
     section.id = sid
     section.sortId = section.sortId or recipeData.defaultSectionSortId
-    if not section.condition or condition(table.unpack(section.condition)) then
-      table.insert(sections, section)
-    end
+    if ccon(section.condition) then table.insert(sections, section) end
   end table.sort(sections, entrySort)
   
   for _, section in pairs(sections) do
@@ -64,9 +69,7 @@ function init()
       normalizeItem(recipe.output)
       for _, itm in pairs(recipe.input) do normalizeItem(itm) end
       recipe.name = itemutil.property(recipe.output, "shortdescription")
-      if not recipe.condition or condition(table.unpack(recipe.condition)) then
-        table.insert(recipes, recipe)
-      end
+      if ccon(recipe.condition) then table.insert(recipes, recipe) end
     end table.sort(recipes, entrySort)
     
     if not recipes[1] then

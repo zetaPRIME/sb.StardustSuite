@@ -23,5 +23,6 @@ function conditions.statPositive(stat) return status.statPositive(stat) end
 function conditions.statNegative(stat) return not status.statPositive(stat) end
 function conditions.species(species) return player.species() == species end
 function conditions.ownShip() return player.worldId() == player.ownShipWorldId() end
+function conditions.recipe(name) return player.isAdmin() or player.blueprintKnown { name = name, count = 1 } end
 
 function conditions.configExists(key) return root.assetJson(key) ~= nil end

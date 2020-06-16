@@ -32,8 +32,9 @@ function onInteraction(args)
     dest = string.sub(dest, string.len(wld)+1)
     -- attempt instant transit
     local e = world.loadUniqueEntity(dest:sub(2))
-    if e then -- entity found! warp over directly
-      local targetPos = vec2.add(world.entityPosition(e), world.getObjectParameter(e, "teleporterFootPosition", {0, 0}))
+    local ep = e and world.entityPosition(e)
+    if e and ep then -- entity found! warp over directly
+      local targetPos = vec2.add(ep, world.getObjectParameter(e, "teleporterFootPosition", {0, 0}))
       playerext.setPlayer(args.sourceId).positionWarp(targetPos)
       return nil
     end

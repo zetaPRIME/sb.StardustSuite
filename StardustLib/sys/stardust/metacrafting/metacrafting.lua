@@ -67,6 +67,7 @@ function init()
       recipe.id = rid
       recipe.sortId = recipe.sortId or section.defaultSortId or recipeData.defaultRecipeSortId
       normalizeItem(recipe.output)
+      recipe.input = recipe.input or { }
       for _, itm in pairs(recipe.input) do normalizeItem(itm) end
       recipe.name = itemutil.property(recipe.output, "shortdescription")
       if ccon(recipe.condition) then table.insert(recipes, recipe) end

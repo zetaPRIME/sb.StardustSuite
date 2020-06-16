@@ -10,7 +10,7 @@
     [ { "expandMode" : [1, 2] },
       { "type" : "label", "align" : "center", "text" : "Bookmarks" },
       { "type" : "panel", "style" : "concave", "children" : [
-        { "type" : "scrollArea", "id" : "bookmarkList", "children" : [ ]}
+        { "type" : "scrollArea", "id" : "bookmarkList", "children" : [ { "spacing" : 1 } ] }
       ]},
       { "type" : "button", "id" : "newBookmark", "caption" : "Create Bookmark" }
     ], 1,

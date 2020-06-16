@@ -8,7 +8,7 @@
   "children" : [
     { "type" : "label", "align" : "center", "text" : "UI Themes" },
     { "type" : "panel", "style" : "concave", "children" : [
-      { "type" : "scrollArea", "id" : "themeList", "children" : [ ]}
+      { "type" : "scrollArea", "id" : "themeList", "children" : [ { "spacing" : 1 } ] }
     ]},
     ["spacer", { "type" : "button", "id" : "apply", "caption" : "Apply" }]
   ]

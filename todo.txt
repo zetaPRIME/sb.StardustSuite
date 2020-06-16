@@ -12,8 +12,6 @@ next things {
     some way of toggling AP gain display
     toggle nodes
     
-    - conditions (including aliased) in metacrafting
-    
     compatId (+refund)
     reset catalyst (how should this work...?)
     

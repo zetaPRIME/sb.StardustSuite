@@ -87,7 +87,7 @@ function init()
       
       -- populate info rows
       local topRow = listItem:addChild { type = "layout", mode = "horizontal", align = 0.5, scissoring = false }
-      local bottomRow = listItem:addChild { type = "layout", mode = "horizontal", align = 0.5, scissoring = false }
+      local bottomRow = listItem:addChild { type = "layout", mode = "horizontal", align = 0.5, scissoring = false, size = {0, 18}, expandMode = {2, 0} }
       
       topRow:addChild { type = "itemSlot", item = recipe.output }.isMouseInteractable = funcFalse
       topRow:addChild { type = "spacer", size = -1 }
@@ -101,7 +101,9 @@ function init()
       nameLabel:pushEvent("updateCraftableCounts")
       
       --bottomRow:addChild { type = "image", file = "/interface/objectcrafting/arrow.png" }
-      bottomRow:addChild { type = "label", text = "^gray;>", inline = true }
+      if not recipe.input[1] then
+        bottomRow:addChild { type = "label", text = "^gray;> (no ingredients required)", inline = true }
+      else bottomRow:addChild { type = "label", text = "^gray;>", inline = true } end
       for _, itm in pairs(recipe.input) do
         bottomRow:addChild { type = "itemSlot", item = itm }.isMouseInteractable = funcFalse
       end

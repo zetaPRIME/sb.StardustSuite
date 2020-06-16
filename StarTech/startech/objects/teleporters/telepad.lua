@@ -3,6 +3,8 @@
 require "/scripts/vec2.lua"
 require "/lib/stardust/playerext.lua"
 
+local prevName
+
 function init()
   require "/lib/stardust/configurable.lua"
   object.setInteractive(true)
@@ -31,11 +33,9 @@ function onInteraction(args)
   if string.sub(dest, 0, string.len(wld)) == wld then
     dest = string.sub(dest, string.len(wld)+1)
     -- attempt instant transit
-    local e = world.loadUniqueEntity(dest:sub(2))
-    local ep = e and world.entityPosition(e)
-    if e and ep then -- entity found! warp over directly
-      local targetPos = vec2.add(ep, world.getObjectParameter(e, "teleporterFootPosition", {0, 0}))
-      playerext.setPlayer(args.sourceId).positionWarp(targetPos)
+    local ep = world.getProperty("startech:telepadPosition:" .. dest:sub(19)) -- 19 because it needs to remove ":startech:telepad:"
+    if ep then -- entity found! warp over directly
+      playerext.setPlayer(args.sourceId).positionWarp(ep)
       return nil
     end
   end
@@ -91,6 +91,15 @@ function onSetConfig(skipName)
     end
   end
   
+  -- handle position tracking
+  if prevName then
+    world.setProperty("startech:telepadPosition:" .. prevName, nil)
+  end
+  if storage.config.name then
+    world.setProperty("startech:telepadPosition:" .. storage.config.name, vec2.add(entity.position(), config.getParameter("teleporterFootPosition") or {0, 0}))
+  end
+  prevName = storage.config.name
+  
   -- set description
   if not storage.config.destination then
     object.setConfigParameter("description", "A telepad.\n^lightgray;No link configured.^reset;")
@@ -105,7 +114,11 @@ function onSetConfig(skipName)
   --
 end
 
-
+function die()
+  if storage.config.name then
+    world.setProperty("startech:telepadPosition:" .. storage.config.name, nil)
+  end
+end
 
 
 

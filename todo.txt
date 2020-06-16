@@ -12,10 +12,9 @@ next things {
     some way of toggling AP gain display
     toggle nodes
     
-    - currency item costs
     conditions (including aliased) in metacrafting
     
-    compatId
+    compatId (+refund)
     reset catalyst (how should this work...?)
     
     probably some refund of AP from already-catalyst'd items?

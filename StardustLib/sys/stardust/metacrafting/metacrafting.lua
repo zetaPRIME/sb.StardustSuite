@@ -1,6 +1,8 @@
 --
 require "/lib/stardust/itemutil.lua"
 
+require "/sys/stardust/quickbar/conditions.lua"
+
 local currentRecipe
 
 local function normalizeItem(itm)
@@ -38,7 +40,9 @@ function init()
   for sid, section in pairs(recipeData.sections) do
     section.id = sid
     section.sortId = section.sortId or recipeData.defaultSectionSortId
-    table.insert(sections, section)
+    if not section.condition or condition(table.unpack(section.condition)) then
+      table.insert(sections, section)
+    end
   end table.sort(sections, entrySort)
   
   for _, section in pairs(sections) do
@@ -60,7 +64,9 @@ function init()
       normalizeItem(recipe.output)
       for _, itm in pairs(recipe.input) do normalizeItem(itm) end
       recipe.name = itemutil.property(recipe.output, "shortdescription")
-      table.insert(recipes, recipe)
+      if not recipe.condition or condition(table.unpack(recipe.condition)) then
+        table.insert(recipes, recipe)
+      end
     end table.sort(recipes, entrySort)
     
     if not recipes[1] then

@@ -380,7 +380,10 @@ end
 function skilltree.canAffordNode(n)
   if skilltree.nodeCost(n) > skilltree.currentAP() then return false end
   if n.itemCost then for _, d in pairs(n.itemCost) do
-      if player.hasCountOfItem(d, true) < d.count then return false end
+    local cur = itemutil.property(d, "currency")
+    if cur then
+      if player.currency(cur) < d.count then return false end
+    elseif player.hasCountOfItem(d, true) < d.count then return false end
   end end
   return true
 end
@@ -401,7 +404,11 @@ function skilltree.tryUnlockNode(n)
   end
   nodesToUnlock[n.path] = u
   if n.itemCost then -- actually take material costs now
-    for _, d in pairs(n.itemCost) do player.consumeItem(d, false, true) end
+    for _, d in pairs(n.itemCost) do 
+      local cur = itemutil.property(d, "currency")
+      if cur then player.consumeCurrency(cur, d.count)
+      else player.consumeItem(d, false, true) end
+    end
   end
   sfx "unlock"
   skilltree.recalculateStats()
@@ -551,7 +558,10 @@ function skilltree.draw()
         local ctt = { }
         local hasAll = true
         for _, d in pairs(mouseOverNode.itemCost) do
-          local has = player.hasCountOfItem(d, true) >= d.count
+          local has
+          local cur = itemutil.property(d, "currency")
+          if cur then has = player.currency(cur) >= d.count
+          else has = player.hasCountOfItem(d, true) >= d.count end
           hasAll = has and hasAll
           table.insert(ctt, string.format("- %s%d ^reset;%s%s^reset;\n", has and "^white;" or "^red;", d.count, has and rarityColors[d.rarity:lower()] or "^red;", d.displayName))
         end

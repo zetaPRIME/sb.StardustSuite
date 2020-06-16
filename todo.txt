@@ -9,12 +9,16 @@ next things {
     
     heat gauge stats in nanofield? efficiency, cooldown rate, cooldown delay reduction?
     
-    > more robust preview system for metacrafting
-    
     some way of toggling AP gain display
     toggle nodes
     
-    currency item costs
+    - currency item costs
+    conditions (including aliased) in metacrafting
+    
+    compatId
+    reset catalyst (how should this work...?)
+    
+    probably some refund of AP from already-catalyst'd items?
 }
 
 the BIG IDEA UPDATE {

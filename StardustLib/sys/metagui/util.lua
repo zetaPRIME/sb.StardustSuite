@@ -81,7 +81,12 @@ function mg.checkShift()
   local stm = player.swapSlotItem()
   if stm then -- carry over icon
     local cfg = root.itemConfig(stm)
-    icon = util.absolutePath(cfg.directory, cfg.parameters.inventoryIcon or cfg.config.inventoryIcon or icon)
+    icon = cfg.parameters.inventoryIcon or cfg.config.inventoryIcon or icon
+    if type(icon) == "string" then icon = util.absolutePath(cfg.directory, icon)
+    elseif type(icon) == "table" then -- composite icon
+      icon = util.mergeTable({ }, icon) -- operate on copy
+      for _, e in pairs(icon) do if e.image then e.image = util.absolutePath(cfg.directory, e.image) end end
+    end
   end
   mg.ipc.shiftCheck = function(s) coroutine.resume(cr, 'sc', s) end
   player.setSwapSlotItem { name = "geode", count = stm and stm.count or 1, parameters = { inventoryIcon = icon, scripts = {mg.rootPath .. "helper/shiftstub.lua"}, restore = stm } }

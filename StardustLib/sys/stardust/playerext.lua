@@ -232,7 +232,8 @@ function svc.giveAP(msg, isLocal, ap)
   local curAp = status.statusProperty("stardustlib:ap")
   if type(curAp) ~= "number" then curAp = 0 end -- correct
   status.setStatusProperty("stardustlib:ap", math.max(0, curAp + ap))
-  if ap >= 50 then -- don't display tiny gains
+  -- don't display tiny gains, or if the player has nothing that cares about AP
+  if ap >= 50 and player.hasItemWithParameter("stardustlib:usesAP", true) then
     local bossAp = ap >= 10000
     localAnimator.spawnParticle {
       type = "text",

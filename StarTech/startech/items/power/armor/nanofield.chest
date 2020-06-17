@@ -29,6 +29,7 @@
     //{ "stat" : "deployWithoutMech", "amount" : 1 }
   ],
   
+  "stardustlib:usesAP" : true,
   "stardustlib:skillTree" : "/startech/skilltree/nanofield.config",
   /*"stardustlib:moduleStats" : {
     "startech:nanofield" : [

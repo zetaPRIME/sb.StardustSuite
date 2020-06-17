@@ -84,10 +84,11 @@ function skilltree.init(canvas, treePath, data, saveFunc)
       if pfx:sub(-1) ~= "/" then pfx = pfx .. "/" end -- directorize path
       for k, n in pairs(tree) do
         -- apply templates
-        if n.template and defs.templates[n.template] then
+        while n.template and defs.templates[n.template] do
           local _n = n
           n = { }
           for k,v in pairs(defs.templates[_n.template]) do n[k]=v end
+          _n.template = nil -- don't reapply the same template over and over
           for k,v in pairs(_n) do n[k]=v end
         end
         

@@ -17,7 +17,7 @@ next things {
     
     probably some refund of AP from already-catalyst'd items?
     
-    - telepads: use world properties instead of inconsistent chunkloading mechanics
+    ! port augpack configurator to metaGUI, togglable phantom light
 }
 
 the BIG IDEA UPDATE {

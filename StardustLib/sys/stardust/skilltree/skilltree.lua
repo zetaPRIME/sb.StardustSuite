@@ -184,14 +184,17 @@ function skilltree.init(canvas, treePath, data, saveFunc)
       if not c[1] or not c[2] then connections[p] = nil end 
     end
     
-    -- refund nonexistent nodes
+    local refundAll = (skillData.compatId ~= td.compatId)
+    
+    -- refund nonexistent nodes, or all if breaking changes have occurred
     for p in pairs(skillData.unlocks) do
-      if not nodes[p] then skilltree.refundNode(p, true) end
+      if refundAll or not nodes[p] then skilltree.refundNode(p, true) end
     end
     for p in pairs(skillData.modules) do -- take care of formerly default-unlocked sockets too
-      if not nodes[p] then skilltree.refundNode(p, true) end
+      if not nodes[p] or skilltree.nodeUnlockLevel(p) < 1 then skilltree.refundNode(p, true) end
     end
     
+    skillData.compatId = td.compatId
     skilltree.recalculateStats() -- update all the things
   end
   
@@ -220,6 +223,7 @@ function skilltree.redraw() needsRedraw = true end
 
 function skilltree.refreshNodeProperties(node)
   node = type(node) == "table" and node or nodes[node]
+  if not node then return nil end
   if node.type == "socket" then
     local m = skillData.modules[node.path]
     if m then -- 
@@ -427,6 +431,7 @@ function skilltree.refundNode(path, batch)
   if m then player.giveItem(m) end
   skillData.modules[path] = nil
   skillData.selectors[path] = nil -- clear this too to prevent accretion
+  skilltree.refreshNodeProperties(path) -- clear out socket details
   if not batch then
     skilltree.recalculateStats()
     skilltree.saveChanges()

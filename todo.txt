@@ -21,6 +21,10 @@ next things {
     ! port augpack configurator to metaGUI, togglable phantom light
 }
 
+balance notes {
+    space enemies give maybe too much; maybe bump them down to 0.5x AP?
+}
+
 the BIG IDEA UPDATE {
     backend stuff {
         - figure out why multiline labels occasionally cut off a pixel on the bottom

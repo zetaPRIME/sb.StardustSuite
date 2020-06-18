@@ -1,9 +1,0 @@
-{ // -*- grammar-ext: json -*-
-  "input" : [
-    { "item" : "startech:machineplating", "count" : 5 },
-    { "item" : "silverbar", "count" : 2 },
-    { "item" : "teleportercore", "count" : 1 }
-  ],
-  "output" : { "item" : "startech:telepad", "count" : 1 },
-  "groups" : [ "startech:tinkertable", "tools", "all" ]
-}

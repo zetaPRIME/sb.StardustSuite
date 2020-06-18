@@ -1,8 +1,0 @@
-{ // -*- grammar-ext: json -*-
-  "input" : [
-    { "item" : "sand2", "count" : 5 },
-    { "item" : "coalore", "count" : 2 }
-  ],
-  "output" : { "item" : "siliconboard", "count" : 1 },
-  "groups" : [ "startech:tinkertable", "components", "all" ]
-}

@@ -51,6 +51,5 @@
   "slotCount" : 0, // not sure if I want it to be not-a-container, so I'll just avoid later breakage
   "uiConfig" : "/interface/chests/chest1.config",
   "frameCooldown" : 5,
-  "autoCloseCooldown" : 3600,
-
+  "autoCloseCooldown" : 3600
 }

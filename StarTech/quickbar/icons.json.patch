@@ -3,7 +3,8 @@
   { "op" : "add", "path" : "/items/startech:configurator", "value" : {
     "label" : "^cyan;Configurator",
     "icon" : "/startech/ui/configurator/skilltree-target.png",
-    "action" : [ "ui", "startech:configurator.query" ]
+    "action" : [ "ui", "startech:configurator.query" ],
+    "condition" : [ "hasFlaggedItem", "startech:configurable" ]
   } },
   
   { "op" : "add", "path" : "/items/startech:recharge", "value" : {

@@ -24,7 +24,8 @@
     "capacity" : 0,
     "ioRate" : 0
   },
-  
+
+  "startech:configurable" : true,  
   "startech:configuratorPane" : "augpackcfg.config",
   "stardustlib:moduleStats" : {
     "startech:nanofield" : [

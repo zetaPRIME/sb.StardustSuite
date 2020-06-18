@@ -23,6 +23,7 @@ next things {
 
 balance notes {
     swansong needs to be marked as a space monster
+    - cap on AP gain without a relevant item in your inventory?
 }
 
 the BIG IDEA UPDATE {

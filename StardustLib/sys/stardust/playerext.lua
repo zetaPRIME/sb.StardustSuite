@@ -231,13 +231,14 @@ function svc.giveAP(msg, isLocal, ap)
   if type(ap) ~= "number" then return nil end -- malformed request
   local curAp = status.statusProperty("stardustlib:ap")
   if type(curAp) ~= "number" then curAp = 0 end -- correct
+  local hasItem = player.hasItemWithParameter("stardustlib:usesAP", true) -- check whether player has an item that cares
+  if (not hasItem) and curAp >= 100000 then ap = ap * 0.1 end -- soft cap if they don't
   status.setStatusProperty("stardustlib:ap", math.max(0, curAp + ap))
-  -- don't display tiny gains, or if the player has nothing that cares about AP
-  if ap >= 50 and player.hasItemWithParameter("stardustlib:usesAP", true) then
+  if ap >= 50 and hasItem then -- don't display tiny gains, or if the player has nothing that cares about AP
     local bossAp = ap >= 10000
     localAnimator.spawnParticle {
       type = "text",
-      text = string.format("^shadow;^violet;+^white;%d ^violet;AP", ap),
+      text = string.format("^shadow;^violet;+^white;%d ^violet;AP", math.floor(ap+0.5)),
       size = bossAp and 0.8 or 0.6,
       layer = "front",
       fade = 0.5,

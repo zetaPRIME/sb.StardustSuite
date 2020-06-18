@@ -1,25 +1,6 @@
 [ // -*- grammar-ext: json -*-
   [ // recipes
-    { "op" : "add", "path" : "/defaultBlueprints/tier1/-", "value" : { "item" : "startech:tinkertable" } },
-    { "op" : "add", "path" : "/defaultBlueprints/tier1/-", "value" : { "item" : "startech:telepad" } },
-    { "op" : "add", "path" : "/defaultBlueprints/tier1/-", "value" : { "item" : "startech:generator.basic" } },
-    { "op" : "add", "path" : "/defaultBlueprints/tier1/-", "value" : { "item" : "startech:battery.t1" } },
-    { "op" : "add", "path" : "/defaultBlueprints/tier1/-", "value" : { "item" : "startech:storagenet.controller" } },
-    { "op" : "add", "path" : "/defaultBlueprints/tier1/-", "value" : { "item" : "startech:wrench" } },
-    { "op" : "add", "path" : "/defaultBlueprints/tier1/-", "value" : { "item" : "startech:networkrelay" } },
-    { "op" : "add", "path" : "/defaultBlueprints/tier1/-", "value" : { "item" : "startech:networkrelay2" } },
-    
-    // startech components
-    { "op" : "add", "path" : "/defaultBlueprints/tier1/-", "value" : { "item" : "startech:machineplating" } },
-    
-    // modules and stuff
-    { "op" : "add", "path" : "/defaultBlueprints/tier1/-", "value" : { "item" : "startech:rcspack" } },
-    { "op" : "add", "path" : "/defaultBlueprints/tier1/-", "value" : { "item" : "startech:finwing" } },
-    
-    // weapons
-    { "op" : "add", "path" : "/defaultBlueprints/tier1/-", "value" : { "item" : "startech:pulseglaive" } },
-    
-    { "op" : "add", "path" : "/defaultBlueprints/tier1/-", "value" : { "item" : "teleportercore" } }
+    { "op" : "add", "path" : "/defaultBlueprints/tier1/-", "value" : { "item" : "startech:tinkertable" } }
   ],
   [ // recipes for FU-specific items
     { "op" : "test", "path" : "/defaultCodexes/fukirhos" }//, // detect if FU is present

@@ -27,10 +27,10 @@ function die(...)
   -- first calculate granted AP
   local ap = config.getParameter("stardustlib:givesAP", nil)
   local apConfig = monster and root.assetJson("/sys/stardust/ap.config:monsters")[monster.type()]
-  if apConfig then -- predefined AP gain from certain monsters
-    ap = apConfig.baseAmount
-  elseif ap then -- configured in the entity itself
+  if ap then -- configured in the entity itself
     -- already there
+  elseif apConfig then -- predefined AP gain from certain monsters
+    ap = apConfig.baseAmount
   else -- calculate AP manually
     ap = world.entityHealth(entity.id())[2] * 10 -- start based on max health
     ap = ap * (1 + 0.5 * status.stat("protection")/100) -- bonus from armor

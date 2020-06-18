@@ -32,10 +32,15 @@ function die(...)
   elseif apConfig then -- predefined AP gain from certain monsters
     ap = apConfig.baseAmount
   else -- calculate AP manually
+    local cap = 15000
     ap = world.entityHealth(entity.id())[2] * 10 -- start based on max health
     ap = ap * (1 + 0.5 * status.stat("protection")/100) -- bonus from armor
-    ap = ap * 1.1^(level-1) -- scale up slightly depending on tier
-    if npc then ap = ap * 1.25 end -- additional bonus for taking out NPCs
+    if ap >= cap then -- exceeded cap, assume boss
+      ap = cap * 1.25^(level-1) -- tier is more important than with uncapped entities
+    else
+      ap = ap * 1.1^(level-1) -- scale up slightly depending on tier
+      if npc then ap = ap * 1.25 end -- additional bonus for taking out NPCs
+    end
   end
   ap = math.floor(0.5 + ap) -- round to int
   

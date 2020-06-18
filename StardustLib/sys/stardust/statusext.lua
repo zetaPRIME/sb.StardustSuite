@@ -4,13 +4,14 @@ require "/lib/stardust/json.lua"
 
 local entityId = entity.id()
 local entityType = world.entityType(entityId)
-local isSpaceMonster = not not __spaceMonster
 local hasFU = root.hasTech("fuhealzone") -- quick and easy detection
 
 local initDone
 local _update = update
 function update(...)
   if not initDone then initDone = true
+    -- mark as space monster if applicable
+    if __spaceMonster then status.setStatusProperty("stardustlib:isSpaceMonster", true) end
     entityType = world.entityType(entityId) -- refresh this
     if entityType and entityType ~= "player" then -- inject entity-space code
       world.callScriptedEntity(entityId, "require", "/sys/stardust/entityext.lua")
@@ -75,7 +76,7 @@ function applyDamageRequest(damageRequest)
     damageRequest.statusEffects = se
   end
   
-  if isSpaceMonster and damageRequest.spaceDamageBonus then
+  if damageRequest.spaceDamageBonus and status.statusProperty("stardustlib:isSpaceMonster") then
     damageRequest.damage = damageRequest.damage * 3
   end
   

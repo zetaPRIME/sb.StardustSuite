@@ -35,6 +35,9 @@ function die(...)
     local cap = 15000
     ap = world.entityHealth(entity.id())[2] * 10 -- start based on max health
     ap = ap * (1 + 0.5 * status.stat("protection")/100) -- bonus from armor
+    -- compensate for space monster stats where applicable
+    -- (less of a divisor than the antiSpace multiplier because they still hit really hard)
+    if status.statusProperty("stardustlib:isSpaceMonster") then ap = ap / 2.5 end
     if ap >= cap then -- exceeded cap, assume boss
       ap = cap * 1.25^(level-1) -- tier is more important than with uncapped entities
     else

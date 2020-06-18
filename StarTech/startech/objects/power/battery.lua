@@ -14,6 +14,9 @@ function init()
   tDesc = 573000000
   
   isRelay = config.getParameter("isRelay")
+  
+  -- set all outputs positive for chunkloading purposes
+  for i=1, object.outputNodeCount() do object.setOutputNodeLevel(i-1, true) end
 end
 
 function postInit() -- run on first update, after everything is loaded

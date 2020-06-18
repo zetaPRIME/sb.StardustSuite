@@ -23,6 +23,9 @@ function init()
   burning.item = burning.item or {}
   
   message.setHandler("uiSyncRequest", uiSyncRequest)
+  
+  -- set all outputs positive for chunkloading purposes
+  for i=1, object.outputNodeCount() do object.setOutputNodeLevel(i-1, true) end
 end
 
 function update()

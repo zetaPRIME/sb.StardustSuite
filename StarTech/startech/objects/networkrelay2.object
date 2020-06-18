@@ -22,6 +22,8 @@
   
   "isNetworkRelay" : true,
   
+  "scripts" : [ "networkrelay.lua" ],
+  
   "inputNodes" : [ [0, 0] ],
   "outputNodes" : [ [0, 1], [0, -1], [-1, 0], [1, 0] ]
   

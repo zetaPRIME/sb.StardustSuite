@@ -174,6 +174,9 @@ function init()
   self.timerPollStorage = 0
   
   object.setInteractive(false) -- there we go, container-safety without weird blank container panes
+  
+  -- set all outputs positive for chunkloading purposes
+  for i=1, object.outputNodeCount() do object.setOutputNodeLevel(i-1, true) end
 end
 
 function setStorageDirty() self.timerPollStorage = 0 end

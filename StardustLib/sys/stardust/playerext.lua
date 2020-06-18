@@ -239,6 +239,7 @@ function svc.giveAP(msg, isLocal, ap)
       type = "text",
       text = string.format("^shadow;^violet;+^white;%d ^violet;AP", ap),
       size = bossAp and 0.8 or 0.6,
+      layer = "front",
       fade = 0.5,
       destructionAction = "fade",
       destructionTime = 0.4,

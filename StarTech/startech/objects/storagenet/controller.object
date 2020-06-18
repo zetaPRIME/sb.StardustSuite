@@ -52,11 +52,5 @@
   "uiConfig" : "/interface/chests/chest1.config",
   "frameCooldown" : 5,
   "autoCloseCooldown" : 3600,
-  
-  "learnBlueprintsOnPickup" : [
-    "startech:storagenet.terminal",
-    "startech:storagenet.storagebus",
-    "startech:storagenet.drivebay2"
-  ]
 
 }

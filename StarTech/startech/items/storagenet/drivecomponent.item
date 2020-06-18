@@ -7,17 +7,5 @@
   "inventoryIcon" : "drivecomponent.png",
   "rarity" : "uncommon",
   "price" : 100,
-  "maxStack" : 1024, // because why not
-  "learnBlueprintsOnPickup" : [
-    "startech:storagenet.drive.1k",
-    "startech:storagenet.drive.4k",
-    "startech:storagenet.drive.16k",
-    "startech:storagenet.drive.64k",
-    "startech:storagenet.drive.256k"/*,
-    "startech:storagenet.drive.1m",
-    "startech:storagenet.drive.4m",
-    "startech:storagenet.drive.16m",
-    "startech:storagenet.drive.64m",
-    "startech:storagenet.drive.256m"*/
-  ]
+  "maxStack" : 1024 // because why not
 }

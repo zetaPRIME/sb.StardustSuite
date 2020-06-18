@@ -9,10 +9,6 @@
   "shortdescription" : "Pulse Cell^clear;\uFF03^reset;(Crystalline)",
   "health" : 5.73,
   
-  "learnBlueprintsOnPickup" : [
-    //
-  ],
-  
   "iconBaseImage" : "battery.frame.t3.png",
   "inventoryIcon" : [
     { "image" : "battery.frame.t3.png" }

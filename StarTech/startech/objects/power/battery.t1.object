@@ -9,24 +9,6 @@
   "shortdescription" : "Pulse Cell^clear;\uFF01^reset;(Basic)",
   "health" : 5.73,
   
-  "learnBlueprintsOnPickup" : [
-    "startech:battery.t2",
-    "startech:battery.t3",
-    "startech:battery.t4",
-    
-    "startech:relay.t1",
-    "startech:relay.t2",
-    "startech:relay.t3",
-    "startech:relay.t4",
-    
-    "startech:augpack",
-    "startech:nanofield",
-    "startech:autosmelter",
-    "startech:chargingbench",
-    "startech:wirelesscharger",
-    "startech:ftlplug"
-  ],
-  
   "iconBaseImage" : "battery.frame.png",
   "inventoryIcon" : [
     { "image" : "battery.frame.png" }

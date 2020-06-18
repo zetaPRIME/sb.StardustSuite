@@ -6,6 +6,5 @@
   "inventoryIcon" : "resoniteore.png",
   "description" : "This crystalline material hums with a strange resonance in the presence of fluxpulse.",
   "shortdescription" : "Resonite Fragment",
-  "itemTags" : [ "reagent", "ore" ],
-  "radioMessagesOnPickup" : [ "pickupore" ]
+  "itemTags" : [ "reagent", "ore" ]
 }

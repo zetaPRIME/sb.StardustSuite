@@ -41,7 +41,5 @@
   "slotCount" : 8,
   "uiConfig" : "/startech/interface/storagenet/drivebay-legacy.config",
   "frameCooldown" : 5,
-  "autoCloseCooldown" : 3600,
-  
-  "learnBlueprintsOnPickup" : [ "startech:storagenet.drivecomponent" ]
+  "autoCloseCooldown" : 3600
 }

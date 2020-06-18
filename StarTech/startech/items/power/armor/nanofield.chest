@@ -16,11 +16,6 @@
   "builder" : "/startech/items/power/armor/nanofield/build.lua",
   
   "level" : 2,
-  "acceptsUpgradeCatalyst" : true,
-  
-  "learnBlueprintsOnPickup" : [
-    "startech:phasedrill"
-  ],
   
   "techScript" : "/startech/items/power/armor/nanofield/main.lua",
   "statusEffects" : [

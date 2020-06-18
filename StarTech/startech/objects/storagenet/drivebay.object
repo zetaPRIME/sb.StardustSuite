@@ -34,7 +34,5 @@
   "networkTags" : {
     "storageNet" : true,
     "storageNet.storage" : true // HERP DERP
-  },
-  
-  "learnBlueprintsOnPickup" : [ "startech:storagenet.drivecomponent" ]
+  }
 }

@@ -9,9 +9,6 @@
   "tooltipKind" : "stardustlib.power.wearable",
   "builder" : "/sys/stardust/builders/powered.lua",
   
-  "learnBlueprintsOnPickup" : [
-    "startech:phasedrill"
-  ],
   "maleFrames" : "blank.png",
   "femaleFrames" : "blank.png",
   "maxStack" : 1,

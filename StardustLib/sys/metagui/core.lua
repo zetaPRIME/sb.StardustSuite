@@ -565,7 +565,7 @@ function cursorOverride(pos)
 end
 
 function createTooltip()
-  if lastMouseOver then return lastMouseOver:getToolTip() end
+  if lastMouseOver then return mg.toolTip(lastMouseOver:getToolTip()) end
 end
 
 function _mouseEvent(_, btn, down)

@@ -32,6 +32,10 @@ local function npRs(r, m)
   return res
 end
 
+-- export
+mg.npMatrix = npMatrix
+mg.npRs = npRs
+
 function npp:drawToCanvas(c, f, r)
   if not r then
     local s = c:size()

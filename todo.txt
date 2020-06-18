@@ -22,14 +22,12 @@ next things {
 }
 
 balance notes {
-    space enemies give maybe too much; maybe bump them down to 0.5x AP?
+    swansong needs to be marked as a space monster
 }
 
 the BIG IDEA UPDATE {
     backend stuff {
-        - figure out why multiline labels occasionally cut off a pixel on the bottom
-        
-        metaGUI custom tooltip system (very similar to context menus)
+        - metaGUI custom tooltip system
         
         ? metaGUI module system (requires some slight reworks) {
             container layout, immediately containing module UI

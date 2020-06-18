@@ -8,7 +8,10 @@
   "shortdescription" : "Resonite Crystal",
   "itemTags" : [ "reagent", "gem", "ingot" ],
   
-  "craftingHint" : "Autosmelter: Aegisalt, Ferozium, Violium, Solarium, Prisilite...",
+  "craftingHint" : [
+    "Secondary result from processing certain materials in an Autosmelter.\n\nPossible sources include, but are not limited to:",
+    "- Aegisalt, Ferozium and Violium\n- Solarium\n- Prisilite"
+  ],
   
   "stardustlib:moduleStats" : {
     "startech:nanofield" : [

@@ -123,7 +123,6 @@ function skilltree.init(canvas, treePath, data, saveFunc)
               node.connectsTo[p2] = true
               if p1 > p2 then p1, p2 = p2, p1 end -- sort
               connections[string.format("%s+%s", p1, p2)] = {p1, p2}
-              sb.logInfo("connection between "..p1.." and "..p2)
             end
           end
         end

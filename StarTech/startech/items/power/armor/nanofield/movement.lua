@@ -109,7 +109,6 @@ do local s = movement.state("ground")
     end
     self.sphereTap = self.sphereTap + 1
     if input.keyDown.down then
-      sb.logInfo("sphere tap " .. self.sphereTap)
       if self.sphereTap < 12 then movement.switchState("sphere") end
       self.sphereTap = 0
     end

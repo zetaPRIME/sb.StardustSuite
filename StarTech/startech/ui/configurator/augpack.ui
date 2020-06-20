@@ -10,8 +10,8 @@
     [ { "type" : "itemSlot", "id" : "packSlot", "autoInteract" : true }, { "type" : "label", "text" : "EPP" } ],
     [ { "type" : "itemSlot", "id" : "augmentSlot", "autoInteract" : true }, { "type" : "label", "text" : "Augment" } ],
     [
-      //{ "type" : "itemSlot", "id" : "cfgSlot", "autoInteract" : true },
-      { "type" : "checkBox", "id" : "lightCheck" }, { "type" : "label", "text" : "Light" }
+      { "type" : "checkBox", "id" : "lightCheck", "toolTip" : "Light is visible only to the wearer." },
+      { "type" : "label", "text" : "Light (Phantom)" }
     ]
   ]
 }

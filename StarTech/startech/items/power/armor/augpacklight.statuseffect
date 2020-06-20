@@ -1,0 +1,6 @@
+{ // -*- grammar-ext: json -*-
+  "name" : "startech:augpacklight",
+  "effectConfig" : { },
+
+  "scripts" : [ "augpacklight.lua" ]
+}

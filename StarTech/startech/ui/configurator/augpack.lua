@@ -116,7 +116,7 @@ function saveItem()
   local lightEnabled = lightCheck.checked
   cfgItem.parameters.lightEnabled = lightEnabled
   if lightEnabled then
-    table.insert(cfgItem.parameters.currentAugment.effects, "lightaugment2")
+    table.insert(cfgItem.parameters.currentAugment.effects, "startech:augpacklight")
   end
   
   -- clear augment if it doesn't do anything, else we get instantiation failure

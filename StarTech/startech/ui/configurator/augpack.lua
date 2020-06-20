@@ -40,7 +40,7 @@ function init()
     else player.giveItem(backItem) end
   end
   
-  lightCheck:setChecked(cfgItem.parameters.lightEnabled)
+  lightCheck:setChecked(cfgItem.parameters.lightEnabled ~= false)
   
   player.setEquippedItem("back", cfgItem)
   updateCell()

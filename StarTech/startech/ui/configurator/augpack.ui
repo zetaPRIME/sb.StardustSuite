@@ -1,0 +1,17 @@
+{ //  -*- grammar-ext: json -*-
+  "style" : "window", // window (has titlebar), panel (just a frame) etc.
+  "size" : [96, 74], // *internal* size (not including chrome)
+  "title" : "Pulse Augpack",
+  "icon" : "skilltree.png",
+  "uniqueBy" : "path",
+  "scripts" : [ "augpack.lua" ],
+  "children" : [
+    [ { "type" : "itemSlot", "id" : "cellSlot", "autoInteract" : true }, { "type" : "label", "text" : "Pulse Cell" } ],
+    [ { "type" : "itemSlot", "id" : "packSlot", "autoInteract" : true }, { "type" : "label", "text" : "EPP" } ],
+    [ { "type" : "itemSlot", "id" : "augmentSlot", "autoInteract" : true }, { "type" : "label", "text" : "Augment" } ],
+    [
+      //{ "type" : "itemSlot", "id" : "cfgSlot", "autoInteract" : true },
+      { "type" : "checkBox", "id" : "lightCheck" }, { "type" : "label", "text" : "Light" }
+    ]
+  ]
+}

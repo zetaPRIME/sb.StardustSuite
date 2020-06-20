@@ -8,6 +8,7 @@
     "telepad.config" : "/startech/ui/telepad.config.ui",
 
     "configurator.query" : "/startech/ui/configurator/query.ui",
+    "configurator.augpack" : "/startech/ui/configurator/augpack.ui",
     "configurator.nanofield" : "/startech/ui/configurator/nanofield.ui",
     "configurator.tree" : "/startech/ui/configurator/tree.ui",
     

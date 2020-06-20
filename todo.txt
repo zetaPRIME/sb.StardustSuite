@@ -18,9 +18,6 @@ next things {
     
     probably some refund of AP from already-catalyst'd items?
     
-    - port augpack configurator to metaGUI, togglable light
-    - make augpack light local
-    
     have batteries tick slower when not at full utilization
 }
 

@@ -5,6 +5,7 @@
   "description" : "A basic set of rocket thrusters. Overheats quickly, but good for quick boosts.",
   "category" : "startech:elytra",
   "rarity" : "Legendary",
+  "maxStack" : 1,
   "tooltipKind" : "stardustlib.withPreview",
   //"largeImage" : "/startech/items/power/armor/nanofield/finwing.png?scalenearest=2",
   "price" : 1000,

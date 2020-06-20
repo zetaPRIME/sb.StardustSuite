@@ -5,6 +5,7 @@
   "description" : "Slice through the water with unmatched grace using this precision-crafted set of fins.",
   "category" : "startech:elytra",
   "rarity" : "Legendary",
+  "maxStack" : 1,
   "tooltipKind" : "stardustlib.withPreview",
   "largeImage" : "/startech/items/power/armor/elytra/finwing.png?scalenearest=2",
   "price" : 1000,

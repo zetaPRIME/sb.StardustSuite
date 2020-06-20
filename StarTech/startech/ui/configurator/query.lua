@@ -21,7 +21,8 @@ metagui.startEvent(function()
       local paneDef = itemutil.property(itm, "/startech:configuratorPane")
       local uiDef = itemutil.property(itm, "/startech:configuratorUI")
       if uiDef then
-        player.interact("ScriptPane", { gui = { }, scripts = {"/metagui.lua"}, config = uiDef })
+        _ENV.inputcfg = uiDef
+        require "/sys/metagui/build.lua"
       elseif paneDef then
         if type(paneDef) == "string" then
           local dir = root.itemConfig(itm.name).directory

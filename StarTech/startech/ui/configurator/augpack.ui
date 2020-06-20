@@ -10,8 +10,8 @@
     [ { "type" : "itemSlot", "id" : "packSlot", "autoInteract" : true }, { "type" : "label", "text" : "EPP" } ],
     [ { "type" : "itemSlot", "id" : "augmentSlot", "autoInteract" : true }, { "type" : "label", "text" : "Augment" } ],
     [
-      { "type" : "checkBox", "id" : "lightCheck", "toolTip" : "Light is visible only to the wearer." },
-      { "type" : "label", "text" : "Light (Phantom)" }
+      { "type" : "checkBox", "id" : "lightCheck", "toolTip" : "Projects a phantom light visible only to the wearer." },
+      { "type" : "label", "text" : "Nanolamp" }
     ]
   ]
 }

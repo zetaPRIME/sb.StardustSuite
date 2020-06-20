@@ -617,7 +617,7 @@ end do -- item slot ------------------------------------------------------------
             player.setSwapSlotItem(stm) set(itm)
             return nil
           end
-          if not self:acceptsItem(itm) then return nil end
+          if stm and not self:acceptsItem(stm) then return nil end
           player.setSwapSlotItem(itm) set(stm)
         end return nil
       elseif btn == 2 then -- if it gets here, same item is guaranteed

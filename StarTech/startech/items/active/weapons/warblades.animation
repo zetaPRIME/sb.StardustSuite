@@ -1,0 +1,33 @@
+{ // -*- grammar-ext: json -*-
+  "globalTagDefaults" : {
+    //
+  },
+  
+  "animatedParts" : {
+    "parts" : {
+      
+      "root" : {
+        "properties" : {
+          "zLevel" : 0,
+          "centered" : true, "offset" : [0, 0],
+          "root" : [0, 0],//[-1, 0.4375],
+          "image" : "/assetmissing.png",
+          "transformationGroups" : ["weapon"]
+        }
+      
+      }
+    }
+  },
+  
+  "transformationGroups" : {
+    "weapon" : {}
+  },
+  
+  "lights" : {
+    
+  },
+  
+  "sounds" : {
+    
+  }
+}

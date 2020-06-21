@@ -26,12 +26,19 @@ local curHp, lastHp = 0, 0
 local lastBw = false
 function update()
   if player then
-    -- TODO: colorIndex and all that???
     local ch = player.equippedItem("chestCosmetic") or player.equippedItem("chest")
     if ch then
       local cf = root.itemConfig(ch)
       local directives = cf.parameters.directives or cf.config.directives or ""
       local fr = cf.config[player.gender().."Frames"]
+      if directives == "" and cf.config.colorOptions then
+        -- TODO find a way to not need to recalculate this EVERY FUCKING FRAME
+        local co = cf.config.colorOptions[1+(cf.parameters.colorIndex or 0)]
+        directives = "?replace="
+        for k,v in pairs(co) do
+          directives = string.format("%s;%s=%s", directives, k, v)
+        end
+      end
       activeItem.setScriptedAnimationParameter("sleeve", {
         front = string.format("%s:%s%s", util.absolutePath(cf.directory, fr.frontSleeve), "%s", directives),
         back = string.format("%s:%s%s", util.absolutePath(cf.directory, fr.backSleeve), "%s", directives),

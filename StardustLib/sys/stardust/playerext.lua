@@ -138,6 +138,8 @@ function init(...)
   -- grab tables deployment doesn't usually have access to
   local mt = getmetatable ''
   mcontroller = mt.mcontroller
+  -- and give tables out that it does
+  mt.player = player
   
   -- init configuration table
   cfg = storage["stardustlib:playerconfig"] or { }

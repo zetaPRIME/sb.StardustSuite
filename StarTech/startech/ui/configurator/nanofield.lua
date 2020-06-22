@@ -25,6 +25,7 @@ local function saveItem(itm)
     { stat = "maxEnergy", amount = calc(skillData.stats.energy) - 100 },
     { stat = "powerMultiplier", baseMultiplier = calc(skillData.stats.damage) },
     --{ stat = "healthRegen", amount = 1 },
+    { stat = "grit", amount = calc(skillData.stats.grit) },
     { stat = "stardustlib:leech", amount = calc(skillData.stats.leech) },
     { stat = "stardustlib:bloodthirst", amount = calc(skillData.stats.bloodthirst) },
   })
@@ -59,6 +60,7 @@ function skilltree.modifyStatDisplay.armor(txt, v)
   dr = math.floor(dr*10000+0.5)/10000 -- limit to two decimal places
   return txt .. string.format(" ^lightgray;(%s damage reduction)^reset;", skilltree.displayNumber(dr, true))
 end
+function skilltree.modifyStatDisplay.grit(txt, v) if v == 0 then return "" end end
 function skilltree.modifyStatDisplay.healthRegen(txt, v)
   if v == 0 then return "" end
   return txt .. " ^lightgray;per second^reset;"

@@ -15,7 +15,7 @@ local tierBaseStats = { -- keeping this temporarily for reference
     damageMult = 1.5,
   },
   { -- T2 (Tungsten) (default)
-    armor = 40,
+    armor = 80,
     health = 120,
     energy = 120,
     damageMult = 2.0,
@@ -225,4 +225,8 @@ message.setHandler("stardustlib:statusImbueQuery", function()
   world.sendEntityMessage(entity.id(), "stardustlib:statusImbueQueryReply", {
     '::{"tag":"antiSpace"}',
   })
+end)
+
+message.setHandler("stardustlib:damagedEntity2", function(msg, isLocal, id, srcDmg, effDmg, kind)
+  movement.call("onStrikeEnemy", id, srcDmg, effDmg, kind)
 end)

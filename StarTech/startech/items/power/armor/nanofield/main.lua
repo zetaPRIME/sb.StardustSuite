@@ -11,6 +11,8 @@ require "/startech/items/power/armor/nanofield/appearance.lua"
 -- armor value works differently from normal armors
 -- mult = .5^(armor/100); or, every 100 points is a 50% damage reduction
 
+player = getmetatable ''.player
+
 function update(p)
   input.update(p)
   stats.update(p)

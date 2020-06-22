@@ -112,11 +112,16 @@ do local s = movement.state("ground")
       if self.sphereTap < 12 then movement.switchState("sphere") end
       self.sphereTap = 0
     end
+    
+    mcontroller.controlModifiers {
+      airJumpModifier = stats.stat.jump or 1,
+    }
+    
     if input.key.sprint then -- sprint instead of slow walk!
       local v = input.dir[1]
       if v ~= 0 then
         mcontroller.controlMove(v, true)
-        mcontroller.controlModifiers({ speedModifier = stats.stat.sprint or 1 })
+        mcontroller.controlModifiers { speedModifier = stats.stat.sprint or 1 }
       end
       if input.keyDown.jump and mcontroller.onGround() then -- slight bunnyhop effect
         mcontroller.setXVelocity(mcontroller.velocity()[1] * (1 + (((stats.stat.sprint or 1) - 1)*0.5)))
@@ -144,6 +149,15 @@ do local s = movement.state("ground")
     if movement.zeroG and not movement.zeroGPrev and stats.elytra then movement.switchState("flight") end
     
     coroutine.yield()
+  end
+  
+  function s:onStrikeEnemy(id, dmg, effDmg, kind)
+    if stats.flags.hangStrike then
+      if not movement.zeroG and not mcontroller.onGround() and contains(player.primaryHandItemTags(), "melee") then
+        mcontroller.setYVelocity(math.max(10, mcontroller.yVelocity())) -- hang in air
+        self.airJumps = math.min(stats.stat.airJump, self.airJumps + 1)
+      end
+    end
   end
 end
 

@@ -49,6 +49,7 @@ message.setHandler("stardustlib:damagedEntity", function(msg, isLocal, id, srcDm
     local bloodthirst = status.stat("stardustlib:bloodthirst", 0)
     status.modifyResource("food", effDmg * bloodthirst)
   end
+  world.sendEntityMessage(entity.id(), "stardustlib:damagedEntity2", id, srcDmg, effDmg, kind) -- pass on :|
 end)
 
 local pfx = "::"

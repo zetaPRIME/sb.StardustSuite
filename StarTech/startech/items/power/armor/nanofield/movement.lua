@@ -155,7 +155,7 @@ do local s = movement.state("ground")
     if stats.flags.hangStrike then
       if not movement.zeroG and not mcontroller.onGround() and contains(player.primaryHandItemTags(), "melee") then
         mcontroller.setYVelocity(math.max(10, mcontroller.yVelocity())) -- hang in air
-        if self.airJumps < stats.stat.airJump and status.overConsumeResource("energy", 15) then
+        if self.airJumps < stats.stat.airJump and status.overConsumeResource("energy", 25) then
           self.airJumps = math.min(stats.stat.airJump, self.airJumps + 1)
         end
       end

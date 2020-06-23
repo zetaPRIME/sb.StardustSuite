@@ -48,8 +48,19 @@ function die(...)
   ap = math.floor(0.5 + ap) -- round to int
   
   -- then loop through and send
+  local done = { } -- don't double-grant adjacents
   for p in pairs(hitBy) do
     world.sendEntityMessage(p, "playerext:giveAP", ap)
+    local pp = world.entityPosition(p)
+    if pp then
+      local pl = world.playerQuery(pp, 20)
+      for _, ap in pairs(pl) do -- give AP to friendly players near contributors
+        if not hitBy[ap] and not done[ap] and not world.entityCanDamage(p, ap) and not world.entityCanDamage(ap, p) then
+          world.sendEntityMessage(p, "playerext:giveAP", ap)
+          done[ap] = true
+        end
+      end
+    end
   end
   
   --[[ special drops

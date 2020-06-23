@@ -23,9 +23,6 @@ next things {
 
 balance notes {
     swansong needs to be marked as a space monster
-    need to figure out some way of sharing AP with party, or at least nearby players {
-        propagation within a certain radius, only if not already marked for assist, and only if neither can damage the other
-    }
 }
 
 the BIG IDEA UPDATE {

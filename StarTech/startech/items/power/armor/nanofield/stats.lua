@@ -102,24 +102,20 @@ function stats.update(p)
   cooldownTimer = math.max(0, cooldownTimer - p.dt)
   if cooldownTimer == 0 then
     local cdr = util.lerp(heat, 1.5, 0.3)
-    heat = math.max(0, heat - cdr*p.dt)
+    heat = math.max(0, heat - cdr * p.dt)
   end
   
+  -- health regen
+  if stats.stat.healthRegen > 0 then
+    status.setResourcePercentage("health", status.resourcePercentage("health") + stats.stat.healthRegen * p.dt)
+  end
 end
 
 function stats.postUpdate(p)
   
   local sg, psg = {
     { stat = "startech:wearingNanofield", amount = 1 },
-    
     { stat = "breathProtection", amount = 1 },
-    --{ stat = "stardustlib:deployWithoutMech", amount = 1.0 },
-    --{ stat = "nude", amount = -100 },
-    
-    --[[{ stat = "protection", amount = stats.stat.armor },
-    { stat = "maxHealth", amount = stats.stat.health - 100 },
-    { stat = "maxEnergy", amount = stats.stat.energy - 100 },
-    { stat = "powerMultiplier", baseMultiplier = stats.stat.damageMult },]]
   }, { }
   movement.call("updateEffectiveStats", sg, psg)
   status.setPersistentEffects("startech:nanofield", sg)

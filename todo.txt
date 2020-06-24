@@ -9,8 +9,7 @@ next things {
     
     heat gauge stats in nanofield? efficiency, cooldown rate, cooldown delay reduction?
     
-    / some way of toggling AP gain display (for now it's just dependent on having something that uses AP)
-    toggle nodes
+    toggle nodes (use canDeselect)
     probably show item costs regardless of whether you have a path to a node
     maybe also fixed costs
     

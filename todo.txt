@@ -39,6 +39,11 @@ the BIG IDEA UPDATE {
         tabs for metaGUI (eventually)
         maybe some way to plonk widgets into the title bar
         particularly, a function to turn the icon into an item slot
+        
+        test global hook system theory {
+            shared default metatable?
+            could use playerext to insert __newindex and modify update on tech table addition to expose player inputs via message
+        }
     }
     dialogue tree system {
         metagui, fixed window; can intercept escape due to how keyboard capture works

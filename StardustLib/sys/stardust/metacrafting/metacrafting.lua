@@ -94,19 +94,29 @@ function init()
       local lbl = string.format("^shadow;%s", itemutil.property(recipe.output, "shortdescription"))
       if recipe.output.count > 1 then lbl = string.format("%s ^lightgray;(x^reset;^shadow;%d^lightgray;)", lbl, recipe.output.count) end
       local nameLabel = topRow:addChild { type = "label", text = lbl }
-      nameLabel:subscribeEvent("updateCraftableCounts", function()
-        local col = craftableCount(recipe) < 1 and "7f7f7f"
-        if nameLabel.color ~= col then nameLabel.color = col nameLabel:queueRedraw() end
-      end)
-      nameLabel:pushEvent("updateCraftableCounts")
       
       --bottomRow:addChild { type = "image", file = "/interface/objectcrafting/arrow.png" }
       if not recipe.input[1] then
         bottomRow:addChild { type = "label", text = "^gray;> (no ingredients required)", inline = true }
       else bottomRow:addChild { type = "label", text = "^gray;>", inline = true } end
+      local il = bottomRow:addChild { type = "layout", mode = "horizontal", align = 0.5, scissoring = false, expandMode = {2, 0} }
       for _, itm in pairs(recipe.input) do
-        bottomRow:addChild { type = "itemSlot", item = itm }.isMouseInteractable = funcFalse
+        il:addChild { type = "itemSlot", item = itm }.isMouseInteractable = funcFalse
       end
+      
+      local craftableLabel = bottomRow:addChild { type = "label", inline = true }
+      
+      listItem:subscribeEvent("updateCraftableCounts", function()
+        local cc = craftableCount(recipe)
+        if cc ~= listItem._prevCount then
+          listItem._prevCount = cc
+          local col = cc < 1 and "7f7f7f"
+          if nameLabel.color ~= col then nameLabel.color = col nameLabel:queueRedraw() end
+          craftableLabel.color = col
+          craftableLabel:setText(string.format("(%s)", "" .. cc))
+        end
+      end)
+      listItem:pushEvent("updateCraftableCounts")
     end
   end
   

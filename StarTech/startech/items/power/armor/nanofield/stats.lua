@@ -106,7 +106,7 @@ function stats.update(p)
   end
   
   -- health regen
-  if stats.stat.healthRegen > 0 then
+  if (stats.stat.healthRegen or 0) > 0 then
     status.setResourcePercentage("health", status.resourcePercentage("health") + stats.stat.healthRegen * p.dt)
   end
 end

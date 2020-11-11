@@ -101,7 +101,7 @@ function stats.update(p)
   -- heat
   cooldownTimer = math.max(0, cooldownTimer - p.dt)
   if cooldownTimer == 0 then
-    local cdr = util.lerp(heat, 1.5, 0.3)
+    local cdr = util.lerp(heat, 1.5, 0.3) * (stats.stat.heatDissipation or 1.0)
     heat = math.max(0, heat - cdr * p.dt)
   end
   
@@ -178,6 +178,7 @@ function stats.drawEnergy(amount, testOnly, ioMult)
 end
 
 function stats.buildHeat(amt)
+  amt = amt / (stats.stat.heatEfficiency or 1.0)
   heat = util.clamp(heat + amt, 0.0, 1.0)
   if amt > 0 then cooldownTimer = 1.5 end
   return heat == 1.0

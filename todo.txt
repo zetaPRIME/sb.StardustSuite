@@ -1,7 +1,7 @@
 -
 
 next things {
-    - metacrafting: show how many can be made on refresh
+    fix FU power compat
     
     figure out a good generalist endgame elytra (pre-eidolon)
     ^ Essentia Booster; decent flight time but not unlimited, probably has blink

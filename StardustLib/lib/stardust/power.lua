@@ -3,7 +3,8 @@
 
 require "/lib/stardust/interop.lua"
 
-power = {}
+local power = { }
+_ENV.power = power
 
 -- one fluxpacket translates to this many Joules in Frackin' Universe's power system
 -- multiple balance points are possible...

@@ -1,7 +1,7 @@
 skilltree = skilltree or { }
 
 local function numStr(n, percent) -- friendly string representation of number
-  if percent then n = n * 100 end
+  if percent then n = math.floor(0.5 + n * 10000) / 100 end
   local fn = math.floor(n)
   if math.abs(fn - n) < 0.05 then n = fn end
   return tostring(n) .. (percent and "%" or "")

@@ -420,6 +420,11 @@ function skilltree.tryUnlockNode(n)
   return true
 end
 
+function skilltree.refundAll()
+  for p in pairs(skillData.unlocks) do skilltree.refundNode(p, true) end
+  skilltree.saveChanges()
+  skilltree.redraw()
+end
 function skilltree.refundNode(path, batch)
   path = type(path) == "table" and path.path or path -- we need specifically the path for this
   local c = skillData.unlocks[path] or {0}

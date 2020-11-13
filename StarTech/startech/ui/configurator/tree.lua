@@ -55,7 +55,12 @@ function init()
 end
 
 function apply:onClick() skilltree.applyChanges() end
-function reset:onClick() skilltree.resetChanges() end
+function reset:onClick()
+  if player.isAdmin() and metagui.checkShift() then
+    return skilltree.refundAll()
+  end
+  skilltree.resetChanges()
+end
 
 if debugAP then
   function debugAP:onEnter()

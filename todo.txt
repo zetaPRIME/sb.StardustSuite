@@ -1,8 +1,6 @@
 -
 
 next things {
-    -? fix FU power compat
-    
     figure out a good generalist endgame elytra (pre-eidolon)
     ^ Essentia Booster; decent flight time but not unlimited, probably has blink
     ^ essence spark particle effect?
@@ -95,6 +93,8 @@ the BIG IDEA UPDATE {
         pulse rifle
         shardstorm
     }
+    
+    legit survival way to take over an ancient gateway structure as your own base
 }
 
 for (maybe not) next update {

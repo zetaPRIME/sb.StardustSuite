@@ -5,6 +5,9 @@ require "/lib/stardust/power.lua"
 require "/lib/stardust/network.lua"
 require "/lib/stardust/color.lua"
 
+local power = _ENV.power
+local fupower
+
 function init()
   local cfg = config.getParameter("batteryStats")
   battery = prefabs.power.battery(cfg.capacity, cfg.ioRate):hookUp():autoSave():controlTickrate()
@@ -17,13 +20,58 @@ function init()
   
   -- set all outputs positive for chunkloading purposes
   for i=1, object.outputNodeCount() do object.setOutputNodeLevel(i-1, true) end
+  
+  if root.hasTech("fuhealzone") then -- if we have FU installed, load FU power module
+		-- back up clobbered functions
+		local update = _ENV.update
+		
+    local ptf = power.translationFactorFU
+    require "/scripts/fupower.lua"
+    fupower = _ENV.power
+		
+		-- and restore
+		_ENV.update = update
+    
+    function fupower.getEnergy(id)
+      if not id or id == entity.id() then
+				return battery.state.energy * ptf
+			else
+				return callEntity(id,'power.getEnergy') or 0
+			end
+    end
+    function fupower.getMaxEnergy()
+      return battery.capacity * ptf
+    end
+    function fupower.getStorageLeft()
+      return (battery.capacity - battery.state.energy) * ptf
+    end
+    function fupower.recievePower(amt)
+      -- can't really rate limit, since pushing from FU things isn't generally per-tick
+      amt = amt / ptf -- convert units
+      battery.state.energy = math.min(battery.state.energy + amt, battery.capacity)
+      battery:consume(0, true) -- trigger postupdate
+    end
+    function fupower.remove(amt)
+      battery:consume(amt / ptf) -- I guess use this
+    end
+		
+		function isPower() return "battery" end
+		
+		-- override certain parameter values
+		local getParameter = config.getParameter
+		function config.getParameter(p, ...)
+			if p == "powertype" then return "battery" end
+			return getParameter(p, ...)
+		end
+  end
 end
 
 function postInit() -- run on first update, after everything is loaded
-  fuNetworkKickstart() -- kickstart anything this loaded after
+  --fuNetworkKickstart() -- kickstart anything this loaded after
+  if fupower then fupower.onNodeConnectionChange() end
 end
 
-function update()
+function update(dt)
   if not storage.loaded then
     battery.state.energy = world.getObjectParameter(entity.id(), "storedEnergy") or battery.state.energy -- we don't actually have to drain
     storage.loaded = true
@@ -32,6 +80,10 @@ function update()
   if postInit then postInit() postInit = nil end
   
   power.autoSendEnergy(1000000000)
+	
+	if fupower then
+	
+	end
   
   if not isRelay then
     -- only applies to actual batteries
@@ -92,7 +144,7 @@ function die()
   object.smash(true)
 end
 
--- FU translation
+--[[ FU translation
 function fuNetworkKickstart()
   local pool = network.getPool()
   for _,id in pairs(pool) do
@@ -119,4 +171,4 @@ function power.recievePower(amt)
 end
 function power.remove(amt)
   battery:consume(amt / power.translationFactorFU) -- I guess use this
-end
+end]]

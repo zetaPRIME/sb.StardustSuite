@@ -1,7 +1,7 @@
 -
 
 next things {
-    fix FU power compat
+    -? fix FU power compat
     
     figure out a good generalist endgame elytra (pre-eidolon)
     ^ Essentia Booster; decent flight time but not unlimited, probably has blink

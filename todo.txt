@@ -21,7 +21,7 @@ next things {
 }
 
 balance notes {
-    swansong needs to be marked as a space monster
+    
 }
 
 the BIG IDEA UPDATE {

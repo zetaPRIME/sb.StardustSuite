@@ -11,7 +11,10 @@ local _update = update
 function update(...)
   if not initDone then initDone = true
     -- mark as space monster if applicable
-    if __spaceMonster then status.setStatusProperty("stardustlib:isSpaceMonster", true) end
+    local spaceMonsterTypes = {
+      swansong = true,
+    }
+    if __spaceMonster or spaceMonsterTypes[world.entityTypeName(entityId)] then status.setStatusProperty("stardustlib:isSpaceMonster", true) end
     entityType = world.entityType(entityId) -- refresh this
     if entityType and entityType ~= "player" then -- inject entity-space code
       world.callScriptedEntity(entityId, "require", "/sys/stardust/entityext.lua")

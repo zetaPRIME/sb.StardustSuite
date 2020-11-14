@@ -7,7 +7,7 @@ next things {
     
     need a t4 or t5 one to go in between
     
-    heat gauge stats in nanofield? efficiency, cooldown rate, cooldown delay reduction?
+    - heat gauge stats in nanofield? efficiency, cooldown rate, cooldown delay reduction?
     
     toggle nodes (use canDeselect)
     probably show item costs regardless of whether you have a path to a node

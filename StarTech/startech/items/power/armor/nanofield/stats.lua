@@ -180,7 +180,7 @@ end
 function stats.buildHeat(amt)
   amt = amt / (stats.stat.heatEfficiency or 1.0)
   heat = util.clamp(heat + amt, 0.0, 1.0)
-  if amt > 0 then cooldownTimer = 1.5 end
+  if amt > 0 then cooldownTimer = 1.5 * (stats.stat.heatDelay or 1.0) end
   return heat == 1.0
 end
 

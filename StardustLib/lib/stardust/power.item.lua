@@ -3,6 +3,8 @@ require "/scripts/util.lua"
 require "/lib/stardust/itemutil.lua"
 require "/lib/stardust/power.lua"
 
+local power = _ENV.power
+
 --[[
 parameters.batteryStats {
   energy

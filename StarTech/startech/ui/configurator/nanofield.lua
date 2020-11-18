@@ -36,6 +36,7 @@ local function saveItem(itm)
 end
 
 function init()
+  debugAP:setVisible(player.isAdmin())
   skilltree.initFromItem(treeCanvas, loadItem, saveItem)
   pane.playSound "/sfx/objects/outpostbutton.ogg"
 end

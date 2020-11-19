@@ -53,7 +53,7 @@ function die(...)
     world.sendEntityMessage(p, "playerext:giveAP", ap)
     local pp = world.entityPosition(p)
     if pp then
-      local pl = world.playerQuery(pp, 20)
+      local pl = world.playerQuery(pp, 50)
       for _, adp in pairs(pl) do -- give AP to friendly players near contributors
         if not hitBy[adp] and not done[adp] and not world.entityCanDamage(p, adp) and not world.entityCanDamage(adp, p) then
           world.sendEntityMessage(adp, "playerext:giveAP", ap)

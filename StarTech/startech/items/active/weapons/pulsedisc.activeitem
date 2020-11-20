@@ -1,0 +1,25 @@
+{ // -*- grammar-ext: json -*-
+  "itemName" : "startech:pulsedisc",
+  "shortdescription" : "Pulse Disc",
+  "description" : "WIP",
+  "category" : "startech:power.weapon",
+  "inventoryIcon" : "pulseglaive.png",
+  "rarity" : "Legendary",
+  "maxStack" : 1,
+  "twoHanded" : true,
+  "itemTags" : ["weapon", "chakram", "energy"],
+  "tooltipKind" : "stardustlib.withPreview",
+  "largeImage" : "/startech/items/active/weapons/pulseglaive-preview.png",
+  //"builder" : "/startech/items/active/weapons/buildpulseweapon.lua",
+  
+  "stardustlib:usesAP" : true,
+  "startech:configurable" : true,
+  "startech:configuratorUI" : "startech:configurator.tree",
+  "stardustlib:skillTree" : "/startech/skilltree/pulseglaive.config",
+  
+  "level" : 1,
+  //"acceptsUpgradeCatalyst" : true,
+
+  "animation" : "pulseglaive.animation",
+  "scripts" : ["pulsedisc.lua"]
+}

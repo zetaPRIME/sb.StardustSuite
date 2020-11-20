@@ -211,6 +211,10 @@ function skilltree.initFromItem(canvas, loadItem, saveItem)
   itemData = ((type(loadItem) == "table") and loadItem) or loadItem()
   local treePath = itemutil.relativePath(itemData, itemutil.property(itemData, "stardustlib:skillTree"))
   
+  local sm = itemutil.property(itemData, "stardustlib:skillTree.modules")
+  if type(sm) ~= "table" then sm = {sm} end
+  for _, p in pairs(sm) do require(itemutil.relativePath(itemData, p)) end
+  
   --itemData["stardustlib:skillData"] = itemData["stardustlib:skillData"] or { }
   skilltree.init(canvas, treePath, itemData.parameters["stardustlib:skillData"], function(data)
     itemData.parameters["stardustlib:skillData"] = data
@@ -243,6 +247,7 @@ function skilltree.refreshNodeProperties(node)
   skilltree.generateNodeToolTip(node) -- delegated to module so build scripts can reuse it
 end
 
+skilltree.statModifiers = { }
 function skilltree.recalculateStats()
   skillData.spentAP = 0
   skillData.stats, skillData.flags, skillData.effects = { }, { }, { }
@@ -281,6 +286,9 @@ function skilltree.recalculateStats()
       doGrants(node)
     end
   end
+  
+  -- allow individual things to modify calculated stats
+  for _, m in pairs(skilltree.statModifiers) do m(skillData.stats, skillData.flags) end
   
   -- update display
   if statsDisplay then

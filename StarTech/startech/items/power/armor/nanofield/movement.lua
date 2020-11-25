@@ -459,6 +459,13 @@ do local s = movement.state("flight")
       movement.switchState("ground")
     end
     
+    -- TEMP
+    if input.keyDown.jump then
+      input.keyDown.jump = false
+      mcontroller.setVelocity(vec2.add(mcontroller.velocity(), vec2.mul(input.dirN, 5)))
+      movement.switchState("sphere.flight")
+    end
+    
     local dt = script.updateDt()
     
     local statEnv = "Air"
@@ -531,5 +538,16 @@ do local s = movement.state("flight")
     if not summoned and not movement.zeroG and movement.zeroGPrev then movement.switchState("ground") end
     
     coroutine.yield()
+  end
+end
+
+do local s = movement.state("sphere.flight")
+  local ss = movement.state("sphere")
+  setmetatable(s, {__index = ss})
+  
+  function s:main()
+    input.keyDown.t1 = false -- consume f presses
+    if not input.key.jump then movement.switchState("flight") end
+    ss.main(self)
   end
 end

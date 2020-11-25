@@ -1,6 +1,10 @@
 -
 
 next things {
+    use modules by defs and not item attribs
+    modules system for nanofield so other mods can add their own things
+    implement elytra abilities properly
+    
     figure out a good generalist endgame elytra (pre-eidolon)
     ^ Essentia Booster; decent flight time but not unlimited, probably has blink
     ^ essence spark particle effect?

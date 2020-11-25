@@ -571,6 +571,7 @@ function skilltree.draw()
     local toolTipWidth = s[1]/2 - 24
     toolTipWidth = util.clamp(s[1] - ttPos[1] - 1, toolTipWidth*0.6, toolTipWidth) -- autoscale down, to a reasonable point
     local tt = mouseOverNode.toolTip
+    if player.isAdmin() then tt = string.format("^darkgray;%s^reset;\n%s", mouseOverNode.path, tt) end
     if skilltree.nodeUnlockLevel(mouseOverNode, true) < 0 then
       if mouseOverNode.itemCost then
         local ctt = { }

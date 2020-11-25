@@ -5,7 +5,8 @@ function init()
 end
 
 function onInteraction()
-  local m = getmetatable('')
-  m.theCount = (m.theCount or 0) + 1
-  object.say("The count is: " .. m.theCount)
+  local theCount = (root.itemConfig({name = "stardustlib:datastore", count = 1, parameters = { dataRequest = { theCount = true } } }).parameters.dataReturn.theCount or 0) + 1
+  root.itemConfig({name = "stardustlib:datastore", count = 1, parameters = { dataInsert = { theCount = theCount } } })
+  
+  object.say("The count is: " .. theCount)
 end

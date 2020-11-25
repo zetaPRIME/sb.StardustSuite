@@ -1,0 +1,7 @@
+{ // -*- grammar-ext: json -*-
+  "itemName" : "stardustlib:datastore",
+  //"inventoryIcon" : "machineplating.png",
+  //"shortdescription" : "Machine Plating",
+  //"description" : "A tough plating component for machinery.",
+  "builder" : "/sys/stardust/builders/datastore.lua"
+}

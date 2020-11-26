@@ -1,0 +1,4 @@
+{ // -*- grammar-ext: json -*-
+  "itemName" : "stardustlib:channelipc",
+  "builder" : "/sys/stardust/ipc/channels.lua"
+}

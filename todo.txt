@@ -5,6 +5,9 @@ next things {
     modules system for nanofield so other mods can add their own things
     implement elytra abilities properly
     
+    
+    stuff playerext into smt
+    
     figure out a good generalist endgame elytra (pre-eidolon)
     ^ Essentia Booster; decent flight time but not unlimited, probably has blink
     ^ essence spark particle effect?
@@ -45,6 +48,23 @@ the BIG IDEA UPDATE {
         test global hook system theory {
             shared default metatable?
             could use playerext to insert __newindex and modify update on tech table addition to expose player inputs via message
+        }
+        
+        channeled universal communications {
+            explicit join protocol
+            
+            public (msg board) and direct message queues
+            distinction between pub and all
+            
+            abstract into event based things?
+            packet types of join, leave, update and message
+            
+            public and connection datastores
+            pub can be pathed-updated
+            
+            
+            
+            query as array
         }
     }
     dialogue tree system {

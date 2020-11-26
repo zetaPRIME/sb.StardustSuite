@@ -1,0 +1,4 @@
+{ // -*- grammar-ext: json -*-
+  "itemName" : "stardustlib:datastore",
+  "builder" : "/sys/stardust/ipc/datastore.lua"
+}

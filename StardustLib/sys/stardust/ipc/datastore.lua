@@ -1,8 +1,8 @@
--- converts an item entirely to another
+-- simple global session data storage
 
 function build(directory, config, parameters, level, seed)
-  local ds = getmetatable ''._dataStore
-  if not ds then ds = { } getmetatable ''._dataStore = ds end
+  local ds = getmetatable ''["stardustlib:gdata"]
+  if not ds then ds = { } getmetatable ''["stardustlib:gdata"] = ds end
   
   if type(parameters.dataRequest) == "table" then
     parameters.dataReturn = { }

@@ -122,12 +122,15 @@ local cfg
 local internal
 local svc = { }
 local svci = { } -- internal utilities
+local pxipc = { }
+getmetatable ''["stardustlib:playerext"] = pxipc -- install
 local _init = init or function() end
 function init(...)
   _init(...) -- run after deploy init
   for name,func in pairs(svc) do
     if type(func) == "function" then
       message.setHandler("playerext:" .. name, func)
+      pxipc[name] = function(...) return func(nil, true, ...) end
     end
   end
   

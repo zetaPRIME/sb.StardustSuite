@@ -1,7 +1,6 @@
 -
 
 next things {
-    use modules by defs and not item attribs
     modules system for nanofield so other mods can add their own things
     implement elytra abilities properly
     

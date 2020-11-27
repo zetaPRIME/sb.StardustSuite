@@ -193,6 +193,14 @@ function skilltree.init(canvas, treePath, data, saveFunc)
       if not nodes[p] or skilltree.nodeUnlockLevel(p) < 1 then skilltree.refundNode(p, true) end
     end
     
+    if type(defs.scripts) == "table" then
+      for _, p in pairs(defs.scripts) do require(util.absolutePath(util.pathDirectory(treePath), p)) end
+    end
+    
+    if type(td.scripts) == "table" then
+      for _, p in pairs(td.scripts) do require(util.absolutePath(util.pathDirectory(defsPath), p)) end
+    end
+    
     skillData.compatId = td.compatId
     skilltree.recalculateStats() -- update all the things
   end
@@ -210,10 +218,6 @@ end
 function skilltree.initFromItem(canvas, loadItem, saveItem)
   itemData = ((type(loadItem) == "table") and loadItem) or loadItem()
   local treePath = itemutil.relativePath(itemData, itemutil.property(itemData, "stardustlib:skillTree"))
-  
-  local sm = itemutil.property(itemData, "stardustlib:skillTree.modules")
-  if type(sm) ~= "table" then sm = {sm} end
-  for _, p in pairs(sm) do require(itemutil.relativePath(itemData, p)) end
   
   --itemData["stardustlib:skillData"] = itemData["stardustlib:skillData"] or { }
   skilltree.init(canvas, treePath, itemData.parameters["stardustlib:skillData"], function(data)

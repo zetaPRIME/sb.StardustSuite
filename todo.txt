@@ -41,10 +41,7 @@ the BIG IDEA UPDATE {
         maybe some way to plonk widgets into the title bar
         particularly, a function to turn the icon into an item slot
         
-        test global hook system theory {
-            shared default metatable?
-            could use playerext to insert __newindex and modify update on tech table addition to expose player inputs via message
-        }
+        x test global hook system theory - nope. default metatable is nil.
         
         channeled universal communications {
             explicit join protocol

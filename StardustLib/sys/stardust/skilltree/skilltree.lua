@@ -9,7 +9,10 @@ require "/sys/stardust/skilltree/calc.lua"
 skilltree = skilltree or { }
 skilltree.modifyStatDisplay = { }
 
+skilltree.zoom = 1
+
 local needsRedraw = true
+local mouseRefresh
 local skillData, itemData, saveData
 local defs, nodes, connections, decorations, defaultUnlocks
 local apToSpend = 0
@@ -35,6 +38,7 @@ local soundEffects = {
   deselect = { "/sfx/objects/outpostbutton.ogg", "/sfx/interface/nav_insufficient_fuel.ogg" },
   
   link = { "/sfx/interface/stationtransponder_stationpulse.ogg", "/sfx/tech/tech_dash.ogg" },
+  zoom = "/sfx/interface/stationtransponder_stationpulse.ogg",
 }
 
 local rarityColors = {
@@ -519,6 +523,8 @@ local nodeDirectives = {
 }
 local toolTipBG = metagui.theme.assets.panel--metagui.ninePatch("/metagui/themes/fallbackAssets/panel")
 function skilltree.draw()
+  local nodeSpacing = nodeSpacing * skilltree.zoom
+  
   needsRedraw = false
   local c = skilltree.canvas
   local s = c:size()
@@ -548,7 +554,7 @@ function skilltree.draw()
       if (cn[1].type == "selection" and cn[2].type == "selector") or (cn[1].type == "selector" and cn[2].type == "selection") then
         lc, lw = "selector", 4
       end
-      c:drawLine(ndp(cn[1]), ndp(cn[2]), lineColors[lc], lw)
+      c:drawLine(ndp(cn[1]), ndp(cn[2]), lineColors[lc], math.max(1, lw * skilltree.zoom))
     end
   end
   
@@ -561,9 +567,9 @@ function skilltree.draw()
       if mouseOverNode == node then dm = dm .. nodeDirectives["h"] end
       local icon = node.icon
       if icon:sub(-1) == ":" then icon = icon .. (ul <= 0 and "locked" or ul <= 0.5 and "pending" or "unlocked") end
-      c:drawImage(icon .. dm, pos, 1, {255, 255, 255}, true)
+      c:drawImage(icon .. dm, pos, skilltree.zoom, {255, 255, 255}, true)
       if node.contentsIcon then
-        c:drawImage(node.contentsIcon, pos, 1, {255, 255, 255}, true)
+        c:drawImage(node.contentsIcon, pos, skilltree.zoom, {255, 255, 255}, true)
       end
     end
   end
@@ -629,6 +635,7 @@ function skilltree.drawBackground() end -- stub
 
 function skilltree.scrollPosition() return scrollPos end
 function skilltree.scroll(d)
+  local nodeSpacing = nodeSpacing * skilltree.zoom
   scrollPos = {
     util.clamp(scrollPos[1] + d[1], scrollBounds[1] * nodeSpacing, scrollBounds[3] * nodeSpacing),
     util.clamp(scrollPos[2] + d[2], scrollBounds[2] * nodeSpacing, scrollBounds[4] * nodeSpacing),
@@ -636,14 +643,23 @@ function skilltree.scroll(d)
   skilltree.redraw()
 end
 function skilltree.scrollTo(d)
+  local nodeSpacing = nodeSpacing * skilltree.zoom
   scrollPos = {
     util.clamp(d[1], scrollBounds[1] * nodeSpacing, scrollBounds[3] * nodeSpacing),
     util.clamp(d[2], scrollBounds[2] * nodeSpacing, scrollBounds[4] * nodeSpacing),
   }
   skilltree.redraw()
 end
+function skilltree.setZoom(z)
+  local p = z / skilltree.zoom
+  skilltree.zoom = z
+  mouseRefresh = true
+  skilltree.scrollTo {scrollPos[1] * p, scrollPos[2] * p}
+end
 
 function findMouseOver(mp)
+  local nodeSpacing = nodeSpacing * skilltree.zoom
+  
   local old = mouseOverNode
   mouseOverNode = nil
   local buf = 0.4
@@ -665,7 +681,6 @@ function clearMouseOver()
   mouseOverNode = nil
 end
 
-local mouseRefresh
 function skilltree.clickNode(n)
   n = type(n) == "table" and n or nodes[n]
   if n.type == "link" then
@@ -760,9 +775,26 @@ function skilltree.initUI()
           return nil
         end
       end
-      self:captureMouse(btn)
+      if self:captureMouse(btn) then
+        self._dragged = false
+      end
       skilltree.redraw()
     elseif btn == self:mouseCaptureButton() then
+      if btn == 2 and not self._dragged then -- right click without dragging
+        sfx "zoom"
+        metagui.startEvent(function()
+          local z1 = skilltree.zoom
+          local z2 = 0.5
+          if z1 < 1 then z2 = 1 end
+          local p = 0
+          while true do
+            p = math.min(p + 0.1, 1)
+            skilltree.setZoom(util.lerp(p^0.5, z1, z2))
+            if p >= 1 then return end
+            coroutine.yield()
+          end
+        end)
+      end
       self:releaseMouse()
       skilltree.redraw()
     end
@@ -770,6 +802,7 @@ function skilltree.initUI()
   
   function w:onCaptureMouseMove(d)
     if d[1] ~= 0 or d[2] ~= 0 then
+      if vec2.mag(vec2.sub(metagui.mousePosition, self:mouseCapturePoint())) >= 5 then self._dragged = true end
       skilltree.scroll(vec2.mul(d, {-1, 1}))
     end
   end

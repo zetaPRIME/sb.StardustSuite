@@ -77,6 +77,8 @@ the BIG IDEA UPDATE {
         }
     }
     complete pulse equipment rework {
+        - draw scale for tree!
+        
         - Aetheri-style trees but tied to the item (and in a metaGUI window)
         - global AP system (gathered from combat and the like; basically Aetheri's but usable for multiple things)
         reset catalyst refunds everything invested into an item's progression

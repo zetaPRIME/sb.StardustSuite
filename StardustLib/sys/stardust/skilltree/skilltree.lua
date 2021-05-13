@@ -784,13 +784,17 @@ function skilltree.initUI()
         sfx "zoom"
         metagui.startEvent(function()
           local z1 = skilltree.zoom
-          local z2 = 0.5
-          if z1 < 1 then z2 = 1 end
+          local z2 = metagui.checkShift() and 0.25 or 0.5
+          z2 = (z1 ~= z2) and z2 or 1.0
           local p = 0
           while true do
             p = math.min(p + 0.1, 1)
             skilltree.setZoom(util.lerp(p^0.5, z1, z2))
-            if p >= 1 then return end
+            if p >= 1 then -- finish step
+              -- round scroll position to integer
+              skilltree.scrollTo {math.floor(0.5 + scrollPos[1]), math.floor(0.5 + scrollPos[2]) }
+              return
+            end
             coroutine.yield()
           end
         end)

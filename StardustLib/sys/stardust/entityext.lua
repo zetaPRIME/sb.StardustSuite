@@ -13,14 +13,14 @@ end
 
 -- keep track of all players who contribute to a kill
 local _damage = damage or nf
-function damage(args)
+function damage(args, ...)
   addHitBy(args.sourceId)
   -- send a notification for leech purposes
   world.sendEntityMessage(args.sourceId, "stardustlib:damagedEntity", entity.id(), args.sourceDamage, args.damage, args.sourceKind)
-  _damage(args)
+  _damage(args, ...)
 end
 
--- grant experience to all (Aetheri) contributors when killed
+-- grant experience to all contributors when killed
 local _die = die or nf
 function die(...)
   local level = nn.level()

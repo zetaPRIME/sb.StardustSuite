@@ -49,6 +49,16 @@ local rarityColors = {
   essential = "^#c3c53e;"
 }
 
+local layoutFunc = { }
+function layoutFunc.radial(pos, div, offset, taper)
+  div = div or 1
+  offset = offset or 0
+  taper = taper or 0
+  local r = (pos[1]/div + offset) * math.pi*2
+  local e = pos[2]+(taper*pos[1])
+  return {math.sin(r) * math.abs(e), math.cos(r) * -e}
+end
+
 function skilltree.playSound(sfx)
   local s = soundEffects[sfx]
   if type(s) == "string" then s = {s} end
@@ -84,7 +94,12 @@ function skilltree.init(canvas, treePath, data, saveFunc)
     
     -- parse through nodeset
     nodes, connections, defaultUnlocks = { }, { }, { }
-    local iterateTree iterateTree = function(tree, pfx, offset)
+    local iterateTree iterateTree = function(tree, pfx, offset, lf)
+      if lf then
+        if type(lf) == "string" then lf = {lf} end
+        lf[1] = layoutFunc[lf[1]]
+        if not lf[1] then lf = nil end
+      end
       if pfx:sub(-1) ~= "/" then pfx = pfx .. "/" end -- directorize path
       for k, n in pairs(tree) do
         -- apply templates
@@ -97,13 +112,15 @@ function skilltree.init(canvas, treePath, data, saveFunc)
         end
         
         local type = n.type or "node"
-        local pos = vec2.add(n.position or {0, 0}, offset)
+        local pos = n.position or {0, 0}
+        if lf then pos = lf[1](pos, table.unpack(lf, 2)) end
+        pos = vec2.add(pos, offset)
         local path = util.absolutePath(pfx, k)
         
         if type == "group" then
           -- group conditions; same format (and options) as quickbar ones!
           if not n.condition or condition(table.unpack(n.condition)) then --
-            iterateTree(n.children or { }, path, pos)
+            iterateTree(n.children or { }, path, pos, n.layoutFunction or n.layoutFunc or n.layout)
           end
         else -- actual node
           local node = {

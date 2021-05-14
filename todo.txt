@@ -1,6 +1,8 @@
 -
 
 next things {
+    FIX SELECTABLES IMPROPERLY APPLYING UNCOMMITTED NODES
+    
     modules system for nanofield so other mods can add their own things
     implement elytra abilities properly
     
@@ -41,7 +43,9 @@ the BIG IDEA UPDATE {
         maybe some way to plonk widgets into the title bar
         particularly, a function to turn the icon into an item slot
         
-        x test global hook system theory - nope. default metatable is nil.
+        THREAT GENERATION SYSTEM {
+            self.board:getList("targets")
+        }
         
         channeled universal communications {
             explicit join protocol
@@ -254,6 +258,21 @@ Extend sync library {
     coroutine-based things? ...
     
     fixed sync registry (register callback ahead of time; optional automatic timer)
+}
+
+Fenthes species {
+    base spritework on updated Zia costume
+    
+    starts with nanofield w/ rcs pack (damaged?) and choice of pulse weapon (a la pokemon starters)
+    
+    doesn't interact with vanilla story because was never a Protector
+    intro scenario {
+        starts on a shared ship on an asteroid mining mission
+        interact with weapon rack to pick starter weapon
+        ship is destroyed by a Leviathan-type Eidolon en route to target
+        player must navigate a debris field via rcs pack to get to a workable engine, fighting off Eidolon-spawn in the process
+        ends up on essentially a debris platform with an engine strapped on as your starting ship (native BYOS)
+    }
 }
 
 Aetheri species mod {

@@ -1,0 +1,19 @@
+{ // -*- grammar-ext: json -*-
+  "itemName" : "startech:essenceplating",
+  "price" : 500,
+  "rarity" : "Legendary",
+  "category" : "craftingMaterial",
+  "inventoryIcon" : "essenceplating.png",
+  "shortdescription" : "Infused Alloy Plating",
+  "description" : "An essence-infused plating component comprised of an incredibly durable alloy.",
+  "itemTags" : [ "reagent" ],
+  
+  "stardustlib:moduleStats" : {
+    "startech:nanofield" : [
+      ["flat", "armor", 50],
+      ["increased", "damage", 0.05],
+      ["increased", "heatDelay", -0.15],
+      ["description", "\"Hasten the body, quicken the soul.\""]
+    ]
+  }
+}

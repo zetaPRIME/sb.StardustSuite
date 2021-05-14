@@ -1,16 +1,17 @@
 -
 
-next things {
-    - FIX SELECTABLES IMPROPERLY APPLYING UNCOMMITTED NODES
-    
-    modules system for nanofield so other mods can add their own things
-    implement elytra abilities properly
-    
+necessary before Phase 1 release {
     figure out a good generalist endgame elytra (pre-eidolon)
     ^ Essentia Booster; decent flight time but not unlimited, probably has blink
     ^ essence spark particle effect?
     
     need a t4 or t5 one to go in between
+    
+} then {
+    
+    modules system for nanofield so other mods can add their own things
+    implement elytra abilities properly
+    
     
     toggle nodes (use canDeselect)
     probably show item costs regardless of whether you have a path to a node

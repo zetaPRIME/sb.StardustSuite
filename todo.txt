@@ -1,7 +1,7 @@
 -
 
 next things {
-    FIX SELECTABLES IMPROPERLY APPLYING UNCOMMITTED NODES
+    - FIX SELECTABLES IMPROPERLY APPLYING UNCOMMITTED NODES
     
     modules system for nanofield so other mods can add their own things
     implement elytra abilities properly

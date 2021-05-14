@@ -273,7 +273,7 @@ function skilltree.refreshNodeProperties(node)
 end
 
 skilltree.statModifiers = { }
-function skilltree.recalculateStats()
+function skilltree.recalculateStats(saveBeforeDisplay)
   skillData.spentAP = 0
   skillData.stats, skillData.flags, skillData.effects = { }, { }, { }
   for stat, v in pairs(defs.baseStats) do
@@ -314,6 +314,8 @@ function skilltree.recalculateStats()
   
   -- allow individual things to modify calculated stats
   for _, m in pairs(skilltree.statModifiers) do m(skillData.stats, skillData.flags) end
+  
+  if saveBeforeDisplay then skilltree.saveChanges(true) end
   
   -- update display
   if statsDisplay then
@@ -376,8 +378,8 @@ function skilltree.applyChanges(silent)
   skilltree.saveChanges()
   skilltree.redraw()
 end
-function skilltree.saveChanges()
-  skilltree.recalculateStats()
+function skilltree.saveChanges(fromRecalc)
+  if not fromRecalc then skilltree.recalculateStats() end
   skillData.syncId = sb.makeUuid()
   saveData(skillData)
 end
@@ -490,8 +492,7 @@ function skilltree.trySocketNode(node, itm)
     sfx "socketRemove"
     skillData.modules[node.path] = nil
     skilltree.refreshNodeProperties(node)
-    skilltree.recalculateStats()
-    skilltree.saveChanges() -- store immediately
+    skilltree.recalculateStats(true) -- save changes before adding uncommitted nodes for display
     skilltree.redraw()
     return cur
   else -- swap
@@ -508,8 +509,7 @@ function skilltree.trySocketNode(node, itm)
     sfx "socketPlace"
     skillData.modules[node.path] = { name = itm.name, count = 1, parameters = itm.parameters }
     skilltree.refreshNodeProperties(node)
-    skilltree.recalculateStats()
-    skilltree.saveChanges() -- store immediately
+    skilltree.recalculateStats(true) -- save changes before adding uncommitted nodes for display
     skilltree.redraw()
     -- can only get here with a count >1 if there's nothing in there already
     if count > 1 then return { name = itm.name, count = itm.count - 1, parameters = itm.parameters } end
@@ -722,8 +722,7 @@ function skilltree.clickNode(n)
       sfx "selector"
       skillData.selectors[n.selector] = n.path
       skilltree.refreshNodeProperties(n.selector)
-      skilltree.recalculateStats()
-      skilltree.saveChanges()
+      skilltree.recalculateStats(true)
       skilltree.redraw()
     end
   elseif n.type == "selector" and skilltree.nodeUnlockLevel(n) == 1 then
@@ -731,8 +730,7 @@ function skilltree.clickNode(n)
       sfx "deselect"
       skillData.selectors[n.path] = nil
       skilltree.refreshNodeProperties(n)
-      skilltree.recalculateStats()
-      skilltree.saveChanges()
+      skilltree.recalculateStats(true)
       skilltree.redraw()
     end
   elseif n.type == "socket" and skilltree.nodeUnlockLevel(n) == 1 then

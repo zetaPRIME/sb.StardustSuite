@@ -351,7 +351,7 @@ do local s = movement.state("flight")
     for k,v in pairs(vanityProp) do
       if type(v) == "string" then -- path
         if vstats[k] then
-          if type(self.stats[k]) == "table" then
+          if type(vstats[k]) == "table" then
             for ek, ev in pairs(vstats[k]) do
               self.stats[k][ek] = itemutil.relativePath(vitm, ev)
             end

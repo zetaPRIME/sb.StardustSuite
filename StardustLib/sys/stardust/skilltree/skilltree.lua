@@ -129,7 +129,7 @@ function skilltree.init(canvas, treePath, data, saveFunc)
             name = n.name, icon = n.icon, unlockedIcon = n.unlockedIcon,
             grants = n.grants or { }, skill = n.skill, target = n.target or n.to,
             fixedCost = n.fixedCost, costMult = n.costMult, itemCost = n.itemCost,
-            condition = n.condition, moduleTypes = n.moduleTypes,
+            condition = n.condition, moduleTypes = n.moduleTypes, disableGrants = n.disableGrants,
             canDeselect = n.canDeselect,
           }
           nodes[path] = node
@@ -258,9 +258,13 @@ function skilltree.refreshNodeProperties(node)
       node.moduleName = string.format("^lightgray;%s%s^reset;", rarityColors[string.lower(itemutil.property(m, "rarity") or "common")], itemutil.property(m, "shortdescription"))
       node.contentsIcon = itemutil.relativePath(m, itemutil.property(m, "inventoryIcon"))
       node.moduleGrants = nil
-      local ms = itemutil.property(m, "stardustlib:moduleStats") or { }
-      for _, t in pairs(node.moduleTypes or { }) do
-        if ms[t] then node.moduleGrants = ms[t] break end
+      if node.disableGrants then
+        node.moduleGrants = { {"description", "^gray;(No stats granted)^reset;"} }
+      else
+        local ms = itemutil.property(m, "stardustlib:moduleStats") or { }
+        for _, t in pairs(node.moduleTypes or { }) do
+          if ms[t] then node.moduleGrants = ms[t] break end
+        end
       end
     else -- socket empty
       node.moduleName, node.moduleGrants, node.contentsIcon = nil

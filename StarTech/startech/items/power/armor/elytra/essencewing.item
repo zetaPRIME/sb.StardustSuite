@@ -1,7 +1,7 @@
 { // -*- grammar-ext: json -*-
   "itemName" : "startech:essencewing",
   "shortdescription" : "Essentia Booster",
-  "inventoryIcon" : "finwing.icon.png",
+  "inventoryIcon" : "essencewing.icon.png",
   "description" : "Take flight upon wings of brilliant starlight.",
   "category" : "startech:elytra",
   "rarity" : "Legendary",
@@ -32,6 +32,8 @@
   },
   
   "stardustlib:moduleStats" : {
-    "startech:elytra" : [ ]
+    "startech:elytra" : [
+      ["increased", "heatDissipation", 0.15]
+    ]
   }
 }

@@ -1,16 +1,23 @@
 -
 
 necessary before Phase 1 release {
-    figure out a good generalist endgame elytra (pre-eidolon)
-    ^ Essentia Booster; decent flight time but not unlimited, probably has blink
-    ^ essence spark particle effect?
+    modules system for nanofield so other mods can add their own things
+    implement elytra abilities properly
     
-    need a t4 or t5 one to go in between
+    Essentia Booster {
+        - recipe
+        - finish visuals
+        essence spark particle effect?
+        blink
+    }
+    
+    tier 5 generalist elytra {
+        name and concept
+        ability?
+    }
     
 } then {
     
-    modules system for nanofield so other mods can add their own things
-    implement elytra abilities properly
     
     
     toggle nodes (use canDeselect)

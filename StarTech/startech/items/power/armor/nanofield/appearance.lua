@@ -28,8 +28,8 @@ function appearance.update(p)
       local ov = util.clamp(wingAlpha * 1.5, 0.0, 1.0)
       local fv = util.clamp(-.5 + wingAlpha * 1.5, 0.0, 1.0)
       local fade = string.format("%s?fade=%s;%.3f", color.alphaDirective(ov), color.toHex(wingEnergyColor or "ffffff"), (1.0 - fv))
-      wingFront:setDirectives(fade)
-      wingBack:setDirectives(fade .. "?brightness=-40")
+      wingFront:setDirectives(fade, fade)
+      wingBack:setDirectives(fade .. "?brightness=-40", fade .. "?multiply=ffffffbf")
     end
     
     wingFront:scale({mcontroller.facingDirection() * wingEffDir, 1.0}, {0.0, 0.0})
@@ -67,8 +67,11 @@ function appearance.pulseForceField(amt)
 end
 
 function appearance.setWings(w)
-  wingFront:setImage(w.imgFront)
-  wingBack:setImage(w.imgBack)
+  local imgFront, imgBack = w.imgFront, w.imgBack
+  if type(imgFront) == "string" then imgFront = {imgFront} end
+  if type(imgBack) == "string" then imgBack = {imgBack} end
+  wingFront:setImage(table.unpack(imgFront))
+  wingBack:setImage(table.unpack(imgBack))
   wingEnergyColor = w.energyColor
   wingBaseRot = w.baseRotation or 0
   

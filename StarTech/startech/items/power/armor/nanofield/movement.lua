@@ -351,7 +351,13 @@ do local s = movement.state("flight")
     for k,v in pairs(vanityProp) do
       if type(v) == "string" then -- path
         if vstats[k] then
-          self.stats[k] = itemutil.relativePath(vitm, vstats[k])
+          if type(self.stats[k]) == "table" then
+            for ek, ev in pairs(vstats[k]) do
+              self.stats[k][ek] = itemutil.relativePath(vitm, ev)
+            end
+          else
+            self.stats[k] = itemutil.relativePath(vitm, vstats[k])
+          end
         else
           self.stats[k] = wingDefaults[k]
         end

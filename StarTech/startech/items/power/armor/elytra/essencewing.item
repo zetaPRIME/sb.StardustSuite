@@ -7,11 +7,11 @@
   "rarity" : "Legendary",
   "maxStack" : 1,
   "tooltipKind" : "stardustlib.withPreview",
-  "largeImage" : "/startech/items/power/armor/elytra/finwing.png?scalenearest=2",
+  "largeImage" : "/startech/items/power/armor/elytra/essencewing.png?scalenearest=2",
   "price" : 5000,
   
   "startech:elytraStats" : {
-    "flightSpeed" : 44, "force" : 1.2, "boostForce" : 1.4,
+    "flightSpeed" : 40, "boostSpeed" : 64, "force" : 1.2, "boostForce" : 1.4,
     
     // good air flight time, not perfect
     "heatAirIdle" : 0.000000001, "heatAirThrust" : 0.12, "heatAirBoost" : 0.3,
@@ -24,8 +24,8 @@
     "forceMultSpace" : 1.1,
     
     "energyColor" : "c67cee", // essence purple
-    "imgFront" : "finwing.png",
-    "imgBack" : "finwing.png",
+    "imgFront" : ["essencewing.png", "essencewing.fb.png"],
+    "imgBack" : ["essencewing.png", "essencewing.fb.png"],
     
     "soundThrust" : "/sfx/npc/boss/kluexboss_vortex_windy.ogg",
     "soundThrustVolume" : 1.0

@@ -18,6 +18,12 @@ necessary before Phase 1 release {
     
 } then {
     
+    nanofield stats to implement {
+        - powerCapacity
+        elytra boost speed multiplier?
+        
+        - elytra damage bonus
+    }
     
     
     toggle nodes (use canDeselect)

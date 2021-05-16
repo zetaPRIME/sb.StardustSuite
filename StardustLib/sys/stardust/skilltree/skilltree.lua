@@ -330,6 +330,7 @@ function skilltree.recalculateStats(saveBeforeDisplay)
     local statNames = (skilltree.defs or { }).statNames or { }
     local statPercent = (skilltree.defs or { }).statPercent or { }
     local tt = { }
+    local lastBlank = false
     for _, stat in pairs(defs.statsDisplay) do
       if stat ~= "" then
         local calc = skilltree.calculateFinalStat(displayStats[stat] or {0, 0, 0})
@@ -339,9 +340,11 @@ function skilltree.recalculateStats(saveBeforeDisplay)
         if txt ~= "" then
           table.insert(tt, txt)
           table.insert(tt, "\n")
+          lastBlank = false
         end
       else
-        table.insert(tt, "\n")
+        if not lastBlank then table.insert(tt, "\n") end
+        lastBlank = true
       end
     end
     statsDisplay:setText(table.concat(tt))

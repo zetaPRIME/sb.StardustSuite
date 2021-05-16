@@ -420,6 +420,8 @@ do local s = movement.state("flight")
       -- glide effortlessly through most FU gases
       { stat = "gasImmunity", amount = 1.0 },
       { stat = "helium3Immunity", amount = 1.0 },
+      -- apply stat bonuses
+      { stat = "powerMultiplier", effectiveMultiplier = stats.stat.wingDamage or 1.0 },
     })
     util.appendLists(sg, self.stats.status or { })
     util.appendLists(sg, self.stats.visualStatus or { })

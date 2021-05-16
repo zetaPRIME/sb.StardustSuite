@@ -32,6 +32,10 @@ local function saveItem(itm)
   util.appendLists(stats, skillData.effects) -- carry over node status effects
   itm.parameters.statusEffects = stats
   
+  -- apply FP capacity
+  if not itm.parameters.batteryStats then itm.parameters.batteryStats = { } end
+  itm.parameters.batteryStats.capacity = math.ceil(calc(skillData.stats.powerCapacity or 320000))
+  
   player.setEquippedItem("chest", itm)
 end
 
@@ -61,12 +65,14 @@ function toggleStats:onClick()
   self:setText(sidebarContainer.visible and "<" or ">")
 end
 
+local function hideWhenZero(txt, v) if v == 0 then return "" end end
+local function hideWhenOne(txt, v) if v == 1 then return "" end end
+
 function skilltree.modifyStatDisplay.armor(txt, v)
   local dr = 1.0 - (.5 ^ (v / 100))
   dr = math.floor(dr*10000+0.5)/10000 -- limit to two decimal places
   return txt .. string.format(" ^lightgray;(%s damage reduction)^reset;", skilltree.displayNumber(dr, true))
 end
-function skilltree.modifyStatDisplay.grit(txt, v) if v == 0 then return "" end end
 function skilltree.modifyStatDisplay.healthRegen(txt, v)
   if v == 0 then return "" end
   return txt .. " ^lightgray;per second^reset;"
@@ -79,6 +85,13 @@ function skilltree.modifyStatDisplay.bloodthirst(txt, v)
   if v == 0 or not status.statusProperty("stardustlib:hungerEnabled") then return "" end
   return string.format("%s ^lightgray;of damage dealt ^cyan;leeched as hunger^reset;", skilltree.displayNumber(v, true))
 end
+
+function skilltree.modifyStatDisplay.powerCapacity(txt, v)
+  return string.format("%s^cyan;FP capacity^reset;", skilltree.displayNumber(math.ceil(v)))
+end
+
+skilltree.modifyStatDisplay.grit = hideWhenZero
+skilltree.modifyStatDisplay.wingDamage = hideWhenOne
 
 function update()
   -- canary

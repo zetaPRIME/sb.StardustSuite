@@ -34,7 +34,9 @@ local function saveItem(itm)
   
   -- apply FP capacity
   if not itm.parameters.batteryStats then itm.parameters.batteryStats = { } end
-  itm.parameters.batteryStats.capacity = math.ceil(calc(skillData.stats.powerCapacity or 320000))
+  local fpc = math.ceil(calc(skillData.stats.powerCapacity))
+  if fpc == 0 then fpc = nil end -- just don't specify if missing
+  itm.parameters.batteryStats.capacity = fpc
   
   player.setEquippedItem("chest", itm)
 end

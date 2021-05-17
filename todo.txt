@@ -16,6 +16,8 @@ necessary before Phase 1 release {
         ability?
     }
     
+    better power generation, especially when Fenthes are considered
+    
 } then {
     
     nanofield stats to implement {

@@ -23,6 +23,10 @@
     // slightly quicker in space
     "forceMultSpace" : 1.1,
     
+    "special" : {
+      "type" : "blink"
+    },
+    
     "energyColor" : "c67cee", // essence purple
     "imgFront" : ["essencewing.png", "essencewing.fb.png"],
     "imgBack" : ["essencewing.png", "essencewing.fb.png"],

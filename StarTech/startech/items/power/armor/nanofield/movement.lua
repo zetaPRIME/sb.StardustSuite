@@ -261,6 +261,9 @@ end
 
 do local s = movement.state("flight")
   
+  -- global table for special abilities
+  wingSpecials = { }
+  
   local wingDefaults = {
     flightSpeed = 25,
     boostSpeed = 55,
@@ -347,6 +350,8 @@ do local s = movement.state("flight")
     local vstats = stats.elytraVanity and itemutil.property(stats.elytraVanity, "startech:elytraStats") or istats
     local vitm = stats.elytraVanity or stats.elytra
     util.mergeTable(self.stats, istats)
+    
+    if self.stats.special and self.stats.special.type then self.specialFunc = wingSpecials[self.stats.special.type] end
     
     for k,v in pairs(vanityProp) do
       if type(v) == "string" then -- path
@@ -467,12 +472,14 @@ do local s = movement.state("flight")
       movement.switchState("ground")
     end
     
-    -- TEMP
+    --[[ TEMP
     if input.keyDown.jump then
       input.keyDown.jump = false
       mcontroller.setVelocity(vec2.add(mcontroller.velocity(), vec2.mul(input.dirN, 5)))
       movement.switchState("sphere.flight")
-    end
+    end--]]
+    
+    if self.specialFunc then self.specialFunc(self, self.stats.special) end
     
     local dt = script.updateDt()
     
@@ -546,6 +553,25 @@ do local s = movement.state("flight")
     if not summoned and not movement.zeroG and movement.zeroGPrev then movement.switchState("ground") end
     
     coroutine.yield()
+  end
+  
+end
+
+function wingSpecials.blink(self, par)
+  local dt = script.updateDt()
+  if input.keyDown.jump then
+    input.keyDown.jump = false -- consume
+    stats.buildHeat(0.3)
+    local dir = input.dirN
+    for i = 1,10 do
+      if vec2.mag(input.dirN) > 0 then
+        dir = vec2.norm(vec2.approach(dir, input.dirN, 0.2))
+      end
+      mcontroller.setVelocity(vec2.mul(dir, self.stats.boostSpeed * 5000))
+      coroutine.yield()
+    end
+    mcontroller.setVelocity(vec2.mul(dir, self.stats.boostSpeed))
+    --movement.switchState("sphere.flight")
   end
 end
 

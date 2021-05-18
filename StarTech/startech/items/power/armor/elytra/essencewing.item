@@ -2,7 +2,7 @@
   "itemName" : "startech:essencewing",
   "shortdescription" : "Essentia Booster",
   "inventoryIcon" : "essencewing.icon.png",
-  "description" : "Take flight upon wings of brilliant starlight.",
+  "description" : "Take flight upon wings of brilliant starlight.\nSpecial: ^violet;Blink Dash^reset;",
   "category" : "startech:elytra",
   "rarity" : "Legendary",
   "maxStack" : 1,
@@ -11,7 +11,7 @@
   "price" : 5000,
   
   "startech:elytraStats" : {
-    "flightSpeed" : 40, "boostSpeed" : 64, "force" : 1.2, "boostForce" : 1.4,
+    "flightSpeed" : 50, "boostSpeed" : 64, "force" : 1.2, "boostForce" : 1.4,
     
     // good air flight time, not perfect
     "heatAirIdle" : 0.000000001, "heatAirThrust" : 0.12, "heatAirBoost" : 0.3,

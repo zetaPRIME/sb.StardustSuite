@@ -2,13 +2,13 @@
 
 necessary before Phase 1 release {
     modules system for nanofield so other mods can add their own things
-    implement elytra abilities properly
+    - implement elytra abilities properly
     
     Essentia Booster {
         - recipe
         - finish visuals
         essence spark particle effect?
-        blink
+        - blink
     }
     
     tier 5 generalist elytra {

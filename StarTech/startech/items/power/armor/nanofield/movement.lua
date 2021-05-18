@@ -357,6 +357,7 @@ do local s = movement.state("flight")
       if type(v) == "string" then -- path
         if vstats[k] then
           if type(vstats[k]) == "table" then
+            self.stats[k] = { }
             for ek, ev in pairs(vstats[k]) do
               self.stats[k][ek] = itemutil.relativePath(vitm, ev)
             end
@@ -570,29 +571,37 @@ end
 
 function wingSpecials.blinkdash(self, par)
   local dt = script.updateDt()
-  if input.keyDown.jump and vec2.mag(input.dirN) > 0 then
+  if input.keyDown.jump then
     input.keyDown.jump = false -- consume
     
-    stats.buildHeat(0.3)
-    sound.play("/sfx/tech/tech_dash.ogg")
-    
-    status.setPersistentEffects("startech:nanofield.ability", {
-      { stat = "invulnerable", amount = 1 },
-      "startech:blinkdash.vis",
-    })
-    
-    local dir = input.dirN
-    for i = 1,12 do
-      if vec2.mag(input.dirN) > 0 then
-        dir = vec2.norm(vec2.approach(dir, input.dirN, 0.25))
+    if vec2.mag(input.dirN) == 0 then
+      return
+    else
+      stats.buildHeat(0.3)
+      sound.play("/sfx/tech/tech_dash.ogg")
+      
+      status.setPersistentEffects("startech:nanofield.ability", {
+        { stat = "invulnerable", amount = 1 },
+        "startech:blinkdash.vis",
+      })
+      
+      local dir = input.dirN
+      for i = 1,12 do
+        if vec2.mag(input.dirN) > 0 then
+          dir = vec2.norm(vec2.approach(dir, input.dirN, 0.25))
+        end
+        mcontroller.setVelocity(vec2.mul(dir, 200))
+        self:visualUpdate()
+        coroutine.yield()
+        self:controlUpdate()
       end
-      mcontroller.setVelocity(vec2.mul(dir, 200))
-      self:visualUpdate()
-      coroutine.yield()
-      self:controlUpdate()
+      mcontroller.setVelocity(vec2.mul(dir, self.stats.boostSpeed * self.speedMult))
+      status.clearPersistentEffects("startech:nanofield.ability")
+      
+      if stats.buildHeat(0) then
+        movement.switchState("ground")
+      end
     end
-    mcontroller.setVelocity(vec2.mul(dir, self.stats.boostSpeed * self.speedMult))
-    status.clearPersistentEffects("startech:nanofield.ability")
   end
 end
 

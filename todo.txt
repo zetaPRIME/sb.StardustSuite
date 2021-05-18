@@ -97,26 +97,11 @@ the BIG IDEA UPDATE {
         }
     }
     complete pulse equipment rework {
-        - draw scale for tree!
-        
-        - Aetheri-style trees but tied to the item (and in a metaGUI window)
-        - global AP system (gathered from combat and the like; basically Aetheri's but usable for multiple things)
         reset catalyst refunds everything invested into an item's progression
         is AP gifting a bug or a feature?
         
-        - elytra rework; separate socketable components (slots as part of the nanofield tree?)
-        - heat gauge for flight
-        - heat rises very slowly with hovering, at a normal pace when moving, and much faster when boosting
-        - cooldown starts upon landing on the ground, or after a certain time passes with *no* heat generation, or while underwater
-        - maybe cooldown ramp similar to Terraria mana regen; cool down faster at lower heat levels
+        maybe heat rises faster when pulling against gravity in elytra?
         
-        - separate heat values for space and atmosphere (you want to be able to navigate space)
-        maybe heat rises faster when pulling against gravity?
-        
-        - heat disabled entirely on player ships
-        
-        - t1 elytra is just a pair of rocket boosters; very quick overheat, but immune to disruption
-        - move sphere mode to double tapping down
         swappable spheres
     }
     eidolon hunting {

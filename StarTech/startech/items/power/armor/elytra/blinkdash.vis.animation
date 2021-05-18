@@ -1,0 +1,38 @@
+{ // -*- grammar-ext: json -*-
+  "particleEmitters" : {
+    "dashParticles" : {
+      "emissionRate" : 150.0,
+      "particles" : [
+        {
+          "particle" : {
+            "type" : "animated",
+            "animation" : "/animations/shards/ancientenergy.animation",
+            "initialVelocity" : [0.0, 3.0],
+            "finalVelocity" : [0.0, 0.0],
+            "approach" : [8, 8],
+            "timeToLive" : 1.0,
+            "layer" : "back",
+            "collidesForeground" : true,
+            "fullbright" : true,
+            //"light" : [134, 71, 179, 255],
+            "size" : 0.5,
+            "variance" : {
+              "position" : [0.75, 0.75],
+              "initialVelocity" : [4, 4],
+              "finalVelocity" : [4, 4],
+              "rotation" : 180,
+              "angularVelocity" : 180
+            }
+          },
+          "offset" : [0.0, -1.0]
+        }
+      ]
+    }
+  },
+
+  "sounds" : {
+    "charge" : [ "/sfx/tech/tech_rocketjump_charge2.ogg" ],
+    "chargeLoop" : [ ],
+    "boost" : [ "/sfx/tech/tech_rocketjump_release.ogg" ]
+  }
+}

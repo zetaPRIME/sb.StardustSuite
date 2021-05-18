@@ -455,7 +455,7 @@ do local s = movement.state("flight")
     mcontroller.controlModifiers{movementSuppressed = true}
   end
   
-  function s:main()
+  function s:controlUpdate()
     mcontroller.clearControls()
     mcontroller.controlParameters{
       gravityEnabled = false,
@@ -465,8 +465,13 @@ do local s = movement.state("flight")
       groundForce = 0, airForce = 0, liquidForce = 0, -- disable default movement entirely
       maximumPlatformCorrection = 0.0,
       maximumPlatformCorrectionVelocityFactor = 0.0,
+      speedLimit = 500,
     }
     mcontroller.controlModifiers{ movementSuppressed = true } -- disable harder, and also don't paddle at the air
+  end
+  
+  function s:main()
+    self:controlUpdate()
     if input.keyDown.t1 then
       input.keyDown.t1 = false -- consume press
       movement.switchState("ground")
@@ -479,8 +484,6 @@ do local s = movement.state("flight")
       movement.switchState("sphere.flight")
     end--]]
     
-    if self.specialFunc then self.specialFunc(self, self.stats.special) end
-    
     local dt = script.updateDt()
     
     local statEnv = "Air"
@@ -489,11 +492,13 @@ do local s = movement.state("flight")
     elseif mcontroller.liquidPercentage() > 0.25 then
       statEnv = "Water"
     end
-    local speedMult = self.stats[string.format("speedMult%s", statEnv)]
-    local forceMult = self.stats[string.format("forceMult%s", statEnv)]
+    self.speedMult = self.stats[string.format("speedMult%s", statEnv)]
+    self.forceMult = self.stats[string.format("forceMult%s", statEnv)]
+    
+    if self.specialFunc then self.specialFunc(self, self.stats.special) end
     
     local boosting = input.key.sprint
-    local thrustSpeed = (boosting and self.stats.boostSpeed or self.stats.flightSpeed) * speedMult
+    local thrustSpeed = (boosting and self.stats.boostSpeed or self.stats.flightSpeed) * self.speedMult
     if input.dir[1] ~= 0 or input.dir[2] ~= 0 then
       local cm = 1.0
       if movement.zeroG or self.onShip then cm = 0.1 elseif mcontroller.liquidMovement() then cm = 0.25 end
@@ -505,11 +510,30 @@ do local s = movement.state("flight")
     if input.dir[1] ~= 0 then forceFacing(input.dir[1]) end
     
     -- for now this is just taken straight from the Aetheri
-    local sMult = self.stats.force * forceMult
+    local sMult = self.stats.force * self.forceMult
     if boosting then sMult = sMult * self.stats.boostForce end
-    local forceMult = util.lerp((1.0 - vec2.dot(input.dirN, vec2.norm(mcontroller.velocity()))) * 0.5, 0.5, 1.0)
-    if vec2.mag(input.dirN) < 0.25 then forceMult = 0.25 end
-    mcontroller.controlApproachVelocity(vec2.mul(input.dirN, thrustSpeed), 12500 * forceMult * sMult * dt)
+    local fMult = util.lerp((1.0 - vec2.dot(input.dirN, vec2.norm(mcontroller.velocity()))) * 0.5, 0.5, 1.0)
+    if vec2.mag(input.dirN) < 0.25 then fMult = 0.25 end
+    mcontroller.controlApproachVelocity(vec2.mul(input.dirN, thrustSpeed), 12500 * fMult * sMult * dt)
+    
+    self:visualUpdate()
+    
+    -- heat build
+    local heatType = "Idle"
+    if vec2.mag(input.dir) > 0 then
+      heatType = boosting and "Boost" or "Thrust"
+    end
+    if stats.buildHeat(self.stats[string.format("heat%s%s", statEnv, heatType)] * dt) then
+      movement.switchState("ground")
+    end
+    
+    if not summoned and not movement.zeroG and movement.zeroGPrev then movement.switchState("ground") end
+    
+    coroutine.yield()
+  end
+  
+  function s:visualUpdate()
+    local dt = script.updateDt()
     
     setPose()
     self.hEff = towards(self.hEff, util.clamp(mcontroller.velocity()[1] / 55, -1.0, 1.0), dt * 8)
@@ -528,50 +552,47 @@ do local s = movement.state("flight")
     rot2 = rot2 + self.vEff * 0.75
     
     -- sound
-    local fspd = (self.stats.flightSpeed * speedMult * 4/5)
+    local fspd = (self.stats.flightSpeed * self.speedMult * 4/5)
     local spd = vec2.mag(mcontroller.velocity()) / fspd
     self.thrustLoop:setVolume(util.lerp(util.clamp(spd, 0.0, 1.0), self.stats.soundThrustIdleVolume, self.stats.soundThrustVolume))
     local pitch = vec2.mag(mcontroller.velocity())
-    if pitch <= self.stats.flightSpeed * speedMult then
+    if pitch <= self.stats.flightSpeed * self.speedMult then
       pitch = util.lerp(util.clamp(spd, 0.0, self.stats.soundThrustPitch), self.stats.soundThrustIdlePitch, 1.0)
     else
-      pitch = util.lerp(util.clamp((pitch - self.stats.flightSpeed * speedMult) / (self.stats.boostSpeed*speedMult-self.stats.flightSpeed*speedMult), 0.0, 1.0), self.stats.soundThrustPitch, self.stats.soundThrustBoostPitch)
+      pitch = util.lerp(util.clamp((pitch - self.stats.flightSpeed * self.speedMult) / (self.stats.boostSpeed*self.speedMult-self.stats.flightSpeed*self.speedMult), 0.0, 1.0), self.stats.soundThrustPitch, self.stats.soundThrustBoostPitch)
     end
     self.thrustLoop:setPitch(pitch)
     
     appearance.positionWings(rot2)
-    
-    -- heat build
-    local heatType = "Idle"
-    if vec2.mag(input.dir) > 0 then
-      heatType = boosting and "Boost" or "Thrust"
-    end
-    if stats.buildHeat(self.stats[string.format("heat%s%s", statEnv, heatType)] * dt) then
-      movement.switchState("ground")
-    end
-    
-    if not summoned and not movement.zeroG and movement.zeroGPrev then movement.switchState("ground") end
-    
-    coroutine.yield()
   end
   
 end
 
-function wingSpecials.blink(self, par)
+function wingSpecials.blinkdash(self, par)
   local dt = script.updateDt()
-  if input.keyDown.jump then
+  if input.keyDown.jump and vec2.mag(input.dirN) > 0 then
     input.keyDown.jump = false -- consume
+    
     stats.buildHeat(0.3)
+    sound.play("/sfx/tech/tech_dash.ogg")
+    
+    status.setPersistentEffects("startech:nanofield.ability", {
+      { stat = "invulnerable", amount = 1 },
+      "startech:blinkdash.vis",
+    })
+    
     local dir = input.dirN
-    for i = 1,10 do
+    for i = 1,12 do
       if vec2.mag(input.dirN) > 0 then
-        dir = vec2.norm(vec2.approach(dir, input.dirN, 0.2))
+        dir = vec2.norm(vec2.approach(dir, input.dirN, 0.25))
       end
-      mcontroller.setVelocity(vec2.mul(dir, self.stats.boostSpeed * 5000))
+      mcontroller.setVelocity(vec2.mul(dir, 200))
+      self:visualUpdate()
       coroutine.yield()
+      self:controlUpdate()
     end
-    mcontroller.setVelocity(vec2.mul(dir, self.stats.boostSpeed))
-    --movement.switchState("sphere.flight")
+    mcontroller.setVelocity(vec2.mul(dir, self.stats.boostSpeed * self.speedMult))
+    status.clearPersistentEffects("startech:nanofield.ability")
   end
 end
 

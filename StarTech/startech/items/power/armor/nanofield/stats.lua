@@ -164,7 +164,8 @@ function stats.uninit()
   
   local ch = playerext.getEquip("chest")
   if not ch or ch.name ~= "startech:nanofield" then
-    status.setPersistentEffects("startech:nanofield", { })
+    status.clearPersistentEffects("startech:nanofield")
+    status.clearPersistentEffects("startech:nanofield.ability")
   end
 end
 
@@ -227,3 +228,5 @@ end)
 message.setHandler("stardustlib:damagedEntity2", function(msg, isLocal, id, srcDmg, effDmg, kind)
   movement.call("onStrikeEnemy", id, srcDmg, effDmg, kind)
 end)
+
+status.clearPersistentEffects("startech:nanofield.ability")

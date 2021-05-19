@@ -59,6 +59,13 @@ the BIG IDEA UPDATE {
         maybe some way to plonk widgets into the title bar
         particularly, a function to turn the icon into an item slot
         
+        metaGUI shift+click item tracking {
+            keep track of cursor item every frame
+            store tracking globally
+            bookkeeping function as part of mg
+            
+        }
+        
         THREAT GENERATION SYSTEM {
             self.board:getList("targets")
         }

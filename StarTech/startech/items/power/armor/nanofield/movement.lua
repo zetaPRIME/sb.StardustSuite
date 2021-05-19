@@ -571,22 +571,26 @@ end
 
 function wingSpecials.blinkdash(self, par)
   local dt = script.updateDt()
-  if input.keyDown.jump then
+  par._cd = math.max(0, (par._cd or 0) - dt)
+  if par._cd == 0 and input.keyDown.jump then
     input.keyDown.jump = false -- consume
     
     if vec2.mag(input.dirN) == 0 then
       return
     else
-      stats.buildHeat(0.3)
       sound.play("/sfx/tech/tech_dash.ogg")
+      par._cd = par.cooldownTime or 0.5
       
       status.setPersistentEffects("startech:nanofield.ability", {
         { stat = "invulnerable", amount = 1 },
         "startech:blinkdash.vis",
       })
       
+      local dashLength = par.dashLength or 12
+      local heatCost = (par.heatCost or 0.3) / dashLength
+      
       local dir = input.dirN
-      for i = 1,12 do
+      for i = 1,dashLength do
         if vec2.mag(input.dirN) > 0 then
           dir = vec2.norm(vec2.approach(dir, input.dirN, 0.25))
         end
@@ -594,6 +598,7 @@ function wingSpecials.blinkdash(self, par)
         self:visualUpdate()
         coroutine.yield()
         self:controlUpdate()
+        if stats.buildHeat(heatCost) then break end
       end
       mcontroller.setVelocity(vec2.mul(dir, self.stats.boostSpeed * self.speedMult))
       status.clearPersistentEffects("startech:nanofield.ability")

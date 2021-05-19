@@ -13,6 +13,11 @@
     //"flightSpeed" : 40, "boostSpeed" : 60, "force" : 1.5
     //"imgFront" : "finwing.png",
     //"imgBack" : "finwing.png"
+    "boostSpeed" : 200,
+    "boostForce" : 10,
+    "special" : {
+      "type" : "blinkdash"
+    }
   },
   
   "stardustlib:moduleStats" : {

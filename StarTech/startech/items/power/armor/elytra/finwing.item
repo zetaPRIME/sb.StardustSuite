@@ -18,7 +18,7 @@
     
     // extremely effective in water
     "heatWaterIdle" : 0, "heatWaterThrust" : -0.2, "heatWaterBoost" : -0.3,
-    "speedMultWater" : 1.25, "forceMultWater" : 1.1,
+    "speedMultWater" : 1.27, "forceMultWater" : 1.1,
     
     // does fine in space, but doesn't get extra power from water jets
     "forceMultSpace" : 0.9,

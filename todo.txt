@@ -1,32 +1,25 @@
 -
 
 necessary before Phase 1 release {
-    modules system for nanofield so other mods can add their own things
-    - implement elytra abilities properly
-    
-    Essentia Booster {
-        - recipe
-        - finish visuals
-        essence spark particle effect?
-        - blink
-    }
-    
     tier 5 generalist elytra {
         name and concept
         ability?
     }
     
-    better power generation, especially when Fenthes are considered
+    
+    
     
 } then {
+    modules system for nanofield so other mods can add their own things
     
     nanofield stats to implement {
         - powerCapacity
-        elytra boost speed multiplier?
-        
         - elytra damage bonus
+        
+        elytra boost speed multiplier?
     }
     
+    visual effects status for essentia booster?
     
     toggle nodes (use canDeselect)
     probably show item costs regardless of whether you have a path to a node
@@ -36,6 +29,7 @@ necessary before Phase 1 release {
     
     probably some refund of AP from already-catalyst'd items?
     
+    better power generation, especially when Fenthes are considered
     have batteries tick slower when not at full utilization
 }
 

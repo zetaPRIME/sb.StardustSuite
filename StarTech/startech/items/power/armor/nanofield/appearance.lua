@@ -11,6 +11,7 @@ local wingEffDir = 1.0
 local wingsVisible = false
 local wingEnergyColor
 local wingBaseRot = 0
+local wingBaseOffset = 0
 
 wingFront:scale({0, 0})
 wingBack:scale({0, 0})
@@ -74,6 +75,7 @@ function appearance.setWings(w)
   wingBack:setImage(table.unpack(imgBack))
   wingEnergyColor = w.energyColor
   wingBaseRot = w.baseRotation or 0
+  wingBaseOffset = w.baseOffset or 0
   
   if w.providesEnergyColor then appearance.setEnergyColor(w.energyColor) end
   wingAlpha = wingAlpha - 0.001 -- kick things a bit
@@ -82,7 +84,7 @@ end
 function appearance.setWingsVisible(f) wingsVisible = not not f end
 
 function appearance.positionWings(r)
-  local offset = {-5 / 16, -15 / 16}
+  local offset = {-5 / 16, -15 / 16 + wingBaseOffset}
   wingFront:resetTransform()
   wingBack:resetTransform()
   

@@ -297,6 +297,7 @@ do local s = movement.state("flight")
     providesEnergyColor = true,
     energyColor = "ff0354",
     baseRotation = 0.0,
+    baseOffset = 0.0,
     imgFront = "elytra.png",
     imgBack = "elytra.png",
     
@@ -317,6 +318,7 @@ do local s = movement.state("flight")
     imgFront = "",
     imgBack = "",
     baseRotation = true,
+    baseOffset = true,
     energyColor = true,
     providesEnergyColor = true,
     

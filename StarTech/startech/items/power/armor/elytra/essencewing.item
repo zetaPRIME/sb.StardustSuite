@@ -22,6 +22,7 @@
     
     // slightly quicker in space
     "forceMultSpace" : 1.1,
+    "heatSpaceBoost" : 0.0, // allow recharge while boosting
     
     "special" : {
       "type" : "blinkdash"
@@ -30,6 +31,7 @@
     "energyColor" : "c67cee", // essence purple
     "imgFront" : ["essencewing.png", "essencewing.fb.png"],
     "imgBack" : ["essencewing.png", "essencewing.fb.png"],
+    //"baseOffset" : 0.5,
     
     "soundThrust" : "/sfx/npc/boss/kluexboss_vortex_windy.ogg",
     "soundThrustVolume" : 1.0

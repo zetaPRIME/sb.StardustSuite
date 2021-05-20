@@ -7,7 +7,7 @@
   "rarity" : "Legendary",
   "maxStack" : 1,
   "tooltipKind" : "stardustlib.withPreview",
-  //"largeImage" : "/startech/items/power/armor/nanofield/finwing.png?scalenearest=2",
+  "largeImage" : "/items/generic/mechparts/booster/mechboostersimple.png?flipy?border=1;00000000;00000000?scalenearest=3",
   "price" : 1000,
   
   "startech:elytraStats" : {

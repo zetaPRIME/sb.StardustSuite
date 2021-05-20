@@ -25,7 +25,7 @@
     
     //"special" : { "type" : "blinkdash" },
     
-    "energyColor" : "c67cee", // essence purple
+    "energyColor" : "aae6e2", // ferozium blue
     "imgFront" : ["trimetalwing.png", "trimetalwing.fb.png"],
     "imgBack" : ["trimetalwing.png", "trimetalwing.fb.png"],
     "baseOffset" : 0.125,

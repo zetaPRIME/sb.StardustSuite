@@ -294,6 +294,8 @@ do local s = movement.state("flight")
     heatWaterThrust = -0.05,
     heatWaterBoost = 0.2,
     
+    special = false,
+    
     providesEnergyColor = true,
     energyColor = "ff0354",
     baseRotation = 0.0,
@@ -353,8 +355,6 @@ do local s = movement.state("flight")
     local vitm = stats.elytraVanity or stats.elytra
     util.mergeTable(self.stats, istats)
     
-    if self.stats.special and self.stats.special.type then self.specialFunc = wingSpecials[self.stats.special.type] end
-    
     for k,v in pairs(vanityProp) do
       if type(v) == "string" then -- path
         if vstats[k] then
@@ -376,6 +376,11 @@ do local s = movement.state("flight")
           self.stats[k] = wingDefaults[k]
         end
       end
+    end
+    
+    if self.stats.special then
+      self.stats.special = util.mergeTable({ }, self.stats.special)
+      self.specialFunc = wingSpecials[self.stats.special.type or false]
     end
     
     if stats.buildHeat(0) then
@@ -458,17 +463,18 @@ do local s = movement.state("flight")
     mcontroller.controlModifiers{movementSuppressed = true}
   end
   
-  function s:controlUpdate()
+  function s:controlUpdate(par)
+    par = par or { }
     mcontroller.clearControls()
     mcontroller.controlParameters{
-      gravityEnabled = false,
+      gravityEnabled = par.gravityEnabled or false,
       frictionEnabled = false,
       liquidImpedance = -100, -- full speed in water
-      liquidBuoyancy = -1000, -- same as above
+      liquidBuoyancy = 0, -- same as above
       groundForce = 0, airForce = 0, liquidForce = 0, -- disable default movement entirely
       maximumPlatformCorrection = 0.0,
       maximumPlatformCorrectionVelocityFactor = 0.0,
-      speedLimit = 500,
+      speedLimit = (not par.limitSpeed) and 500 or nil,
     }
     mcontroller.controlModifiers{ movementSuppressed = true } -- disable harder, and also don't paddle at the air
   end
@@ -528,7 +534,8 @@ do local s = movement.state("flight")
     coroutine.yield()
   end
   
-  function s:visualUpdate()
+  function s:visualUpdate(par)
+    par = par or { }
     local dt = script.updateDt()
     
     setPose()
@@ -548,9 +555,10 @@ do local s = movement.state("flight")
     rot2 = rot2 + self.vEff * 0.75
     
     -- sound
+    local volMult = par.silent and 0.0 or 1.0
     local fspd = (self.stats.flightSpeed * self.speedMult * 4/5)
     local spd = vec2.mag(mcontroller.velocity()) / fspd
-    self.thrustLoop:setVolume(util.lerp(util.clamp(spd, 0.0, 1.0), self.stats.soundThrustIdleVolume, self.stats.soundThrustVolume))
+    self.thrustLoop:setVolume(util.lerp(util.clamp(spd, 0.0, 1.0), self.stats.soundThrustIdleVolume, self.stats.soundThrustVolume) * volMult)
     local pitch = vec2.mag(mcontroller.velocity())
     if pitch <= self.stats.flightSpeed * self.speedMult then
       pitch = util.lerp(util.clamp(spd, 0.0, self.stats.soundThrustPitch), self.stats.soundThrustIdlePitch, 1.0)
@@ -603,15 +611,44 @@ function wingSpecials.blinkdash(self, par)
       end
     end
   end
-  
-  function wingSpecials.sphere(self, par)
-    if input.keyDown.jump then
-      input.keyDown.jump = false
-      mcontroller.setVelocity(vec2.add(mcontroller.velocity(), vec2.mul(input.dirN, 5)))
-      movement.switchState("sphere.flight")
+end
+
+function wingSpecials.drift(self, par)
+  --mcontroller.setVelocity {0, 3}
+  if input.keyDown.jump then
+    input.keyDown.jump = false -- consume
+    
+    while input.key.jump do
+      local dt = script.updateDt()
+      
+      if vec2.mag(input.dirN) > 0 then
+        local vel = mcontroller.velocity()
+        local vm = vec2.mag(vel)
+        local vd = vec2.norm(vel)
+        local prop = math.max(0, math.min(1, 0.5 + vec2.dot(input.dirN, vd)))
+        
+        local rvel = vec2.mul(vec2.approach(vd, input.dirN, prop * dt * 2), vm)
+        
+        mcontroller.setVelocity(rvel)
+      end
+      
+      self:visualUpdate { silent = true, }
+      if mcontroller.onGround() then
+        movement.switchState("ground")
+        break
+      end
+      coroutine.yield()
+      self:controlUpdate { gravityEnabled = mcontroller.liquidPercentage() < 0.25, limitSpeed = true, }
     end
   end
-  --
+end
+
+function wingSpecials.sphere(self, par)
+  if input.keyDown.jump then
+    input.keyDown.jump = false
+    mcontroller.setVelocity(vec2.add(mcontroller.velocity(), vec2.mul(input.dirN, 5)))
+    movement.switchState("sphere.flight")
+  end
 end
 
 

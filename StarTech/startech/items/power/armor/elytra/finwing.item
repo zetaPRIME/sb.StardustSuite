@@ -23,6 +23,8 @@
     // does fine in space, but doesn't get extra power from water jets
     "forceMultSpace" : 0.9,
     
+    //"special" : { "type" : "drift" },
+    
     "energyColor" : "3f7fff", // nice ocean blue
     "imgFront" : "finwing.png",
     "imgBack" : "finwing.png",

@@ -8,7 +8,7 @@
   "maxStack" : 1,
   "tooltipKind" : "stardustlib.withPreview",
   "largeImage" : "/startech/items/power/armor/elytra/finwing.png?scalenearest=2",
-  "price" : 1000,
+  "price" : 1500,
   
   "startech:elytraStats" : {
     "flightSpeed" : 32, "force" : 1.1, "boostForce" : 1.2,

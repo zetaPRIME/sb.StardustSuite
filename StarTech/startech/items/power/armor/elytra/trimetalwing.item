@@ -1,0 +1,42 @@
+{ // -*- grammar-ext: json -*-
+  "itemName" : "startech:trimetalwing",
+  "shortdescription" : "Trichrome Tracer",
+  "inventoryIcon" : "essencewing.icon.png",
+  "description" : "A sleek pair of omnidirectional thrusters.",
+  "category" : "startech:elytra",
+  "rarity" : "Legendary",
+  "maxStack" : 1,
+  "tooltipKind" : "stardustlib.withPreview",
+  "largeImage" : "/startech/items/power/armor/elytra/trimetalwing.png?scalenearest=2",
+  "price" : 2500,
+  
+  "startech:elytraStats" : {
+    "flightSpeed" : 40, "boostSpeed" : 55, "force" : 1.2, "boostForce" : 1.4,
+    
+    // decent air flight time
+    "heatAirIdle" : 0.000000001, "heatAirThrust" : 0.25, "heatAirBoost" : 0.42,
+    
+    // still very effective in water
+    "heatWaterIdle" : 0, "heatWaterThrust" : -0.2, "heatWaterBoost" : -0.3,
+    "speedMultWater" : 1.0, "forceMultWater" : 1.0,
+    
+    // slightly quicker in space
+    "forceMultSpace" : 1.1,
+    
+    //"special" : { "type" : "blinkdash" },
+    
+    "energyColor" : "c67cee", // essence purple
+    "imgFront" : ["trimetalwing.png", "trimetalwing.fb.png"],
+    "imgBack" : ["trimetalwing.png", "trimetalwing.fb.png"],
+    "baseOffset" : 0.125,
+    
+    "soundThrust" : "/sfx/npc/boss/kluexboss_vortex_windy.ogg",
+    "soundThrustVolume" : 1.0
+  },
+  
+  "stardustlib:moduleStats" : {
+    "startech:elytra" : [
+      ["increased", "heatDissipation", 0.15]
+    ]
+  }
+}

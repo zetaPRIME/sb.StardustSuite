@@ -22,7 +22,8 @@
     
     // slightly quicker in space
     "forceMultSpace" : 1.1,
-    "heatSpaceBoost" : 0.0, // allow recharge while boosting
+    // allow cooldown while boosting and slightly cool when not
+    "heatSpaceIdle" : -0.2, "heatSpaceThrust" : -0.1, "heatSpaceBoost" : 0.0,
     
     "special" : {
       "type" : "blinkdash"

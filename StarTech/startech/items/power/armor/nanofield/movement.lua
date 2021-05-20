@@ -480,13 +480,6 @@ do local s = movement.state("flight")
       movement.switchState("ground")
     end
     
-    --[[ TEMP
-    if input.keyDown.jump then
-      input.keyDown.jump = false
-      mcontroller.setVelocity(vec2.add(mcontroller.velocity(), vec2.mul(input.dirN, 5)))
-      movement.switchState("sphere.flight")
-    end--]]
-    
     local dt = script.updateDt()
     
     local statEnv = "Air"
@@ -610,7 +603,17 @@ function wingSpecials.blinkdash(self, par)
       end
     end
   end
+  
+  function wingSpecials.sphere(self, par)
+    if input.keyDown.jump then
+      input.keyDown.jump = false
+      mcontroller.setVelocity(vec2.add(mcontroller.velocity(), vec2.mul(input.dirN, 5)))
+      movement.switchState("sphere.flight")
+    end
+  end
+  --
 end
+
 
 do local s = movement.state("sphere.flight")
   local ss = movement.state("sphere")

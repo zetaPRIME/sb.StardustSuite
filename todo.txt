@@ -3,7 +3,7 @@
 necessary before Phase 1 release {
     tier 5 generalist elytra {
         name and concept
-        ability?
+        ability - drift?
     }
     
     

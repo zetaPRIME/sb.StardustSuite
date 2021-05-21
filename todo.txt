@@ -3,7 +3,7 @@
 necessary before Phase 1 release {
     - trichrome tracer
     - make ship bonuses apply to elytra on gateway worlds Because Reasons (detection rework)
-    liberator
+    - liberator
     
 } then {
     modules system for nanofield so other mods can add their own things

@@ -1,0 +1,5 @@
+{
+  "type" : "startech:liberator",
+  "scripts" : [ "/startech/items/active/tools/liberator.sh.lua" ],
+  "scriptDelta" : 1
+}

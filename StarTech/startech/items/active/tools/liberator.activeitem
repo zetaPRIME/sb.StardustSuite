@@ -1,0 +1,14 @@
+{ // -*- grammar-ext: json -*-
+  "itemName" : "startech:liberator",
+  "shortdescription" : "Stasis Field Inverter",
+  "description" : "Emits a pulse capable of disabling the stasis field on certain orbital structures.",
+  "category" : "tool",
+  "inventoryIcon" : "/items/active/stationtransponder/stationtransponder.png",
+  "rarity" : "Legendary",
+  "price" : 150000,
+  "maxStack" : 1,
+  "twoHanded" : true,
+  "itemTags" : [ ],
+  
+  "scripts" : ["liberator.lua"]
+}

@@ -16,7 +16,7 @@
 - Quickbar conditions: `hasFlaggedItem`, `hasTaggedItem` and `techExists` (latter being a way to check if mods are present)
 - Swansong is now manually marked as a "space monster"
 
-## metaGUI
+#### metaGUI
 - Themed widget tooltips
 - `widget:isMouseOver()`
 - `registerUninit()`

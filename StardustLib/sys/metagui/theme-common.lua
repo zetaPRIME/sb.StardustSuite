@@ -114,7 +114,7 @@ function tdef.drawItemSlot(w)
     end
   end
   local ic = root.itemConfig(w:item())
-  if ic then
+  if ic and not w.hideRarity then
     local rarity = (ic.parameters.rarity or ic.config.rarity or "Common"):lower()
     c:drawImage(assets.itemRarity .. ":" .. rarity .. (w.hover and "?brightness=50" or ""), center, nil, nil, true)
   end

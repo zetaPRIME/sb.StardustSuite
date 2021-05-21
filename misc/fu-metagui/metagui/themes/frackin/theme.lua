@@ -206,7 +206,13 @@ function theme.drawItemSlot(w)
   local center = {9, 9}
   local c = widget.bindCanvas(w.backingWidget)
   c:clear() c:drawImage(assets.itemSlot .. ":" .. (w.hover and "hover" or "idle") .. paletteFor("accent"), center, nil, nil, true)
-  if w.glyph then c:drawImage(w.glyph, center, nil, nil, true) end
+  if w.glyph then
+    if w.colorGlyph then
+      c:drawImage(w.glyph, center, nil, nil, true)
+    else
+      c:drawImage(string.format("%s?multiply=%s?multiply=ffffff7f", w.glyph, mg.getColor("accent")), center, nil, nil, true)
+    end
+  end
   local ic = root.itemConfig(w:item())
   if ic then
     local rarity = (ic.parameters.rarity or ic.config.rarity or "Common"):lower()

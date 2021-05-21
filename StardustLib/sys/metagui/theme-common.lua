@@ -18,6 +18,7 @@ theme.assets = { -- default assets
 } local assets = theme.assets
 
 theme.scrollBarWidth = theme.scrollBarWidth or 6
+theme.itemSlotGlyphDirectives = theme.itemSlotGlyphDirectives or "?multiply=0000007f"
 
 --
 
@@ -105,7 +106,13 @@ function tdef.drawItemSlot(w)
   local center = {9, 9}
   local c = widget.bindCanvas(w.backingWidget)
   c:clear() c:drawImage(assets.itemSlot .. ":" .. (w.hover and "hover" or "idle"), center, nil, nil, true)
-  if w.glyph then c:drawImage(w.glyph, center, nil, nil, true) end
+  if w.glyph then
+    if w.colorGlyph then
+      c:drawImage(w.glyph, center, nil, nil, true)
+    else
+      c:drawImage(w.glyph .. theme.itemSlotGlyphDirectives, center, nil, nil, true)
+    end
+  end
   local ic = root.itemConfig(w:item())
   if ic then
     local rarity = (ic.parameters.rarity or ic.config.rarity or "Common"):lower()

@@ -401,9 +401,7 @@ do local s = movement.state("flight")
       mcontroller.setVelocity(movement.prevVelocity)
     end
     
-    local maxFuel = world.getProperty("ship.maxFuel")
-    self.onShip = type(maxFuel) == "number" and maxFuel > 0
-    --sb.logInfo("on ship: " .. (self.onShip and "true" or "false"))
+    stats.refreshEnvironment() -- re-check environment flags
     
     appearance.setWings(self.stats)
     appearance.setWingsVisible(true)
@@ -503,7 +501,7 @@ do local s = movement.state("flight")
     local thrustSpeed = (boosting and self.stats.boostSpeed or self.stats.flightSpeed) * self.speedMult
     if input.dir[1] ~= 0 or input.dir[2] ~= 0 then
       local cm = 1.0
-      if movement.zeroG or self.onShip then cm = 0.1 elseif mcontroller.liquidMovement() then cm = 0.25 end
+      if movement.zeroG or stats.heatlessEnvironment then cm = 0.1 elseif mcontroller.liquidMovement() then cm = 0.25 end
       if not stats.drawEnergy((boosting and self.stats.boostPowerCost or self.stats.flightPowerCost) * dt * cm) then movement.switchState("ground") end
     elseif not movement.zeroG and not mcontroller.liquidMovement() then
       if not stats.drawEnergy(self.stats.idlePowerCost * dt) then movement.switchState("ground") end

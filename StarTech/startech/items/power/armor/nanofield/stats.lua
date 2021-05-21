@@ -52,6 +52,10 @@ local tierBaseStats = { -- keeping this temporarily for reference
   },
 }
 
+local heatlessWorldTypes = {
+  ancientgateway = true,
+}
+
 local staticitm = "startech:nanofieldstatic"
 
 local syncId
@@ -98,6 +102,9 @@ function stats.update(p)
     end
   end
   
+  -- environmental things
+  if stats.heatlessEnvironment == nil then stats.refreshEnvironment() end
+  
   -- heat
   cooldownTimer = math.max(0, cooldownTimer - p.dt)
   if cooldownTimer == 0 then
@@ -130,7 +137,7 @@ function stats.postUpdate(p)
     playerext.setEquip("chest", stats.item)
   end
   
-  if world.getProperty("ship.maxFuel") ~= nil or playerext.isAdmin() then heat = 0 end -- disable heat on player ships
+  if stats.heatlessEnvironment or playerext.isAdmin() then heat = 0 end -- disable heat on player ships
   -- heat HUD
   if heat >= 0.01 then
     local gran = 4
@@ -167,6 +174,14 @@ function stats.uninit()
     status.clearPersistentEffects("startech:nanofield")
     status.clearPersistentEffects("startech:nanofield.ability")
   end
+end
+
+function stats.refreshEnvironment()
+  stats.heatlessEnvironment = false
+  if world.getProperty("ship.maxFuel")
+  or world.getProperty("startech:heatless")
+  or heatlessWorldTypes[world.type()]
+  then stats.heatlessEnvironment = true end
 end
 
 function stats.drawEnergy(amount, testOnly, ioMult)

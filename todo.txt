@@ -1,13 +1,9 @@
 -
 
 necessary before Phase 1 release {
-    tier 5 generalist elytra {
-        name and concept
-        ability - drift?
-    }
-    
-    
-    
+    - trichrome tracer
+    make ship bonuses apply to elytra on gateway worlds Because Reasons (detection rework)
+    liberator
     
 } then {
     modules system for nanofield so other mods can add their own things

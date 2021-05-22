@@ -7,7 +7,7 @@ while getopts ":s" opt; do
     s)
       _steamupload=1
       _steamuser=$(cat ./steamuser)
-      sudo true # elevate ahead of time
+      #sudo true # elevate ahead of time
       ;;
     \?)
       echo "Invalid option: -$OPTARG" >&2
@@ -89,7 +89,7 @@ function pack {
     printf "\"}" >> $vdf # and cap off
     
     # actually upload mod!
-    sudo steamcmd +login $_steamuser +workshop_build_item $(realpath $vdf) +exit
+    steamcmd +login $_steamuser +workshop_build_item $(realpath $vdf) +exit
     echo # force newline that steamcmd doesn't print
     rm -rf ./_release/tmp
   fi

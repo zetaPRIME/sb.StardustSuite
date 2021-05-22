@@ -1,9 +1,9 @@
 {
   "version" : "Beta v0.1.0",
   "friendlyName" : "StarTech",
-  "name" : "StarTech",
-  "author" : "zetaPRIME",
-  "description" : "Transmatter networks! Technological advancements like you'd expect in a universe like Starbound's!",
+  "name" : "StarTech - Stardust Technologies",
+  "author" : "Zia Satazaki",
+  "description" : "A leap in technology unlocks boundless potential.",
   "link" : "steam://url/CommunityFilePage/764888606",
   "steamContentId" : "764888606",
   "requires" : [ "StardustLib" ]

@@ -1,3 +1,5 @@
+Formerly (and internally) known as StardustLib.
+
 NOTE TO SERVER OWNERS: this mod contains a second .pak! make sure this is loaded or client crashes may occur!
 
 Library code and system features for the modded experience.

@@ -1,9 +1,9 @@
 {
   "version" : "Beta v0.1.0",
-  "friendlyName" : "StardustLib",
+  "friendlyName" : "Stardust Core",
   "name" : "StardustLib",
-  "author" : "zetaPRIME",
-  "description" : "Libraries for various interop, etc.",
+  "author" : "Zia Satazaki",
+  "description" : "Library code and system features for the modded experience.",
   "link" : "steam://url/CommunityFilePage/764887546",
   "steamContentId" : "764887546",
   "priority" : -1000,

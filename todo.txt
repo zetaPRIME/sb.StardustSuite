@@ -1,9 +1,23 @@
 -
 
-necessary before Milestone 1 release {
-    convert combustion gen and autosmelter UI
+for Milestone 1 patches {
+    ...
     
-} then {
+} big things to do by Milestone 2 {
+    THREAT GENERATION SYSTEM {
+        self.board:getList("targets")
+    }
+    
+    metaGUI shift+click item tracking {
+        keep track of cursor item every frame
+        store tracking globally
+        bookkeeping function as part of mg
+    }
+    
+    quickbar rework
+    stardustlite
+    
+} and unspecified {
     modules system for nanofield so other mods can add their own things
     
     nanofield stats to implement {
@@ -44,17 +58,6 @@ the BIG IDEA UPDATE {
         tabs for metaGUI (eventually)
         maybe some way to plonk widgets into the title bar
         particularly, a function to turn the icon into an item slot
-        
-        metaGUI shift+click item tracking {
-            keep track of cursor item every frame
-            store tracking globally
-            bookkeeping function as part of mg
-            
-        }
-        
-        THREAT GENERATION SYSTEM {
-            self.board:getList("targets")
-        }
         
         channeled universal communications {
             explicit join protocol
@@ -124,7 +127,6 @@ for (maybe not) next update {
     give Pulsestrike Glaive a secondary that isn't just the combo finisher
     maybe an alt finisher to main fire combo if buffered during?
     rework phase drill to be tiered and also maybe a dynitem
-    have all recipes unlocked by default
     pulse chakram similar to razorwave
 }
 

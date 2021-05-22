@@ -45,22 +45,10 @@
   "outputNodes" : [ [0, 0] ],
   
   "fuelStats" : {
-    "coalore" : { // 8 1/3 seconds at 10FP/t for a total of 5000FP per coal... or 5.5sec at 15FP/t
-      "burnTime" : 500,
-      "powerPerTick" : 10
-    },
-    "logblock" : { // half a piece of coal, I guess - 2500FP
-      "burnTime" : 250,
-      "powerPerTick" : 10
-    },
-    "darkwoodmaterial" : { // planks are 1/5 the material of logs, but burn at 1.5x heat - 750FP
-      "burnTime" : 50,
-      "powerPerTick" : 15
-    },
-    "plantfibre" : { // raw plant fibre isn't super great at burning, but will do in a pinch
-      "burnTime" : 250,
-      "powerPerTick" : 5
-    },
+    "coalore" : { "burnTime" : 500, "powerPerTick" : 10 }, // 8 1/3 seconds at 10FP/t for a total of 5000FP per coal... or 5.5sec at 15FP/t
+    "logblock" : { "burnTime" : 250, "powerPerTick" : 10 }, // half a piece of coal, I guess - 2500FP
+    "darkwoodmaterial" : { "burnTime" : 50, "powerPerTick" : 15 }, // planks are 1/5 the material of logs, but burn at 1.5x heat - 750FP
+    "plantfibre" : { "burnTime" : 250, "powerPerTick" : 5 }, // raw plant fibre isn't super great at burning, but will do in a pinch
     
     "alienstripedwood" : { "burnTime" : 500, "powerPerTick" : 15 }, // alien wood is more potent
     

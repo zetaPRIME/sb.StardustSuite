@@ -5,6 +5,7 @@
     "terminal" : "/startech/ui/storagenet/terminal.ui",
     "storagebus.config" : "/startech/ui/storagenet/storagebus.config.ui",
     
+    "generator.basic" : "/startech/ui/machines/generator.basic.ui",
     "autosmelter" : "/startech/ui/machines/autosmelter.ui",
     
     "telepad.config" : "/startech/ui/telepad.config.ui",

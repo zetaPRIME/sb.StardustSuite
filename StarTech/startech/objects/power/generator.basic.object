@@ -31,8 +31,9 @@
   "objectType" : "container",
   //"openSounds" : [ "/sfx/objects/metalbox_open.ogg" ],
   //"closeSounds" : [ "/sfx/objects/metalbox_close.ogg" ],
-  "slotCount" : 1,
-  "uiConfig" : "/startech/interface/power/generator.basic.config",
+  "slotCount" : 3,
+  //"uiConfig" : "/startech/interface/power/generator.basic.config",
+  "uiConfig" : "/metagui/container.config", "ui" : "startech:generator.basic",
   "frameCooldown" : 5,
   "autoCloseCooldown" : 3600,
   

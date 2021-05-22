@@ -1,0 +1,18 @@
+{ //  -*- grammar-ext: json -*-
+  "style" : "window", // window (has titlebar), panel (just a frame) etc.
+  "size" : [80, 47], // *internal* size (not including chrome)
+  "title" : "Generator",
+  "openWithInventory" : true,
+  "scripts" : [ "generator.basic.lua" ],
+  "children" : [
+    [ { "scissoring" : false },
+      [ { "expandMode" : [2, 0], "scissoring" : false, "align" : 0.5 },
+        { "id" : "burnSlot", "type" : "itemSlot", "glyph" : "fireglyph.png", "hideRarity" : true },
+        { "id" : "inputGrid", "type" : "itemGrid", "slots" : 3, "columns" : 3, "containerSlot" : 1 }
+      ]
+    ],
+    [
+      { "id" : "fpLabel", "type" : "label", "text" : " ", "align" : "right" }
+    ]
+  ]
+}

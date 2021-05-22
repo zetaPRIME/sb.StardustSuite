@@ -7,10 +7,10 @@ metagui.startEvent(function() -- sync
   while true do
     local data = waitFor(world.sendEntityMessage(pane.sourceEntity(), "uiSyncRequest")):result()
     if data then
-      burnSlot:setItem(data.smelting.item)
+      burnSlot:setItem(data.burning.item)
       local bsb = burnSlot.subWidgets.slot
-      if data.smelting.item.count >= 1 then
-        widget.setItemSlotProgress(bsb, ( (data.smelting.remaining or 0) / (data.smelting.smeltTime or 1) ))
+      if data.burning.item.count >= 1 then
+        widget.setItemSlotProgress(bsb, ( (data.burning.timeLeft or 0) / (data.burning.fuelTime or 1) ))
       else
         widget.setItemSlotProgress(bsb, 1)
       end
@@ -19,11 +19,3 @@ metagui.startEvent(function() -- sync
     end
   end
 end)
-
-function takeAll:onClick()
-  local id = pane.sourceEntity()
-  for i = 3, 11 do
-    player.giveItem(world.containerItemAt(id, i))
-    world.containerTakeAt(id, i)
-  end
-end

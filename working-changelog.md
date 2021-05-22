@@ -8,6 +8,7 @@
 - Augpack light is now local and can be toggled in configurator
 - Compatibility with Frackin Universe power should be fixed
 - Slightly buffed Resonite Fragment yield rate
+- Combustion Generator expanded to three slots
 - Telepads now use world properties for same-map transit
 
 ### StardustLib

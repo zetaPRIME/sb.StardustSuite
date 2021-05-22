@@ -20,10 +20,15 @@ metagui.startEvent(function() -- sync
   end
 end)
 
+local blockTakeAll = false
 function takeAll:onClick()
+  if blockTakeAll then return end
+  blockTakeAll = true
   local id = pane.sourceEntity()
   for i = 3, 11 do
     player.giveItem(world.containerItemAt(id, i))
     world.containerTakeAt(id, i)
   end
+  for i = 1,15 do coroutine.yield() end
+  blockTakeAll = false
 end

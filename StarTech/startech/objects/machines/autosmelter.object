@@ -29,7 +29,8 @@
   
   "objectType" : "container",
   "slotCount" : 12,
-  "uiConfig" : "/startech/interface/machines/smelter.ui.config",
+  //"uiConfig" : "/startech/interface/machines/smelter.ui.config",
+  "uiConfig" : "/metagui/container.config", "ui" : "startech:autosmelter",
   "frameCooldown" : 5,
   "autoCloseCooldown" : 3600,
   

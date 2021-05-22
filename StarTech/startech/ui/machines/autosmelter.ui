@@ -1,0 +1,22 @@
+{ //  -*- grammar-ext: json -*-
+  "style" : "window", // window (has titlebar), panel (just a frame) etc.
+  "size" : [80, 87], // *internal* size (not including chrome)
+  "title" : "Autosmelter",
+  "openWithInventory" : true,
+  "scripts" : [ "autosmelter.lua" ],
+  "children" : [
+    [ { "scissoring" : false },
+      [ { "expandMode" : [0, 0], "scissoring" : false },
+        { "id" : "burnSlot", "type" : "itemSlot", "glyph" : "fireglyph.png", "hideRarity" : true },
+        { "id" : "inputGrid", "type" : "itemGrid", "slots" : 3, "columns" : 1, "containerSlot" : 1 }
+      ],
+      [
+        { "id" : "outputGrid", "type" : "itemGrid", "slots" : 9, "columns" : 3, "containerSlot" : 4 },
+        { "id" : "takeAll", "type" : "button", "caption" : "Take All" }
+      ]
+    ],
+    [
+      { "id" : "fpLabel", "type" : "label", "text" : " ", "align" : "right" }
+    ]
+  ]
+}

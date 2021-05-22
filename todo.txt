@@ -1,9 +1,7 @@
 -
 
-necessary before Phase 1 release {
-    - trichrome tracer
-    - make ship bonuses apply to elytra on gateway worlds Because Reasons (detection rework)
-    - liberator
+necessary before Milestone 1 release {
+    convert combustion gen and autosmelter UI
     
 } then {
     modules system for nanofield so other mods can add their own things
@@ -35,8 +33,6 @@ balance notes {
 
 the BIG IDEA UPDATE {
     backend stuff {
-        - metaGUI custom tooltip system
-        
         ? metaGUI module system (requires some slight reworks) {
             container layout, immediately containing module UI
             script loaded just before containing UI
@@ -112,15 +108,10 @@ the BIG IDEA UPDATE {
         pulse rifle
         shardstorm
     }
-    
-    legit survival way to take over an ancient gateway structure as your own base
 }
 
 for (maybe not) next update {
-    terminal quick stack?
-    convert combustion gen and autosmelter UI
-    also configurator
-    
+    ...
 } then {
     pulse rifle
     flux knives
@@ -185,11 +176,6 @@ move tag patches to stardustlib and add some more {
 }
 
 power stuffs {
-    nanofield {
-        configuration panel accessed via picking up one of the static fields
-        elytra: use an actual item
-    }
-    
     Resonite Reactor!
     
     fluxsaber - fluxpulse-charged beamsword, high combo potential especially when wearing nanofield or other control tech

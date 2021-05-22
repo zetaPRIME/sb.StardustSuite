@@ -19,11 +19,15 @@ metagui.startEvent(function() -- sync
         widget.setItemSlotProgress(bsb, 1)
       end
       
-      fpLabel:setText(string.format("%i^gray;/^reset;%i^gray;FP^reset;", math.floor(0.5 + (data.batteryStats.energy or 0)), math.floor(0.5 + (data.batteryStats.capacity or 0))))
+      fpLabel:setText(string.format("%i^accent;/^reset;%i^accent;FP^reset;", math.floor(0.5 + (data.batteryStats.energy or 0)), math.floor(0.5 + (data.batteryStats.capacity or 0))))
     end
   end
 end)
 
 function takeAll:onClick()
-  
+  local id = pane.sourceEntity()
+  for i = 3, 11 do
+    player.giveItem(world.containerItemAt(id, i))
+    world.containerTakeAt(id, i)
+  end
 end

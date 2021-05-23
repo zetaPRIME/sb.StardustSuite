@@ -22,22 +22,22 @@ function init()
   for i=1, object.outputNodeCount() do object.setOutputNodeLevel(i-1, true) end
   
   if root.hasTech("fuhealzone") then -- if we have FU installed, load FU power module
-		-- back up clobbered functions
-		local update = _ENV.update
-		
+    -- back up clobbered functions
+    local update = _ENV.update
+    
     local ptf = power.translationFactorFU
     require "/scripts/fupower.lua"
     fupower = _ENV.power
-		
-		-- and restore
-		_ENV.update = update
+    
+    -- and restore
+    _ENV.update = update
     
     function fupower.getEnergy(id)
       if not id or id == entity.id() then
-				return battery.state.energy * ptf
-			else
-				return callEntity(id,'power.getEnergy') or 0
-			end
+        return battery.state.energy * ptf
+      else
+        return callEntity(id,'power.getEnergy') or 0
+      end
     end
     function fupower.getMaxEnergy()
       return battery.capacity * ptf
@@ -45,7 +45,7 @@ function init()
     function fupower.getStorageLeft()
       return (battery.capacity - battery.state.energy) * ptf
     end
-    function fupower.recievePower(amt)
+    function fupower.receivePower(amt)
       -- can't really rate limit, since pushing from FU things isn't generally per-tick
       amt = amt / ptf -- convert units
       battery.state.energy = math.min(battery.state.energy + amt, battery.capacity)
@@ -54,21 +54,22 @@ function init()
     function fupower.remove(amt)
       battery:consume(amt / ptf) -- I guess use this
     end
-		
-		function isPower() return "battery" end
-		
-		-- override certain parameter values
-		local getParameter = config.getParameter
-		function config.getParameter(p, ...)
-			if p == "powertype" then return "battery" end
-			return getParameter(p, ...)
-		end
+    
+    function isPower() return "battery" end
+    power.objectPowerType = "battery"
+    
+    -- override certain parameter values
+    local getParameter = config.getParameter
+    function config.getParameter(p, ...)
+      if p == "powertype" then return "battery" end
+      return getParameter(p, ...)
+    end
   end
 end
 
 function postInit() -- run on first update, after everything is loaded
   --fuNetworkKickstart() -- kickstart anything this loaded after
-  if fupower then fupower.onNodeConnectionChange() end
+  if fupower then fupower.init() end
 end
 
 function update(dt)
@@ -80,10 +81,10 @@ function update(dt)
   if postInit then postInit() postInit = nil end
   
   power.autoSendEnergy(1000000000)
-	
-	if fupower then
-	
-	end
+  
+  if fupower then
+    --
+  end
   
   if not isRelay then
     -- only applies to actual batteries
@@ -142,6 +143,10 @@ function die()
   end
   world.spawnItem(itm, world.entityPosition(brokenByPlr or entity.id()))
   object.smash(true)
+end
+
+function onNodeConnectionChange(...)
+	if fupower then fupower.onNodeConnectionChange(...) end
 end
 
 --[[ FU translation

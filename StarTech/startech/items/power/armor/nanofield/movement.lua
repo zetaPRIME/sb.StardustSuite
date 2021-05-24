@@ -428,6 +428,8 @@ do local s = movement.state("flight")
   
   function s:updateEffectiveStats(sg, psg)
     util.appendLists(sg, {
+      -- no weird side effects of being in swimmable fluid with FU installed
+      { stat = "waterImmunity", amount = 1.0 },
       -- glide effortlessly through most FU gases
       { stat = "gasImmunity", amount = 1.0 },
       { stat = "helium3Immunity", amount = 1.0 },

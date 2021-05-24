@@ -20,11 +20,20 @@ metagui.startEvent(function() -- sync
   end
 end)
 
+local recipes = root.itemConfig { name = "startech:autosmelter" }.config.recipes
+
 local blockTakeAll = false
 function takeAll:onClick()
   if blockTakeAll then return end
   blockTakeAll = true
   local id = pane.sourceEntity()
+  for i = 0, 2 do -- input slots
+    local itm = world.containerItemAt(id, i)
+    if itm and (not recipes[itm.name] or recipes[itm.name].count > itm.count) then
+      player.giveItem(itm)
+      world.containerTakeAt(id, i)
+    end
+  end
   for i = 3, 11 do
     player.giveItem(world.containerItemAt(id, i))
     world.containerTakeAt(id, i)

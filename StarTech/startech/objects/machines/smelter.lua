@@ -51,14 +51,30 @@ function update()
     script.setUpdateDelta(30)
     local remainingOutput = {}
     
+    local numSlots = world.containerSize(entity.id())
+    
     -- attempt to stack result items into output slots
     for _,item in pairs(smelting.results) do
       local remaining = { name = item.name, count = item.count, parameters = item.parameters }
-      -- loop through output slots and attempt to place
-      for _,slot in pairs(slotConfig.output) do
-        remaining = world.containerPutItemsAt(entity.id(), remaining, slot - 1) or {}
-        if not remaining.count or remaining.count <= 0 then break end
+      local stacks = world.containerItems(entity.id())
+      
+      -- try to stack first
+      for slot = 1, numSlots do
+        if stacks[slot] and stacks[slot].name == remaining.name then
+          remaining = world.containerPutItemsAt(entity.id(), remaining, slot - 1) or {}
+          if not remaining.count or remaining.count <= 0 then break end
+        end
       end
+      
+      if remaining.count and remaining.count > 0 then
+        -- loop through output slots and attempt to place
+        for _,slot in pairs(slotConfig.output) do
+          remaining = world.containerPutItemsAt(entity.id(), remaining, slot - 1) or {}
+          if not remaining.count or remaining.count <= 0 then break end
+        end
+      end
+      
+      -- keep trying if container full
       if remaining.count and remaining.count > 0 then remainingOutput[#remainingOutput+1] = remaining end
     end
     

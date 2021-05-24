@@ -1,7 +1,7 @@
 -
 
 for Milestone 1 patches {
-    adjustments for autosmelter placement behavior
+    - adjustments for autosmelter placement behavior and take-all
     buffer flight toggle during blink dash
     system for storage buses etc. to show their direction only when holding a wrench (string metatable)
     

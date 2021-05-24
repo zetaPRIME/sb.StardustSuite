@@ -8,3 +8,6 @@
 
 ### Stardust Core
 - `stardustlib:holdingTool` property in client-side string metatable for held item's `stardustlib:toolType` item attribute
+
+#### metaGUI
+- Toggle mode for UI uniqueness (`"uniqueMode" : "toggle"`)

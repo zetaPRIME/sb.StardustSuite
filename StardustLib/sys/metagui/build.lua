@@ -79,10 +79,12 @@ local size = {
 uicfg.totalSize = size
 
 -- handle unique conditions
+local abort
 if uicfg.uniqueBy == "path" and uicfg.configPath then
   local ipc = getmetatable ''.metagui_ipc
   if ipc and ipc.uniqueByPath and ipc.uniqueByPath[uicfg.configPath] then
     ipc.uniqueByPath[uicfg.configPath]()
+    if uicfg.uniqueMode == "toggle" then return end
   end
 end
 

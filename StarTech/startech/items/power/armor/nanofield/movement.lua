@@ -592,12 +592,15 @@ function wingSpecials.blinkdash(self, par)
       local dashLength = par.dashLength or 12
       local heatCost = (par.heatCost or 0.3) / dashLength
       
+      local buffer
+      
       local dir = input.dirN
       for i = 1,dashLength do
         if vec2.mag(input.dirN) > 0 then
           dir = vec2.norm(vec2.approach(dir, input.dirN, 0.25))
         end
         mcontroller.setVelocity(vec2.mul(dir, 200))
+        if input.keyDown.t1 then buffer = true end
         self:visualUpdate()
         coroutine.yield()
         self:controlUpdate()
@@ -606,7 +609,7 @@ function wingSpecials.blinkdash(self, par)
       mcontroller.setVelocity(vec2.mul(dir, self.stats.boostSpeed * self.speedMult))
       status.clearPersistentEffects("startech:nanofield.ability")
       
-      if stats.buildHeat(0) then
+      if buffer or stats.buildHeat(0) then
         movement.switchState("ground")
       end
     end

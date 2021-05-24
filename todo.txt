@@ -2,8 +2,9 @@
 
 for Milestone 1 patches {
     - adjustments for autosmelter placement behavior and take-all
-    buffer flight toggle during blink dash
+    - buffer flight toggle during blink dash
     system for storage buses etc. to show their direction only when holding a wrench (string metatable)
+    ^ build into stardustlib I guess??
     
 } big things to do by Milestone 2 {
     THREAT GENERATION SYSTEM {

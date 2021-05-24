@@ -61,21 +61,28 @@ function dump(o)
    end
 end
 
+local showHolding = {
+  wiretool = true,
+  wrench = true,
+}
+
 function update()
   localAnimator.clearDrawables()
   localAnimator.clearLightSources()
   
   local pos = vec2.add(objectAnimator.position(), {0.5, 0.5})
   
-  -- glow
-  localAnimator.addDrawable({
-    image = self.dGlow,
-    position = pos,
-    rotation = rot[animationConfig.animationParameter("orientation", 1)],
-    fullbright = true,
-    centered = true,
-    zlevel = 1000000
-  })
+  if showHolding[getmetatable ''["stardustlib:holdingTool"] or false] then
+    -- glow
+    localAnimator.addDrawable({
+      image = self.dGlow,
+      position = pos,
+      rotation = rot[animationConfig.animationParameter("orientation", 1)],
+      fullbright = true,
+      centered = true,
+      zlevel = 1000000
+    })
+  end
   
 end
 

@@ -11,6 +11,7 @@
   "twoHanded" : true,
   "itemTags" : ["weapon","melee","broadsword"],
   
+  "stardustlib:toolType" : "wrench",
   "isWrench" : true,
 
   "inventoryIcon" : "wrench.png",

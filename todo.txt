@@ -16,6 +16,8 @@ for Milestone 1 patches {
         bookkeeping function as part of mg
     }
     
+    "Chroma" metaGUI theme
+    
     - quickbar rework
     stardustlite
     

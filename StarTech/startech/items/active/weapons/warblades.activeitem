@@ -20,6 +20,6 @@
   "level" : 1,
 
   "animation" : "warblades.animation",
-  "animationScripts" : ["warblades.render.lua"],
+  //"animationScripts" : ["warblades.render.lua"],
   "scripts" : ["warblades.lua"]
 }

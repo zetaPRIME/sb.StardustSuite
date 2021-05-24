@@ -20,11 +20,12 @@ function init()
   activeItem.setScriptedAnimationParameter("entityId", entity.id())
   
   sb.logInfo("hp base "..activeItem.handPosition()[2])
+  activeItem.setInstanceValue("animationScripts", {"warblades.render.lua"})
 end
 
 local curHp, lastHp = 0, 0
 local lastBw = false
-function update()
+function update(dt, fireMode)
   if player then
     local ch = player.equippedItem("chestCosmetic") or player.equippedItem("chest")
     if ch then
@@ -58,6 +59,11 @@ function update()
   local offs = 1
   --if (mcontroller.walking() or mcontroller.running()) and mcontroller.movingDirection() ~= dir then offs = -1 end
   
+  -- vars and flags
+  local moving = mcontroller.walking() or mcontroller.running()
+  local movingBack = moving and mcontroller.movingDirection() ~= dir
+  if status.statPositive "stardustlib:customFlying" then movingBack = false end -- not back-moving when in elytra
+  
   local bhp = -0.375
   local hp = activeItem.handPosition()
   
@@ -68,14 +74,20 @@ function update()
   end
   
   -- compensate for wrong bobbing when moving backwards
-  local bw = (mcontroller.walking() or mcontroller.running()) and mcontroller.movingDirection() ~= dir
+  local bw = movingBack and not mcontroller.falling()
   if bw and not lastBw then curHp = bhp lastHp = bhp end
   lastBw = bw
   if bw then hp[2] = lastHp end
   
+  -- fix backjump wonkiness
+  if (not mcontroller.onGround()) and mcontroller.yVelocity() > -5 and movingBack then
+    hp[2] = hp[2] + 0.125
+  end
+  if mcontroller.flying() then hp[2] = hp[2] + 2 end
+  
   -- compensate for one frame delay on ducking, because starbound code is broken
   -- (bobbing still has the delay, but not as noticeable)
-  if mcontroller.crouching() then hp[2] = -1.375
+  if mcontroller.crouching() and mcontroller.canJump() then hp[2] = -1.375
   elseif hp[2] < -1 then hp[2] = bhp end
   
   --hp[2] = (hp[2] - bhp) * offs + bhp
@@ -90,4 +102,6 @@ function update()
     end
   end
   activeItem.setScriptedAnimationParameter("hideBase", hide)
+  
+  if fireMode == "primary" then mcontroller.controlJump() end
 end

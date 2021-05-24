@@ -7,8 +7,8 @@ end
 
 function update()
   local dir = activeItemAnimation.ownerFacingDirection()
-  local rot = animationConfig.animationParameter("rotation")
-  local frontArmPos = vec2.add(activeItemAnimation.ownerPosition(), vec2.rotate(animationConfig.animationParameter "handPos", -rot))
+  local rot = animationConfig.animationParameter("rotation") or 0
+  local frontArmPos = vec2.add(activeItemAnimation.ownerPosition(), vec2.rotate(animationConfig.animationParameter "handPos", rot))
   
   local armBase = animationConfig.animationParameter("armBase")
   local hideBase = animationConfig.animationParameter("hideBase")

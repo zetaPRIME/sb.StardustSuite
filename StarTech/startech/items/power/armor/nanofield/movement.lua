@@ -428,6 +428,8 @@ do local s = movement.state("flight")
   
   function s:updateEffectiveStats(sg, psg)
     util.appendLists(sg, {
+      -- flag for whatever else to pick up
+      { stat = "stardustlib:customFlying", amount = 1.0 },
       -- no weird side effects of being in swimmable fluid with FU installed
       { stat = "waterImmunity", amount = 1.0 },
       -- glide effortlessly through most FU gases

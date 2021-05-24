@@ -30,6 +30,7 @@
     "ioRate" : 500
   },
   "isRelay" : true,
+  "isNetworkRelay" : true,
   
   "inputNodes" : [ [0, 1] ],
   "outputNodes" : [ [0, 0] ]

@@ -149,6 +149,8 @@ do
       elseif not f then sb.logError(err) end
     end
     queue = next
+    
+    if dynanim then dynanim.update(dt) end
   end
   
   function dynItem.install()

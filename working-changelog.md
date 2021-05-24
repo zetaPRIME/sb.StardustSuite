@@ -7,6 +7,8 @@
 - Ending flight can now be buffered during blink dash
 
 ### Stardust Core
+- The Quickbar is now powered by metaGUI, and is therefore themable and can expand to fit items
+- Interface scale threshold height increased to a more useful value than the vanilla defaults
 - `stardustlib:holdingTool` property in client-side string metatable for held item's `stardustlib:toolType` item attribute
 
 #### metaGUI

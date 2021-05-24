@@ -16,7 +16,7 @@ for Milestone 1 patches {
         bookkeeping function as part of mg
     }
     
-    quickbar rework
+    - quickbar rework
     stardustlite
     
 } and unspecified {

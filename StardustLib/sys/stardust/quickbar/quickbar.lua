@@ -40,88 +40,14 @@ end
 -- internals --
 ---------------
 
-local colorSub = { -- color tag substitutions
-  ["^essential;"] = "^#ffb133;",
-  ["^admin;"] = "^#bf7fff;",
-}
-
-local function legacyAction(i)
-  if i.pane then return { "pane", i.pane } end
-  if i.scriptAction then
-    sb.logInfo(string.format("Quickbar item \"%s\": scriptAction is deprecated, please use new entry format", i.label))
-    return { "_legacy_module", i.scriptAction }
-  end
-  return { "null" }
+local function menuClick(w)
+  w:deselect()
+  local i = metagui.cfg.itemDefs[w.id]
+  if i.condition and not condition(table.unpack(i.condition)) then return nil end -- recheck condition on attempt
+  action(table.unpack(i.action))
+  if autoDismiss or i.dismissQuickbar then pane.dismiss() end
 end
 
-local function buildList()
-  widget.clearListItems("scroll.list") -- clear out first
-  local c = root.assetJson("/quickbar/icons.json")
-  local items = { }
-  
-  for _, i in pairs(c.items) do -- dump in normal items
-    if not i.condition or condition(table.unpack(i.condition)) then
-      table.insert(items, i)
-    end
-  end
-    
-  -- and then translate legacy entries
-  for _, i in pairs(c.priority) do
-    table.insert(items, {
-      label = "^essential;" .. i.label,
-      icon = i.icon,
-      weight = -1100,
-      action = legacyAction(i)
-    })
-  end
-  if player.isAdmin() then
-    for _, i in pairs(c.admin) do
-      table.insert(items, {
-        label = "^admin;" .. i.label,
-        icon = i.icon,
-        weight = -1000,
-        action = legacyAction(i),
-        condition = { "admin" }
-      })
-    end
-  end
-  for _, i in pairs(c.normal) do
-    table.insert(items, {
-      label = i.label,
-      icon = i.icon,
-      action = legacyAction(i)
-    })
-  end
-  
-  -- sort by weight then alphabetically, ignoring caps and tags (and doing tag substitutions while we're here)
-  for _, i in pairs(items) do
-    i._sort = string.lower(string.gsub(i.label, "(%b^;)", ""))
-    i.label = string.gsub(i.label, "(%b^;)", colorSub)
-    i.weight = i.weight or 0
-    --sb.logInfo("label: "..i.label.."\nsort: "..i._sort)
-  end
-  table.sort(items, function(a, b) return a.weight < b.weight or (a.weight == b.weight and a._sort < b._sort) end)
-  
-  -- and add items to pane list
-  for idx = 1, #items do
-    local i = items[idx]
-    local l = "scroll.list." .. widget.addListItem("scroll.list")
-    widget.setText(l .. ".label", i.label)
-    local bc = l .. ".buttonContainer"
-    widget.registerMemberCallback(bc, "click", function()
-      if i.condition and not condition(table.unpack(i.condition)) then return nil end -- recheck condition on attempt
-      action(table.unpack(i.action))
-      if i.dismissQuickbar then pane.dismiss() end
-    end)
-    local btn = bc .. "." .. widget.addListItem(bc) .. ".button"
-    widget.setButtonOverlayImage(btn, i.icon or "/items/currency/essence.png")
-  end
-end
-
-function init()
-  buildList()
-end
-
-function uninit()
-  widget.clearListItems("scroll.list")
+for _, w in pairs(itemField.children[1].children) do
+  if w.widgetType == "listItem" then w.onSelected = menuClick end
 end

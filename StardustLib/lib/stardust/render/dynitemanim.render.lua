@@ -15,7 +15,7 @@ function update(dt)
   local handPos = animationConfig.animationParameter "handPos"
   
   local frontArmAngle = aaa
-  local backArmAngle = aaa
+  local backArmAngle = -aaa
   
   local dm = {dir, 1}
   local fp = vec2.mul(vec2.sub(vec2.rotate(frontPivotOffset, frontArmAngle), frontPivotOffset), dm)
@@ -28,11 +28,18 @@ function update(dt)
   local hideBase = animationConfig.animationParameter("hideBase")
   local sleeve = animationConfig.animationParameter("sleeve")
   
-  local prop = {
-    rotation = rot*dir + aaa,
+  local propF = {
+    position = frontArmPos,
     centered = true,
+    rotation = rot*dir + frontArmAngle,
     mirrored = dir < 0,
-    --position = frontArmPos,--vec2.add(activeItemAnimation.ownerPosition(), {2, 0}),
+    zlevel = 0,
+  }
+  local propB = {
+    position = backArmPos,
+    centered = true,
+    rotation = rot*dir + backArmAngle,
+    mirrored = dir < 0,
     zlevel = 0,
   }
   aaa = aaa + dt*0.75
@@ -41,11 +48,11 @@ function update(dt)
   
   localAnimator.clearDrawables()
   if not hideBase then
-    localAnimator.addDrawable(util.mergeTable({ image = string.format(armBase.back, armPose.back), position = backArmPos }, prop), "Player-1")
-    localAnimator.addDrawable(util.mergeTable({ image = string.format(armBase.front, armPose.front), position = frontArmPos }, prop), "Player")
+    localAnimator.addDrawable(util.mergeTable({ image = string.format(armBase.back, armPose.back) }, propB), "Player-1")
+    localAnimator.addDrawable(util.mergeTable({ image = string.format(armBase.front, armPose.front) }, propF), "Player")
   end
   if sleeve then
-    localAnimator.addDrawable(util.mergeTable({ image = string.format(sleeve.back, armPose.back), position = backArmPos }, prop), "Player-1")
-    localAnimator.addDrawable(util.mergeTable({ image = string.format(sleeve.front, armPose.front), position = frontArmPos }, prop), "Player")
+    localAnimator.addDrawable(util.mergeTable({ image = string.format(sleeve.back, armPose.back) }, propB), "Player-1")
+    localAnimator.addDrawable(util.mergeTable({ image = string.format(sleeve.front, armPose.front) }, propF), "Player")
   end
 end

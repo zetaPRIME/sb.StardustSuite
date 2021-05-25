@@ -27,5 +27,8 @@ end
 
 function update(dt, fireMode)
   
+  local angle, dir = activeItem.aimAngleAndDirection(0, activeItem.ownerAimPosition())
+  activeItem.setFacingDirection(dir)
+  
   dynanim.update(dt)
 end

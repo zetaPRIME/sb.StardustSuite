@@ -12,7 +12,7 @@ function update(dt)
   local dir = activeItemAnimation.ownerFacingDirection()
   local rot = animationConfig.animationParameter("rotation") or 0
   local epos = activeItemAnimation.ownerPosition()
-  local handPos = animationConfig.animationParameter "handPos"
+  local handPos = animationConfig.animationParameter "pivotOffset"
   
   local frontArmAngle = aaa
   local backArmAngle = -aaa

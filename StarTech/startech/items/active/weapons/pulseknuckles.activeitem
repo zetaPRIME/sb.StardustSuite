@@ -1,0 +1,24 @@
+{ // -*- grammar-ext: json -*-
+  "itemName" : "startech:pulseknuckles",
+  "shortdescription" : "[PH] Pulse Knuckles",
+  "description" : "Pummel your foes with this flowing, combo-heavy fighting style.",
+  "category" : "startech:power.weapon",
+  "inventoryIcon" : "pulseglaive.png?flipxy",
+  "rarity" : "Legendary",
+  "maxStack" : 1,
+  "twoHanded" : true,
+  "itemTags" : ["weapon", "melee", "fistweapon", "energy"],
+  "tooltipKind" : "stardustlib.withPreview",
+  "largeImage" : "/startech/items/active/weapons/pulseglaive-preview.png",
+  //"builder" : "/startech/items/active/weapons/buildpulseweapon.lua",
+  
+  "stardustlib:usesAP" : true,
+  "startech:configurable" : true,
+  "startech:configuratorUI" : "startech:configurator.tree",
+  "stardustlib:skillTree" : "/startech/skilltree/pulseglaive.config",
+  
+  "level" : 1,
+
+  "animation" : "warblades.animation",
+  "scripts" : ["pulseknuckles.lua"]
+}

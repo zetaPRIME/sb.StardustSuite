@@ -18,8 +18,14 @@ for Milestone 1 patches {
     
     "Chroma" metaGUI theme
     
-    - quickbar rework
     stardustlite
+    metaGUI-powered docs system
+    ^ temporary asset root swap
+    unified settings
+    
+    store multiple EPPs within augpack for quick swapping
+    leveled status for augpack
+    
     
 } and unspecified {
     modules system for nanofield so other mods can add their own things

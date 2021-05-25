@@ -240,7 +240,10 @@ function svc.giveAP(msg, isLocal, ap)
   local curAp = status.statusProperty("stardustlib:ap")
   if type(curAp) ~= "number" then curAp = 0 end -- correct
   local hasItem = player.hasItemWithParameter("stardustlib:usesAP", true) -- check whether player has an item that cares
-  if (not hasItem) and curAp >= 100000 then ap = ap * 0.1 end -- soft cap if they don't
+  if (not hasItem) and curAp >= 10000 then
+    ap = ap * 0.1 -- soft cap at 10k if they don't
+    if curAp >= 25000 then ap = 0 end -- hard cap at 25k
+  end
   status.setStatusProperty("stardustlib:ap", math.max(0, curAp + ap))
   if ap >= 50 and hasItem then -- don't display tiny gains, or if the player has nothing that cares about AP
     local bossAp = ap >= 10000

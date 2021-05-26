@@ -35,7 +35,7 @@ do
     __set = function(t, k, v)
       if type(v) ~= "table" then return end
       local b = { raw = v, children = { } }
-      for pk, pv in pairs(boneProto) do b[pk] = [pv] end
+      for pk, pv in pairs(boneProto) do b[pk] = pv end
       setmetatable(b, {__get = v, __set = boneSet})
       bones[k] = b
       local np = bones[v.parent or false]
@@ -79,5 +79,5 @@ function boneProto:clearSolution(sub)
 end
 
 function armature.clearSolutions()
-  for k,v in pairs(bones) v.raw.solved = false end
+  for k,v in pairs(bones) do v.raw.solved = false end
 end

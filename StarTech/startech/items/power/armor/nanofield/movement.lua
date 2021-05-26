@@ -175,6 +175,12 @@ do local s = movement.state("hardFall")
     mcontroller.clearControls()
     tech.setParentState()
   end
+  
+  function s:updateEffectiveStats(sg, psg)
+    util.appendLists(sg, {
+      { stat = "stardustlib:forcedCrouch", amount = 1.0 },
+    })
+  end
 
   function s:main()
     mcontroller.controlModifiers({ speedModifier = 0, normalGroundFriction = 0, ambulatingGroundFriction = 0 }) -- just a tiny bit of slide
@@ -182,6 +188,7 @@ do local s = movement.state("hardFall")
     tech.setParentState("duck")
     for v in tween(0.333) do
       if not mcontroller.onGround() then break end
+      mcontroller.controlCrouch()
       if input.keyDown.jump then
         mcontroller.controlJump(5)
         mcontroller.setVelocity({self.startingVelocity * 2.5, -5})

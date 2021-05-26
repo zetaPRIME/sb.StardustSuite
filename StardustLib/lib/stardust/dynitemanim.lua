@@ -114,7 +114,7 @@ do
       
       -- compensate for one frame delay on ducking, because starbound code is broken
       -- (bobbing still has the delay, but not as noticeable)
-      if mcontroller.crouching() and mcontroller.canJump() then hp[2] = -1.375
+      if (mcontroller.crouching() and mcontroller.canJump()) or status.statPositive "stardustlib:forcedCrouch" then hp[2] = -1.375
       elseif hp[2] < -1 then hp[2] = bhp end
       
       pivotOffset = vec2.add(hp, {-8/8 * pdir, 3.5/8})

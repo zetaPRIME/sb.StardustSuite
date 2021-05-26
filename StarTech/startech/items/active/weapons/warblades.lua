@@ -27,10 +27,12 @@ end
 
 function update(dt, fireMode)
   
+  local rot = mcontroller.rotation()
+  
   local angle, dir = activeItem.aimAngleAndDirection(0, activeItem.ownerAimPosition())
   activeItem.setFacingDirection(dir)
-  armature.bones.frontShoulder.rotation = angle*dir
-  armature.bones.backShoulder.rotation = -angle*dir
+  armature.bones.frontShoulder.rotation = (angle - rot)*dir
+  armature.bones.backShoulder.rotation = (-angle - rot)*dir
   
   dynAnim.update(dt)
 end

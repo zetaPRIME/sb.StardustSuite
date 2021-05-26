@@ -32,5 +32,5 @@ function update(dt, fireMode)
   armature.bones.frontShoulder.rotation = angle*dir
   armature.bones.backShoulder.rotation = -angle*dir
   
-  dynanim.update(dt)
+  dynAnim.update(dt)
 end

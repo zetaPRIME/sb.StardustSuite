@@ -5,70 +5,20 @@ function init()
   entityId = animationConfig.animationParameter("entityId")
 end
 
-local aaa = 0
-local frontPivotOffset = {0.375, 0.125}
-local backPivotOffset = {-0.25, 0.125}
 function update(dt)
-  local dir = activeItemAnimation.ownerFacingDirection()
-  local rot = animationConfig.animationParameter("rotation") or 0
-  local epos = activeItemAnimation.ownerPosition()
-  local handPos = animationConfig.animationParameter "pivotOffset"
+  local pos = activeItemAnimation.ownerPosition()
   
-  local frontArmAngle = aaa
-  local backArmAngle = -aaa
+  -- fetch and sort drawables
+  local dl = { }
+  for _, d in pairs(animationConfig.animationParameter("drawableList") or { }) do table.insert(dl, d) end
+  table.sort(dl, function(a, b) return (a.z or 0) < (b.z or 0) end)
   
-  local dm = {dir, 1}
-  local fp = vec2.mul(vec2.sub(vec2.rotate(frontPivotOffset, frontArmAngle), frontPivotOffset), dm)
-  local bp = vec2.mul(vec2.sub(vec2.rotate(backPivotOffset, backArmAngle), backPivotOffset), dm)
-  
-  local frontArmPos = vec2.add(epos, vec2.rotate(vec2.add(handPos, fp), rot))
-  local backArmPos = vec2.add(epos, vec2.rotate(vec2.add(handPos, bp), rot))
-  
-  local armBase = animationConfig.animationParameter("armBase")
-  local hideBase = animationConfig.animationParameter("hideBase")
-  local sleeve = animationConfig.animationParameter("sleeve")
-  
-  local propF = {
-    position = frontArmPos,
-    centered = true,
-    rotation = rot*dir + frontArmAngle,
-    mirrored = dir < 0,
-    zlevel = 0,
-  }
-  local propB = {
-    position = backArmPos,
-    centered = true,
-    rotation = rot*dir + backArmAngle,
-    mirrored = dir < 0,
-    zlevel = 0,
-  }
-  aaa = aaa + dt*0.75
-  
-  local armPose = {front = "rotation", back = "rotation"}
-  
+  -- then draw
   localAnimator.clearDrawables()
-  --[[localAnimator.addDrawable({
-    image = "/items/currency/essence.png",
-    position = epos,
-    centered = true,
-  }, "Player+3")
-  if not hideBase then
-    localAnimator.addDrawable(util.mergeTable({ image = string.format(armBase.back, armPose.back) }, propB), "Player-1")
-    localAnimator.addDrawable(util.mergeTable({ image = string.format(armBase.front, armPose.front) }, propF), "Player")
-  end
-  if sleeve then
-    localAnimator.addDrawable(util.mergeTable({ image = string.format(sleeve.back, armPose.back) }, propB), "Player-1")
-    localAnimator.addDrawable(util.mergeTable({ image = string.format(sleeve.front, armPose.front) }, propF), "Player")
-  end]]
-  
-  local dl = animationConfig.animationParameter("drawableList") or { }
-  local dls = { }
-  for _, d in pairs(dl) do table.insert(dls, d) end
-  table.sort(dls, function(a, b) return (a.z or 0) < (b.z or 0) end)
-  for _, d in pairs(dls) do
+  for _, d in pairs(dl) do
     localAnimator.addDrawable({
       image = d.image,
-      position = vec2.add(d.position, epos),
+      position = vec2.add(d.position, pos),
       rotation = d.rotation,
       centered = true,
       mirrored = d.mirrored,

@@ -3,6 +3,11 @@
 require "/scripts/util.lua"
 require "/scripts/vec2.lua"
 
+-- TODO
+-- directiveSets for cases like energyDirectives where you don't want to keep manually updating the asset every frame
+-- draworder chunks? renderlayer and base zlevel for drawables to be relative to, so you can keep a weapon together
+-- as it moves in front of and behind the player
+
 do
   dynanim = { }
   

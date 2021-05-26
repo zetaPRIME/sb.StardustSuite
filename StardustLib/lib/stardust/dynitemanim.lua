@@ -11,9 +11,9 @@ require "/lib/stardust/armature.lua"
 -- as it moves in front of and behind the player
 
 do
-  dynanim = { }
-  dynanim.parts = { }
-  dynanim.bones = armature.bones -- alias this here
+  dynAnim = { }
+  dynAnim.parts = { }
+  dynAnim.bones = armature.bones -- alias this here
   
   local frontArmPivot = {0.375, 0.125}
   local backArmPivot = {-0.25, 0.125}
@@ -30,7 +30,7 @@ do
   local aparam = {"rotation"}
   
   -- and default parts
-  local parts = dynanim.parts
+  local parts = dynAnim.parts
   parts.backArm = { bone = "backArm", layer = {"Player-1", 0}, imageParams = aparam }
   parts.backSleeve = { bone = "backArm", layer = {"Player-1", 1}, imageParams = aparam }
   parts.frontArm = { bone = "frontArm", layer = {"Player", 0}, imageParams = aparam }
@@ -130,7 +130,7 @@ do
   end
   
   local test = 0
-  function dynanim.update(dt)
+  function dynAnim.update(dt)
     if not didInit then initVis() end
     
     if player then -- handle equipment sleeves
@@ -169,7 +169,7 @@ do
     
     
     local dl = { }
-    for k, p in pairs(dynanim.parts) do
+    for k, p in pairs(dynAnim.parts) do
       if p.image and not p.hide then -- only visible
         local b = armature.bones[p.bone or false]
         if b then

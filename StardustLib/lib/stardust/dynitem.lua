@@ -150,7 +150,7 @@ do
     end
     queue = next
     
-    if dynanim then dynanim.update(dt) end
+    if dynAnim then dynAnim.update(dt) end
   end
   
   function dynItem.install()

@@ -45,7 +45,7 @@ cfg {
   fireTime = 2/5,
   
   --baseDps = 15,
-  beamDamageMult = 1.5,
+  beamDamageMult = 1.05,
   
   meleePowerCost = 250,
   beamPowerCost = 1000,
@@ -389,7 +389,7 @@ function beamFire()
   
   --throwFx("thrustfx", dir, angle, {6, -2/8}, -2)
   local line = dynItem.offsetPoly({ {0, 1/8}, {150, 1/8} }, false, angle)
-  strike(cfg.beamDamageMult, dmgtype "plasmashotgun", line, 2.2)
+  strike(cfg.beamDamageMult / util.lerp(0.5, 1, stats.charge), dmgtype "plasmashotgun", line, 2.2)
   
   local pos = vec2.add(mcontroller.position(), {0, 0})
   line = {vec2.add(pos, line[1]), vec2.add(pos, line[2])}

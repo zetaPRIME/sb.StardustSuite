@@ -4,6 +4,7 @@
 - All tiers of Flux Relay now also serve as Transmatter Network relays
 - Storage bus direction indicators now only show when holding a wrench or wire tool
 - AP gain and Nanofield costs have been rebalanced
+- Pulsestrike Glaive beam damage has been adjusted to bring it more in line with its melee DPS
 - Fixed Elytra accelerating oddly in water and other fluids with Frackin Universe installed
 - Ending flight can now be buffered during blink dash
 

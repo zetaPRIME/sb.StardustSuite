@@ -13,6 +13,7 @@
 - Interface scale threshold height increased to a more useful value than the vanilla defaults
 - `stardustlib:holdingTool` property in client-side string metatable for held item's `stardustlib:toolType` item attribute
 - mention dynitemanim
+- Fixed AP being granted incorrectly when an entity "dies" without actually being killed (relocator, capture pod)
 
 #### metaGUI
 - Toggle mode for UI uniqueness (`"uniqueMode" : "toggle"`)

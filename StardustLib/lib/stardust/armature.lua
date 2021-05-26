@@ -69,7 +69,6 @@ function boneProto:solve()
     }
   end
 end
--- TODO hmm. asset mirroring is after rotation
 
 function boneProto:clearSolution(sub)
   if not self.raw.solved then return end

@@ -3,6 +3,8 @@
 require "/scripts/util.lua"
 require "/scripts/vec2.lua"
 
+require "/lib/stardust/armature.lua"
+
 -- TODO
 -- directiveSets for cases like energyDirectives where you don't want to keep manually updating the asset every frame
 -- draworder chunks? renderlayer and base zlevel for drawables to be relative to, so you can keep a weapon together
@@ -11,7 +13,24 @@ require "/scripts/vec2.lua"
 do
   dynanim = { }
   
+  local frontArmPivot = {0.375, 0.125}
+  local backArmPivot = {-0.25, 0.125}
+  
+  -- set up default bones
+  local boneArms = armature.newBone("arms", {position = {0, 0}, rotation = 0})
+  local boneBackShoulder = armature.newBone("backShoulder", { parent = "arms", position = vec2.mul(backArmPivot, -1), rotation = 0 })
+  local boneFrontShoulder = armature.newBone("frontShoulder", { parent = "arms", position = vec2.mul(frontArmPivot, -1), rotation = 0 })
+  local boneBackArm = armature.newBone("backArm", { parent = "backShoulder", position = backArmPivot, rotation = 0 })
+  local boneFrontArm = armature.newBone("frontArm", { parent = "frontShoulder", position = frontArmPivot, rotation = 0 })
+  
+  local boneFrontHand = armature.newBone("frontHand", { parent = "frontArm", position = {1.0, -0.125}, rotation = 0, mirrored = true})
+  
+  
+  -- things to keep track of
+  local setDir
+  
   local didInit = false
+  local frontArmImage
   local function initVis()
     didInit = true
     local backarm = world.entityPortrait(entity.id(), "full")[1].image
@@ -19,6 +38,7 @@ do
     local frontarm = string.gsub(backarm, "back", "front", 1)
     sb.logInfo(frontarm, "%s")
     activeItem.setScriptedAnimationParameter("armBase", {back = backarm, front = frontarm})
+    frontArmImage = string.format(frontarm, "rotation")
     
     -- both arms hidden with no log errors
     activeItem.setBackArmFrame("idle.1?multiply=0000")
@@ -26,8 +46,15 @@ do
     
     activeItem.setScriptedAnimationParameter("entityId", entity.id())
     
-    sb.logInfo("hp base "..activeItem.handPosition()[2])
     activeItem.setInstanceValue("animationScripts", {"/lib/stardust/render/dynitemanim.render.lua"})
+    
+    do -- hook activeitem functions
+      local f = activeItem.setFacingDirection
+      function activeItem.setFacingDirection(dir, ...)
+        setDir = dir
+        return f(dir, ...)
+      end
+    end
   end
   
   local pivotOffset
@@ -38,7 +65,8 @@ do
     local pdir
     
     function updatePivot()
-      local dir = mcontroller.facingDirection()
+      local dir = setDir or mcontroller.facingDirection()
+      setDir = nil
       if not pdir then pdir = dir end
       
       local vel = mcontroller.xVelocity()
@@ -79,10 +107,15 @@ do
       activeItem.setScriptedAnimationParameter("pivotOffset", pivotOffset)
       activeItem.setScriptedAnimationParameter("rotation", mcontroller.rotation())
       
+      boneArms.position = pivotOffset
+      boneArms.rotation = mcontroller.rotation() * dir
+      boneArms.mirrored = dir < 0
+      
       pdir = dir
     end
   end
   
+  local test = 0
   function dynanim.update(dt)
     if not didInit then initVis() end
     
@@ -117,5 +150,23 @@ do
     end
     
     updatePivot()
+    
+    test = test + dt
+    boneFrontShoulder.rotation = math.sin(test*2.5) * math.pi * 0.25
+    
+    local a = { image = frontArmImage }
+    local b = armature.bones.frontArm
+    b:solve()
+    a.position = b.solved.position
+    a.rotation = b.solved.rotation
+    a.mirrored = b.solved.mirrored
+    
+    local d = { image = "/items/generic/crafting/ironbar.png?multiply=ffffff7f" }
+    local b = armature.bones.frontHand
+    b:solve()
+    d.position = b.solved.position
+    d.rotation = b.solved.rotation
+    d.mirrored = b.solved.mirrored
+    activeItem.setScriptedAnimationParameter("drawableList", {a,d})
   end
 end

@@ -47,6 +47,11 @@ function update(dt)
   local armPose = {front = "rotation", back = "rotation"}
   
   localAnimator.clearDrawables()
+  --[[localAnimator.addDrawable({
+    image = "/items/currency/essence.png",
+    position = epos,
+    centered = true,
+  }, "Player+3")
   if not hideBase then
     localAnimator.addDrawable(util.mergeTable({ image = string.format(armBase.back, armPose.back) }, propB), "Player-1")
     localAnimator.addDrawable(util.mergeTable({ image = string.format(armBase.front, armPose.front) }, propF), "Player")
@@ -54,5 +59,16 @@ function update(dt)
   if sleeve then
     localAnimator.addDrawable(util.mergeTable({ image = string.format(sleeve.back, armPose.back) }, propB), "Player-1")
     localAnimator.addDrawable(util.mergeTable({ image = string.format(sleeve.front, armPose.front) }, propF), "Player")
+  end]]
+  
+  local dl = animationConfig.animationParameter("drawableList") or { }
+  for _, d in pairs(dl) do
+    localAnimator.addDrawable({
+      image = d.image,
+      position = vec2.add(d.position, epos),
+      rotation = d.rotation,
+      centered = true,
+      mirrored = d.mirrored,
+    }, "Player")
   end
 end

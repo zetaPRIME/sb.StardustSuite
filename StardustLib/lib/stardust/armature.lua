@@ -31,12 +31,12 @@ do
   end
   
   armature.bones = setmetatable({ }, {
-    __get = bones,
-    __set = function(t, k, v)
+    __index = bones,
+    __newindex = function(t, k, v)
       if type(v) ~= "table" then return end
       local b = { raw = v, children = { } }
       for pk, pv in pairs(boneProto) do b[pk] = pv end
-      setmetatable(b, {__get = v, __set = boneSet})
+      setmetatable(b, {__index = v, __newindex = boneSet})
       bones[k] = b
       local np = bones[v.parent or false]
       if np then np.children[b] = true end
@@ -54,10 +54,12 @@ function boneProto:solve()
     local ps = p.raw.solved
     local s = { parent = ps.parent }
     self.raw.solved = s
-    local m = ps.mirrored and -1 or 1
-    s.position = vec2.rotate(vec2.mul(self.raw.position, {m, 1}), ps.rotation)
-    s.rotation = ps.rotation + self.raw.rotation * m
-    if ps.mirrored then s.mirrored = not self.raw.mirrored else s.mirrored = self.raw.mirrored end
+    local pm = ps.mirrored and -1 or 1
+    local tm = self.raw.mirrored and -1 or 1
+    s.position = vec2.add(vec2.rotate(vec2.mul(self.raw.position, {pm, 1}), ps.rotation*pm), ps.position)
+    s.rotation = (ps.rotation + self.raw.rotation) * tm
+    s.mirrored = self.raw.mirrored
+    if ps.mirrored then s.mirrored = not s.mirrored end
   else
     self.raw.solved = {
       position = self.raw.position or {0, 0},
@@ -67,6 +69,7 @@ function boneProto:solve()
     }
   end
 end
+-- TODO hmm. asset mirroring is after rotation
 
 function boneProto:clearSolution(sub)
   if not self.raw.solved then return end

@@ -62,13 +62,16 @@ function update(dt)
   end]]
   
   local dl = animationConfig.animationParameter("drawableList") or { }
-  for _, d in pairs(dl) do
+  local dls = { }
+  for _, d in pairs(dl) do table.insert(dls, d) end
+  table.sort(dls, function(a, b) return (a.z or 0) < (b.z or 0) end)
+  for _, d in pairs(dls) do
     localAnimator.addDrawable({
       image = d.image,
       position = vec2.add(d.position, epos),
       rotation = d.rotation,
       centered = true,
       mirrored = d.mirrored,
-    }, "Player")
+    }, d.layer or "Player")
   end
 end

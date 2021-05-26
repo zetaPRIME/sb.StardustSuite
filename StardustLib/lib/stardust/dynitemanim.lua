@@ -12,6 +12,8 @@ require "/lib/stardust/armature.lua"
 
 do
   dynanim = { }
+  dynanim.parts = { }
+  dynanim.bones = armature.bones -- alias this here
   
   local frontArmPivot = {0.375, 0.125}
   local backArmPivot = {-0.25, 0.125}
@@ -23,7 +25,16 @@ do
   local boneBackArm = armature.newBone("backArm", { parent = "backShoulder", position = backArmPivot, rotation = 0 })
   local boneFrontArm = armature.newBone("frontArm", { parent = "frontShoulder", position = frontArmPivot, rotation = 0 })
   
-  local boneFrontHand = armature.newBone("frontHand", { parent = "frontArm", position = {1.0, -0.125}, rotation = 0, mirrored = true})
+  local boneFrontHand = armature.newBone("frontHand", { parent = "frontArm", position = {1.0, -0.125}, rotation = 0 })
+  
+  local aparam = {"rotation"}
+  
+  -- and default parts
+  local parts = dynanim.parts
+  parts.backArm = { bone = "backArm", layer = {"Player-1", 0}, imageParams = aparam }
+  parts.backSleeve = { bone = "backArm", layer = {"Player-1", 1}, imageParams = aparam }
+  parts.frontArm = { bone = "frontArm", layer = {"Player", 0}, imageParams = aparam }
+  parts.frontSleeve = { bone = "frontArm", layer = {"Player", 1}, imageParams = aparam }
   
   
   -- things to keep track of
@@ -38,7 +49,10 @@ do
     local frontarm = string.gsub(backarm, "back", "front", 1)
     sb.logInfo(frontarm, "%s")
     activeItem.setScriptedAnimationParameter("armBase", {back = backarm, front = frontarm})
-    frontArmImage = string.format(frontarm, "rotation")
+    
+    --frontArmImage = string.format(frontarm, "rotation")
+    parts.backArm.image = backarm
+    parts.frontArm.image = frontarm
     
     -- both arms hidden with no log errors
     activeItem.setBackArmFrame("idle.1?multiply=0000")
@@ -133,12 +147,11 @@ do
             directives = string.format("%s;%s=%s", directives, k, v)
           end
         end
-        activeItem.setScriptedAnimationParameter("sleeve", {
-          front = string.format("%s:%s%s", util.absolutePath(cf.directory, fr.frontSleeve), "%s", directives),
-          back = string.format("%s:%s%s", util.absolutePath(cf.directory, fr.backSleeve), "%s", directives),
-        })
+        parts.backSleeve.image = string.format("%s:%s%s", util.absolutePath(cf.directory, fr.backSleeve), "%s", directives)
+        parts.frontSleeve.image = string.format("%s:%s%s", util.absolutePath(cf.directory, fr.frontSleeve), "%s", directives)
       else
-        activeItem.setScriptedAnimationParameter("sleeve", nil)
+        parts.backSleeve.image = nil
+        parts.frontSleeve.image = nil
       end
       
       local hide = false
@@ -146,15 +159,47 @@ do
         local itm = player.equippedItem(s.."Cosmetic") or player.equippedItem(s)
         if itm and root.itemConfig(itm).config.hideBody then hide = true break end
       end
-      activeItem.setScriptedAnimationParameter("hideBase", hide)
+      parts.frontArm.hide = hide
+      parts.backArm.hide = hide
+      --activeItem.setScriptedAnimationParameter("hideBase", hide)
     end
     
     updatePivot()
     
-    test = test + dt
-    boneFrontShoulder.rotation = math.sin(test*2.5) * math.pi * 0.25
     
-    local a = { image = frontArmImage }
+    
+    local dl = { }
+    for k, p in pairs(dynanim.parts) do
+      if p.image and not p.hide then -- only visible
+        local b = armature.bones[p.bone or false]
+        if b then
+          local d = { }
+          dl[k] = d
+          
+          -- set status from bone
+          b:solve()
+          d.position = b.solved.position
+          d.rotation = b.solved.rotation
+          d.mirrored = b.solved.mirrored
+          
+          
+          if p.imageParams then
+            d.image = string.format(p.image, table.unpack(p.imageParams))
+          else d.image = p.image end
+          
+          if type(p.layer) == "table" then
+            d.layer = p.layer[1]
+            d.z = (p.z or 0) + (p.layer[2] or 0)
+          else
+            d.layer = p.player
+            d.z = p.z
+          end
+        end
+      end
+    end
+    
+    activeItem.setScriptedAnimationParameter("drawableList", dl)
+    --[[local a = { image = frontArmImage }
     local b = armature.bones.frontArm
     b:solve()
     a.position = b.solved.position
@@ -166,7 +211,6 @@ do
     b:solve()
     d.position = b.solved.position
     d.rotation = b.solved.rotation
-    d.mirrored = b.solved.mirrored
-    activeItem.setScriptedAnimationParameter("drawableList", {a,d})
+    d.mirrored = b.solved.mirrored]]
   end
 end

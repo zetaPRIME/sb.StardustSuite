@@ -29,6 +29,8 @@ function update(dt, fireMode)
   
   local angle, dir = activeItem.aimAngleAndDirection(0, activeItem.ownerAimPosition())
   activeItem.setFacingDirection(dir)
+  armature.bones.frontShoulder.rotation = angle*dir
+  armature.bones.backShoulder.rotation = -angle*dir
   
   dynanim.update(dt)
 end

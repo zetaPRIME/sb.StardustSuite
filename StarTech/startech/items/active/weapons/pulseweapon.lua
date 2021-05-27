@@ -47,12 +47,16 @@ function querySelf(cmd, ...)
   return resultOf(world.sendEntityMessage(entity.id(), cmd, ...))
 end
 
+energyParams = { "", "" }
 energyPal = { "dec2ff", "be5cff", "9711e4" }
 local function refreshEnergyColor()
   local pal = querySelf("startech:getEnergyColor")
   if type(pal) == "table" then
-    animator.setGlobalTag("energyColor", color.replaceDirective(energyPal, pal))
+    local p = color.replaceDirective(energyPal, pal)
+    energyParams[1] = p
+    animator.setGlobalTag("energyColor", p)
   else
+    energyParams[1] = ""
     animator.setGlobalTag("energyColor", "")
   end
 end
@@ -88,7 +92,9 @@ do -- energy pulse
   function cancelPulse() pulseId = (pulseId + 1) % 16384 return pulseId end
   function setEnergy(amt)
     cancelPulse()
-    animator.setGlobalTag("energyDirectives", color.alphaDirective(amt))
+    local p = color.alphaDirective(amt)
+    energyParams[2] = p
+    animator.setGlobalTag("energyDirectives", p)
   end
   function pulseEnergy(amt)
     local id = cancelPulse()
@@ -96,7 +102,9 @@ do -- energy pulse
       for v in dynItem.tween(cfg.pulseTime * amt) do
         if pulseId ~= id then return nil end -- cancel if signaled
         v = math.min((1.0-v) * amt, 1.0) ^ 0.333
-        animator.setGlobalTag("energyDirectives", color.alphaDirective(v))
+        local p = color.alphaDirective(v)
+        energyParams[2] = p
+        animator.setGlobalTag("energyDirectives", p)
       end
     end)
   end

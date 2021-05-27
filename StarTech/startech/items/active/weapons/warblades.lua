@@ -44,11 +44,12 @@ function update(dt, fireMode)
   
   local angle, dir = activeItem.aimAngleAndDirection(0, activeItem.ownerAimPosition())
   activeItem.setFacingDirection(dir)
-  armature.bones.frontShoulder.rotation = (angle - rot*dir)--*dir
-  armature.bones.backShoulder.rotation = (angle - rot*dir)--*dir
+  --armature.bones.frontShoulder.rotation = (angle - rot*dir)--*dir
+  --armature.bones.backShoulder.rotation = (angle - rot*dir)--*dir
+  dynAnim.setArmAngles(angle - rot*dir)
   
   if fireMode ~= lastFireMode and fireMode == "primary" then
-    if state == 1 then
+    --[[if state == 1 then
       dynAnim.setFrontArmState "in"
       dynAnim.setBackArmState "in"
       activeItem.setHoldingItem(true)
@@ -62,8 +63,9 @@ function update(dt, fireMode)
       dynAnim.setBackArmState "out"
       activeItem.setHoldingItem(false)
       state = 1
-    end
-    sb.logInfo("state change " .. state .. ", arm state " .. dynAnim.frontArmState())
+    end]]
+    --sb.logInfo("state change " .. state .. ", arm state " .. dynAnim.frontArmState())
+    mcontroller.setRotation(math.pi*4)
   end
   lastFireMode = fireMode
   

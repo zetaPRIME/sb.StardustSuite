@@ -49,9 +49,14 @@ function armature.newBone(k, v) armature.bones[k] = v return bones[k] end
 function boneProto:solve()
   if self.raw.solved then return end
   local p = bones[self.raw.parent or false]
-  if p then
-    p:solve()
-    local ps = p.raw.solved
+  if true or p then
+    local ps
+    if p then
+      p:solve()
+      ps = p.raw.solved
+    else
+      ps = { position = {0, 0}, rotation = 0 }
+    end
     local s = { parent = ps.parent }
     self.raw.solved = s
     local pm = ps.mirrored and -1 or 1
@@ -63,7 +68,7 @@ function boneProto:solve()
   else
     self.raw.solved = {
       position = self.raw.position or {0, 0},
-      rotation = self.raw.rotation or 0,
+      rotation = (self.raw.rotation or 0) * (self.raw.mirrored and -1 or 1),
       mirrored = self.raw.mirrored,
       parent = self.raw.parent,
     }

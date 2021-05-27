@@ -28,6 +28,7 @@ do
     dynItem.aimAngle, dynItem.aimDir = activeItem.aimAngleAndDirection(dynItem.aimVOffset, dynItem.aimPos)
     if dynItem.autoAim then dynItem.aimAt(dynItem.aimDir, dynItem.aimAngle) -- aim at cursor
     else dynItem.aimAt(dynItem.dir, dynItem.armAngle) end -- hold previous angle
+    if dynAnim then activeItem.setArmAngle(0) end -- undo interference
   end
   
   function dynItem.aimAt(dir, angle)

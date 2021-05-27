@@ -19,7 +19,8 @@ do
   local backArmPivot = {-0.25, 0.125}
   
   -- set up default bones
-  local boneArms = armature.newBone("arms", {position = {0, 0}, rotation = 0})
+  local boneCharacter = armature.newBone("character", { position = {0, 0}, rotation = 0 })
+  local boneArms = armature.newBone("arms", { parent = "character", position = {0, 0}, rotation = 0 })
   local boneBackShoulder = armature.newBone("backShoulder", { parent = "arms", position = vec2.mul(backArmPivot, -1), rotation = 0 })
   local boneFrontShoulder = armature.newBone("frontShoulder", { parent = "arms", position = vec2.mul(frontArmPivot, -1), rotation = 0 })
   local boneBackArm = armature.newBone("backArm", { parent = "backShoulder", position = {0, 0}, rotation = 0 })
@@ -116,6 +117,7 @@ do
   
   -- things to keep track of
   local setDir
+  local setRotation
   local holdingItem
   
   local didInit = false
@@ -136,11 +138,16 @@ do
     
     activeItem.setInstanceValue("animationScripts", {"/lib/stardust/render/dynitemanim.render.lua"})
     
-    do -- hook activeitem functions
+    do -- hook activeitem etc. functions
       local f = activeItem.setFacingDirection
       function activeItem.setFacingDirection(dir, ...)
         setDir = dir
         return f(dir, ...)
+      end
+      local f = mcontroller.setRotation
+      function mcontroller.setRotation(r, ...)
+        setRotation = r
+        return f(r, ...)
       end
       local f = activeItem.setHoldingItem
       function activeItem.setHoldingItem(b, ...)
@@ -204,9 +211,10 @@ do
       --activeItem.setScriptedAnimationParameter("rotation", mcontroller.rotation())
       
       boneArms.position = pivotOffset
-      boneArms.rotation = mcontroller.rotation() * dir
-      boneArms.mirrored = dir < 0
+      boneCharacter.mirrored = dir < 0
+      boneCharacter.rotation = (setRotation or mcontroller.rotation()) --* dir
       
+      setRotation = nil -- clear
       pdir = dir
     end
   end

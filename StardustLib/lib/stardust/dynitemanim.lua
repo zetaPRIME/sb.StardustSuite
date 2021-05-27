@@ -116,9 +116,9 @@ do
   
   -- things to keep track of
   local setDir
+  local holdingItem
   
   local didInit = false
-  local frontArmImage
   local function initVis()
     didInit = true
     local backarm = world.entityPortrait(entity.id(), "full")[1].image
@@ -142,6 +142,12 @@ do
         setDir = dir
         return f(dir, ...)
       end
+      local f = activeItem.setHoldingItem
+      function activeItem.setHoldingItem(b, ...)
+        holdingItem = b and 0
+        return f(b, ...)
+      end
+      activeItem.setHoldingItem(true)
     end
   end
   
@@ -151,6 +157,8 @@ do
     local lastBw = false
     
     local pdir
+    
+    local hp
     
     function updatePivot()
       local dir = setDir or mcontroller.facingDirection()
@@ -166,7 +174,7 @@ do
       if status.statPositive "stardustlib:customFlying" then movingBack = false end -- not back-moving when in elytra
       
       local bhp = -0.375
-      local hp = activeItem.handPosition()
+      if not hp or holdingItem == true then hp = activeItem.handPosition() end
       
       -- keep track of changes in bob position, so we can...
       if hp[2] ~= curHp then
@@ -192,8 +200,8 @@ do
       elseif hp[2] < -1 then hp[2] = bhp end
       
       pivotOffset = vec2.add(hp, {-8/8 * pdir, 3.5/8})
-      activeItem.setScriptedAnimationParameter("pivotOffset", pivotOffset)
-      activeItem.setScriptedAnimationParameter("rotation", mcontroller.rotation())
+      --activeItem.setScriptedAnimationParameter("pivotOffset", pivotOffset)
+      --activeItem.setScriptedAnimationParameter("rotation", mcontroller.rotation())
       
       boneArms.position = pivotOffset
       boneArms.rotation = mcontroller.rotation() * dir
@@ -235,42 +243,43 @@ do
       end
       parts.frontArm.hide = hide
       parts.backArm.hide = hide
-      --activeItem.setScriptedAnimationParameter("hideBase", hide)
     end
     
-    updatePivot()
-    
-    
+    if holdingItem then updatePivot() end
     
     local dl = { }
-    for k, p in pairs(dynAnim.parts) do
-      if p.image and not p.hide then -- only visible
-        local b = armature.bones[p.bone or false]
-        if b then
-          local d = { }
-          dl[k] = d
-          
-          -- set status from bone
-          b:solve()
-          d.position = b.solved.position
-          d.rotation = b.solved.rotation
-          d.mirrored = b.solved.mirrored
-          
-          
-          if p.imageParams then
-            d.image = string.format(p.image, table.unpack(p.imageParams))
-          else d.image = p.image end
-          
-          if type(p.layer) == "table" then
-            d.layer = p.layer[1]
-            d.z = (p.z or 0) + (p.layer[2] or 0)
-          else
-            d.layer = p.player
-            d.z = p.z
+    if holdingItem then
+      for k, p in pairs(dynAnim.parts) do
+        if p.image and not p.hide then -- only visible
+          local b = armature.bones[p.bone or false]
+          if b then
+            local d = { }
+            dl[k] = d
+            
+            -- set status from bone
+            b:solve()
+            d.position = b.solved.position
+            d.rotation = b.solved.rotation
+            d.mirrored = b.solved.mirrored
+            
+            
+            if p.imageParams then
+              d.image = string.format(p.image, table.unpack(p.imageParams))
+            else d.image = p.image end
+            
+            if type(p.layer) == "table" then
+              d.layer = p.layer[1]
+              d.z = (p.z or 0) + (p.layer[2] or 0)
+            else
+              d.layer = p.player
+              d.z = p.z
+            end
           end
         end
       end
+      --
     end
+    if holdingItem == 0 then holdingItem = true end
     
     activeItem.setScriptedAnimationParameter("drawableList", dl)
   end

@@ -51,6 +51,7 @@ function update(dt, fireMode)
     if state == 1 then
       dynAnim.setFrontArmState "in"
       dynAnim.setBackArmState "in"
+      activeItem.setHoldingItem(true)
       state = 2
     elseif state == 2 then
       dynAnim.setFrontArmState "mid"
@@ -59,6 +60,7 @@ function update(dt, fireMode)
     else
       dynAnim.setFrontArmState "out"
       dynAnim.setBackArmState "out"
+      activeItem.setHoldingItem(false)
       state = 1
     end
     sb.logInfo("state change " .. state .. ", arm state " .. dynAnim.frontArmState())

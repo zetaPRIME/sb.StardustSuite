@@ -23,7 +23,7 @@ function idle()
     dynItem.aimAt(dynItem.aimDir, 0)
     activeItem.setHoldingItem(false)
     
-    if dynItem.firePress then dynItem.firePress = false return kick end
+    if dynItem.firePress then dynItem.firePress = false return sweepKick end
     if dynItem.altFirePress then dynItem.altFirePress = false return thrust, true end -- for now just skip to the finisher
     coroutine.yield()
   end
@@ -35,7 +35,7 @@ local function inp()
   if not dynItem.fire then released = true end
 end
 
-function kick()
+function sweepKick()
   local mparams = {
     airJumpProfile = {
       jumpSpeed = 0,
@@ -46,15 +46,17 @@ function kick()
     mcontroller.controlCrouch()
   end--]]
   
-  dynAnim.setArmStates("in")
-  dynAnim.setArmAngles(math.pi * 2/8)
+  dynAnim.setArmStates("mid")
+  dynAnim.setArmAngles(math.pi * -3/8)
   activeItem.setHoldingItem(true)
+  
+  dynItem.startBuffer()
   
   mcontroller.controlParameters(mparams)
   
   mcontroller.controlJump(true)
   mcontroller.setYVelocity(math.max(25, mcontroller.yVelocity()))
-  for v in dynItem.tween(0.45) do inp()
+  for v in dynItem.tween(0.4) do
     mcontroller.controlParameters(mparams)
     --mcontroller.controlHoldJump()
     
@@ -65,4 +67,5 @@ function kick()
   end
   mcontroller.setRotation(0)
   mcontroller.clearControls()
+  if dynItem.buffered() then return sweepKick end
 end

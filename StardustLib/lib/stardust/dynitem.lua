@@ -120,6 +120,23 @@ do
   
   function dynItem.addTask(f) table.insert(queue, coroutine.create(f)) end
   
+  local buffered, bufferedAlt, held, heldAlt = false, false, false, false
+  function dynItem.startBuffer()
+    buffered = dynItem.firePress
+    bufferedAlt = dynItem.altFirePress
+    held = dynItem.fire
+    heldAlt = dynItem.altFire
+  end
+  function dynItem.buffered(alt)
+    if alt then return bufferedAlt end
+    return buffered
+  end
+  function dynItem.held(alt)
+    if alt then return heldAlt end
+    return held
+  end
+    
+  
   function dynItem.update(dt, fireMode, shiftHeld)
     dynItem.time = dynItem.time + dt
     
@@ -128,6 +145,12 @@ do
       local f, af = fireMode == "primary", fireMode == "alt"
       dynItem.firePress, dynItem.altFirePress = f and not dynItem.fire, af and not dynItem.altFire
       dynItem.fire, dynItem.altFire = f, af
+      
+      -- handle buffering
+      buffered = buffered or dynItem.firePress
+      bufferedAlt = bufferedAlt or dynItem.altFirePress
+      held = held and dynItem.fire
+      heldAlt = heldAlt and dynItem.altFire
     end
     
     if dynItem.autoResetRegions then

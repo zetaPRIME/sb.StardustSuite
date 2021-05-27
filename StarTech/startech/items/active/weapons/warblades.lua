@@ -25,14 +25,45 @@ function insit()
   activeItem.setInstanceValue("animationScripts", {"warblades.render.lua"})
 end
 
+dynAnim.parts.holding = {
+  image = "/startech/objects/networkrelay2.png",
+  bone = "frontHand",
+  layer = {"Player",-100},
+}
+dynAnim.parts.holding2 = {
+  image = "/startech/objects/networkrelay2.png",
+  bone = "backHand",
+  layer = {"Player-1",-100},
+}
+
+local state = 1
+local lastFireMode
 function update(dt, fireMode)
   
   local rot = mcontroller.rotation()
   
   local angle, dir = activeItem.aimAngleAndDirection(0, activeItem.ownerAimPosition())
   activeItem.setFacingDirection(dir)
-  armature.bones.frontShoulder.rotation = (angle - rot)*dir
-  armature.bones.backShoulder.rotation = (-angle - rot)*dir
+  armature.bones.frontShoulder.rotation = (angle - rot*dir)--*dir
+  armature.bones.backShoulder.rotation = (angle - rot*dir)--*dir
+  
+  if fireMode ~= lastFireMode and fireMode == "primary" then
+    if state == 1 then
+      dynAnim.setFrontArmState "in"
+      dynAnim.setBackArmState "in"
+      state = 2
+    elseif state == 2 then
+      dynAnim.setFrontArmState "mid"
+      dynAnim.setBackArmState "mid"
+      state = 3
+    else
+      dynAnim.setFrontArmState "out"
+      dynAnim.setBackArmState "out"
+      state = 1
+    end
+    sb.logInfo("state change " .. state .. ", arm state " .. dynAnim.frontArmState())
+  end
+  lastFireMode = fireMode
   
   dynAnim.update(dt)
 end

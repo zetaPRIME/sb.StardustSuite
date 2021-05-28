@@ -8,6 +8,8 @@ qbActions = actions -- alias in global for execs
 local function nullfunc() end
 local function action(id, ...) return (actions[id] or nullfunc)(...) end
 
+local autoDismiss = true -- have a default
+
 -------------
 -- actions --
 -------------

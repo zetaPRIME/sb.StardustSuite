@@ -22,6 +22,8 @@ function update(dt)
       rotation = d.rotation,
       centered = true,
       mirrored = d.mirrored,
+      fullbright = d.fullbright,
+      scale = d.scale,
     }, d.layer or "Player")
   end
 end

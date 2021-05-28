@@ -13,6 +13,7 @@ require "/lib/stardust/armature.lua"
 do
   dynAnim = { }
   dynAnim.parts = { }
+  dynAnim.effects = { }
   dynAnim.bones = armature.bones -- alias this here
   
   local frontArmPivot = {0.375, 0.125}
@@ -256,7 +257,7 @@ do
     if holdingItem then updatePivot() end
     
     local dl = { }
-    if holdingItem then
+    if holdingItem then -- render armatured parts only when held
       for k, p in pairs(dynAnim.parts) do
         if p.image and not p.hide then -- only visible
           local b = armature.bones[p.bone or false]
@@ -269,6 +270,9 @@ do
             d.position = b.solved.position
             d.rotation = b.solved.rotation
             d.mirrored = b.solved.mirrored
+            
+            d.fullbright = p.fullbright
+            d.scale = p.scale
             
             
             if p.imageParams then
@@ -286,6 +290,31 @@ do
         end
       end
       --
+    end
+    for k, p in pairs(dynAnim.effects) do -- always render effect images
+      if p.image and not p.hide then -- only visible
+        local d = { }
+        dl["_eff_" .. k] = d
+        
+        d.position = p.position or {0, 0}
+        d.rotation = p.rotation or 0
+        d.mirrored = p.mirrored
+        
+        d.fullbright = p.fullbright
+        d.scale = p.scale
+        
+        if p.imageParams then
+          d.image = string.format(p.image, table.unpack(p.imageParams))
+        else d.image = p.image end
+        
+        if type(p.layer) == "table" then
+          d.layer = p.layer[1]
+          d.z = (p.z or 0) + (p.layer[2] or 0)
+        else
+          d.layer = p.player
+          d.z = p.z
+        end
+      end
     end
     if holdingItem == 0 then holdingItem = true end
     

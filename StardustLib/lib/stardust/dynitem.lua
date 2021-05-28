@@ -62,6 +62,7 @@ do
     return vec2.rotate({dir*mag, 0}, dir*angle)
   end
   
+  local impulseMaxVelocity = 100
   function dynItem.impulse(v, velMult, raw)
     velMult = velMult or 0
     if type(v) == "number" then v = dynItem.aimVector(nil, nil, v) end
@@ -71,7 +72,11 @@ do
     else
       local vel = mcontroller.velocity()
       local p = math.max(0, vec2.dot(vec2.norm(vel), vec2.norm(v)))
-      return weaponUtil.impulse(vec2.add(v, vec2.mul(vel, p * velMult)), raw)
+      local fVel = vec2.mul(vel, p * velMult)
+      if vec2.mag(fVel) > impulseMaxVelocity then -- restrain added impulse to maximum value
+        fVel = vec2.mul(vec2.norm(fVel), impulseMaxVelocity)
+      end
+      return weaponUtil.impulse(vec2.add(v, fVel), raw)
     end
   end
   

@@ -53,8 +53,6 @@ function die(...)
       end
     end
     ap = math.floor(0.5 + ap) -- round to int
-    sb.logInfo("dying hp: " .. status.resource "health")
-    if status.resource("health") > 0.5 then ap = 0 end
     
     -- then loop through and send
     local done = { } -- don't double-grant adjacents

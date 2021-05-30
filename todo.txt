@@ -1,7 +1,10 @@
 -
 
 > Beta v0.1.1 {
-    hm
+    get Pulse Knuckles to a good usable state
+    leveled status for augpack
+    
+    metaGUI: optional click sound for list items (context menu+quickbar)
     
 } big things to do by Milestone 2 {
     THREAT GENERATION SYSTEM {
@@ -22,7 +25,6 @@
     unified settings
     
     store multiple EPPs within augpack for quick swapping
-    leveled status for augpack
     
     
 } and unspecified {

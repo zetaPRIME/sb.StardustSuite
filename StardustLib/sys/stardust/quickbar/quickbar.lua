@@ -43,6 +43,7 @@ end
 ---------------
 
 local function menuClick(w)
+  theme.onButtonClick(w)
   w:deselect()
   local i = metagui.cfg.itemDefs[w.id]
   if i.condition and not condition(table.unpack(i.condition)) then return nil end -- recheck condition on attempt
@@ -51,5 +52,7 @@ local function menuClick(w)
 end
 
 for _, w in pairs(itemField.children[1].children) do
-  if w.widgetType == "listItem" then w.onSelected = menuClick end
+  if w.widgetType == "listItem" then
+    w.onSelected = menuClick
+  end
 end

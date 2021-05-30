@@ -137,7 +137,14 @@ do
     
     activeItem.setScriptedAnimationParameter("entityId", entity.id())
     
-    activeItem.setInstanceValue("animationScripts", {"/lib/stardust/render/dynitemanim.render.lua"})
+    do -- set up animator if not already present
+      local path = "/lib/stardust/render/dynitemanim.render.lua"
+      local acfg = config.getParameter "animationScripts"
+      if type(acfg) ~= "table" or acfg[1] ~= path then
+        activeItem.setInstanceValue("animationScripts", { path })
+        -- TODO kick it
+      end
+    end
     
     do -- hook activeitem etc. functions
       local f = activeItem.setFacingDirection

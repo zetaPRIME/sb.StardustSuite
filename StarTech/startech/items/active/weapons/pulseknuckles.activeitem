@@ -10,7 +10,6 @@
   "itemTags" : ["weapon", "melee", "fistweapon", "energy"],
   "tooltipKind" : "stardustlib.withPreview",
   "largeImage" : "/startech/items/active/weapons/pulseglaive-preview.png",
-  //"builder" : "/startech/items/active/weapons/buildpulseweapon.lua",
   
   "stardustlib:usesAP" : true,
   "startech:configurable" : true,
@@ -18,7 +17,8 @@
   "stardustlib:skillTree" : "/startech/skilltree/pulseglaive.config",
   
   "level" : 1,
-
-  "animation" : "warblades.animation",
+  
+  "animation" : "pulseknuckles.animation",
+  "animationScripts" : ["/lib/stardust/render/dynitemanim.render.lua"],
   "scripts" : ["pulseknuckles.lua"]
 }

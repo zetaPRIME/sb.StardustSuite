@@ -102,6 +102,8 @@ function punch1()
   local time = 0.25
   local ground = mcontroller.onGround()
   setIdleStance()
+  animator.playSound "jab"
+  animator.playSound "beam"
   dynItem.startBuffer()
   
   --for v in dynItem.tween(time*0.25) do end
@@ -130,6 +132,8 @@ function punch2()
   local time = 0.25
   local ground = mcontroller.onGround()
   setIdleStance()
+  animator.playSound "jab"
+  animator.playSound "beam"
   dynItem.startBuffer()
   
   --for v in dynItem.tween(time*0.25) do end
@@ -172,6 +176,8 @@ function sweepKick()
   dynAnim.setArmStates("mid")
   dynAnim.setArmAngles(math.pi * -3/8)
   activeItem.setHoldingItem(true)
+  animator.playSound "kick"
+  animator.playSound "beam"
   
   dynItem.startBuffer()
   

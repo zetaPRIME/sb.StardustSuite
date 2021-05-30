@@ -2,7 +2,7 @@
 
 > Beta v0.1.1 {
     get Pulse Knuckles to a good usable state
-    leveled status for augpack
+    - leveled status for augpack
     
     metaGUI: optional click sound for list items (context menu+quickbar)
     

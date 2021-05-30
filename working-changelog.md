@@ -3,6 +3,7 @@
 - Autosmelter "take all" now pulls input slot items if no recipe for them exists, or if there aren't enough to start smelting
 - All tiers of Flux Relay now also serve as Transmatter Network relays
 - Storage bus direction indicators now only show when holding a wrench or wire tool
+- Augpack now supports leveled status effects
 - AP gain and Nanofield costs have been rebalanced
 - Pulsestrike Glaive beam damage has been adjusted to bring it more in line with its melee DPS
 - Fixed Elytra accelerating oddly in water and other fluids with Frackin Universe installed

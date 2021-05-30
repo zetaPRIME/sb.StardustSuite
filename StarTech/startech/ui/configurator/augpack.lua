@@ -97,9 +97,15 @@ function saveItem()
   
   -- set epp status
   cfgItem.parameters.statusEffects = { }
+  cfgItem.parameters.leveledStatusEffects = { }
+  cfgItem.parameters.level = nil
   if inv.pack then -- copy EPP statuses
-    util.mergeTable(cfgItem.parameters.statusEffects, inv.pack.statusEffects or root.itemConfig(inv.pack).config.statusEffects)
+    local pc = root.itemConfig(inv.pack)
+    util.mergeTable(cfgItem.parameters.statusEffects, inv.pack.parameters.statusEffects or pc.config.statusEffects or { })
+    util.mergeTable(cfgItem.parameters.leveledStatusEffects, inv.pack.parameters.leveledStatusEffects or pc.config.leveledStatusEffects or { })
+    cfgItem.parameters.level = inv.pack.parameters.level or pc.config.level or nil
   end
+  if not cfgItem.parameters.leveledStatusEffects[1] then cfgItem.parameters.leveledStatusEffects = nil end -- no empty table
   table.insert(cfgItem.parameters.statusEffects, "stardustlib:batterymeter") -- add battery meter after the fact
   
   -- set augment

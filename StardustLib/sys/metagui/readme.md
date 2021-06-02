@@ -130,6 +130,7 @@ In a Quickbar entry:
 "size" : [16, 16], // Explicit size.
 "expandMode" : [1, 0], // Only available for some widget types; how eager the widget is to expand on each
 // axis. 0 is fixed size; otherwise widget will expand if none in the layout have higher priority.
+"visible" : false, // When false, widget is hidden and excluded from layout calculations.
 "toolTip" : "I'm a tool tip!", // Self explanatory. Can be multiple lines.
 "data" : { "something" : "whatever" }, // Arbitrary JSON data. Mostly useful for script-built panes.
 ```
@@ -217,6 +218,8 @@ A simple image display. Centers image within widget area if given explicit size.
 ```js
 "file" : "image.png", // The image to display. Can be absolute or relative.
 "scale" : 2, // Scale proportion for the image. Defaults to 1.
+"noAutoCrop" : true, // When true, preserve empty space in image margins; otherwise, behavior
+// matches vanilla image widgets.
 ```
 ##### Methods
 ```lua
@@ -271,6 +274,8 @@ A text entry field.
 ##### Attributes
 ```js
 "caption" : "Search...", // Text to display when unfocused and no text is entered.
+"inline" : true, // Alias for an expandMode of [0, 0].
+"expand" : true, // Alias for an expandMode of [2, 0].
 ```
 ##### Methods
 ```lua
@@ -371,6 +376,7 @@ metagui.queueFrameRedraw() -- Marks the window decorations for redraw.
 
 metagui.startEvent(function, ...) -- Starts an event with the specified parameters.
 metagui.broadcast(name, ...) -- Broadcasts a named event to the entire window with specified parameters.
+metagui.registerUninit(function) -- Registers a function to be called on window exit.
 
 metagui.contextMenu(list) -- Opens a context menu with a list of elements: {name, function}
 -- A separator can be placed by inserting the string "separator".

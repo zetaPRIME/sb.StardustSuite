@@ -128,6 +128,8 @@ In a Quickbar entry:
 "size" : [16, 16], // Explicit size.
 "expandMode" : [1, 0], // Only available for some widget types; how eager the widget is to expand on each
 // axis. 0 is fixed size; otherwise widget will expand if none in the layout have higher priority.
+"toolTip" : "I'm a tool tip!", // Self explanatory. Can be multiple lines.
+"data" : { "something" : "whatever" }, // Arbitrary JSON data. Mostly useful for script-built panes.
 ```
 ##### General methods
 ```lua
@@ -286,7 +288,17 @@ textBox:onEscape() -- Called when unfocused by hitting escape.
 ```
 
 ### List Item
-A list item; essentially a layout, selectable by mouse click. Deselects siblings when selected.
+A list item; essentially a layout, selectable by mouse click. Deselects siblings when selected.  
+Also available under type `menuItem` with behavior modified accordingly.
+##### Attributes
+```js
+"buttonLike" : true, // Flag for theme use; by default, indicates that the item should make a sound when
+// clicked, e.g. a context menu item. Implicit for menuItems.
+"noAutoSelect" : true, // When true, list item will not be automatically set as selected when clicked.
+// Implicit for menuItems.
+"selectionGroup" : "submenu1", // Selecting a menu item will only automatically deselect siblings with
+// the same selection group (nil included).
+```
 ##### Methods
 ```lua
 listItem:select()

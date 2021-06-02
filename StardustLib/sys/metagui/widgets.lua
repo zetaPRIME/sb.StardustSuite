@@ -798,18 +798,27 @@ end do -- list item ------------------------------------------------------------
     
     padding = 2,
   })
+  widgets.menuItem = widgets.listItem -- modified alias
   
   function widgets.listItem:init(base, param)
     self.children = self.children or { }
+    self.isMenuItem = param.type == "menuItem"
     
     self.padding = param.padding
     self.buttonLike = param.buttonLike
+    self.noAutoSelect = param.noAutoSelect
+    self.selectionGroup = param.selectionGroup
+    
+    if self.isMenuItem then -- implicit settings
+      if self.buttonLike == nil then self.buttonLike = true end
+      if self.noAutoSelect == nil then self.noAutoSelect = true end
+    end
     
     self.backingWidget = mkwidget(base, { type = "canvas" })
     mg.createImplicitLayout(param.children, self, { mode = "horizontal" })
     
     self:subscribeEvent("listItemSelected", function(itm)
-      if itm ~= self then
+      if itm ~= self and itm.selectionGroup == self.selectionGroup then
         self:deselect()
       end
     end)
@@ -846,7 +855,7 @@ end do -- list item ------------------------------------------------------------
   	elseif not down then
   		if btn == self:mouseCaptureButton() then
   			self:releaseMouse()
-        self:select()
+        if not self.noAutoSelect then self:select() end
         mg.startEvent(self.onClick, self, btn)
       end
     end

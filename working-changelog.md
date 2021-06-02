@@ -19,4 +19,6 @@
 #### metaGUI
 - `data` field for widgets, for passing arbitrary data at build-time
 - Toggle mode for UI uniqueness (`"uniqueMode" : "toggle"`)
-- `buttonLike` flag for ListItems (signals if button click sound etc. should be applied), `theme.onListItemClick` function
+- `buttonLike` flag for listItems (signals if button click sound etc. should be applied), `theme.onListItemClick` function
+- `noAutoSelect` flag for listItems (self explanatory)
+- `selectionGroup` field for listItems; selecting one will only deselect siblings with the same selection group.

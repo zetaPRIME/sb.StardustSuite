@@ -39,6 +39,8 @@ A pane using metaGUI is a JSON document (as with vanilla panes), typically with 
   // 16 pixels away from the right, and 24 pixels from the bottom.
   "uniqueBy" : "path", // Closes any previous window with the same document path when a new one is opened.
   // Most useful for UI not bound to an entity, such as with activeitems or Quickbar entries.
+  "uniqueMode" : "toggle", // When set, will toggle the window when a new instance tries to open instead
+  // of immediately opening in place of the previous one.
   
   "children" : [ // Finally, the layout syntax. Notice how this is an *array*, unlike vanilla panes;
     // widget names are optional, as metaGUI is largely heirarchy- and layout-based.

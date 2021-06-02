@@ -245,6 +245,7 @@ function mg.createWidget(param, parent)
   w.size = param.size or {0, 0}
   if param.visible ~= nil then w.visible = param.visible end
   w.toolTip = param.toolTip
+  w.data = param.data -- arbitrary build-time data
   
   local base
   if parent then -- find base widget

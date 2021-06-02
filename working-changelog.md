@@ -17,5 +17,6 @@
 - Fixed AP being granted incorrectly when an entity "dies" without actually being killed (relocator, capture pod)
 
 #### metaGUI
+- `data` field for widgets, for passing arbitrary data at build-time
 - Toggle mode for UI uniqueness (`"uniqueMode" : "toggle"`)
 - `buttonLike` flag for ListItems (signals if button click sound etc. should be applied), `theme.onListItemClick` function

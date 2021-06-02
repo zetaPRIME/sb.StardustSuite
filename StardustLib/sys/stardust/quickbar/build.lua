@@ -82,7 +82,7 @@ do -- build the actual list
     cfg.itemDefs[iid] = i
     height = height + itmHeight
     table.insert(oItems, {
-      type = "listItem", size = {width, itmHeight}, id = iid, padding = 0, buttonLike = true,
+      type = "menuItem", size = {width, itmHeight}, id = iid, padding = 0,
       children = { { scissoring = false },
         { type = "label", align = "right", text = i.label },
         { type = "image", size = {itmHeight, itmHeight}, file = i.icon or "/items/currency/essence.png" },

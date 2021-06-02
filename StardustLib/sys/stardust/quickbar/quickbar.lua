@@ -42,8 +42,7 @@ end
 -- internals --
 ---------------
 
-local function menuClick(w)
-  w:deselect()
+local function menuClick(w, btn)
   local i = metagui.cfg.itemDefs[w.id]
   if i.condition and not condition(table.unpack(i.condition)) then return nil end -- recheck condition on attempt
   action(table.unpack(i.action))
@@ -51,7 +50,7 @@ local function menuClick(w)
 end
 
 for _, w in pairs(itemField.children[1].children) do
-  if w.widgetType == "listItem" then
-    w.onSelected = menuClick
+  if w.widgetType == "menuItem" then
+    w.onClick = menuClick
   end
 end

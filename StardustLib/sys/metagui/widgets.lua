@@ -588,6 +588,9 @@ end do -- item slot ------------------------------------------------------------
     function autoInteract.default(self, btn, container)
       if btn == 1 or btn > 2 then return nil end -- no default behavior
       
+      -- don't attempt interaction if unsynced container
+      if container and not mg.checkSync(true) then return nil end
+      
       local itm, set
       if container then
         local cid = pane.sourceEntity()

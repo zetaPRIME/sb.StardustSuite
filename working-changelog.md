@@ -22,3 +22,4 @@
 - `buttonLike` flag for listItems (signals if button click sound etc. should be applied), `theme.onListItemClick` function
 - `noAutoSelect` flag for listItems (self explanatory)
 - `selectionGroup` field for listItems; selecting one will only deselect siblings with the same selection group.
+- `checkSync` and `waitSync` methods for keeping pace with source entity. Used to prevent container item duplication under lag.

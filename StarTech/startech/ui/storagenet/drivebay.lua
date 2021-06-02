@@ -46,6 +46,7 @@ function grid:onSlotMouseEvent(btn, down)
         --[[metagui.contextMenu {
           { "Configure drive...", function() openConfigPane(self.index) end }
         }]]
+        theme.onButtonClick(self) -- button response sound
         metagui.startEvent(openConfigPane, self.index) -- for now, skip the context menu
         return true
       end

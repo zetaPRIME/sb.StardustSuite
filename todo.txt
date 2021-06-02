@@ -5,7 +5,7 @@
     - leveled status for augpack
     
     - metaGUI: optional click sound for list items (context menu+quickbar)
-    metaGUI: sync ping limiting for container interactions
+    - metaGUI: sync ping limiting for container interactions
     
 } big things to do by Milestone 2 {
     THREAT GENERATION SYSTEM {
@@ -50,6 +50,8 @@
     
     better power generation, especially when Fenthes are considered
     have batteries tick slower when not at full utilization
+    
+    maybe revamp drive bay to use checkSync
 }
 
 balance notes {

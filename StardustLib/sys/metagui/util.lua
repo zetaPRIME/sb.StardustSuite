@@ -95,3 +95,30 @@ function mg.checkShift()
   mg.ipc.shiftCheck = nil -- clean up
   return res
 end
+
+do -- limit variable scope
+  local synced = true -- assume sync on pane open
+  local function syncPingEv(id)
+    synced = false
+    local p = world.sendEntityMessage(id, "::-")
+    while not p:finished() do coroutine.yield() end
+    synced = true
+  end
+  
+  function mg.checkSync(resync, id)
+    if not id then id = pane.sourceEntity() end -- default to attached if id not specified
+    if not id then return true end -- nothing to sync
+    if not synced then return false end
+    if not resync then return true end -- don't force a resync if not told to
+    mg.startEvent(syncPingEv, id)
+    return true
+  end
+  
+  function mg.waitSync(resync, id)
+    if not id then id = pane.sourceEntity() end -- default to attached if id not specified
+    if not id then return end -- nothing to sync
+    while not synced do coroutine.yield() end
+    if not resync then return end -- don't force a resync if not told to
+    mg.startEvent(syncPingEv, id)
+  end
+end

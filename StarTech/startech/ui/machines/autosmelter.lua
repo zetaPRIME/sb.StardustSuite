@@ -22,10 +22,8 @@ end)
 
 local recipes = root.itemConfig { name = "startech:autosmelter" }.config.recipes
 
-local blockTakeAll = false
 function takeAll:onClick()
-  if blockTakeAll then return end
-  blockTakeAll = true
+  if not metagui.checkSync(true) then return end
   local id = pane.sourceEntity()
   for i = 0, 2 do -- input slots
     local itm = world.containerItemAt(id, i)
@@ -39,5 +37,4 @@ function takeAll:onClick()
     world.containerTakeAt(id, i)
   end
   for i = 1,15 do coroutine.yield() end
-  blockTakeAll = false
 end

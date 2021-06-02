@@ -1,9 +1,9 @@
 {
-  "version" : "Beta v0.1.0",
-  "friendlyName" : "StardustLib Post",
+  "version" : "Beta v0.1.1",
+  "friendlyName" : "Stardust Core Postload Module",
   "name" : "StardustLibPost",
   "author" : "zetaPRIME",
-  "description" : "Bundled fixes for other mods that may depend indirectly on StardustLib",
+  "description" : "Bundled fixes for other mods that may depend indirectly on Stardust Core",
   "link" : "steam://url/CommunityFilePage/764887546",
   "priority" : 9999,
   "includes" : [ "StardustLib", "Enhanced Storage" ]

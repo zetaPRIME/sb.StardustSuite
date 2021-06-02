@@ -1,11 +1,15 @@
 -
 
 > Beta v0.1.1 {
-    get Pulse Knuckles to a good usable state
     - leveled status for augpack
     
     - metaGUI: optional click sound for list items (context menu+quickbar)
     - metaGUI: sync ping limiting for container interactions
+    
+} Beta v0.1.2 {
+    get Pulse Knuckles to a good usable state
+    dynItemAnim: lights
+    (mention dynItemAnim in changelog)
     
 } big things to do by Milestone 2 {
     THREAT GENERATION SYSTEM {

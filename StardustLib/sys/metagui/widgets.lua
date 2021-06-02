@@ -803,6 +803,7 @@ end do -- list item ------------------------------------------------------------
     self.children = self.children or { }
     
     self.padding = param.padding
+    self.buttonLike = param.buttonLike
     
     self.backingWidget = mkwidget(base, { type = "canvas" })
     mg.createImplicitLayout(param.children, self, { mode = "horizontal" })
@@ -841,6 +842,7 @@ end do -- list item ------------------------------------------------------------
       -- stop containing scroll area
       local p = self:findParent("scrollArea")
       if p then p.velocity = {0, 0} end
+      theme.onListItemClick(self)
   	elseif not down then
   		if btn == self:mouseCaptureButton() then
   			self:releaseMouse()

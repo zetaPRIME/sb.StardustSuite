@@ -18,3 +18,4 @@
 
 #### metaGUI
 - Toggle mode for UI uniqueness (`"uniqueMode" : "toggle"`)
+- `buttonLike` flag for ListItems (signals if button click sound etc. should be applied), `theme.onListItemClick` function

@@ -43,7 +43,6 @@ end
 ---------------
 
 local function menuClick(w)
-  theme.onButtonClick(w)
   w:deselect()
   local i = metagui.cfg.itemDefs[w.id]
   if i.condition and not condition(table.unpack(i.condition)) then return nil end -- recheck condition on attempt

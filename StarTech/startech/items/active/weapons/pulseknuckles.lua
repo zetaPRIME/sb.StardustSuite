@@ -110,7 +110,6 @@ function punch1()
   dynAnim.setFrontArmState "mid"
   dynAnim.setArmAngles(0, math.pi * -4/8)
   for v in dynItem.tween(time*0.1) do end
-  --mcontroller.addMomentum {dynItem.dir * 25, 0}
   dynAnim.setFrontArmState "out"
   dynAnim.setArmAngles(math.pi * 0.25/8, math.pi * -2/8)
   strike(time, dmgtype "fist", dynItem.offsetPoly(polyFan(math.pi * 2/8, 5), true, 0), dynItem.impulse({5*dynItem.dir, 3}, 0.64))
@@ -140,12 +139,13 @@ function punch2()
   dynAnim.setBackArmState "mid"
   dynAnim.setArmAngles(0, 0)
   for v in dynItem.tween(time*0.1) do end
-  mcontroller.addMomentum {dynItem.dir * 25, 0}
   dynAnim.setBackArmState "out"
   dynAnim.setArmAngles(0, math.pi * 0.25/8)
   strike(time, dmgtype "fist", dynItem.offsetPoly(polyFan(math.pi * 2/8, 5), true, 0), dynItem.impulse({5*dynItem.dir, 3}, 0.64))
   jab(0, dynItem.dir)
-  for v in dynItem.tween(time*0.4) do end
+  for v in dynItem.tween(time*0.4) do
+    if ground then mcontroller.setXVelocity(dynItem.dir * 10) end
+  end
   dynAnim.setBackArmState "mid"
   dynAnim.setArmAngles(0, 0)
   for v in dynItem.tween(time*0.1) do end

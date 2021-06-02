@@ -97,6 +97,12 @@ function tdef.onButtonClick(w)
 end
 tdef.onCheckBoxClick = tdef.onButtonClick
 
+function tdef.onListItemClick(w)
+  if w.buttonLike then
+    pane.playSound("/sfx/interface/clickon_success.ogg", 0, 1.0)
+  end
+end
+
 function tdef.drawTextBox(w)
   local c = widget.bindCanvas(w.backingWidget)
   c:clear() assets.textBox:drawToCanvas(c, w.focused and "focused" or "idle")

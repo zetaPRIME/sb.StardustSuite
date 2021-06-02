@@ -24,7 +24,7 @@ function mg.contextMenu(m)
       local itemId = "item:" .. sb.makeRandomSource():randu64()
       width = math.max(width, mg.measureString(mi[1])[1] + 4)
       table.insert(cfg.children, {
-        type = "listItem", id = itemId, size = {width, itmHeight}, children = {
+        type = "listItem", id = itemId, size = {width, itmHeight}, buttonLike = true, children = {
           { type = "label", text = mi[1] }
           }
       })

@@ -78,11 +78,9 @@ do -- build the actual list
   for idx = 1, #items do
     local i = items[idx]
     
-    local iid = "item." .. idx
-    cfg.itemDefs[iid] = i
     height = height + itmHeight
     table.insert(oItems, {
-      type = "menuItem", size = {width, itmHeight}, id = iid, padding = 0,
+      type = "menuItem", size = {width, itmHeight}, data = i, padding = 0,
       children = { { scissoring = false },
         { type = "label", align = "right", text = i.label },
         { type = "image", size = {itmHeight, itmHeight}, file = i.icon or "/items/currency/essence.png" },

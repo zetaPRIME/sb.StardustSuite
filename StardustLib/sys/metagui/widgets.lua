@@ -812,7 +812,9 @@ end do -- list item ------------------------------------------------------------
     self.noAutoSelect = param.noAutoSelect
     self.selectionGroup = param.selectionGroup
     
+    widgets.listItem.widgetType = "listItem" -- force it here so nondeterministic iteration order doesn't screw us
     if self.isMenuItem then -- implicit settings
+      self.widgetType = "menuItem" -- store this in the widget
       if self.buttonLike == nil then self.buttonLike = true end
       if self.noAutoSelect == nil then self.noAutoSelect = true end
     end

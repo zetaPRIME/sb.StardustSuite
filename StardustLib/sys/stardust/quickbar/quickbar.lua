@@ -43,7 +43,7 @@ end
 ---------------
 
 local function menuClick(w, btn)
-  local i = metagui.cfg.itemDefs[w.id]
+  local i = w.data
   if i.condition and not condition(table.unpack(i.condition)) then return nil end -- recheck condition on attempt
   action(table.unpack(i.action))
   if autoDismiss or i.dismissQuickbar then pane.dismiss() end

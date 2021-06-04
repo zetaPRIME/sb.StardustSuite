@@ -2,7 +2,7 @@
 
 > Beta v0.1.2 {
     - rework things to use player properties instead of status properties
-    switch metagui settings property to be consistent with mod:id scheme
+    - switch metagui settings property to be consistent with mod:id scheme
     - player property quickbar condition
     
     unified settings

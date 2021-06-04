@@ -51,5 +51,6 @@ function themeSelected(w)
 end
 
 function apply:onClick()
-  player.setProperty("metaGUISettings", metagui.settings)
+  player.setProperty("metagui:settings", metagui.settings)
+  player.setProperty("metaGUISettings", nil) -- clear out old property
 end

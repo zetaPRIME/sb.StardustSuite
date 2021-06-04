@@ -54,7 +54,7 @@ end
 local defaultTheme = registry.defaultTheme or false
 if not registry.themes[defaultTheme] then for k in pairs(registry.themes) do defaultTheme = k break end end
 
-settings = player.getProperty("metaGUISettings") or { }
+settings = player.getProperty("metagui:settings") or player.getProperty("metaGUISettings") or { }
 local theme = settings.theme or defaultTheme
 if uicfg.forceTheme then theme = uicfg.forceTheme end
 if not registry.themes[theme] then theme = defaultTheme end

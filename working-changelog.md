@@ -7,3 +7,4 @@
   - Returns whether the property is "true" if no value specified, otherwise a deep comparison
 
 #### metaGUI
+- Migrated settings table into a property ID in line with `mod:id` convention

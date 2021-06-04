@@ -57,7 +57,7 @@ end
 
 if debugAP then
   function debugAP:onEnter()
-    status.setStatusProperty("stardustlib:ap", tonumber(debugAP.text))
+    player.setProperty("stardustlib:ap", tonumber(debugAP.text))
     skilltree.recalculateStats()
   end
 end
@@ -84,7 +84,7 @@ function skilltree.modifyStatDisplay.leech(txt, v)
   return string.format("%s ^lightgray;of damage dealt ^cyan;leeched as health^reset;", skilltree.displayNumber(v, true))
 end
 function skilltree.modifyStatDisplay.bloodthirst(txt, v)
-  if v == 0 or not status.statusProperty("stardustlib:hungerEnabled") then return "" end
+  if v == 0 or not player.getProperty("stardustlib:hungerEnabled") then return "" end
   return string.format("%s ^lightgray;of damage dealt ^cyan;leeched as hunger^reset;", skilltree.displayNumber(v, true))
 end
 

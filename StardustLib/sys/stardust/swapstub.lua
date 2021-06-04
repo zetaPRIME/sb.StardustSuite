@@ -6,7 +6,7 @@ function update(dt, fireMode, shiftHeld, moves)
   local mode = config.getParameter("mode") or ""
   
   if mode == "checkShift" then
-    status.setStatusProperty("stardustlib:shiftHeld", shiftHeld)
+    --player.setProperty("stardustlib:shiftHeld", shiftHeld)
   elseif mode == "shiftableGive" then
     if shiftHeld then
       player.giveItem(config.getParameter("restore") or {name="",count=0,parameters={}})

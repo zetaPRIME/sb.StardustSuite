@@ -377,7 +377,7 @@ function skilltree.applyChanges(silent)
   end
   -- commit nodes
   for k,v in pairs(nodesToUnlock) do skillData.unlocks[k] = v end
-  status.setStatusProperty("stardustlib:ap", (status.statusProperty("stardustlib:ap") or 0) - apToSpend)
+  player.setProperty("stardustlib:ap", (player.getProperty("stardustlib:ap") or 0) - apToSpend)
   apToSpend = 0
   fixedCosts = 0
   nodesToUnlock = { }
@@ -411,7 +411,7 @@ function skilltree.nodeUnlockLevel(n, visual)
 end
 
 function skilltree.currentAP()
-  return (status.statusProperty("stardustlib:ap") or 0) - apToSpend
+  return (player.getProperty("stardustlib:ap") or 0) - apToSpend
 end
 function skilltree.nodeCost(n)
   if n.fixedCost then return n.fixedCost, true end
@@ -470,7 +470,7 @@ end
 function skilltree.refundNode(path, batch)
   path = type(path) == "table" and path.path or path -- we need specifically the path for this
   local c = skillData.unlocks[path] or {0}
-  if c[1] ~= 0 then status.setStatusProperty("stardustlib:ap", status.statusProperty("stardustlib:ap", 0) + c[1]) end
+  if c[1] ~= 0 then player.setProperty("stardustlib:ap", player.getProperty("stardustlib:ap", 0) + c[1]) end
   for k, i in pairs(c[3] or { }) do player.giveItem(i) end
   skillData.unlocks[path] = nil
   local m = skillData.modules[path]

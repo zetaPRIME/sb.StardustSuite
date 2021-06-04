@@ -1,12 +1,10 @@
 -
 
-> Beta v0.1.1 {
-    - leveled status for augpack
+> Beta v0.1.2 {
+    - rework things to use player properties instead of status properties
+    switch metagui settings property to be consistent with mod:id scheme
+    player property quickbar condition
     
-    - metaGUI: optional click sound for list items (context menu+quickbar)
-    - metaGUI: sync ping limiting for container interactions
-    
-} Beta v0.1.2 {
     get Pulse Knuckles to a good usable state
     dynItemAnim: lights
     (mention dynItemAnim in changelog)

@@ -75,7 +75,7 @@ local lastPos = { 0, 0 }
 local _update = update or function() end
 function update(dt, ...)
   local food = status.resource("food")
-  if lastFood and not player.isAdmin() and food > 0 then status.setStatusProperty("stardustlib:hungerEnabled", food ~= lastFood) end
+  if lastFood and not player.isAdmin() and food > 0 then player.setProperty("stardustlib:hungerEnabled", food ~= lastFood) end
   lastFood = food
   --[[screenMetricsUpdateTime = screenMetricsUpdateTime - 1
   if screenMetricsUpdateTime <= 0 then
@@ -140,6 +140,24 @@ function init(...)
   -- clean up remnants of playerext-as-quest
   status.clearPersistentEffects("startech:playerext")
   status.setPersistentEffects("stardustlib:playerext", {})--{"stardustlib:tableshim"})
+  
+  do -- clean up status properties
+    local function migrate(id)
+      local v = status.statusProperty(id)
+      if v then
+        if not player.getProperty(id) then player.setProperty(id, v) end
+        status.setStatusProperty(id, nil)
+      end
+    end
+    local function nuke(id)
+      if status.statusProperty(id) then status.setStatusProperty(id, nil) end
+    end
+    
+    nuke "stardustlib:hungerEnabled"
+    nuke "stardustlib:shiftHeld"
+    migrate "stardustlib:ap"
+    migrate "startech:telepadBookmarks"
+  end
   
   -- grab tables deployment doesn't usually have access to
   local mt = getmetatable ''
@@ -237,14 +255,14 @@ end
 
 function svc.giveAP(msg, isLocal, ap)
   if type(ap) ~= "number" then return nil end -- malformed request
-  local curAp = status.statusProperty("stardustlib:ap")
+  local curAp = player.getProperty("stardustlib:ap")
   if type(curAp) ~= "number" then curAp = 0 end -- correct
   local hasItem = player.hasItemWithParameter("stardustlib:usesAP", true) -- check whether player has an item that cares
   if (not hasItem) and curAp >= 10000 then
     ap = ap * 0.1 -- soft cap at 10k if they don't
     if curAp >= 25000 then ap = 0 end -- hard cap at 25k
   end
-  status.setStatusProperty("stardustlib:ap", math.max(0, curAp + ap))
+  player.setProperty("stardustlib:ap", math.max(0, curAp + ap))
   if ap >= 50 and hasItem then -- don't display tiny gains, or if the player has nothing that cares about AP
     local bossAp = ap >= 10000
     localAnimator.spawnParticle {

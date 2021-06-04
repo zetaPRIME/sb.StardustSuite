@@ -5,7 +5,7 @@ local function waitFor(p) -- wait for promise
   return p
 end
 
-bookmarks = status.statusProperty("startech:telepadBookmarks", { })
+bookmarks = player.getProperty("startech:telepadBookmarks", { })
 
 local lock = true
 local cfg, setCfg
@@ -32,7 +32,7 @@ local function onItemClick(w, btn)
       { "Delete bookmark", function()
         local e = w.entry
         bookmarks[e.destination] = nil
-        status.setStatusProperty("startech:telepadBookmarks", bookmarks)
+        player.setProperty("startech:telepadBookmarks", bookmarks)
         cfg.destination, cfg.destinationName = setCfg.destination, setCfg.destinationName -- reset
         buildList()
       end }
@@ -158,7 +158,7 @@ function newBookmark:onClick()
   end
   
   bookmarks[b.destination] = b
-  status.setStatusProperty("startech:telepadBookmarks", bookmarks)
+  player.setProperty("startech:telepadBookmarks", bookmarks)
   
   buildList()
 end

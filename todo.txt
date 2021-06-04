@@ -5,6 +5,9 @@
     switch metagui settings property to be consistent with mod:id scheme
     - player property quickbar condition
     
+    unified settings
+    stardustlite
+    
     get Pulse Knuckles to a good usable state
     dynItemAnim: lights
     (mention dynItemAnim in changelog)
@@ -22,10 +25,8 @@
     
     "Chroma" metaGUI theme
     
-    stardustlite
     metaGUI-powered docs system
     ^ temporary asset root swap
-    unified settings
     
     store multiple EPPs within augpack for quick swapping
     

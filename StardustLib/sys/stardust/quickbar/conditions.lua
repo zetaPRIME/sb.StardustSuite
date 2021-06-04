@@ -1,5 +1,7 @@
 -- Quickbar conditions module, separated for reuse
 
+require "/scripts/util.lua" -- just in case this file is loaded by something that doesn't have this
+
 conditions = conditions or { }
 local function nullfunc() end
 function condition(id, ...) return (conditions[id] or nullfunc)(...) end
@@ -32,3 +34,14 @@ end
 
 function conditions.configExists(key) return root.assetJson(key) ~= nil end
 function conditions.techExists(name) return root.hasTech(name) end
+
+function conditions.statusProperty(key, value)
+  local p = status.statusProperty(key)
+  if value == nil then return not not p end
+  return compare(p, value)
+end
+function conditions.playerProperty(key, value)
+  local p = player.getProperty(key)
+  if value == nil then return not not p end
+  return compare(p, value)
+end

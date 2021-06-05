@@ -100,7 +100,7 @@ do -- limit variable scope
   local synced = true -- assume sync on pane open
   local function syncPingEv(id)
     synced = false
-    local p = world.sendEntityMessage(id, "::-")
+    local p = world.sendEntityMessage(id, "") -- empty message ID for just an "are you there?" ping
     while not p:finished() do coroutine.yield() end
     synced = true
   end

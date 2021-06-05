@@ -5,6 +5,7 @@
     - switch metagui settings property to be consistent with mod:id scheme
     - player property quickbar condition
     
+    tabField widget
     unified settings
     stardustlite
     

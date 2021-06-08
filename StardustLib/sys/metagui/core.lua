@@ -216,7 +216,7 @@ end
 function widgetBase:pushEvent(ev, ...)
   if self.__event then
     local e = self.__event[ev]
-    if e and e(...) then return nil end -- return true to "catch"
+    if e and e(self, ...) then return nil end -- return true to "catch"
   end
   -- else pass to children
   for _,c in pairs(self.children or { }) do c:pushEvent(ev, ...) end

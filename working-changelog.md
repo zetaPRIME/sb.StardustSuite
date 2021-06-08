@@ -7,4 +7,8 @@
   - Returns whether the property is "true" if no value specified, otherwise a deep comparison
 
 #### metaGUI
+- New widget: `tabField`
+- `subscribeEvent` functions changed to include `self` parameter (oops)
+- Fixed panel explicit size
+- `expandMode` for list items
 - Migrated settings table into a property ID in line with `mod:id` convention

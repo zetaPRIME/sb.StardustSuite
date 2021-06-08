@@ -192,7 +192,10 @@ end do -- panel ----------------------------------------------------------------
   function widgets.panel:preferredSize(width)
     if width then width = width - padding*2 end
     local res = vec2.add(self.children[1]:preferredSize(width), {padding*2, padding*2})
-    if self.explicitSize then res[1] = self.explicitSize[1] end
+    if self.explicitSize then
+      res[1] = self.explicitSize[1] or res[1]
+      res[2] = self.explicitSize[2] or res[2]
+    end
     return res
   end
   function widgets.panel:updateGeometry(noApply)
@@ -807,6 +810,7 @@ end do -- list item ------------------------------------------------------------
     self.children = self.children or { }
     self.isMenuItem = param.type == "menuItem"
     
+    self.expandMode = param.expandMode
     self.padding = param.padding
     self.buttonLike = param.buttonLike
     self.noAutoSelect = param.noAutoSelect
@@ -822,7 +826,7 @@ end do -- list item ------------------------------------------------------------
     self.backingWidget = mkwidget(base, { type = "canvas" })
     mg.createImplicitLayout(param.children, self, { mode = "horizontal" })
     
-    self:subscribeEvent("listItemSelected", function(itm)
+    self:subscribeEvent("listItemSelected", function(self, itm)
       if itm ~= self and itm.selectionGroup == self.selectionGroup then
         self:deselect()
       end
@@ -1046,4 +1050,122 @@ end do -- text box -------------------------------------------------------------
   function widgets.textBox:onTextChanged() end
   function widgets.textBox:onEnter() end
   function widgets.textBox:onEscape() end
+end do -- tab field ---------------------------------------------------------------------------------------------------------------------------------
+  widgets.tabField = mg.proto(mg.widgetBase, {
+    expandMode = {1, 2}, -- can expand to fill horizontally, wants to expand vertically
+    layout = "horizontal",
+    tabWidth = 80,
+  })
+  
+  local linv = {
+    horizontal = "vertical",
+    vertical = "horizontal",
+  }
+  
+  local tabHeight = 16
+  
+  function widgets.tabField:init(base, param)
+    self.children = self.children or { }
+    
+    if type(self.explicitSize) == "number" then self.explicitSize = {self.explicitSize, 0} end
+    
+    self.layout = param.layout
+    if not linv[self.layout] then self.layout = nil end
+    self.tabWidth = param.tabWidth
+    self.expandMode = param.expandMode
+    
+    -- and build
+    local layout = self.layout
+    local inv = linv[layout]
+    
+    local base = mg.createImplicitLayout({ }, self, { mode = inv })
+    local panel = base:addChild { type = "panel", style = "flat" or "concave" }
+    local tabScroll = panel.children[1]:addChild { type = "scrollArea", children = { { mode = layout, align = 0, spacing = 1 } } }
+    if layout == "horizontal" then
+      panel.explicitSize = {0, tabHeight + 4}
+      panel.expandMode = {2, 0}
+      tabScroll.scrollDirections = {1, 0}
+    else
+      panel.explicitSize = {self.tabWidth + 4}
+      panel.expandMode = {0, 2}
+    end
+    local stack = base:addChild { type = "layout", mode = "stack", expandMode = {1, 1} }
+    self.tabScroll = tabScroll
+    self.stack = stack
+    
+    self.tabs = { }
+    for id, p in pairs(param.tabs or { }) do
+      self:newTab(id, p)
+    end
+    --
+  end
+  
+  function widgets.tabField:preferredSize(width)
+    local res = self.children[1]:preferredSize(width)
+    if self.explicitSize then res[1] = self.explicitSize[1] end
+    return res
+  end
+  function widgets.tabField:updateGeometry(noApply)
+    local l = self.children[1]
+    l.size = vec2.mul(self.size, 1.0) -- quick copy
+    
+    l:updateGeometry(true)
+    if not noApply then applyGeometry() end
+  end
+  
+  local tabProto = { }
+  local tabMt = { __index = tabProto }
+  
+  function tabProto:setTitle(txt, icon)
+    self.titleWidget:setText(txt or tab.id)
+    if icon ~= nil then
+      self.iconWidget:setImage(icon or nil)
+      self.iconWidget:setVisible(not not icon)
+    end
+  end
+  function tabProto:select()
+    self.tabWidget:select()
+  end
+  
+  local function evContentsTabChanged(self, tab)
+    self:setVisible(self.tab == tab)
+  end
+  local function evTabSelect(self)
+    self.tab.parent:pushEvent("tabChanged", self.tab)
+  end
+  function widgets.tabField:newTab(id, param)
+    local first = not self.tabScroll.children[1].children[1] -- check if first tab added
+    
+    local tab = setmetatable({ parent = self, id = id }, tabMt)
+    self.tabs[id] = tab
+    
+    -- set up tab widget itself
+    tab.tabWidget = self.tabScroll.children[1]:addChild { type = "listItem", sizes = {0, tabHeight}, expandMode = self.layout == "vertical" and {1, 0} or {0, 0}, padding = 0, buttonLike = true }
+    tab.tabWidget.children[1]:addChild { type = "spacer", size = {0, tabHeight} } -- manual padding
+    tab.iconWidget = tab.tabWidget.children[1]:addChild { type = "image", size = {tabHeight, tabHeight}, visible = false }
+    tab.titleWidget = tab.tabWidget.children[1]:addChild { type = "label", inline = true }
+    tab.tabWidget.children[1]:addChild { type = "spacer", size = {0, tabHeight} } -- manual padding
+    
+    -- populate title and contents
+    tab:setTitle(param.title, param.icon)
+    tab.contents = mg.createImplicitLayout(param.contents, self.stack, { mode = "vertical", visible = false })
+    
+    -- hook up events
+    tab.tabWidget.tab = tab
+    tab.tabWidget.onSelected = evTabSelect
+    tab.contents.tab = tab
+    tab.contents:subscribeEvent("tabChanged", evContentsTabChanged)
+    
+    if SCRL then mg.startEvent(function()
+      coroutine.yield()
+      sb.logInfo("stack height: " .. self.stack.size[2])
+      sb.logInfo("contents height: " .. tab.contents.size[2])
+      sb.logInfo("scroll area height: " .. SCRL.size[2])
+    end) end
+    
+    if first then tab:select() end
+    return tab
+  end
+  
+  
 end

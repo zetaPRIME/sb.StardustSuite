@@ -5,7 +5,9 @@
     - switch metagui settings property to be consistent with mod:id scheme
     - player property quickbar condition
     
-    tabField widget
+    - tabField widget
+    tabField docs
+    clean up example.ui
     unified settings
     stardustlite
     
@@ -72,7 +74,6 @@ the BIG IDEA UPDATE {
             actually, needs to be basically a widget subclass in order to have multiple of the same module?
         }
         
-        tabs for metaGUI (eventually)
         maybe some way to plonk widgets into the title bar
         particularly, a function to turn the icon into an item slot
         

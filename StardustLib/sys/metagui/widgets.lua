@@ -249,6 +249,7 @@ end do -- scroll area ----------------------------------------------------------
   
   -- only intercept if it can actually scroll
   function widgets.scrollArea:isMouseInteractable(init) return init or self.children[1].size[2] > self.size[2] end
+  widgets.scrollArea.isWheelInteractable = widgets.scrollArea.isMouseInteractable -- same conditions
   function widgets.scrollArea:onMouseButtonEvent(btn, down)
     if down and not self:hasMouse() then
       self.velocity = {0, 0}
@@ -264,6 +265,11 @@ end do -- scroll area ----------------------------------------------------------
       end)
       return self:releaseMouse()
     end
+  end
+  function widgets.scrollArea:onMouseWheelEvent(dir)
+    self.velocity = {0, 0}
+    self:scrollBy({0, dir * 25})
+    return true
   end
   function widgets.scrollArea:canPassMouseCapture() return self:isMouseInteractable() end
   function widgets.scrollArea:onPassedMouseCapture(point) self.velocity = {0, 0} self:scrollBy(vec2.sub(mg.mousePosition, point)) end

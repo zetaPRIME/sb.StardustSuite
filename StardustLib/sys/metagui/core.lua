@@ -92,9 +92,11 @@ function widgetBase:queueRedraw() redrawQueue[self] = true end
 function widgetBase:draw() end
 
 function widgetBase:isMouseInteractable() return false end
+function widgetBase:isWheelInteractable() return false end
 function widgetBase:onMouseEnter() end
 function widgetBase:onMouseLeave() end
 function widgetBase:onMouseButtonEvent(btn, down) end
+function widgetBase:onMouseWheelEvent(dir) end
 function widgetBase:isMouseOver() return self == lastMouseOver end
 
 function widgetBase:captureMouse(btn) return mg.captureMouse(self, btn) end
@@ -402,19 +404,15 @@ function init() ----------------------------------------------------------------
   paneBase = mg.createImplicitLayout(mg.cfg.children, nil, { size = mg.cfg.size, position = {borderMargins[1], borderMargins[4]}, mode = mg.cfg.layoutMode or "vertical" })
   
   do -- set up scrollwheel test assembly
-    --[[local am = "/assetmissing.png"
-    local bhp = { base = am, hover = am, pressed = am }
-    local fbbhp = { forward = bhp, backward = bhp }
-    local bei = { begin = am, ["end"] = am, inner = am }
-    local bhpbei = { base = bei, hover = bei, pressed = bei }
-    --[[wheel.area = mg.mkwidget(nil, {
-      type = "scrollArea", position = {99999999*0, 0}, size = mg.cfg.totalSize, zlevel = -999999,
-      buttons = { horizontal = fbbhp, vertical = fbbhp },
-      thumbs = { horizontal = bhpbei, vertical = bhpbei }
-    })
-    wheel.canvas = mg.mkwidget(wheel.area, { type = "canvas", position = {0, 0}, size = mg.cfg.totalSize, captureMouseEvents = true })]]
-    wheel.area = "_wheel"
-    wheel.canvas = "_wheel._mouse"
+    local size = mg.cfg.totalSize
+    wheel.proto = {
+      type = "scrollArea", position = {0, 0}, size = size, verticalScroll = false, children = {
+        target = { type = "canvas", position = {0, 0}, size = size }
+      }
+    }
+    wheel.base = "_wheel"
+    wheel.target = "_wheel.w.target"
+    wheel.track = 0
   end
   
   mg.theme.decorate()
@@ -438,10 +436,17 @@ function init() ----------------------------------------------------------------
   --setmetatable(_ENV, {__index = function(_, n) if DBG then DBG:setText("unknown func " .. n) end end})
 end
 
+local function recreateWheelChild()
+  widget.removeChild(wheel.base, "w")
+  widget.addChild(wheel.base, wheel.proto, "w")
+  wheel.created = true
+end
 local function setWheelActive(b)
-  wheel.active = not not b
-  widget.setPosition(wheel.area, wheel.active and {0, 0} or {99999999, 0})
-  if b then widget.focus(wheel.canvas) end
+  if b ~= nil then wheel.active = not not b end
+  widget.setPosition(wheel.base, {wheel.active and 0 or 99999999, 0})
+  if not wheel.created then
+    recreateWheelChild()
+  end
 end
 
 function uninit()
@@ -515,7 +520,7 @@ end
 
 mg.mousePosition = {0, 0} -- default
 
-local bcv = { "_tracker", "_mouse" }
+local bcv = { "_tracker", "_mouse", }--"_wheel.w.target"}--"_wheel._mouse" }
 local bcvmp = { {0, 0}, {0, 0}, {0, 0} } -- last saved mouse position
 
 function update()
@@ -530,8 +535,25 @@ function update()
     end
   end
   
-  -- TEMP
-  bcv[3] = wheel.canvas
+  local wheelDir
+  if wheel.active then
+    local bp = mg.windowPosition
+    local tp = vec2.add(mg.windowPosition, {0, mg.cfg.totalSize[2] - 1})
+    --sb.logInfo("bottom: " .. (widget.inMember(wheel.canvas, bp) and "yes" or "no"))
+    --sb.logInfo("top: " .. (widget.inMember(wheel.canvas, tp) and "yes" or "no"))
+    local bottom = widget.inMember(wheel.target, bp)
+    local top = widget.inMember(wheel.target, tp)
+    --local bc = widget.bindCanvas(wheel.canvas)
+    if not bottom then
+      wheelDir = 1
+    elseif not top then
+      --sb.logInfo("top, pos diff " .. (bc:mousePosition()[2] - bcvmp[3][2]))
+      wheelDir = -1
+    end
+    if wheelDir then recreateWheelChild() end
+    --sb.logInfo("wheel tracking position: " .. wheel.track)
+    --setWheelActive() -- update position
+  end
   
   local lmp = mg.mousePosition
   -- we don't know which of these gets mouse changes properly, so we loop through and
@@ -539,7 +561,6 @@ function update()
     local bc = widget.bindCanvas(v)
     if bc then
       local mp = bc:mousePosition()
-      sb.logInfo("widget " .. k .. " position " .. mp[1] .. ", " .. mp[2])
       if not vec2.eq(bcvmp[k], mp) then
         bcvmp[k] = mp
         mg.mousePosition = mp
@@ -551,7 +572,7 @@ function update()
   runEventQueue() -- not entirely sure where this should go in the update cycle
   
   local scrollActive = wheel.active
-  setWheelActive(false)
+  setWheelActive(false) -- yeet it out of the way so it doesn't hog getChildAt checks
   local mw = mouseCaptor
   if not mw then
     local mwc = widget.getChildAt(vec2.add(mg.windowPosition, mg.mousePosition))
@@ -564,7 +585,14 @@ function update()
       mw = mw.parent
     end
   end
-  setWheelActive(scrollActive)
+  --setWheelActive(scrollActive)
+  
+  local ww = mw -- find wheel target
+  if not mouseCaptor then
+    while ww and not ww:isWheelInteractable() do
+      ww = ww.parent
+    end
+  end
   
   if mw ~= lastMouseOver then
     if mw then mw:onMouseEnter() end
@@ -577,8 +605,17 @@ function update()
     mouseCaptor:onCaptureMouseMove(vec2.sub(mg.mousePosition, lmp))
   end
   
-  if keyFocus or mw then setWheelActive(true)--widget.focus(bcv[2])
-  else setWheelActive(false) widget.focus(bcv[1]) end
+  if wheelDir then -- send mouse wheel event
+    local w = ww
+    while w and (not w:isWheelInteractable() or not w:onMouseWheelEvent(wheelDir)) do
+      w = w.parent
+    end
+  end
+  
+  if ww then setWheelActive(true) end
+  if false and ww then widget.focus(bcv[3])
+  elseif keyFocus or mw then widget.focus(bcv[2])
+  else widget.focus(bcv[1]) end
   
   local rdq, rcq = redrawQueue, recalcQueue
   redrawQueue, recalcQueue = { }, { }

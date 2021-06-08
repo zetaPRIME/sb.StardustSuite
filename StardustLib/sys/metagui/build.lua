@@ -113,19 +113,7 @@ player.interact("ScriptPane", {
     _pf = pf,
     _tracker = { type = "canvas", size = size, zlevel = -99999 },
     _mouse = { type = "canvas", size = size, zlevel = -99995, captureMouseEvents = true },
-    _wheel = {
-      type = "scrollArea", position = {99999999, 0}, size = size, zlevel = -99997, verticalScroll = false,
-      --buttons = { horizontal = fbbhp, vertical = fbbhp },
-      --thumbs = { horizontal = bhpbei, vertical = bhpbei },
-      children = {
-        --[[w = {
-          type = "scrollArea", size = size, verticalScroll = false,
-          children = {
-            target = { type = "widget", size = size },
-          }
-        }]]
-      }
-    },
+    _wheel = { type = "scrollArea", position = {99999999, 0}, size = size, zlevel = -99997, verticalScroll = false },
   },
   scripts = { _mgcfg.providerRoot .. "core.lua" },
   scriptWidgetCallbacks = { "__cb1", "__cb2", "__cb3", "__cb4", "__cb5", "_clickLeft", "_clickRight" },

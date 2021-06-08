@@ -222,6 +222,8 @@ end do -- scroll area ----------------------------------------------------------
   local sizeMod = {0, 0}
   local scrollFriction = 0.025
   local scrollVelocityThreshold = 0.25
+  local wheelScrollAmount = 64
+  local wheelScrollTicks = 6
   
   function widgets.scrollArea:init(base, param)
     self.children = self.children or { }
@@ -247,28 +249,60 @@ end do -- scroll area ----------------------------------------------------------
   function widgets.scrollArea:addChild(...) return self.children[1]:addChild(...) end
   function widgets.scrollArea:clearChildren(...) return self.children[1]:clearChildren(...) end
   
+  local function evFling(self)
+    while not self.deleted and vec2.mag(self.velocity) >= scrollVelocityThreshold do
+      self:scrollBy(self.velocity)
+      self.velocity = vec2.mul(self.velocity, 1.0 - scrollFriction)
+      coroutine.yield()
+    end
+  end
+  
+  local function evWheel(self)
+    if self._wheelControl then self._wheelControl.cancel = true end -- cancel old
+    local control = { }
+    self._wheelControl = control
+    local abort = false
+    local sp = self:scrollPosition()
+    for i = 1, wheelScrollTicks do
+      if self.deleted or control.cancel then abort = true break end -- abort
+      self:scrollTo(vec2.lerp((i / wheelScrollTicks)^0.5, sp, self.wheelTarget), false, true)
+      coroutine.yield()
+    end
+    if not abort then
+      self.wheelTarget = nil
+    end
+  end
+  
   -- only intercept if it can actually scroll
-  function widgets.scrollArea:isMouseInteractable(init) return init or self.children[1].size[2] > self.size[2] end
+  function widgets.scrollArea:isMouseInteractable(init) 
+    return init or 
+    (self.scrollDirections[2] ~= 0 and self.children[1].size[2] > self.size[2]) or
+    (self.scrollDirections[1] ~= 0 and self.children[1].size[1] > self.size[1])
+  end
   widgets.scrollArea.isWheelInteractable = widgets.scrollArea.isMouseInteractable -- same conditions
   function widgets.scrollArea:onMouseButtonEvent(btn, down)
     if down and not self:hasMouse() then
+      if self._wheelControl then self._wheelControl.cancel = true end -- cancel wheel scrolling
       self.velocity = {0, 0}
       self:captureMouse(btn)
       return true
     elseif not down and btn == self:mouseCaptureButton() then
-      mg.startEvent(function()
-        while not self.deleted and vec2.mag(self.velocity) >= scrollVelocityThreshold do
-          self:scrollBy(self.velocity)
-          self.velocity = vec2.mul(self.velocity, 1.0 - scrollFriction)
-          coroutine.yield()
-        end
-      end)
+      mg.startEvent(evFling, self)
       return self:releaseMouse()
     end
   end
   function widgets.scrollArea:onMouseWheelEvent(dir)
-    self.velocity = {0, 0}
-    self:scrollBy({0, dir * 25})
+    if self:hasMouse() then return true end -- no wheel scrolling while dragging
+    self.velocity = {0, 0} -- cancel fling
+    local amt = dir * wheelScrollAmount
+    local vec
+    if self.scrollDirections[2] ~= 0 then
+      vec = {0, amt}
+    else
+      vec = {amt, 0}
+    end
+    self.wheelTarget = vec2.add(vec, self.wheelTarget or self:scrollPosition())
+    mg.startEvent(evWheel, self)
     return true
   end
   function widgets.scrollArea:canPassMouseCapture() return self:isMouseInteractable() end
@@ -299,8 +333,8 @@ end do -- scroll area ----------------------------------------------------------
       theme.onScroll(self) -- only if there's actually room to scroll and delta is nonzero
     end
   end
-  function widgets.scrollArea:scrollTo(pos, suppressAnimation)
-    pos = vec2.sub(pos, vec2.mul(self.size, 0.5))
+  function widgets.scrollArea:scrollTo(pos, suppressAnimation, raw)
+    if not raw then pos = vec2.sub(pos, vec2.mul(self.size, 0.5)) end
     local l = self.children[1]
     l.position = vec2.mul(vec2.mul(pos, -1), self.scrollDirections)
     l.position = rect.ll(rect.bound(rect.fromVec2(l.position, l.position), {0, math.max(0, l.size[2] - self.size[2]) * -1, math.max(0, l.size[1] - self.size[1]), 0}))
@@ -310,6 +344,7 @@ end do -- scroll area ----------------------------------------------------------
       theme.onScroll(self) -- only if there's actually room to scroll
     end
   end
+  function widgets.scrollArea:scrollPosition() return vec2.mul(self.children[1].position, -1) end
   
   function widgets.scrollArea:preferredSize(width) return vec2.add(self.children[1]:preferredSize(width + sizeMod[1]), sizeMod) end
   function widgets.scrollArea:updateGeometry(noApply)

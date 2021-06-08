@@ -189,8 +189,8 @@ Another layout-proxy, this time with drag-scrolling; left or right click for tou
 ```lua
 scrollArea:scrollBy(vec, suppressAnimation) -- Attempts to scroll contents by [vec] pixels. Shows scroll
 -- bars if suppressAnimation is false or omitted.
-scrollArea:scrollTo(pos, suppressAnimation) -- Attempts to center viewport on [pos]. Shows scroll bars if
--- suppressAnimation is false or omitted.
+scrollArea:scrollTo(pos, suppressAnimation, raw) -- Attempts to center viewport on [pos]. Shows scroll bars if
+-- suppressAnimation is false or omitted. If raw is specified, sets raw position instead of centering.
 ```
 
 ### Spacer

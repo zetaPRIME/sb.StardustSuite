@@ -7,8 +7,11 @@
   - Returns whether the property is "true" if no value specified, otherwise a deep comparison
 
 #### metaGUI
+- **Scroll wheel support!** This includes smooth wheel scrolling for scrollAreas.
+  - Relevant widget functions: `isWheelInteractable()`, `onMouseWheelEvent(dir)`
 - New widget: `tabField`
 - `subscribeEvent` functions changed to include `self` parameter (oops)
 - Fixed panel explicit size
 - `expandMode` for list items
+- More correct consideration of `scrollDirections` on scrollAreas
 - Migrated settings table into a property ID in line with `mod:id` convention

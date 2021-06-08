@@ -404,15 +404,14 @@ function init() ----------------------------------------------------------------
   paneBase = mg.createImplicitLayout(mg.cfg.children, nil, { size = mg.cfg.size, position = {borderMargins[1], borderMargins[4]}, mode = mg.cfg.layoutMode or "vertical" })
   
   do -- set up scrollwheel test assembly
+    wheel.base = "_wheel"
+    wheel.target = "_wheel.w.target"
     local size = mg.cfg.totalSize
     wheel.proto = {
       type = "scrollArea", position = {0, 0}, size = size, verticalScroll = false, children = {
         target = { type = "canvas", position = {0, 0}, size = size }
       }
     }
-    wheel.base = "_wheel"
-    wheel.target = "_wheel.w.target"
-    wheel.track = 0
   end
   
   mg.theme.decorate()
@@ -539,20 +538,14 @@ function update()
   if wheel.active then
     local bp = mg.windowPosition
     local tp = vec2.add(mg.windowPosition, {0, mg.cfg.totalSize[2] - 1})
-    --sb.logInfo("bottom: " .. (widget.inMember(wheel.canvas, bp) and "yes" or "no"))
-    --sb.logInfo("top: " .. (widget.inMember(wheel.canvas, tp) and "yes" or "no"))
     local bottom = widget.inMember(wheel.target, bp)
     local top = widget.inMember(wheel.target, tp)
-    --local bc = widget.bindCanvas(wheel.canvas)
     if not bottom then
       wheelDir = 1
     elseif not top then
-      --sb.logInfo("top, pos diff " .. (bc:mousePosition()[2] - bcvmp[3][2]))
       wheelDir = -1
     end
     if wheelDir then recreateWheelChild() end
-    --sb.logInfo("wheel tracking position: " .. wheel.track)
-    --setWheelActive() -- update position
   end
   
   local lmp = mg.mousePosition
@@ -571,7 +564,6 @@ function update()
   
   runEventQueue() -- not entirely sure where this should go in the update cycle
   
-  local scrollActive = wheel.active
   setWheelActive(false) -- yeet it out of the way so it doesn't hog getChildAt checks
   local mw = mouseCaptor
   if not mw then
@@ -585,7 +577,6 @@ function update()
       mw = mw.parent
     end
   end
-  --setWheelActive(scrollActive)
   
   local ww = mw -- find wheel target
   if not mouseCaptor then
@@ -612,9 +603,8 @@ function update()
     end
   end
   
-  if ww then setWheelActive(true) end
-  if false and ww then widget.focus(bcv[3])
-  elseif keyFocus or mw then widget.focus(bcv[2])
+  if ww then setWheelActive(true) end -- intercept mouse wheel whenever something wants it
+  if keyFocus or mw then widget.focus(bcv[2])
   else widget.focus(bcv[1]) end
   
   local rdq, rcq = redrawQueue, recalcQueue
@@ -655,8 +645,6 @@ function _clickLeft() _mouseEvent(nil, 0, true) end
 function _clickRight() _mouseEvent(nil, 2, true) end
 
 function _keyEvent(key, down, accel)
-  --mg.setTitle(util.tableToString{key, down, mg.keyToChar(key, accel.shift), accel})
-  --pane.playSound("/sfx/interface/hoverover_bumb.ogg", 0, 0.75)
   if keyFocus then keyFocus:onKeyEvent(key, down, accel) end
 end
 function _keyRepeatEvent(key, down, accel)

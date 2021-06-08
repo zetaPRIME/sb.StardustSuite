@@ -97,6 +97,13 @@ if type(uicfg.anchor) == "table" then
   pf.positionLocked = true
 end
 
+-- assembly aids for scroll area
+local am = "/assetmissing.png"
+local bhp = { base = am, hover = am, pressed = am }
+local fbbhp = { forward = bhp, backward = bhp }
+local bei = { begin = am, ["end"] = am, inner = am }
+local bhpbei = { base = bei, hover = bei, pressed = bei }
+
 player.interact("ScriptPane", {
   gui = {
     _ = {
@@ -106,10 +113,18 @@ player.interact("ScriptPane", {
     _pf = pf,
     _tracker = { type = "canvas", size = size, zlevel = -99999 },
     _mouse = { type = "canvas", size = size, zlevel = -99998, captureMouseEvents = true },
+    _wheel = {
+      type = "scrollArea", position = {99999999*0, 0}, size = size, zlevel = -99997,
+      buttons = { horizontal = fbbhp, vertical = fbbhp },
+      thumbs = { horizontal = bhpbei, vertical = bhpbei },
+      children = {
+        _mouse = { type = "canvas", size = size, captureMouseEvents = true }
+      }
+    },
   },
   scripts = { _mgcfg.providerRoot .. "core.lua" },
   scriptWidgetCallbacks = { "__cb1", "__cb2", "__cb3", "__cb4", "__cb5", "_clickLeft", "_clickRight" },
-  canvasClickCallbacks = { _mouse = "_mouseEvent" },
+  canvasClickCallbacks = { _mouse = "_mouseEvent", ["_wheel._mouse"] = "_mouseEvent" },
   openWithInventory = uicfg.openWithInventory or uicfg.isContainer,
   ___ = uicfg
 }, pane.sourceEntity())

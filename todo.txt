@@ -7,6 +7,7 @@
     
     - tabField widget
     tabField docs
+    ^ onTabChanged event
     clean up example.ui
     unified settings
     stardustlite
@@ -24,6 +25,10 @@
         keep track of cursor item every frame
         store tracking globally
         bookkeeping function as part of mg
+    }
+    
+    !!! metaGUI scrollwheel support might be possible {
+        can we get mouse position without canvas mp support?
     }
     
     "Chroma" metaGUI theme

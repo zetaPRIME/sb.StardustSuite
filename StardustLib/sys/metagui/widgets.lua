@@ -1131,7 +1131,11 @@ end do -- tab field ------------------------------------------------------------
     self:setVisible(self.tab == tab)
   end
   local function evTabSelect(self)
-    self.tab.parent:pushEvent("tabChanged", self.tab)
+    local tf = self.tab.parent
+    local old = tf.currentTab
+    tf.currentTab = self.tab
+    tf:pushEvent("tabChanged", self.tab, old)
+    mg.startEvent(tf.onTabChanged, tf, self.tab, old)
   end
   function widgets.tabField:newTab(id, param)
     local first = not self.tabScroll.children[1].children[1] -- check if first tab added
@@ -1156,16 +1160,11 @@ end do -- tab field ------------------------------------------------------------
     tab.contents.tab = tab
     tab.contents:subscribeEvent("tabChanged", evContentsTabChanged)
     
-    if SCRL then mg.startEvent(function()
-      coroutine.yield()
-      sb.logInfo("stack height: " .. self.stack.size[2])
-      sb.logInfo("contents height: " .. tab.contents.size[2])
-      sb.logInfo("scroll area height: " .. SCRL.size[2])
-    end) end
-    
     if first then tab:select() end
     return tab
   end
+  
+  function widgets.tabField:onTabChanged() end
   
   
 end

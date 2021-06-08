@@ -11,11 +11,6 @@
 
     clean up example.ui
     
-    - SCROLL. WHEEL. SUPPORT.
-    - add smooth scrolling to scrollArea
-    - mention scrollwheel support in changelog!
-    document scrollwheel events
-    
     unified settings
     stardustlite
     

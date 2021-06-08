@@ -28,9 +28,8 @@
   "children" : [
     { 
       "type" : "tabField", "layout" : "horizontal",
-      "tabs" : {
-        "1" : {
-          "title" : "Example 1",
+      "tabs" : [
+        { "title" : "Example 1",
           "contents" : [
             // color attribute: none (default, generally gray), accent (window accent color), color name(?) or hexcode
             { "type" : "button", "id" : "btn", "caption" : "This is a button." },
@@ -48,14 +47,13 @@
             ]},
             [ { "type" : "button", "caption" : "It even supports layout spacers!", "id" : "btnSpacer" }, { "type" : "image", "file" : "/interface/beamuphover.png" }, { "type" : "itemSlot", "glyph" : "/interface/inventory/backingimagetrash.png", "item" : { "name" : "perfectlygenericitem", "count" : 1, "parameters" : { } } } ]
           ]
-        }/*,
-        "2" : {
-          "title" : "Something else",
+        },
+        { "title" : "Something else",
           "contents" : [
             
           ]
-        }*/
-      }
+        }
+      ]
     }
   ]
 }

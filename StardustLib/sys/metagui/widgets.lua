@@ -1135,8 +1135,8 @@ end do -- tab field ------------------------------------------------------------
     self.stack = stack
     
     self.tabs = { }
-    for id, p in pairs(param.tabs or { }) do
-      self:newTab(id, p)
+    for id, p in ipairs(param.tabs or { }) do
+      self:newTab(p.id or (""..id), p)
     end
     --
   end

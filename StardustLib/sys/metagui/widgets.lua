@@ -249,6 +249,8 @@ end do -- scroll area ----------------------------------------------------------
   function widgets.scrollArea:addChild(...) return self.children[1]:addChild(...) end
   function widgets.scrollArea:clearChildren(...) return self.children[1]:clearChildren(...) end
   
+  --local function roundVec(v) return {math.floor(0.5 + v[1]), math.floor(0.5 + v[2])} end
+  
   local function evFling(self)
     while not self.deleted and vec2.mag(self.velocity) >= scrollVelocityThreshold do
       self:scrollBy(self.velocity)
@@ -295,13 +297,17 @@ end do -- scroll area ----------------------------------------------------------
     if self:hasMouse() then return true end -- no wheel scrolling while dragging
     self.velocity = {0, 0} -- cancel fling
     local amt = dir * wheelScrollAmount
-    local vec
+    local v
     if self.scrollDirections[2] ~= 0 then
-      vec = {0, amt}
+      v = {0, amt}
     else
-      vec = {amt, 0}
+      v = {amt, 0}
     end
-    self.wheelTarget = vec2.add(vec, self.wheelTarget or self:scrollPosition())
+    local sp = self:scrollPosition()
+    if self.wheelTarget and vec2.dot(vec2.norm(v), vec2.norm(vec2.sub(self.wheelTarget, sp))) < 1.0 then
+      self.wheelTarget = nil -- cancel and start anew if scrolling in a different direction
+    end
+    self.wheelTarget = vec2.add(v, self.wheelTarget or sp)
     mg.startEvent(evWheel, self)
     return true
   end

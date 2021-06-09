@@ -407,4 +407,4 @@ metagui.waitSync(resync, id) -- Same as above, but waits until sync flag set. On
 ```
 
 ## Misc. notes
-- Scroll wheel support doesn't work properly on especially tiny panels (height less than 72px including chrome); generally, you should be safe with an internal height of 68 or above with all but the most absolutely minimal of borders.
+(none at this time)

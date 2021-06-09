@@ -184,7 +184,8 @@ function widgetBase:delete()
     end
     self.parent:queueGeometryUpdate()
   end
-  if self.id and _ENV[self.id] == self then _ENV[self.id] = nil end -- remove from global
+  local ctx = self.widgetContext or _ENV
+  if self.id and ctx[self.id] == self then ctx[self.id] = nil end -- remove from global
   self.deleted = true
   
   -- unhook from events and drawing
@@ -262,8 +263,10 @@ function mg.createWidget(param, parent)
   if w.subWidgets then for _, sw in pairs(w.subWidgets) do mouseMap[sw] = w end end
   
   -- assign id
-  if w.id and _ENV[w.id] == nil then
-    _ENV[w.id] = w
+  w.widgetContext = mg.widgetContext
+  local ctx = w.widgetContext or _ENV
+  if w.id and ctx[w.id] == nil then
+    ctx[w.id] = w
   end
   return w
 end

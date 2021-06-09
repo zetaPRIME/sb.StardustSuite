@@ -10,7 +10,7 @@
         each page inits layout on first focus
         all loaded pages have their save methods called on apply
         
-        tabField.noFocusFirstTab flag
+        - tabField.noFocusFirstTab flag
     }
     
     - tabField widget

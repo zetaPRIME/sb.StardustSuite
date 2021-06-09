@@ -425,7 +425,7 @@ function init() ----------------------------------------------------------------
     local size = mg.cfg.totalSize
     wheel.proto = {
       type = "scrollArea", position = {0, 0}, size = size, verticalScroll = false, children = {
-        fill = { type = "widget", position = {0, 0}, size = size },
+        --fill = { type = "widget", position = {0, 0}, size = size },
         target = { type = "widget", position = wheel.offset, size = {size[1], 72} },
         over = { type = "widget", position = wheel.offset, size = {size[1], 1000} },
       }

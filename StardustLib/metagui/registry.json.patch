@@ -14,8 +14,7 @@
     { "op" : "add", "path" : "/panes/stardustlib", "value" : {
       "quickbar" : "/sys/stardust/quickbar/build.lua",
       "cosplay" : "/sys/stardust/cosplay/cosplay.ui",
-      "metacrafting" : "/sys/stardust/metacrafting/metacrafting.ui",
-      "settings" : "/sys/stardust/ui/settings.ui"
+      "metacrafting" : "/sys/stardust/metacrafting/metacrafting.ui"
     } },
     
     { "op" : "add", "path" : "/settings/metagui", "value" : "/sys/metagui/settings/module.lua" }

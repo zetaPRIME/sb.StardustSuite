@@ -2,17 +2,8 @@
 
 > Beta v0.1.2 {
     
-    unified settings {
-        lua listed in registry.json
-        sorted modules (added by calling settings.module(tbl))
-        same scheme as quickbar
-        each module is called in turn, adds their tabs (pages)
-        each page inits layout on first focus
-        all loaded pages have their save methods called on apply
-        
-        - tabField.noFocusFirstTab flag
-    }
-    nuke old settings and change costume weight
+    - unified settings!
+    - nuke old settings and change costume weight
     
     - tabField widget
     tabField docs

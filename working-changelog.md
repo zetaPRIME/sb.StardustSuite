@@ -18,3 +18,7 @@
 - `expandMode` plus `inline` and `expand` flags for buttons
 - More correct consideration of `scrollDirections` on scrollAreas
 - Migrated settings table into a property ID in line with `mod:id` convention
+
+### Stardust Core Lite
+New in this release, Stardust Core Light is an automatically-generated subset of Stardust Core as a successor/replacement to Quickbar Mini.  
+This includes not only the updated Quickbar, but also metaGUI, the unified settings panel and a selection of Stardust Core's library files.

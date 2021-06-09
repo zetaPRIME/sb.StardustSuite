@@ -32,6 +32,13 @@
       "weight" : -1000,
       "action" : [ "pane", "/interface/scripted/mechassembly/mechassemblygui.config" ],
       "condition" : [ "admin" ]
+    },
+    
+    "metagui:settings" : {
+      "label" : "Settings",
+      "weight" : 1000,
+      "icon" : "/sys/metagui/settings/settings.icon.png",
+      "action" : [ "ui", "metagui:settings" ]
     }
   }
 }

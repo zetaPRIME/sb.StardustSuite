@@ -38,7 +38,8 @@
       ],
       "bottomBar" : [
         { "type" : "spacer" },
-        { "type" : "button", "caption" : "Apply" }
+        { "type" : "button", "caption" : "Apply" },
+        { "type" : "button", "caption" : "Cancel" }
       ]
     }
   ]

@@ -8,7 +8,7 @@
   } },
   
   { "op" : "add", "path" : "/items/stardustlib:settings", "value" : {
-    "label" : "Settings",
+    "label" : "^gray;Settings",
     "weight" : 110,
     "icon" : "/sys/stardust/ui/settings.icon.png",
     "action" : [ "ui", "stardustlib:settings" ]

@@ -9,8 +9,7 @@
   // implicit layout stacking by nesting arrays (if outermost is vertical, then next in is treated as horizontal etc.)
   // layout properties can be specified as first object within (if "type" not specified)
   "children" : [
-    { 
-      "type" : "tabField", "layout" : "horizontal",
+    { "type" : "tabField", "layout" : "horizontal",
       "tabs" : [
         { "title" : "Example 1",
           "contents" : [
@@ -36,6 +35,10 @@
             
           ]
         }
+      ],
+      "bottomBar" : [
+        { "type" : "spacer" },
+        { "type" : "button", "caption" : "Apply" }
       ]
     }
   ]

@@ -404,9 +404,14 @@ end do -- button ---------------------------------------------------------------
   })
   
   function widgets.button:init(base, param)
+    self.expandMode = param.expandMode
+    if param.inline then self.expandMode = {0, 0} end
+    if param.expand then self.expandMode = {2, 0} end
+    
     self.caption = mg.formatText(param.caption)
     self.captionOffset = param.captionOffset or {0, 0}
     self.color = param.color
+    
     self.state = "idle"
     self.backingWidget = mkwidget(base, { type = "canvas" })
     if type(self.explicitSize) == "number" then self.explicitSize = {self.explicitSize, 16} end
@@ -1120,6 +1125,7 @@ end do -- tab field ------------------------------------------------------------
     if not linv[self.layout] then self.layout = nil end
     self.tabWidth = param.tabWidth
     self.expandMode = param.expandMode
+    self.noFocusFirstTab = param.noFocusFirstTab
     
     -- and build
     local layout = self.layout
@@ -1138,11 +1144,13 @@ end do -- tab field ------------------------------------------------------------
     end
     local surround = base:addChild { type = "layout", mode = "vertical", expandMode = {1, 1} }
     local stack = surround:addChild { type = "layout", mode = "stack", expandMode = {1, 1} }
-    local bottomBar = mg.createImplicitLayout(param.bottomBar, self, { })
+    local bottomBar = mg.createImplicitLayout(param.bottomBar, surround, { })
     self.tabScroll = tabScroll
     self.surround = surround
     self.stack = stack
     self.bottomBar = bottomBar
+    
+    panel.tabStyle = layout -- set style var
     
     self.tabs = { }
     for id, p in ipairs(param.tabs or { }) do
@@ -1200,6 +1208,7 @@ end do -- tab field ------------------------------------------------------------
     tab.iconWidget = tab.tabWidget.children[1]:addChild { type = "image", size = {tabHeight, tabHeight}, visible = false }
     tab.titleWidget = tab.tabWidget.children[1]:addChild { type = "label", inline = true }
     tab.tabWidget.children[1]:addChild { type = "spacer", size = {0, tabHeight} } -- manual padding
+    tab.tabWidget.tabStyle = layout -- set style var
     
     -- populate title and contents
     tab:setTitle(param.title, param.icon)
@@ -1211,7 +1220,7 @@ end do -- tab field ------------------------------------------------------------
     tab.contents.tab = tab
     tab.contents:subscribeEvent("tabChanged", evContentsTabChanged)
     
-    if first then tab:select() end
+    if first and not self.noFocusFirstTab then tab:select() end
     return tab
   end
   

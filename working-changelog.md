@@ -13,5 +13,6 @@
 - `subscribeEvent` functions changed to include `self` parameter (oops)
 - Fixed panel explicit size
 - `expandMode` for list items
+- `expandMode` plus `inline` and `expand` flags for buttons
 - More correct consideration of `scrollDirections` on scrollAreas
 - Migrated settings table into a property ID in line with `mod:id` convention

@@ -371,7 +371,7 @@ function init() ----------------------------------------------------------------
   mg.cfg = config.getParameter("___") -- window config
   mg.inputData = mg.cfg.inputData -- alias
   
-  mg.settings = player.getProperty("metaGUISettings") or { }
+  mg.settings = player.getProperty("metagui:settings") or player.getProperty("metaGUISettings") or { }
   
   mg.theme = root.assetJson(mg.cfg.themePath .. "theme.json")
   mg.theme.id = mg.cfg.theme

@@ -282,3 +282,9 @@ function btnCraft:onClick()
   txtCount:setText("")
 end
 txtCount.onEnter = btnCraft.onClick
+
+-- handle scroll wheel on count
+function txtCount:isWheelInteractable() return true end
+function txtCount:onMouseWheelEvent(dir)
+  self:setText("" .. math.max(1, (tonumber(self.text) or 0) - dir))
+end

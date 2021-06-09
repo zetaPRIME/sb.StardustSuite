@@ -409,7 +409,7 @@ function init() ----------------------------------------------------------------
     local size = mg.cfg.totalSize
     wheel.proto = {
       type = "scrollArea", position = {0, 0}, size = size, verticalScroll = false, children = {
-        target = { type = "canvas", position = {0, 0}, size = size }
+        target = { type = "widget", position = {0, 0}, size = size }
       }
     }
   end
@@ -519,8 +519,8 @@ end
 
 mg.mousePosition = {0, 0} -- default
 
-local bcv = { "_tracker", "_mouse", }--"_wheel.w.target"}--"_wheel._mouse" }
-local bcvmp = { {0, 0}, {0, 0}, {0, 0} } -- last saved mouse position
+local bcv = { "_tracker", "_mouse" }
+local bcvmp = { {0, 0}, {0, 0} } -- last saved mouse position
 
 function update()
   if player.worldId() ~= worldId then return pane.dismiss() end

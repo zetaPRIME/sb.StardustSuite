@@ -408,9 +408,9 @@ function init() ----------------------------------------------------------------
     wheel.target = "_wheel.w.target"
     wheel.over = "_wheel.w.over"
     wheel.offset = {0, 0}
-    function wheel.block()
+    function wheel.block(t)
       local se = not wheel.disabled
-      wheel.disabled = 11
+      wheel.disabled = math.max(wheel.disabled or 0, t or 15)
       if se then
         mg.startEvent(function()
           while wheel.disabled and wheel.disabled > 0 do

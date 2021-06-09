@@ -1136,9 +1136,13 @@ end do -- tab field ------------------------------------------------------------
       panel.explicitSize = {self.tabWidth + 4}
       panel.expandMode = {0, 2}
     end
-    local stack = base:addChild { type = "layout", mode = "stack", expandMode = {1, 1} }
+    local surround = base:addChild { type = "layout", mode = "vertical", expandMode = {1, 1} }
+    local stack = surround:addChild { type = "layout", mode = "stack", expandMode = {1, 1} }
+    local bottomBar = mg.createImplicitLayout(param.bottomBar, self, { })
     self.tabScroll = tabScroll
+    self.surround = surround
     self.stack = stack
+    self.bottomBar = bottomBar
     
     self.tabs = { }
     for id, p in ipairs(param.tabs or { }) do

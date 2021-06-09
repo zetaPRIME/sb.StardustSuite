@@ -17,7 +17,7 @@
     tabField docs
     ^ onTabChanged event
     
-    tabField sublayout around stack for apply buttons etc.
+    - tabField sublayout around stack for apply buttons etc.
 
     clean up example.ui
     

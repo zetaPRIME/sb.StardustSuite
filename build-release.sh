@@ -45,6 +45,11 @@ function pack {
   cp -Rf ./$1/* ./_release/$1/
   cp -f ./LICENSE.md ./_release/$1/
   jq ".version |= . + \"-$cmthash\"" ./$1/_metadata > ./_release/$1/_metadata
+  # run build script if present
+  if [ -f "./_release/$1/_build.sh" ] ; then
+    chmod +x ./_release/$1/_build.sh
+    ./_release/$1/_build.sh
+  fi
   asset_packer ./_release/$1/ ./_release/$1.pak
   if [ ! -z "$_steamupload" ] ; then
     # skip if set to not upload to steam
@@ -99,5 +104,6 @@ function pack {
 
 pack StardustLibPost
 pack StardustLib
+pack StardustLite
 #pack StardustTweaks
 pack StarTech

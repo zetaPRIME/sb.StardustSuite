@@ -2,20 +2,13 @@
 
 > Beta v0.1.2 {
     
-    - unified settings!
-    - nuke old settings and change costume weight
+    > stardustlite
+    clean up example.ui
     
-    - tabField widget
     tabField docs
     ^ onTabChanged event
     
-    - tabField sublayout around stack for apply buttons etc.
-
-    clean up example.ui
-    
-    stardustlite
-    - move quickbar into /sys/quickbar
-    
+} Beta v0.1.3 {
     get Pulse Knuckles to a good usable state
     dynItemAnim: lights
     (mention dynItemAnim in changelog)

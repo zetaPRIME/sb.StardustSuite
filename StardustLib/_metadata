@@ -7,5 +7,5 @@
   "link" : "steam://url/CommunityFilePage/764887546",
   "steamContentId" : "764887546",
   "priority" : -1000,
-  "includes" : [ ]
+  "includes" : [ "QuickbarMini" ]
 }

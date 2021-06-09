@@ -1,0 +1,20 @@
+[ // -*- grammar-ext: json -*-
+  [ // add modules array if not present
+    { "op" : "test", "path" : "/settings", "inverse" : true },
+    { "op" : "add", "path" : "/settings", "value": { } }
+  ],
+  [ // and everything else
+    { "op" : "add", "path" : "/defaultTheme", "value" : "starbound" },
+    { "op" : "add", "path" : "/themes/starbound", "value" : "/metagui/themes/starbound/" },
+    { "op" : "add", "path" : "/themes/carbon", "value" : "/metagui/themes/carbon/" },
+    { "op" : "add", "path" : "/panes/metagui", "value" : {
+      "example" : "/metagui/example.ui", // addressed as "metagui:example"
+      "settings" : "/sys/metagui/settings/settings.ui"
+    } },
+    { "op" : "add", "path" : "/panes/quickbar", "value" : {
+      "quickbar" : "/sys/quickbar/build.lua"
+    } },
+    
+    { "op" : "add", "path" : "/settings/metagui", "value" : "/sys/metagui/settings/module.lua" }
+  ]
+]

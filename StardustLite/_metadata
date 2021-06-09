@@ -1,0 +1,11 @@
+{
+  "version" : "",
+  "friendlyName" : "Stardust Core Lite",
+  "name" : "QuickbarMini",
+  "author" : "Zia Satazaki",
+  "description" : "Library code and system features for the modded experience.",
+  "link" : "steam://url/CommunityFilePage/1088459034",
+  "steamContentId" : "1088459034",
+  "priority" : -1000,
+  "includes" : [ ]
+}

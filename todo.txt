@@ -1,9 +1,8 @@
 -
 
 > Beta v0.1.2 {
-    - rework things to use player properties instead of status properties
-    - switch metagui settings property to be consistent with mod:id scheme
-    - player property quickbar condition
+    
+    .
     
     - tabField widget
     tabField docs
@@ -13,8 +12,6 @@
     
     unified settings
     stardustlite
-    
-    - scrollwheel zoom in skill tree
     
     get Pulse Knuckles to a good usable state
     dynItemAnim: lights

@@ -17,6 +17,7 @@
   - [Item Slot](#item-slot)
   - [Item Grid](#item-grid)
 - [Utility functions](#utility-functions)
+- [Misc. notes](#misc-notes)
 
 ## Your first UI
 A pane using metaGUI is a JSON document (as with vanilla panes), typically with the extension `.ui`, though this is not required.
@@ -179,6 +180,7 @@ Essentially a layout with a background.
 
 ### Scroll Area
 Another layout-proxy, this time with drag-scrolling; left or right click for touch-style "fling" scrolling, middle click for "thumb" (absolute) mode.
+As of Beta v0.1.2, full scroll wheel support is included.
 ##### Attributes
 ```js
 "scrollDirections" : [0, 1], // Whether the contents can be scrolled on each axis. Defaults to vertical.
@@ -403,3 +405,6 @@ metagui.checkSync(resync, id) -- Checks if sync succeeded with source entity (or
 -- If resync specified, clears sync flag and pings entity.
 metagui.waitSync(resync, id) -- Same as above, but waits until sync flag set. Only available in events.
 ```
+
+## Misc. notes
+- Scroll wheel support doesn't work properly on especially tiny panels (height less than 72px including chrome); generally, you should be safe with an internal height of 68 or above with all but the most absolutely minimal of borders.

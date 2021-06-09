@@ -406,10 +406,14 @@ function init() ----------------------------------------------------------------
   do -- set up scrollwheel test assembly
     wheel.base = "_wheel"
     wheel.target = "_wheel.w.target"
+    wheel.over = "_wheel.w.over"
+    wheel.offset = {0, 0}
     local size = mg.cfg.totalSize
     wheel.proto = {
       type = "scrollArea", position = {0, 0}, size = size, verticalScroll = false, children = {
-        target = { type = "widget", position = {0, 0}, size = size }
+        fill = { type = "widget", position = {0, 0}, size = size },
+        target = { type = "widget", position = wheel.offset, size = {size[1], 143} },
+        over = { type = "widget", position = wheel.offset, size = {size[1], 1000} },
       }
     }
   end
@@ -436,6 +440,12 @@ function init() ----------------------------------------------------------------
 end
 
 local function recreateWheelChild()
+  if mg.windowPosition[2] < 0 then
+    wheel.offset[2] = -mg.windowPosition[2]
+  else
+    wheel.offset[2] = 0
+  end
+  
   widget.removeChild(wheel.base, "w")
   widget.addChild(wheel.base, wheel.proto, "w")
   wheel.created = true
@@ -525,25 +535,33 @@ local bcvmp = { {0, 0}, {0, 0} } -- last saved mouse position
 function update()
   if player.worldId() ~= worldId then return pane.dismiss() end
   
+  local moved
   if not mg.windowPosition then findWindowPosition() else
     if mg.windowOffScreen then
       -- for now, trust the cursor?
     else -- autocheck
       if not widget.inMember(bcv[1], {math.max(0, mg.windowPosition[1]), math.max(0, mg.windowPosition[2])})
-      or not widget.inMember(bcv[1], vec2.add(mg.windowPosition, mg.cfg.totalSize)) then findWindowPosition() end
+      or not widget.inMember(bcv[1], vec2.add(mg.windowPosition, mg.cfg.totalSize)) then moved = true findWindowPosition() end
     end
   end
   
   local wheelDir
-  if wheel.active then
-    local bp = mg.windowPosition
-    local tp = vec2.add(mg.windowPosition, {0, mg.cfg.totalSize[2] - 1})
+  if moved then
+    recreateWheelChild()
+  elseif wheel.active then
+    local bp = vec2.add(mg.windowPosition, {0, 0})
+    bp[2] = math.max(0, bp[2]) -- limit to screen
+    local tp = vec2.add(bp, {0, 72})
     local bottom = widget.inMember(wheel.target, bp)
     local top = widget.inMember(wheel.target, tp)
     if not bottom then
-      wheelDir = 1
+      if widget.inMember(wheel.over, bp) then -- check overflow
+        wheelDir = -1 -- scroll up
+      else
+        wheelDir = 1 -- scroll down
+      end
     elseif not top then
-      wheelDir = -1
+      wheelDir = -1 -- scroll up
     end
     if wheelDir then recreateWheelChild() end
   end

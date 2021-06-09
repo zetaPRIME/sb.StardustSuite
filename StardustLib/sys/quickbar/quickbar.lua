@@ -1,7 +1,7 @@
 --
 
 require "/scripts/util.lua"
-require "/sys/stardust/quickbar/conditions.lua"
+require "/sys/quickbar/conditions.lua"
 
 local actions = { }
 qbActions = actions -- alias in global for execs

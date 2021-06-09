@@ -24,7 +24,7 @@ require "/lib/stardust/itemutil.lua"
 require "/lib/stardust/playerext.lua"
 require "/lib/stardust/color.lua"
 
-require "/sys/stardust/quickbar/conditions.lua"
+require "/sys/quickbar/conditions.lua"
 
 -- modules
 require "/aetheri/interface/skilltree/tooltip.lua"

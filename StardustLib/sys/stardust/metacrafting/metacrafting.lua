@@ -1,7 +1,7 @@
 --
 require "/lib/stardust/itemutil.lua"
 
-require "/sys/stardust/quickbar/conditions.lua"
+require "/sys/quickbar/conditions.lua"
 
 local currentRecipe
 

@@ -1,7 +1,7 @@
 require "/lib/stardust/itemutil.lua"
 require "/lib/stardust/color.lua"
 
-require "/sys/stardust/quickbar/conditions.lua"
+require "/sys/quickbar/conditions.lua"
 
 require "/sys/stardust/skilltree/tooltip.lua"
 require "/sys/stardust/skilltree/calc.lua"

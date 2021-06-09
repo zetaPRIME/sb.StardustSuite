@@ -1,6 +1,6 @@
 -- metaGUI quickbar builder
 
-require "/sys/stardust/quickbar/conditions.lua"
+require "/sys/quickbar/conditions.lua"
 
 cfg = {
   style = "panel",

@@ -11,8 +11,10 @@
       "example" : "/metagui/example.ui", // addressed as "metagui:example"
       "settings" : "/sys/metagui/settings/settings.ui"
     } },
+    { "op" : "add", "path" : "/panes/quickbar", "value" : {
+      "quickbar" : "/sys/quickbar/build.lua"
+    } },
     { "op" : "add", "path" : "/panes/stardustlib", "value" : {
-      "quickbar" : "/sys/stardust/quickbar/build.lua",
       "cosplay" : "/sys/stardust/cosplay/cosplay.ui",
       "metacrafting" : "/sys/stardust/metacrafting/metacrafting.ui"
     } },

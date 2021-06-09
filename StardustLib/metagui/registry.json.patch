@@ -18,6 +18,6 @@
       "settings" : "/sys/stardust/ui/settings.ui"
     } },
     
-    { "op" : "add", "path" : "/settings/metagui", "value" : "" }
+    { "op" : "add", "path" : "/settings/metagui", "value" : "/sys/metagui/settings/module.lua" }
   ]
 ]

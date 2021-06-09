@@ -6,7 +6,7 @@
   "uniqueBy" : "path",
   "scripts" : [ "settings.lua" ],
   "children" : [
-    { "type" : "tabField", "layout" : "vertical", "noFocusFirstTab" : true,
+    { "type" : "tabField", "id" : "tabField", "layout" : "vertical", "noFocusFirstTab" : true,
       "bottomBar" : [ "spacer",
         { "type" : "button", "id" : "apply", "caption" : "Apply" },
         { "type" : "button", "id" : "cancel", "caption" : "Cancel" }

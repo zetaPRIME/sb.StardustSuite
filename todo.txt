@@ -12,6 +12,7 @@
         
         - tabField.noFocusFirstTab flag
     }
+    nuke old settings and change costume weight
     
     - tabField widget
     tabField docs
@@ -22,6 +23,7 @@
     clean up example.ui
     
     stardustlite
+    move quickbar into /sys/quickbar
     
     get Pulse Knuckles to a good usable state
     dynItemAnim: lights

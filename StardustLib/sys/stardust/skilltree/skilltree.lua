@@ -832,4 +832,15 @@ function skilltree.initUI()
       skilltree.scroll(vec2.mul(d, {-1, 1}))
     end
   end
+  
+  function w:isWheelInteractable() return true end
+  function w:onMouseWheelEvent(dir)
+    local amt = dir < 0 and 2 or 0.5
+    local mdiff = vec2.sub(self:relativeMousePosition(), vec2.mul(self.size, 0.5))
+    
+    -- set zoom, centered on cursor
+    skilltree.scrollTo(vec2.add(scrollPos, mdiff))
+    skilltree.setZoom(util.clamp(skilltree.zoom * amt, 0.25, 1))
+    skilltree.scrollTo(vec2.sub(scrollPos, mdiff))
+  end
 end

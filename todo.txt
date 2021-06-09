@@ -14,7 +14,7 @@
     unified settings
     stardustlite
     
-    scrollwheel zoom in skill tree
+    - scrollwheel zoom in skill tree
     
     get Pulse Knuckles to a good usable state
     dynItemAnim: lights

@@ -7,7 +7,7 @@
   - Returns whether the property is "true" if no value specified, otherwise a deep comparison
 
 #### metaGUI
-- **Scroll wheel support!** This includes smooth wheel scrolling for scrollAreas.
+- **Scroll wheel support!** This includes smooth wheel scrolling for scrollAreas and wheel zoom in skill trees.
   - Relevant widget functions: `isWheelInteractable()`, `onMouseWheelEvent(dir)`
 - New widget: `tabField`
 - `subscribeEvent` functions changed to include `self` parameter (oops)

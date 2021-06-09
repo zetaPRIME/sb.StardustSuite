@@ -789,6 +789,7 @@ function skilltree.initUI()
     skilltree.resetChanges()
   end)
   
+  local zooming = false
   function w:onMouseButtonEvent(btn, down)
     if down then
       if btn == 0 then
@@ -805,6 +806,7 @@ function skilltree.initUI()
       if btn == 2 and not self._dragged then -- right click without dragging
         sfx "zoom"
         metagui.startEvent(function()
+          zooming = true
           local z1 = skilltree.zoom
           local z2 = metagui.checkShift() and 0.25 or 0.5
           z2 = (z1 ~= z2) and z2 or 1.0
@@ -815,6 +817,7 @@ function skilltree.initUI()
             if p >= 1 then -- finish step
               -- round scroll position to integer
               skilltree.scrollTo {math.floor(0.5 + scrollPos[1]), math.floor(0.5 + scrollPos[2]) }
+              zooming = false
               return
             end
             coroutine.yield()
@@ -835,6 +838,7 @@ function skilltree.initUI()
   
   function w:isWheelInteractable() return true end
   function w:onMouseWheelEvent(dir)
+    if zooming then return end -- block wheel zoom during smooth zoom
     local amt = dir < 0 and 2 or 0.5
     local mdiff = vec2.sub(self:relativeMousePosition(), vec2.mul(self.size, 0.5))
     

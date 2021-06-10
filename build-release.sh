@@ -69,7 +69,7 @@ function pack {
     fi
     
     # gather info from metadata files
-    local md="./$1/_metadata"
+    local md="./_release/$1/_metadata"
     local title=$(jq -r '.friendlyName' $md)
     local cid=$(jq -r '.steamContentId' $md)
     local version=$(jq -r '.version' $md | sed "s/\\\"/''/g")

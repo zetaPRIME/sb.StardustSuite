@@ -2,6 +2,15 @@ Formerly known as Quickbar Mini.
 A vanilla-server-friendly subset of Stardust Core, including the Quickbar, metaGUI, the unified settings panel and selected pieces of library code.
 [b]You don't need to install this if you already have Stardust Core![/b]
 
+[h2]metaGUI[/h2]
+A custom UI system designed to make designing panes less of a pane and add a plethora of new features such as:
+- Unified theming engine with user-selectable styles
+- Universal settings panel - easily add any client-side configurables from your mods into one centralized control panel
+- Full layout engine that makes arranging your widgets a breeze
+- Full context menu support
+- Receive scroll wheel events in scripts (yes, it can be done!)
+Code and reference sheet can be found on [url=https://github.com/zetaPRIME/sb.StardustSuite/tree/master/StardustLib/sys/metagui]GitHub[/url].
+
 [h2]Quickbar[/h2]
 This mod replaces the Matter Manipulator button for quick access to various shortcuts.
 Other mods can easily add their own options to the Quickbar with a simple patch.
@@ -67,5 +76,5 @@ A few examples of mods that use the Quickbar:
   [/tr]
 [/table]
 
-Follow development and view changelogs here: 
+Follow development and view changelogs here:
 https://github.com/zetaPRIME/sb.StardustSuite

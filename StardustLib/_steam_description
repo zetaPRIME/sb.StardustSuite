@@ -1,15 +1,27 @@
 Formerly (and internally) known as StardustLib.
+System features and support code for the modded experience.
+[b]NOTE TO SERVER OWNERS:[/b] this mod contains a second .pak! Make sure this is loaded or unexpected behavior may occur!
 
-NOTE TO SERVER OWNERS: this mod contains a second .pak! make sure this is loaded or client crashes may occur!
+[h2]metaGUI[/h2]
+A custom UI system designed to make designing panes less of a pane and add a plethora of new features such as:
+- Unified theming engine with user-selectable styles
+- Universal settings panel - easily add any client-side configurables from your mods into one centralized control panel
+- Full layout engine that makes arranging your widgets a breeze
+- Full context menu support
+- Receive scroll wheel events in scripts (yes, it can be done!)
+Code and reference sheet can be found on [url=https://github.com/zetaPRIME/sb.StardustSuite/tree/master/StardustLib/sys/metagui]GitHub[/url].
 
-Library code and system features for the modded experience.
-This mod contains the Quickbar; you don't need QuickbarMini with it.
-This mod is a metaGUI provider (the primary one, in fact).
+[h2]Quickbar[/h2]
+This mod replaces the Matter Manipulator button for quick access to various shortcuts.
+Other mods can easily add their own options to the Quickbar with a simple patch.
+Documentation can be found on the old [url=https://github.com/Silverfeelin/Starbound-Quickbar-Mini/wiki]Quickbar Mini Wiki[/url].
 
-Other features:
+Note that this mod is [b]incompatible[/b] with [url=https://steamcommunity.com/sharedfiles/filedetails/?id=734627889]Manipulated UI[/url].
+
+[h2]Other features[/h2]
 - Costume system
 - Navigation panel extension (fuel gauge, toolbar; per species options)
 - Per-species intro cinematic system
 
-If you're a modder, follow development here: 
+Follow development and view changelogs here:
 https://github.com/zetaPRIME/sb.StardustSuite

@@ -5,6 +5,7 @@
   - [Layout](#layout)
   - [Panel](#panel)
   - [Scroll Area](#scroll-area)
+  - [Tab Field](#tab-field)
   - [Spacer](#spacer)
   - [Label](#label)
   - [Image](#image)
@@ -193,6 +194,34 @@ scrollArea:scrollBy(vec, suppressAnimation) -- Attempts to scroll contents by [v
 -- bars if suppressAnimation is false or omitted.
 scrollArea:scrollTo(pos, suppressAnimation, raw) -- Attempts to center viewport on [pos]. Shows scroll bars if
 -- suppressAnimation is false or omitted. If raw is specified, sets raw position instead of centering.
+```
+
+### Tab Field
+desc
+##### Attributes
+```js
+"layout" : "vertical", // Which direction the tabs run. "horizontal" is a bar across the top, "vertical" is a
+// sidebar down the left side.
+"tabWidth" : 80, // If using vertical layout, how wide the tabs are. (Horizontal tabs fit to contents.)
+"noFocusFirstTab" : false, // If true, prevents the first tab created from being automatically selected. Useful
+// for cases where tab contents are loaded on first viewing, such as the settings panel.
+"tabs" : [ // An array of tabs, formatted as follows:
+  "id" : "whatever", // Optional. Tab's unique identifier; if not specified, will be populated with a UUID.
+  "title" : "Example Tab", // The tab's displayed title.
+  "icon" : "blob.png", // The tab's icon; 16x16 or smaller.
+  "contents" : [ ], // The contents of the tab's connected page.
+]
+"bottomBar" : [ ], // Contents of an optional bar below the contents. Mostly useful for vertical tab layout.
+```
+##### Methods
+```lua
+tabField:newTab(parameters) -- Creates a new tab. Parameters are as in the "tabs" attribute. Returns a tab object.
+tab:select() -- Switches to tab.
+tab:setTitle(title, icon) -- Changes the tab's title and (optionally) icon.
+```
+##### Events
+```lua
+tabField:onTabChanged(tab, previous) -- Called on changing tabs.
 ```
 
 ### Spacer

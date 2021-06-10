@@ -86,9 +86,9 @@ table.sort(modSort, function(a, b) return a.weight < b.weight or (a.weight == b.
 for _, m in ipairs(modSort) do
   setAssetPath(m.scriptPath)
   for i, pg in ipairs(m.pages) do
-    local tab = tabField:newTab(m.id .. "." .. i, {
+    local tab = tabField:newTab{
       title = pg.title, icon = pg.icon,
-    })
+    }
     tab.page = pg
   end
 end

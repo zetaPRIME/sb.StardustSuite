@@ -1154,7 +1154,7 @@ end do -- tab field ------------------------------------------------------------
     
     self.tabs = { }
     for id, p in ipairs(param.tabs or { }) do
-      self:newTab(p.id or (""..id), p)
+      self:newTab(p)
     end
     --
   end
@@ -1196,11 +1196,11 @@ end do -- tab field ------------------------------------------------------------
     tf:pushEvent("tabChanged", self.tab, old)
     mg.startEvent(tf.onTabChanged, tf, self.tab, old)
   end
-  function widgets.tabField:newTab(id, param)
+  function widgets.tabField:newTab(param)
     local first = not self.tabScroll.children[1].children[1] -- check if first tab added
     
-    local tab = setmetatable({ parent = self, id = id }, tabMt)
-    self.tabs[id] = tab
+    local tab = setmetatable({ parent = self, id = param.id or sb.makeUuid() }, tabMt)
+    self.tabs[tab.id] = tab
     
     -- set up tab widget itself
     tab.tabWidget = self.tabScroll.children[1]:addChild { type = "listItem", sizes = {0, tabHeight}, expandMode = self.layout == "vertical" and {1, 0} or {0, 0}, padding = 0, buttonLike = true }

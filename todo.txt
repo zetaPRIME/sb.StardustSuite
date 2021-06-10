@@ -2,8 +2,8 @@
 
 > Beta v0.1.2 {
     
-    > stardustlite
-    clean up example.ui
+    - stardustlite
+    - clean up example.ui
     
     tabField docs
     ^ onTabChanged event

@@ -11,11 +11,11 @@
   "children" : [
     { "type" : "tabField", "layout" : "horizontal",
       "tabs" : [
-        { "title" : "Example 1",
+        { "title" : "UI Example",
           "contents" : [
             // color attribute: none (default, generally gray), accent (window accent color), color name(?) or hexcode
             { "type" : "button", "id" : "btn", "caption" : "This is a button." },
-            [ {"type":"label","inline":true,"text":"Stuff:","id":"inl"}, { "type" : "button", "caption" : "A row of buttons..." }, { "type" : "button", "caption" : "...in proper layout." }, [{"size":28}, {"type":"button","caption":"fixed!"}] ],
+            [ { "type" : "label", "inline" : true, "text" : "Stuff:", "id" : "inl" }, { "type" : "button", "caption" : "A row of buttons..." }, { "type" : "button", "caption" : "...in proper layout." }, [ { "size" : 28 }, { "type" : "button", "caption" : "fixed!" } ] ],
             { "type" : "scrollArea", "expandMode" : [1, 2], "id" : "SCRL", "children" : [
               { "type" : "button", "id" : "btn", "caption" : "This one has an ^accent;accent color^reset;.", "color" : "accent" },
               { "type" : "label", "id" : "DBG", "text" : "We also have ^accent;labels^reset;..." },
@@ -30,7 +30,7 @@
             [ { "type" : "button", "caption" : "It even supports layout spacers!", "id" : "btnSpacer" }, { "type" : "image", "file" : "/interface/beamuphover.png" }, { "type" : "itemSlot", "glyph" : "/interface/inventory/backingimagetrash.png", "item" : { "name" : "perfectlygenericitem", "count" : 1, "parameters" : { } } } ]
           ]
         },
-        { "title" : "Something else",
+        { "title" : "(empty tab)",
           "contents" : [
             
           ]

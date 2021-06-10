@@ -1,15 +1,12 @@
 -
 
-> Beta v0.1.2 {
-    
-    - stardustlite
-    - clean up example.ui
-    - tabField docs
-    
-} Beta v0.1.3 {
+> Beta v0.1.3 {
     get Pulse Knuckles to a good usable state
     dynItemAnim: lights
     (mention dynItemAnim in changelog)
+    
+    - hd (2x) assets (flag in frames file)
+    figure out how to flag non-ninepatches
     
 } big things to do by Milestone 2 {
     THREAT GENERATION SYSTEM {
@@ -24,6 +21,7 @@
     
     "Chroma" metaGUI theme
     theme options in settings pane
+    
     
     metaGUI-powered docs system
     ^ temporary asset root swap

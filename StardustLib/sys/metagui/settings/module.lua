@@ -2,7 +2,7 @@ local m = settings.module { weight = -10000 }
 
 
 do
-  local p = m:page { title = "UI Themes",
+  local p = m:page { title = "UI Themes", icon = "themes.png",
     contents = {
       { type = "panel", style = "concave", expandMode = {1, 2}, children = {
         { type = "scrollArea", id = "themeList", children = { { spacing = 1 } } }
@@ -58,4 +58,4 @@ do
     end
   end
 end
-local p2 = m:page { title = "I'm here too." }
+--local p2 = m:page { title = "StarTech:\nOnions" }

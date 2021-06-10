@@ -1178,7 +1178,7 @@ end do -- tab field ------------------------------------------------------------
   function tabProto:setTitle(txt, icon)
     self.titleWidget:setText(txt or tab.id)
     if icon ~= nil then
-      self.iconWidget:setImage(icon or nil)
+      self.iconWidget:setFile(icon or nil)
       self.iconWidget:setVisible(not not icon)
     end
   end

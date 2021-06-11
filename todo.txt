@@ -1,12 +1,18 @@
 -
 
+https://github.com/blixt/py-starbound/
+
 > Beta v0.1.3 {
+    quickbar settings pane
+    ^ autodismiss option
+    option to block autodismissal on quickbar actions
+    
+    
     get Pulse Knuckles to a good usable state
     dynItemAnim: lights
     (mention dynItemAnim in changelog)
     
-    - hd (2x) assets (flag in frames file)
-    figure out how to flag non-ninepatches
+    
     
 } big things to do by Milestone 2 {
     THREAT GENERATION SYSTEM {
@@ -22,6 +28,12 @@
     "Chroma" metaGUI theme
     theme options in settings pane
     
+    actual tab styling
+    
+    stock icon system w/ manifest so themes can override
+    - hd (2x) assets (flag in frames file)
+    figure out how to flag non-ninepatches
+    ^ non-ninepatch asset object; can pcall root.assetJson to check for frames file
     
     metaGUI-powered docs system
     ^ temporary asset root swap
@@ -126,7 +138,7 @@ the BIG IDEA UPDATE {
     }
 }
 
-for (maybe not) next update {
+old - for (maybe not) next update {
     ...
 } then {
     pulse rifle
@@ -219,12 +231,6 @@ some item transport for automation (and library to make use of input/output conf
 networked wire I/O ports
 
 metaGUI {
-    FU contrib checklist {
-        - some work on theme frame
-        - license
-        - primer
-        > test and send PR
-    }
     
     eventually {
         icon support for buttons
@@ -235,13 +241,6 @@ metaGUI {
         it's technically possible to use metatable shenanigans to have the pane script survive a f8 reload?
     }
     
-    widgets needed {
-        tab field! {
-            probably layout with a set of panels, attached to a scrollable area of basically dressed-up buttons
-            tabs on any edge or hidden (can be manually flipped through)
-            event onTabChanged
-        }
-    }
 }
 
 ipc lib {

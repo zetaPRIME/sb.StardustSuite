@@ -50,7 +50,11 @@ function pack {
     chmod +x ./_release/$1/_build.sh
     ./_release/$1/_build.sh
   fi
-  asset_packer ./_release/$1/ ./_release/$1.pak
+  local cfg="./pak.json"
+  if [ -f "./_release/$1/_pak.json" ] ; then
+    cfg="./_release/$1/_pak.json"
+  fi
+  asset_packer -c "$cfg" "./_release/$1/" "./_release/$1.pak"
   if [ ! -z "$_steamupload" ] ; then
     # skip if set to not upload to steam
     if [ -f "./$1/_no_steam" ] ; then

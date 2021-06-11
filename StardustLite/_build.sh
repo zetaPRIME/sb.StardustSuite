@@ -11,6 +11,12 @@ function deploy { # deploy target files from Stardust Core
   cp -R "../../StardustLib/$1" "./$1"
 }
 
+function retouch { # attempt to force asset_packer to find a file after
+  cp -R "./$1" "./$1 -"
+  rm -rf "./$1"
+  mv "./$1 -" "./$1"
+}
+
 deploy interface.config.patch
 deploy panes.config.patch
 

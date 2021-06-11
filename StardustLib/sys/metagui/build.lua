@@ -46,6 +46,7 @@ if type(uicfg) == "string" then
   end
 end
 if type(uicfg) ~= "table" then
+  sb.logError("metaGUI: pane not found")
   return nil -- error?
 end
 

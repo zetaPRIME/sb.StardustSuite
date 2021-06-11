@@ -424,11 +424,11 @@ function init() ----------------------------------------------------------------
         end)
       end
     end
-    wheel.block() -- start blocked so it doesn't misfire the first few frames
+    --wheel.block() -- start blocked so it doesn't misfire the first few frames
     local size = mg.cfg.totalSize
     wheel.proto = {
       type = "scrollArea", position = {0, 0}, size = size, verticalScroll = false, children = {
-        --fill = { type = "widget", position = {0, 0}, size = size },
+        fill = { type = "widget", position = {0, 0}, {size[1], 1000} },
         target = { type = "widget", position = wheel.offset, size = {size[1], 72} },
         over = { type = "widget", position = wheel.offset, size = {size[1], 1000} },
       }
@@ -568,8 +568,11 @@ function update()
   elseif wheel.active then
     local pt = vec2.add(mg.windowPosition, wheel.offset)
     pt[1] = math.max(0, pt[1]) pt[2] = math.max(0, pt[2]) -- limit to screen
+    local bpf = widget.inMember("_wheel.w", pt)
     local pf = pt[2] < 0 or widget.inMember(wheel.target, pt)
-    if not pf then
+    if not bpf then
+      --recreateWheelChild()
+    elseif not pf then
       if widget.inMember(wheel.over, pt) then -- check overflow
         wheelDir = -1 -- scroll up
       else

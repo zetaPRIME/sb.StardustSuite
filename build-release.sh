@@ -55,6 +55,7 @@ function pack {
     cfg="./_release/$1/_pak.json"
   fi
   asset_packer -c "$cfg" "./_release/$1/" "./_release/$1.pak"
+  python paktify.py "./_release/$1.pak"
   if [ ! -z "$_steamupload" ] ; then
     # skip if set to not upload to steam
     if [ -f "./$1/_no_steam" ] ; then

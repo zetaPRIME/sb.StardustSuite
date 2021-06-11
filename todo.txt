@@ -1,7 +1,5 @@
 -
 
-https://github.com/blixt/py-starbound/
-
 > Beta v0.1.3 {
     quickbar settings pane
     ^ autodismiss option

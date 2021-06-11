@@ -1,8 +1,9 @@
 {
   "extensionOrdering" : [
-    "json"
+    
   ],
   "globalIgnore" : [
-    
+    ".*\\.xcf$", // exclude GIMP workfiles
+    ".*\\.sh$" // and shell scripts
   ]
 }

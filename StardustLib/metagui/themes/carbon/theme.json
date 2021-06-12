@@ -13,9 +13,8 @@
         }
     },
     
+    "useTabStyling" : true,
     "tabsNoFocusFrame" : true,
     
-    
-    
-    "" : ""
+    "" : "" // eof
 }

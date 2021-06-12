@@ -37,13 +37,13 @@ function tdef.drawFrame()
 end
 
 function tdef.drawPanel(w)
-  if w.tabStyle and not theme.noTabStyling then return theme.drawTabPanel(w) end
+  if w.tabStyle and theme.useTabStyling then return theme.drawTabPanel(w) end
   local c = widget.bindCanvas(w.backingWidget)
   c:clear() assets.panel:drawToCanvas(c, w.style or "convex")
 end
 
 function tdef.drawListItem(w)
-  if w.tabStyle and not theme.noTabStyling then return theme.drawTab(w) end
+  if w.tabStyle and theme.useTabStyling then return theme.drawTab(w) end
   local c = widget.bindCanvas(w.backingWidget)
   c:clear() local r = rect.withSize({0, 0}, c:size())
   if w.selected then -- highlight in accent

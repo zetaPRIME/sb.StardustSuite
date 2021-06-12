@@ -173,7 +173,7 @@ function theme.drawFrame()
 end
 
 function theme.drawPanel(w)
-  if w.tabStyle and not theme.noTabStyling then return theme.drawTabPanel(w) end
+  if w.tabStyle and theme.useTabStyling then return theme.drawTabPanel(w) end
   local c = widget.bindCanvas(w.backingWidget)
   c:clear() assets.panel:drawToCanvas(c, (w.style or "convex") .. paletteFor "accent")
 end

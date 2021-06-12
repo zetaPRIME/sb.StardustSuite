@@ -154,7 +154,10 @@ widget:findParent(type) -- Find most immediate parent of a specific type.
 
 widget:subscribeEvent(name, function) -- Subscribe to a named event on behalf of a widget.
 widget:pushEvent(name, ...) -- Push event to widget with given parameters.
+-- Checks self first, then each child. If own event gives a "truthy" value, immediately returns it;
+-- if a child event gives one, it only short-circuits if it's nonboolean.
 widget:broadcast(name, ...) -- Push event to widget's parent (and likely siblings).
+widget:wideBroadcast(level, name, ...) -- Same as broadcast, but from specified number of levels up.
 -- Subscribed events propagate to children if not caught (subscription exists and returns true).
 
 -- (more in core.lua, if you want to create your own widget types)
@@ -294,10 +297,18 @@ iconButton:setImage(idle, hover, press) -- Sets the button's icon drawables.
 
 ### Check Box
 A check box. Uses the same `onClick` event as the button types.
+##### Attributes
+```js
+"checked" : true, // Pre-checked if specified.
+"radioGroup" : "mode", // If specified, widget becomes a radio button grouped with others of its group.
+"value" : 23, // Any data type. Used by radio buttons.
+```
 ##### Methods
 ```lua
 checkBox:setChecked(b)
 local bool = checkBox.checked
+checkBox:getGroupChecked() -- If widget is a radio button, returns the checked widget of its group.
+checkBox:getGroupValue() -- Same as above, except returns the widget's value attribute.
 ```
 
 ### Text Box

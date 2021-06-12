@@ -499,9 +499,25 @@ end do -- checkbox -------------------------------------------------------------
     checked = false,
   })
   
+  local broadcastLevel = 2
+  local hRadioFind = { } -- empty table as private event handle
+  
   function widgets.checkBox:init(base, param)
     self.state = "idle"
     self.backingWidget = mkwidget(base, { type = "canvas" })
+    self.checked = param.checked
+    self.radioGroup = param.radioGroup
+    self.value = param.value
+    
+    self:subscribeEvent("radioButtonChecked", function(self, btn)
+      if btn ~= self and btn.radioGroup == self.radioGroup then
+        self.checked = false
+        self:queueRedraw()
+      end
+    end)
+    self:subscribeEvent(hRadioFind, function(self, group)
+      if self.radioGroup == group and self.checked then return  self end
+    end)
   end
   
   function widgets.checkBox:preferredSize() return {12, 12} end
@@ -521,7 +537,12 @@ end do -- checkbox -------------------------------------------------------------
         theme.onCheckBoxClick(self)
       elseif self.state == "press" then
         self.state = "hover"
-        self.checked = not self.checked
+        if self.radioGroup and not self.checked then
+          self.checked = true
+          self:wideBroadcast(broadcastLevel, "radioButtonChecked", self)
+        else
+          self.checked = not self.checked
+        end
         self:releaseMouse()
         self:queueRedraw()
         mg.startEvent(self.onClick, self)
@@ -531,8 +552,24 @@ end do -- checkbox -------------------------------------------------------------
   end
   
   function widgets.checkBox:setChecked(b)
+    if b and self.radioGroup and not self.checked then
+      self.checked = true -- set before event
+      self:wideBroadcast(broadcastLevel, "radioButtonChecked", self)
+    end
     self.checked = b
     self:queueRedraw()
+  end
+  
+  function widgets.checkBox:getGroupChecked()
+    if not self.radioGroup then return nil end
+    if self.checked then return self end
+    return self:wideBroadcast(broadcastLevel, hRadioFind, self.radioGroup)
+  end
+  
+  function widgets.checkBox:getGroupValue()
+    local c = self:getGroupChecked()
+    if c then return c.value end
+    return nil -- explicit nil
   end
   --
 end do -- label -------------------------------------------------------------------------------------------------------------------------------------

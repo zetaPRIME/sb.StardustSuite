@@ -219,12 +219,26 @@ end
 function widgetBase:pushEvent(ev, ...)
   if self.__event then
     local e = self.__event[ev]
-    if e and e(self, ...) then return nil end -- return true to "catch"
+    if e then
+      local ret = {e(self, ...)}
+      if ret[1] then return table.unpack(ret) end -- return a truthy value to "catch"
+    end
   end
   -- else pass to children
-  for _,c in pairs(self.children or { }) do c:pushEvent(ev, ...) end
+  for _,c in pairs(self.children or { }) do
+    local ret = {c:pushEvent(ev, ...)}
+    if ret[1] and ret[1] ~= true then return table.unpack(ret) end -- only nonboolean values short-circuit!
+  end
 end
-function widgetBase:broadcast(ev, ...) self.parent:pushEvent(ev, ...) end -- just a quick shortcut
+function widgetBase:broadcast(ev, ...) return self.parent:pushEvent(ev, ...) end -- just a quick shortcut
+function widgetBase:wideBroadcast(levels, ev, ...) -- broadcast up a number of levels
+  local w = self
+  for i = 1, levels do
+    if not w.parent then break end
+    w = w.parent
+  end
+  return w:pushEvent(ev, ...)
+end
 
 module "widgets"
 

@@ -2,6 +2,9 @@
 
 
 ### Stardust Core
+- General settings tab
+  - Toggle for whether or not to automatically dismiss the Quickbar when selecting an item
+  - Scrolling modes: wheel only, fling only or both
 - `blockAutoDismiss` flag on quickbar items
 
 #### metaGUI

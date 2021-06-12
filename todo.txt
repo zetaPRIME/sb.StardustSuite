@@ -1,9 +1,16 @@
 -
 
 > Beta v0.1.3 {
-    quickbar settings pane
-    ^ autodismiss option
-    - option to block autodismissal on quickbar actions
+    
+    settings pane {
+        - quickbar autodismiss option
+        - scrolling setting (wheel, fling, both)
+    }
+    
+    - radioGroup on checkbox
+    actual theme styling for radio buttons
+    
+    tab visible attribute
     
 } content update {
     

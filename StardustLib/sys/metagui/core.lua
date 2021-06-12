@@ -73,6 +73,29 @@ local lastMouseOver
 local mouseMap = setmetatable({ }, { __mode = 'v' })
 local scriptUpdate, scriptUninit = { }, { }
 
+-- define event queue before widgets
+local eventQueue = { }
+local function runEventQueue()
+  local next = { }
+  for _, v in pairs(eventQueue) do
+    if coroutine.status(v) ~= "dead" then -- precheck; coroutine may have finished outside via IPC
+      local f, err = coroutine.resume(v)
+      if coroutine.status(v) ~= "dead" then table.insert(next, v) -- execute; insert in next-frame queue if still running
+      elseif not f then sb.logError(err) end
+    end
+  end
+  eventQueue = next
+  theme.update()
+  for _, f in pairs(scriptUpdate) do f() end
+end
+function mg.startEvent(func, ...)
+  local c = coroutine.create(func)
+  local f, err = coroutine.resume(c, ...)
+  if coroutine.status(c) ~= "dead" then table.insert(eventQueue, c)
+  elseif not f then sb.logError(err) end
+  return c -- might as well
+end
+
 -- and widget stuff
 mg.widgetTypes = { }
 mg.widgetBase = {
@@ -494,28 +517,6 @@ function uninit()
   for _, f in pairs(scriptUninit) do f() end
   if mg.ipc.uniqueByPath and mg.cfg.configPath then mg.ipc.uniqueByPath[mg.cfg.configPath] = nil end
   if mg.cfg.isContainer then mg.ipc.openContainerProxy = nil end
-end
-
-local eventQueue = { }
-local function runEventQueue()
-  local next = { }
-  for _, v in pairs(eventQueue) do
-    if coroutine.status(v) ~= "dead" then -- precheck; coroutine may have finished outside via IPC
-      local f, err = coroutine.resume(v)
-      if coroutine.status(v) ~= "dead" then table.insert(next, v) -- execute; insert in next-frame queue if still running
-      elseif not f then sb.logError(err) end
-    end
-  end
-  eventQueue = next
-  theme.update()
-  for _, f in pairs(scriptUpdate) do f() end
-end
-function mg.startEvent(func, ...)
-  local c = coroutine.create(func)
-  local f, err = coroutine.resume(c, ...)
-  if coroutine.status(c) ~= "dead" then table.insert(eventQueue, c)
-  elseif not f then sb.logError(err) end
-  return c -- might as well
 end
 
 local function findWindowPosition()

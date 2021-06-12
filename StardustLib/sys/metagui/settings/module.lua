@@ -1,4 +1,10 @@
+local mg = metagui
 local m = settings.module { weight = -10000 }
+
+local function default(v, d)
+  if v == nil then return d end
+  return v
+end
 
 
 do
@@ -58,4 +64,36 @@ do
     end
   end
 end
---local p2 = m:page { title = "StarTech:\nOnions" }
+do
+  local p = m:page { title = "General", icon = "settings.icon.png",
+    contents = {
+      { { type = "checkBox", id = "quickbarAutoDismiss", checked = default(mg.settings.quickbarAutoDismiss, true) }, { type = "label", text = "Dismiss Quickbar on selection" } },
+      8, -- spacer
+      { -- sidebars
+        { -- left
+          { type = "panel", style = "convex", children = {
+            { type = "label", text = "Scrolling mode", inline = true },
+              { { type = "checkBox", id = "scrollWF", radioGroup = "scrollMode", value = {true, true} }, { type = "label", text = "Wheel & Fling" } },
+              { { type = "checkBox", id = "scrollW", radioGroup = "scrollMode", value = {true, false} }, { type = "label", text = "Wheel only" } },
+              { { type = "checkBox", id = "scrollF", radioGroup = "scrollMode", value = {false, true} }, { type = "label", text = "Fling only" } },
+          } },
+        },
+        {"spacer"}, -- right (blank for now)
+      }
+    }
+  }
+  
+  function p:init()
+    -- load scroll mode
+    local sm = mg.settings.scrollMode or {true, true}
+    if sm[1] and not sm[2] then p.scrollW:setChecked(true)
+    elseif sm[2] and not sm[1] then p.scrollF:setChecked(true)
+    else p.scrollWF:setChecked(true) end -- done like this so "both" is selected if neither flag is set
+  end
+  
+  function p:save()
+    mg.settings.quickbarAutoDismiss = p.quickbarAutoDismiss.checked
+    mg.settings.scrollMode = p.scrollWF:getGroupValue()
+  end
+  
+end

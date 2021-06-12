@@ -219,6 +219,13 @@ end do -- scroll area ----------------------------------------------------------
     thumbScrolling = true,
   })
   
+  local scrollMode = { }
+  mg.startEvent(function()
+    coroutine.yield() -- queue
+    scrollMode = mg.settings.scrollMode or {true, true}
+    if not scrollMode[1] and not scrollMode[2] then scrollMode = {true, true} end -- force both if both disabled
+  end)
+  
   local sizeMod = {0, 0}
   local scrollFriction = 0.025
   local scrollVelocityThreshold = 0.25
@@ -281,9 +288,9 @@ end do -- scroll area ----------------------------------------------------------
     (self.scrollDirections[2] ~= 0 and self.children[1].size[2] > self.size[2]) or
     (self.scrollDirections[1] ~= 0 and self.children[1].size[1] > self.size[1])
   end
-  widgets.scrollArea.isWheelInteractable = widgets.scrollArea.isMouseInteractable -- same conditions
+  function widgets.scrollArea:isWheelInteractable() return scrollMode[1] and self:isMouseInteractable() end
   function widgets.scrollArea:onMouseButtonEvent(btn, down)
-    if down and not self:hasMouse() then
+    if down and not self:hasMouse() and scrollMode[2] then
       if self._wheelControl then self._wheelControl.cancel = true end -- cancel wheel scrolling
       self.velocity = {0, 0}
       self:captureMouse(btn)
@@ -311,7 +318,7 @@ end do -- scroll area ----------------------------------------------------------
     mg.startEvent(evWheel, self)
     return true
   end
-  function widgets.scrollArea:canPassMouseCapture() return self:isMouseInteractable() end
+  function widgets.scrollArea:canPassMouseCapture() return self:isMouseInteractable() and scrollMode[2] end
   function widgets.scrollArea:onPassedMouseCapture(point) self.velocity = {0, 0} self:scrollBy(vec2.sub(mg.mousePosition, point)) end
   function widgets.scrollArea:onCaptureMouseMove(delta)
     if self.thumbScrolling and self:mouseCaptureButton() == 1 then -- middle click, "thumb mode"

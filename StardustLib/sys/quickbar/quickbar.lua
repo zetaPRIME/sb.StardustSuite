@@ -8,7 +8,12 @@ qbActions = actions -- alias in global for execs
 local function nullfunc() end
 local function action(id, ...) return (actions[id] or nullfunc)(...) end
 
-local autoDismiss = true -- have a default
+local function default(v, d)
+  if v == nil then return d end
+  return v
+end
+
+local autoDismiss = default(metagui.settings.quickbarAutoDismiss, true)
 
 -------------
 -- actions --

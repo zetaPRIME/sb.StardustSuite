@@ -10,7 +10,7 @@
     - radioGroup on checkbox
     actual theme styling for radio buttons
     
-    tab visible attribute
+    - tab visible attribute
     
 } content update {
     

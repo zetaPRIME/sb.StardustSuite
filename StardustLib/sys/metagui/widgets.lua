@@ -1226,6 +1226,9 @@ end do -- tab field ------------------------------------------------------------
       self.iconWidget:setVisible(not not icon)
     end
   end
+  function tabProto:setVisible(b)
+    self.tabWidget:setVisible(b)
+  end
   function tabProto:select()
     self.tabWidget:select()
   end
@@ -1247,7 +1250,7 @@ end do -- tab field ------------------------------------------------------------
     self.tabs[tab.id] = tab
     
     -- set up tab widget itself
-    tab.tabWidget = self.tabScroll.children[1]:addChild { type = "listItem", sizes = {0, tabHeight}, expandMode = self.layout == "vertical" and {1, 0} or {0, 0}, padding = 0, buttonLike = true }
+    tab.tabWidget = self.tabScroll.children[1]:addChild { type = "listItem", sizes = {0, tabHeight}, expandMode = self.layout == "vertical" and {1, 0} or {0, 0}, padding = 0, buttonLike = true, visible = param.visible }
     tab.tabWidget.children[1]:addChild { type = "spacer", size = {0, tabHeight} } -- manual padding
     tab.iconWidget = tab.tabWidget.children[1]:addChild { type = "image", size = {tabHeight, tabHeight}, visible = false }
     tab.titleWidget = tab.tabWidget.children[1]:addChild { type = "label", inline = true }

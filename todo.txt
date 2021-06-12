@@ -11,6 +11,7 @@
     - actual theme styling for radio buttons
     
     - tab visible attribute
+    - actual tab styling
     
 } content update {
     
@@ -33,8 +34,6 @@
     
     "Chroma" metaGUI theme
     theme options in settings pane
-    
-    actual tab styling
     
     stock icon system w/ manifest so themes can override
     - hd (2x) assets (flag in frames file)

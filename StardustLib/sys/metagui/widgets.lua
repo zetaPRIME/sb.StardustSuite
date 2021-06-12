@@ -1228,6 +1228,10 @@ end do -- tab field ------------------------------------------------------------
       self.iconWidget:setVisible(not not icon)
     end
   end
+  function tabProto:setColor(c)
+    self.tabWidget.color = c
+    self.tabWidget:queueRedraw()
+  end
   function tabProto:setVisible(b)
     self.tabWidget:setVisible(b)
   end
@@ -1257,7 +1261,8 @@ end do -- tab field ------------------------------------------------------------
     tab.iconWidget = tab.tabWidget.children[1]:addChild { type = "image", size = {tabHeight, tabHeight}, visible = false }
     tab.titleWidget = tab.tabWidget.children[1]:addChild { type = "label", inline = true }
     tab.tabWidget.children[1]:addChild { type = "spacer", size = {0, tabHeight} } -- manual padding
-    tab.tabWidget.tabStyle = layout -- set style var
+    tab.tabWidget.tabStyle = self.layout -- set style var
+    tab.tabWidget.color = param.color
     
     -- populate title and contents
     tab:setTitle(param.title, param.icon)

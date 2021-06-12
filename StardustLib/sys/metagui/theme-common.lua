@@ -10,6 +10,8 @@ theme.assets = { -- default assets
   button = mg.ninePatch "button",
   scrollBar = mg.ninePatch "scrollBar",
   textBox = mg.ninePatch "textBox",
+  tabPanel = mg.ninePatch "tabPanel",
+  tab = mg.ninePatch "tab",
   
   checkBox = mg.asset "checkBox.png",
   radioButton = mg.asset "radioButton.png",
@@ -35,11 +37,13 @@ function tdef.drawFrame()
 end
 
 function tdef.drawPanel(w)
+  if w.tabStyle and not theme.noTabStyling then return theme.drawTabPanel(w) end
   local c = widget.bindCanvas(w.backingWidget)
   c:clear() assets.panel:drawToCanvas(c, w.style or "convex")
 end
 
 function tdef.drawListItem(w)
+  if w.tabStyle and not theme.noTabStyling then return theme.drawTab(w) end
   local c = widget.bindCanvas(w.backingWidget)
   c:clear() local r = rect.withSize({0, 0}, c:size())
   if w.selected then -- highlight in accent
@@ -50,6 +54,26 @@ function tdef.drawListItem(w)
     if w.hover then
       c:drawRect(r, "#ffffff1f") -- slight highlight
     end
+  end
+end
+
+function tdef.drawTabPanel(w)
+  local c = widget.bindCanvas(w.backingWidget)
+  c:clear() assets.tabPanel:drawToCanvas(c, w.tabStyle or "horizontal")
+end
+
+function tdef.drawTab(w)
+  local c = widget.bindCanvas(w.backingWidget)
+  c:clear()
+  local state
+  if w.selected and not theme.tabsNoFocusFrame then state = "focus"
+  elseif w.hover then state = "hover"
+  else state = "idle" end
+  state = w.tabStyle .. "." .. state
+  
+  assets.tab:drawToCanvas(c, state)
+  if w.selected then
+    assets.tab:drawToCanvas(c, w.tabStyle .. ".accent?multiply=" .. mg.getColor(w.color or "accent"))
   end
 end
 

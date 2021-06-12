@@ -30,7 +30,7 @@
             [ { "type" : "button", "caption" : "It even supports layout spacers!", "id" : "btnSpacer" }, { "type" : "image", "file" : "/interface/beamuphover.png" }, { "type" : "itemSlot", "glyph" : "/interface/inventory/backingimagetrash.png", "item" : { "name" : "perfectlygenericitem", "count" : 1, "parameters" : { } } } ]
           ]
         },
-        { "title" : "(empty tab)",
+        { "title" : "(empty tab)", "color" : "7f7fff",
           "contents" : [
             
           ]

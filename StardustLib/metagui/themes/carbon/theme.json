@@ -11,5 +11,11 @@
             "panel" : [ 3, 3, 3, 3 ],
             "contextMenu" : [2, 2, 2, 2]
         }
-    }
+    },
+    
+    "tabsNoFocusFrame" : true,
+    
+    
+    
+    "" : ""
 }

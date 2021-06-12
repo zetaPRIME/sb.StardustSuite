@@ -213,6 +213,7 @@ desc
   "title" : "Example Tab", // The tab's displayed title.
   "icon" : "blob.png", // The tab's icon; 16x16 or smaller.
   "visible" : true, // Whether the tab widget itself is visible. Same rules as on widgets.
+  "color" : "ff00ff", // The accent color of the tab.
   "contents" : [ ], // The contents of the tab's connected page.
 ]
 "bottomBar" : [ ], // Contents of an optional bar below the contents. Mostly useful for vertical tab layout.
@@ -222,6 +223,7 @@ desc
 tabField:newTab(parameters) -- Creates a new tab. Parameters are as in the "tabs" attribute. Returns a tab object.
 tab:select() -- Switches to tab.
 tab:setTitle(title, icon) -- Changes the tab's title and (optionally) icon.
+tab:setColor(color) -- Changes the tab's accent color.
 tab:setVisible(bool)
 ```
 ##### Events

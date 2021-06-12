@@ -59,7 +59,7 @@ end
 
 function tdef.drawTabPanel(w)
   local c = widget.bindCanvas(w.backingWidget)
-  c:clear() assets.tabPanel:drawToCanvas(c, w.tabStyle or "horizontal")
+  c:clear() assets.tabPanel:drawToCanvas(c, w.tabStyle)
 end
 
 function tdef.drawTab(w)

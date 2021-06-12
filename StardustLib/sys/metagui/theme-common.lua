@@ -12,6 +12,7 @@ theme.assets = { -- default assets
   textBox = mg.ninePatch "textBox",
   
   checkBox = mg.asset "checkBox.png",
+  radioButton = mg.asset "radioButton.png",
   
   itemSlot = mg.asset "itemSlot.png",
   itemRarity = mg.asset "itemRarity.png",
@@ -85,7 +86,8 @@ function tdef.drawCheckBox(w)
   if w.state == "press" then state = ":toggle"
   else state = w.checked and ":checked" or ":idle" end
   
-  c:drawImageDrawable(assets.checkBox .. state, vec2.mul(c:size(), 0.5), 1.0)
+  local img = w.radioGroup and assets.radioButton or assets.checkBox
+  c:drawImageDrawable(img .. state, vec2.mul(c:size(), 0.5), 1.0)
 end
 
 function tdef.onButtonHover(w)

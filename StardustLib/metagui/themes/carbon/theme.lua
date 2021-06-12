@@ -40,6 +40,7 @@ function theme.drawCheckBox(w)
   
   local cstate = ":check?multiply=" .. mg.getColor("accent"):sub(1, 6) .. (w.state == "press" and "7f" or (w.checked and "ff" or "00"))
   
-  c:drawImageDrawable(assets.checkBox .. state, vec2.mul(c:size(), 0.5), 1.0)
-  c:drawImageDrawable(assets.checkBox .. cstate, vec2.mul(c:size(), 0.5), 1.0)
+  local img = w.radioGroup and assets.radioButton or assets.checkBox
+  c:drawImageDrawable(img .. state, vec2.mul(c:size(), 0.5), 1.0)
+  c:drawImageDrawable(img .. cstate, vec2.mul(c:size(), 0.5), 1.0)
 end

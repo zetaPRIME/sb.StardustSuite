@@ -46,7 +46,7 @@ local function menuClick(w, btn)
   local i = w.data
   if i.condition and not condition(table.unpack(i.condition)) then return nil end -- recheck condition on attempt
   action(table.unpack(i.action))
-  if autoDismiss or i.dismissQuickbar then pane.dismiss() end
+  if (autoDismiss and not i.blockAutoDismiss) or i.dismissQuickbar then pane.dismiss() end
 end
 
 for _, w in pairs(itemField.children[1].children) do

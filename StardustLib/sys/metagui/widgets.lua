@@ -544,9 +544,11 @@ end do -- checkbox -------------------------------------------------------------
         theme.onCheckBoxClick(self)
       elseif self.state == "press" then
         self.state = "hover"
-        if self.radioGroup and not self.checked then
-          self.checked = true
-          self:wideBroadcast(broadcastLevel, "radioButtonChecked", self)
+        if self.radioGroup then
+          if not self.checked then
+            self.checked = true
+            self:wideBroadcast(broadcastLevel, "radioButtonChecked", self)
+          end
         else
           self.checked = not self.checked
         end

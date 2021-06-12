@@ -194,7 +194,8 @@ function theme.drawCheckBox(w)
   else state = w.checked and ":checked" or ":idle" end
   state = state .. paletteFor("accent")
   
-  c:drawImageDrawable(assets.checkBox .. state, vec2.mul(c:size(), 0.5), 1.0)
+  local img = w.radioGroup and assets.radioButton or assets.checkBox
+  c:drawImageDrawable(img .. state, vec2.mul(c:size(), 0.5), 1.0)
 end
 
 function theme.drawTextBox(w)

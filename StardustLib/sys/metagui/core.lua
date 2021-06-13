@@ -37,8 +37,11 @@ function mg.asset(path)
   if ext == "png" and not root.nonEmptyRegion(op) then
     if theme and theme.fallback then
       for _, t in ipairs(theme.fallback) do
-        local p = table.concat {"/metagui/themes/", t, "/", path}
-        if root.nonEmptyRegion(p) then return p end
+        local tp = mg.registry.themes[t]
+        if tp then
+          local p = tp .. path
+          if root.nonEmptyRegion(p) then return p end
+        end
       end
     end
     return MG_FALLBACK_PATH .. path
@@ -417,6 +420,7 @@ function init() ----------------------------------------------------------------
   if widget.getData("_tracker") then return pane.dismiss() end
   widget.setData("_tracker", "open")
   
+  mg.registry = root.assetJson("/metagui/registry.json")
   mg.cfg = config.getParameter("___") -- window config
   mg.inputData = mg.cfg.inputData -- alias
   

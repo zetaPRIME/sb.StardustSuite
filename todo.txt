@@ -13,6 +13,8 @@
     - tab visible attribute
     - actual tab styling
     
+    - fallback asset folders (able to use assets from other themes; needed for FU theme going forward)
+    
 } content update {
     
     get Pulse Knuckles to a good usable state

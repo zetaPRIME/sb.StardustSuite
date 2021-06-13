@@ -33,8 +33,17 @@ function mg.asset(path)
   if not path then return nil end
   if path:sub(1, 1) == '/' then return path end
   local ext = path:match('^.*%.(.-)$')
-  if ext == "png" and not root.nonEmptyRegion(mg.cfg.themePath .. path) then return MG_FALLBACK_PATH .. path end
-  return mg.cfg.themePath .. path
+  local op = mg.cfg.themePath .. path
+  if ext == "png" and not root.nonEmptyRegion(op) then
+    if theme and theme.fallback then
+      for _, t in ipairs(theme.fallback) do
+        local p = table.concat {"/metagui/themes/", t, "/", path}
+        if root.nonEmptyRegion(p) then return p end
+      end
+    end
+    return MG_FALLBACK_PATH .. path
+  end
+  return op
 end
 
 do -- encapsulate

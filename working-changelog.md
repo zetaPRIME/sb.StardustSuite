@@ -15,3 +15,4 @@
 - Tabs now have `visible` and `color` attributes and matching `setVisible()` and `setColor()` methods
 - `isHD` flag for ninepatch assets (renders at double resolution)
 - Scrollwheel fixes (phantom scrolling, brokenness when window is partially offscreen)
+- Themes now have the option to pull fallback assets from other themes

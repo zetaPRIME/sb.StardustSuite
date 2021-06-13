@@ -1,9 +1,9 @@
 {
-  "version" : "Beta v0.1.2",
+  "version" : "Beta v0.1.3",
   "friendlyName" : "Stardust Core",
   "name" : "StardustLib",
   "author" : "Zia Satazaki",
-  "description" : "Library code and system features for the modded experience.",
+  "description" : "System features and libraries for the modded experience.",
   "link" : "steam://url/CommunityFilePage/764887546",
   "steamContentId" : "764887546",
   "priority" : -1000,

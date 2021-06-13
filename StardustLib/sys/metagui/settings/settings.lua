@@ -70,7 +70,7 @@ end
 
 -- begin init
 
-local registry = root.assetJson("/metagui/registry.json")
+local registry = mg.registry
 _ENV.registry = registry -- leave this here for modules
 
 -- load in module scripts

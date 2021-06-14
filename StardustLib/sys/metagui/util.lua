@@ -74,15 +74,19 @@ function mg.itemMaxStack(item)
   return cfg.parameters.maxStack or cfg.config.maxStack or root.assetJson("/items/defaultParameters.config:defaultMaxStack")
 end
 
+function mg.fastCheckShift() -- check the fast way through tech hooks, fail if not available
+  local p = world.sendEntityMessage(player.id(), "stardustlib:getTechInput")
+  local r = p:succeeded() and p:result()
+  if r then return r.key.sprint or false end
+end
+
 function mg.checkShift()
   local cr = coroutine.running()
   if not cr then sb.logWarn("metagui.checkShift() called in main thread!") return nil end
   
-  do -- first, try the quick way through tech hooks
-    local p = world.sendEntityMessage(player.id(), "stardustlib:getTechInput")
-    local r = p:succeeded() and p:result()
-    if r then return r.key.sprint or false end
-  end
+  -- try the fast route first
+  local r = mg.fastCheckShift()
+  if r ~= nil then return r end
   
   -- if no quick way is available, then fall back on the activeitem hack
   if player.isLounging() then return false end -- items disabled while lounging

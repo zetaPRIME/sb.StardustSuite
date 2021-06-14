@@ -273,13 +273,41 @@ end do -- scroll area ----------------------------------------------------------
     local abort = false
     local sp = self:scrollPosition()
     for i = 1, wheelScrollTicks do
-      if self.deleted or control.cancel then abort = true break end -- abort
+      if self.deleted or control.cancel or not self.wheelTarget then abort = true break end -- abort
       self:scrollTo(vec2.lerp((i / wheelScrollTicks)^0.5, sp, self.wheelTarget), false, true)
       coroutine.yield()
     end
     if not abort then
       self.wheelTarget = nil
     end
+  end
+  
+  local sdActive, sdVal
+  local function scrollDirCheck()
+    -- try the fast route first
+    local r = mg.fastCheckShift()
+    if r ~= nil then return r end
+    
+    -- else do the slow check once per continuous scrolling
+    local aa = sdActive
+    sdActive = 25
+    if aa then return sdVal end
+    
+    mg.startEvent(function()
+      while true do
+        sdVal = mg.checkShift()
+        for i = 1, 15000 do
+          sdActive = sdActive -1
+          if sdActive == 0 then
+            sdActive = nil
+            sdVal = nil
+            return
+          end
+          coroutine.yield()
+        end
+      end
+    end)
+    return sdVal
   end
   
   -- only intercept if it can actually scroll
@@ -306,7 +334,13 @@ end do -- scroll area ----------------------------------------------------------
     local amt = dir * wheelScrollAmount
     local v
     if self.scrollDirections[2] ~= 0 then
-      v = {0, amt}
+      if self.scrollDirections[1] ~= 0 then
+        local b = scrollDirCheck()
+        if b == nil then return true end -- no scrolling until first value checked
+        if b then v = {amt, 0} else v = {0, amt} end -- scroll direction
+      else
+        v = {0, amt}
+      end
     else
       v = {amt, 0}
     end

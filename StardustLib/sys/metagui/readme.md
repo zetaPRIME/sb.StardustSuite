@@ -444,6 +444,7 @@ metagui.itemMaxStack(item) -- Returns the maximum stack size of an item descript
 metagui.itemStacksToCursor(item) -- Returns how many of an item can fit on the cursor, if any.
 
 metagui.checkShift() -- Only available in events; checks if player is holding shift.
+metagui.fastCheckShift() -- Attempts to determine if player is holding shift through tech hooks only.
 
 metagui.checkSync(resync, id) -- Checks if sync succeeded with source entity (or entity id if specified).
 -- If resync specified, clears sync flag and pings entity.

@@ -337,12 +337,13 @@ end do -- scroll area ----------------------------------------------------------
     end
   end
   function widgets.scrollArea:scrollBy(delta, suppressAnimation)
+    delta = vec2.mul(delta, self.scrollDirections) -- limit to available directions
     local l = self.children[1]
-    l.position = vec2.add(l.position, vec2.mul(vec2.mul(delta, {1, -1}), self.scrollDirections))
+    l.position = vec2.add(l.position, vec2.mul(delta, {1, -1}))
     l.position = rect.ll(rect.bound(rect.fromVec2(l.position, l.position), {math.max(0, l.size[1] - self.size[1]) * -1, math.max(0, l.size[2] - self.size[2]) * -1, 0, 0}))
     self:applyGeometry(true)
     self.children[1]:applyGeometry(true)
-    if self.scrollBars and not suppressAnimation and vec2.mag(delta) > 0 and l.size[2] > self.size[2] then
+    if self.scrollBars and not suppressAnimation and vec2.mag(delta) > 0 and self:isMouseInteractable() then
       theme.onScroll(self) -- only if there's actually room to scroll and delta is nonzero
     end
   end
@@ -353,7 +354,7 @@ end do -- scroll area ----------------------------------------------------------
     l.position = rect.ll(rect.bound(rect.fromVec2(l.position, l.position), {math.max(0, l.size[1] - self.size[1]) * -1, math.max(0, l.size[2] - self.size[2]) * -1, 0, 0}))
     self:applyGeometry(true)
     self.children[1]:applyGeometry(true)
-    if self.scrollBars and not suppressAnimation and l.size[2] > self.size[2] then
+    if self.scrollBars and not suppressAnimation and self:isMouseInteractable() then
       theme.onScroll(self) -- only if there's actually room to scroll
     end
   end
@@ -363,7 +364,7 @@ end do -- scroll area ----------------------------------------------------------
   function widgets.scrollArea:updateGeometry(noApply)
     local l = self.children[1]
     l.size = vec2.sub(self.size, sizeMod)
-    local ps = l:preferredSize(self.size[1])
+    local ps = l:preferredSize(self.scrollDirections[1] == 0 and self.size[1])
     for i = 1, 2 do
       if self.scrollDirections[i] > 0 then
         l.size[i] = math.max(l.size[i], ps[i])

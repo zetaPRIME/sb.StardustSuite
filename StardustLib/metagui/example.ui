@@ -42,7 +42,7 @@
           "contents" : [
             
           ]
-        }
+        }, { "title" : "Really long tab to force it to scroll horizontally" }
       ],
       "bottomBar" : [
         { "type" : "spacer" },

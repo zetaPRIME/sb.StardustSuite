@@ -166,19 +166,18 @@ function tdef.onScroll(w, directives)
       local contentSize = w.children[1].size
       local scroll = w.children[1].position
       local s, p = {0, 0}, {0, 0} for i=1,2 do
-        s[i] = viewSize[i] * (viewSize[i] / contentSize[i])
-        p[i] = (viewSize[i] - s[i]) * scroll[i] / (contentSize[i] - viewSize[i])
+        s[i] = viewSize[i] * (viewSize[i] / contentSize[i]) -- size of scroll bar
+        p[i] = (viewSize[i] - s[i]) * scroll[i] / (contentSize[i] - viewSize[i]) -- tracking
       end
-      p[1] = -p[1] - (viewSize[1] - s[1])
+      p[1] = -p[1] - (viewSize[1] - s[1]) -- (re?)invert horizontal
       for i = 1, 2 do
         if w.scrollDirections[i] > 0 then
-          local o = 3-i
+          local o = 3-i -- opposite axis
           local r = rect.withSize({0, 0}, c:size())
-          -- assume i=2
-          if i == 1 then r[o+2] = theme.scrollBarWidth
-          else r[o] = r[o+2] - theme.scrollBarWidth end
-          r[i+2] = r[i+2] + p[i]
-          r[i] = r[i+2] - s[i]
+          if i == 1 then r[o+2] = theme.scrollBarWidth -- horizontal on bottom
+          else r[o] = r[o+2] - theme.scrollBarWidth end -- vertical on right
+          r[i+2] = r[i+2] + p[i] -- set far end
+          r[i] = r[i+2] - s[i] -- and near
           assets.scrollBar:drawToCanvas(c, string.format("default%s?multiply=ffffff%02x", directives or theme.scrollBarDirectives, math.ceil(math.min(w._bar/30.0, 1.0) * 255)), r)
         end
       end

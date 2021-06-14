@@ -374,7 +374,7 @@ end do -- scroll area ----------------------------------------------------------
     
     l:updateGeometry(true)
     -- snap scroll to bounds
-    l.position = rect.ll(rect.bound(rect.fromVec2(l.position, l.position), {0, math.max(0, l.size[2] - self.size[2]) * -1, math.max(0, l.size[1] - self.size[1]), 0}))
+    l.position = rect.ll(rect.bound(rect.fromVec2(l.position, l.position), {math.max(0, l.size[1] - self.size[1]) * -1, math.max(0, l.size[2] - self.size[2]) * -1, 0, 0}))
     if not noApply then applyGeometry() end
   end
   function widgets.scrollArea:applyGeometry(so)

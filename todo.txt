@@ -8,7 +8,7 @@
     }
     
     - horizontal scroll bar support
-    fix horizontal tab bar resetting scroll on tab change??
+    - fix horizontal tab bar resetting scroll on tab change
     
 } content update {
     

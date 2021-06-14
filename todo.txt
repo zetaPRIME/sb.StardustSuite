@@ -13,6 +13,8 @@
     - make checkShift able to survive item-blocking
     shift+scrolling on both-ways scrollareas
     
+    actual tech hook
+    
 } content update {
     
     get Pulse Knuckles to a good usable state

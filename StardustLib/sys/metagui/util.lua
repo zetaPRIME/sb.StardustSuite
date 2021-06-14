@@ -77,6 +77,14 @@ end
 function mg.checkShift()
   local cr = coroutine.running()
   if not cr then sb.logWarn("metagui.checkShift() called in main thread!") return nil end
+  
+  do -- first, try the quick way through tech hooks
+    local p = world.sendEntityMessage(player.id(), "stardustlib:getTechInput")
+    local r = p:succeeded() and p:result()
+    if r then return r.key.sprint or false end
+  end
+  
+  -- if no quick way is available, then fall back on the activeitem hack
   if player.isLounging() then return false end -- items disabled while lounging
   local icon = "/assetmissing.png"
   local stm = player.swapSlotItem()

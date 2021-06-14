@@ -144,6 +144,9 @@ if theme._export then
   theme._export.paletteFor = paletteFor
 end
 
+-- set up fixed directives for some stock functionality
+theme.scrollBarDirectives = paletteFor "accent" .. "?multiply=ffffff7f"
+
 local titleBar, icon, title, close, spacer
 function theme.decorate()
   local style = mg.cfg.style

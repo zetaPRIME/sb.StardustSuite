@@ -1,6 +1,5 @@
 {
     "name" : "Frackin' Standard",
-    //"description" : "Standard issue tablet for Science Outpost employees.",
     "description" : "Stock theme from the latest model of the Science Outpost's standard-issue tricorder.",
     "sortWeight" : -95,
     

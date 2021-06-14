@@ -22,6 +22,7 @@ theme.assets = { -- default assets
 
 theme.scrollBarWidth = theme.scrollBarWidth or 6
 theme.itemSlotGlyphDirectives = theme.itemSlotGlyphDirectives or "?multiply=0000007f"
+theme.scrollBarDirectives = theme.scrollBarDirectives or ""
 
 --
 
@@ -152,7 +153,7 @@ function tdef.drawItemSlot(w)
   end
 end
 
-function tdef.onScroll(w)
+function tdef.onScroll(w, directives)
   local anim = w._bar or 0
   w._bar = 30*1.5
   if anim > 0 then return nil end
@@ -172,7 +173,7 @@ function tdef.onScroll(w)
       end
       r[4] = r[4] + p[2]
       r[2] = r[4] - s[2]
-      assets.scrollBar:drawToCanvas(c, string.format("default?multiply=ffffff%02x", math.ceil(math.min(w._bar/30.0, 1.0) * 255)), r)
+      assets.scrollBar:drawToCanvas(c, string.format("default%s?multiply=ffffff%02x", directives or theme.scrollBarDirectives, math.ceil(math.min(w._bar/30.0, 1.0) * 255)), r)
       w._bar = w._bar - 1
       coroutine.yield()
     end

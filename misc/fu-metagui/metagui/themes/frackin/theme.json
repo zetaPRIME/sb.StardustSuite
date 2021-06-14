@@ -1,7 +1,6 @@
 {
     "name" : "Frackin' Classic",
-    //"description" : "Standard issue tablet for Science Outpost employees.",
-    "description" : "Stock theme from an older tricorder model.",
+    "description" : "Theme from an older model of tricorder.",
     "sortWeight" : -94,
     
     "defaultAccentColor" : "588adb",

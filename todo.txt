@@ -13,7 +13,7 @@
     - make checkShift able to survive item-blocking
     shift+scrolling on both-ways scrollareas
     
-    actual tech hook
+    - actual tech hook
     
 } content update {
     

@@ -1,5 +1,7 @@
 -- input module for techs
 
+require "/scripts/vec2.lua"
+
 input = {
   key = { },
   keyLast = { },

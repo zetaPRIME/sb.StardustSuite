@@ -1,5 +1,5 @@
 ### Stardust Core+Lite
-- 
+- Added tech hooks for grabbing player input (however, only vanilla techs are patched)
 
 #### metaGUI
 - Fixed horizontal scrolling

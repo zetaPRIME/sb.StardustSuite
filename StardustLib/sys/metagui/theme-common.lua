@@ -162,8 +162,6 @@ function tdef.onScroll(w, directives)
     local c = widget.bindCanvas(f)
     while w._bar > 0 do
       c:clear()
-      local r = rect.withSize({0, 0}, c:size())
-      r[1] = r[3] - theme.scrollBarWidth
       local viewSize = w.size
       local contentSize = w.children[1].size
       local scroll = w.children[1].position
@@ -171,9 +169,19 @@ function tdef.onScroll(w, directives)
         s[i] = viewSize[i] * (viewSize[i] / contentSize[i])
         p[i] = (viewSize[i] - s[i]) * scroll[i] / (contentSize[i] - viewSize[i])
       end
-      r[4] = r[4] + p[2]
-      r[2] = r[4] - s[2]
-      assets.scrollBar:drawToCanvas(c, string.format("default%s?multiply=ffffff%02x", directives or theme.scrollBarDirectives, math.ceil(math.min(w._bar/30.0, 1.0) * 255)), r)
+      p[1] = -p[1] - (viewSize[1] - s[1])
+      for i = 1, 2 do
+        if w.scrollDirections[i] > 0 then
+          local o = 3-i
+          local r = rect.withSize({0, 0}, c:size())
+          -- assume i=2
+          if i == 1 then r[o+2] = theme.scrollBarWidth
+          else r[o] = r[o+2] - theme.scrollBarWidth end
+          r[i+2] = r[i+2] + p[i]
+          r[i] = r[i+2] - s[i]
+          assets.scrollBar:drawToCanvas(c, string.format("default%s?multiply=ffffff%02x", directives or theme.scrollBarDirectives, math.ceil(math.min(w._bar/30.0, 1.0) * 255)), r)
+        end
+      end
       w._bar = w._bar - 1
       coroutine.yield()
     end

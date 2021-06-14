@@ -10,6 +10,9 @@
     - horizontal scroll bar support
     - fix horizontal tab bar resetting scroll on tab change
     
+    - make checkShift able to survive item-blocking
+    shift+scrolling on both-ways scrollareas
+    
 } content update {
     
     get Pulse Knuckles to a good usable state
@@ -41,6 +44,8 @@
     ^ temporary asset root swap
     
     store multiple EPPs within augpack for quick swapping
+    
+    option to always show beacon and enemy radar (deployment)
     
     
 } and unspecified {

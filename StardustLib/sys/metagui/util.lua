@@ -77,6 +77,7 @@ end
 function mg.checkShift()
   local cr = coroutine.running()
   if not cr then sb.logWarn("metagui.checkShift() called in main thread!") return nil end
+  if player.isLounging() then return false end -- items disabled while lounging
   local icon = "/assetmissing.png"
   local stm = player.swapSlotItem()
   if stm then -- carry over icon
@@ -91,7 +92,14 @@ function mg.checkShift()
   mg.ipc.shiftCheck = function(s) coroutine.resume(cr, 'sc', s) end
   player.setSwapSlotItem { name = "geode", count = stm and stm.count or 1, parameters = { inventoryIcon = icon, scripts = {mg.rootPath .. "helper/shiftstub.lua"}, restore = stm } }
   local chk, res = nil
-  while chk ~= 'sc' do chk, res = coroutine.yield() end
+  for i = 1,2 do
+    chk, res = coroutine.yield()
+    if chk == 'sc' then break end
+  end
+  if chk ~= 'sc' then -- failure
+    player.setSwapSlotItem(stm)
+    res = false
+  end
   mg.ipc.shiftCheck = nil -- clean up
   return res
 end

@@ -100,12 +100,19 @@ local paletteFor do
     local h, s, l = table.unpack(color.toHsl(col))
     s = math.min(s, 0.64532019704433)
     local function c(v) return util.clamp(v, 0, 1) end
-    local r = color.replaceDirective(basePal, {
-      col, -- highlight
-      color.fromHsl { h, c(s * 1.11), c(l * 0.39), bgAlpha }, -- bg
-      color.fromHsl { h, c(s * 1.04), c(l * 0.25), bgAlpha }, -- bg dark
-      color.fromHsl { h, c(s * 1.04), c(l * 0.125), bgAlpha }, -- bg shadow
-    })
+    local r
+    if col == theme.defaultAccentColor and theme.stockPalette then
+      local pm = util.mergeTable({ }, theme.stockPalette)
+      for i=2,4 do pm[i] = string.format("%s%02x", pm[i], math.floor(0.5 + bgAlpha * 255)) end
+      r = color.replaceDirective(basePal, pm)
+    else
+      r = color.replaceDirective(basePal, {
+        col, -- highlight
+        color.fromHsl { h, c(s * 1.11), c(l * 0.39), bgAlpha }, -- bg
+        color.fromHsl { h, c(s * 1.04), c(l * 0.25), bgAlpha }, -- bg dark
+        color.fromHsl { h, c(s * 1.04), c(l * 0.125), bgAlpha }, -- bg shadow
+      })
+    end
     
     --local hd = s > 0 and h - baseHue or 0
     local hd = (mg.cfg["frackin:hueShift"] or 0) / 360
@@ -130,6 +137,11 @@ local paletteFor do
     pals[col] = r
     return r
   end
+end
+
+if theme._export then
+  theme._export.color = color
+  theme._export.paletteFor = paletteFor
 end
 
 local titleBar, icon, title, close, spacer

@@ -1,3 +1,4 @@
 [ // -*- grammar-ext: json -*-
-  { "op" : "add", "path" : "/themes/frackin", "value" : "/metagui/themes/frackin/" }
+  { "op" : "add", "path" : "/themes/frackin", "value" : "/metagui/themes/frackin/" },
+  { "op" : "add", "path" : "/themes/frackin.v2", "value" : "/metagui/themes/frackin/v2/" }
 ]

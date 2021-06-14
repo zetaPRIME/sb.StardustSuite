@@ -3,6 +3,9 @@
 local mg = metagui
 local assets = theme.assets
 
+-- set up some directives
+theme.scrollBarDirectives = "?brightness=50?multiply=" .. mg.getColor("accent")
+
 local titleBar, icon, title, close
 function theme.decorate()
   local style = mg.cfg.style

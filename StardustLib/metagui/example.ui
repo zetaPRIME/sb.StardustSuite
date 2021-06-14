@@ -26,8 +26,16 @@
                 { "type" : "itemGrid", "slots" : 55, "columns" : 5, "auto" : true },
                 { "type" : "label", "text" : "By the way, ^accent;this is a scroll area.^reset;\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Sed porttitor lectus vitae odio ullamcorper tincidunt. Pellentesque lacinia dui in ipsum luctus commodo. Fusce placerat velit sed tellus suscipit suscipit molestie sed velit. Pellentesque non justo eu quam imperdiet finibus. In egestas rutrum dui. Donec sodales magna cursus, sollicitudin quam ac, vestibulum erat. Mauris lobortis sapien eu risus mollis scelerisque. Duis et ipsum magna. Proin dignissim elit eget dui auctor luctus. Donec pulvinar congue est, vitae fermentum urna congue quis. Fusce pharetra diam consequat ligula vehicula iaculis. Cras placerat erat quam, vitae sagittis dolor tincidunt nec. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus." }
               ]
-            ]},
+            ] },
             [ { "type" : "button", "caption" : "It even supports layout spacers!", "id" : "btnSpacer" }, { "type" : "image", "file" : "/interface/beamuphover.png" }, { "type" : "itemSlot", "glyph" : "/interface/inventory/backingimagetrash.png", "item" : { "name" : "perfectlygenericitem", "count" : 1, "parameters" : { } } } ]
+          ]
+        },
+        { "title" : "Free Scrolling",
+          "contents" : [
+            { "type" : "scrollArea", "expandMode" : [2, 2], "scrollDirections" : [1, 1], "children" : [
+              { "mode" : "horizontal" },
+              { "type" : "image", "file" : "/interface/title/logo.png?scalenearest=4" }
+            ] }
           ]
         },
         { "title" : "(empty tab)", "color" : "7f7fff",

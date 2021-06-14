@@ -338,8 +338,8 @@ end do -- scroll area ----------------------------------------------------------
   end
   function widgets.scrollArea:scrollBy(delta, suppressAnimation)
     local l = self.children[1]
-    l.position = vec2.sub(l.position, vec2.mul(delta, self.scrollDirections))
-    l.position = rect.ll(rect.bound(rect.fromVec2(l.position, l.position), {0, math.max(0, l.size[2] - self.size[2]) * -1, math.max(0, l.size[1] - self.size[1]), 0}))
+    l.position = vec2.add(l.position, vec2.mul(vec2.mul(delta, {1, -1}), self.scrollDirections))
+    l.position = rect.ll(rect.bound(rect.fromVec2(l.position, l.position), {math.max(0, l.size[1] - self.size[1]) * -1, math.max(0, l.size[2] - self.size[2]) * -1, 0, 0}))
     self:applyGeometry(true)
     self.children[1]:applyGeometry(true)
     if self.scrollBars and not suppressAnimation and vec2.mag(delta) > 0 and l.size[2] > self.size[2] then
@@ -350,7 +350,7 @@ end do -- scroll area ----------------------------------------------------------
     if not raw then pos = vec2.sub(pos, vec2.mul(self.size, 0.5)) end
     local l = self.children[1]
     l.position = vec2.mul(vec2.mul(pos, -1), self.scrollDirections)
-    l.position = rect.ll(rect.bound(rect.fromVec2(l.position, l.position), {0, math.max(0, l.size[2] - self.size[2]) * -1, math.max(0, l.size[1] - self.size[1]), 0}))
+    l.position = rect.ll(rect.bound(rect.fromVec2(l.position, l.position), {math.max(0, l.size[1] - self.size[1]) * -1, math.max(0, l.size[2] - self.size[2]) * -1, 0, 0}))
     self:applyGeometry(true)
     self.children[1]:applyGeometry(true)
     if self.scrollBars and not suppressAnimation and l.size[2] > self.size[2] then
@@ -363,7 +363,13 @@ end do -- scroll area ----------------------------------------------------------
   function widgets.scrollArea:updateGeometry(noApply)
     local l = self.children[1]
     l.size = vec2.sub(self.size, sizeMod)
-    l.size[2] = l:preferredSize(self.size[1])[2]
+    local ps = l:preferredSize(self.size[1])
+    for i = 1, 2 do
+      if self.scrollDirections[i] > 0 then
+        l.size[i] = math.max(l.size[i], ps[i])
+      end
+    end
+    --l.size[2] = ps[2]
     
     l:updateGeometry(true)
     -- snap scroll to bounds

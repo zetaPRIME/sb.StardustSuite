@@ -36,5 +36,9 @@ deploy lib/stardust/rng.lua
 deploy lib/stardust/augmentutil.lua
 deploy lib/stardust/augmentdefs.config
 
+# include tech input hooks because metaGUI works best with them
+deploy lib/stardust/tech
+deploy tech
+
 # copy version from Stardust Core
 jq --slurpfile v ../StardustLib/_metadata '.version = $v[0].version' ../../StardustLite/_metadata > ./_metadata

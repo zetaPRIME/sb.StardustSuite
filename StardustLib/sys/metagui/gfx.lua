@@ -37,23 +37,23 @@ do -- ninepatch assets
   mg.npMatrix = npMatrix
   mg.npRs = npRs
   
-  function ninePatch:drawToCanvas(c, f, r)
+  function ninePatch:draw(c, f, r) -- canvas, frame, rect
     if not r then
       local s = c:size()
       r = {0, 0, s[1], s[2]}
     end
-    f = f or "default"
     local sr = {0, 0, self.frameSize[1], self.frameSize[2]}
     local invm = {self.margins[1], self.margins[4], self.margins[3], self.margins[2]}
     local scm = invm
     if self.isHD then
       scm = { } for k,v in pairs(invm) do scm[k] = v*0.5 end
     end
-    local img = string.format("%s:%s", self.image, f)
+    local img = string.format("%s:%s", self.image, f or "default")
     
     local rc, sc = npRs(r, scm), npRs(sr, invm)
     for i=1,9 do c:drawImageRect(img, sc[i], rc[i]) end
   end
+  ninePatch.drawToCanvas = ninePatch.draw -- alias for backwards compatibility
   
   function mg.ninePatch(path)
     -- rectify path input
@@ -62,10 +62,12 @@ do -- ninepatch assets
     if ninePatchReg[path] then return ninePatchReg[path] end
     local np = setmetatable({ }, ninePatchMeta) ninePatchReg[path] = np
     np.image = path .. ".png"
+    
     local d = root.assetJson(path .. ".frames")
     np.margins = d.ninePatchMargins
     np.frameSize = d.frameGrid.size
     np.isHD = d.isHD
+    
     return np
   end
 end
@@ -84,12 +86,36 @@ do -- extended assets
     return self.image .. other
   end
   
+  function extAsset:draw(c, f, pos, scale, rot)
+    scale = scale or 1
+    if self.isHD then scale = scale * 0.5 end
+    local img = string.format("%s:%s", self.image, f or "default")
+    c:drawImageDrawable(img, pos, scale, nil, rot)
+  end
+  
+  function extAsset:drawTiled(c, f, r, offset, scale)
+    if not r then
+      local s = c:size()
+      r = {0, 0, s[1], s[2]}
+    end
+    offset = offset or {0, 0}
+    scale = scale or 1
+    if self.isHD then scale = scale * 0.5 end
+    local img = string.format("%s:%s", self.image, f or "default")
+    c:drawTiledImage(img, offset, r, scale)
+  end
+  
   function mg.extAsset(path)
     path = mg.asset((path:match('^(.*)%..-$') or path) .. ".png")
     path = path:match('^(.*)%..-$') or path
     if extAssetReg[path] then return extAssetReg[path] end
     local ast = setmetatable({ }, extAssetMeta) extAssetReg[path] = ast
     ast.image = path .. ".png"
+    
+    local res, d = pcall(root.assetJson, path .. ".frames")
+    if not res then d = { } end
+    ast.frameSize = d.frameGrid.size
+    ast.isHD = d.isHD
     
     return ast
   end

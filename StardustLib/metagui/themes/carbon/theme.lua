@@ -25,10 +25,10 @@ end
 function theme.drawFrame()
   local style = mg.cfg.style
   c = widget.bindCanvas(frame.backingWidget .. ".canvas")
-  c:clear() assets.frame:drawToCanvas(c)
+  c:clear() assets.frame:draw(c)
   
   if (style == "window") then
-    assets.button:drawToCanvas(c, "accent?multiply=" .. mg.getColor("accent"), {0, frame.size[2] - 22, frame.size[1], frame.size[2]})
+    assets.button:draw(c, "accent?multiply=" .. mg.getColor("accent"), {0, frame.size[2] - 22, frame.size[1], frame.size[2]})
     icon.explicitSize = (not mg.cfg.icon) and {0, 0} or nil
     icon:setFile(mg.cfg.icon)
     title:setText(mg.cfg.title)
@@ -38,12 +38,13 @@ end
 function theme.drawCheckBox(w)
   local c = widget.bindCanvas(w.backingWidget) c:clear()
   local state
-  if w.state == "press" then state = ":toggle"
-  else state = ":idle" end
+  if w.state == "press" then state = "toggle"
+  else state = "idle" end
   
-  local cstate = ":check?multiply=" .. mg.getColor("accent"):sub(1, 6) .. (w.state == "press" and "7f" or (w.checked and "ff" or "00"))
+  local cstate = "check?multiply=" .. mg.getColor("accent"):sub(1, 6) .. (w.state == "press" and "7f" or (w.checked and "ff" or "00"))
   
   local img = w.radioGroup and assets.radioButton or assets.checkBox
-  c:drawImageDrawable(img .. state, vec2.mul(c:size(), 0.5), 1.0)
-  c:drawImageDrawable(img .. cstate, vec2.mul(c:size(), 0.5), 1.0)
+  local pos = vec2.mul(c:size(), 0.5)
+  img:draw(c, state, pos)
+  img:draw(c, cstate, pos)
 end

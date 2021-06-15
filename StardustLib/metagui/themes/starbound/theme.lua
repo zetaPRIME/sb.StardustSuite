@@ -30,17 +30,17 @@ end
 function theme.drawFrame()
   local style = mg.cfg.style
   c = widget.bindCanvas(frame.backingWidget .. ".canvas")
-  c:clear() --assets.frame:drawToCanvas(c)
+  c:clear() --assets.frame:draw(c)
   
   if (style == "window") then
-    assets.windowBorder:drawToCanvas(c, "frame?multiply=" .. mg.getColor("accent"))
-    assets.windowBorder:drawToCanvas(c, "inner")
+    assets.windowBorder:draw(c, "frame?multiply=" .. mg.getColor("accent"))
+    assets.windowBorder:draw(c, "inner")
     
     spacer.explicitSize = (not mg.cfg.icon) and -2 or 1
     icon.explicitSize = (not mg.cfg.icon) and {-1, 0} or nil
     icon:setFile(mg.cfg.icon)
     title:setText("^shadow;" .. mg.cfg.title:gsub('%^reset;', '^reset;^shadow;'))
-  else assets.frame:drawToCanvas(c) end
+  else assets.frame:draw(c) end
 end
 
 function theme.drawButton(w)
@@ -48,9 +48,9 @@ function theme.drawButton(w)
   c:clear()
   local acc = mg.getColor(w.color)
   if acc then
-    assets.buttonColored:drawToCanvas(c, (w.state or "idle") .. "?multiply=" .. acc)
+    assets.buttonColored:draw(c, (w.state or "idle") .. "?multiply=" .. acc)
   else
-    assets.button:drawToCanvas(c, w.state or "idle")
+    assets.button:draw(c, w.state or "idle")
   end
   theme.drawButtonContents(w)
 end

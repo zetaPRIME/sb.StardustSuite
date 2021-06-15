@@ -34,13 +34,13 @@ end
 
 function tdef.drawFrame()
   c = widget.bindCanvas(frame.backingWidget .. ".canvas")
-  c:clear() assets.frame:drawToCanvas(c)
+  c:clear() assets.frame:draw(c)
 end
 
 function tdef.drawPanel(w)
   if w.tabStyle and theme.useTabStyling then return theme.drawTabPanel(w) end
   local c = widget.bindCanvas(w.backingWidget)
-  c:clear() assets.panel:drawToCanvas(c, w.style or "convex")
+  c:clear() assets.panel:draw(c, w.style or "convex")
 end
 
 function tdef.drawListItem(w)
@@ -60,7 +60,7 @@ end
 
 function tdef.drawTabPanel(w)
   local c = widget.bindCanvas(w.backingWidget)
-  c:clear() assets.tabPanel:drawToCanvas(c, w.tabStyle)
+  c:clear() assets.tabPanel:draw(c, w.tabStyle)
 end
 
 function tdef.drawTab(w)
@@ -72,17 +72,17 @@ function tdef.drawTab(w)
   else state = "idle" end
   state = w.tabStyle .. "." .. state
   
-  assets.tab:drawToCanvas(c, state)
+  assets.tab:draw(c, state)
   if w.selected then
-    assets.tab:drawToCanvas(c, w.tabStyle .. ".accent?multiply=" .. mg.getColor(w.color or "accent"))
+    assets.tab:draw(c, w.tabStyle .. ".accent?multiply=" .. mg.getColor(w.color or "accent"))
   end
 end
 
 function tdef.drawButton(w)
   local c = widget.bindCanvas(w.backingWidget)
-  c:clear() assets.button:drawToCanvas(c, w.state or "idle")
+  c:clear() assets.button:draw(c, w.state or "idle")
   local acc = mg.getColor(w.color)
-  if acc then assets.button:drawToCanvas(c, "accent?multiply=" .. acc) end
+  if acc then assets.button:draw(c, "accent?multiply=" .. acc) end
   theme.drawButtonContents(w)
 end
 
@@ -108,11 +108,11 @@ end
 function tdef.drawCheckBox(w)
   local c = widget.bindCanvas(w.backingWidget) c:clear()
   local state
-  if w.state == "press" then state = ":toggle"
-  else state = w.checked and ":checked" or ":idle" end
+  if w.state == "press" then state = "toggle"
+  else state = w.checked and "checked" or "idle" end
   
   local img = w.radioGroup and assets.radioButton or assets.checkBox
-  c:drawImageDrawable(img .. state, vec2.mul(c:size(), 0.5), 1.0)
+  img:draw(c, state, vec2.mul(c:size(), 0.5))
 end
 
 function tdef.onButtonHover(w)
@@ -132,13 +132,13 @@ end
 
 function tdef.drawTextBox(w)
   local c = widget.bindCanvas(w.backingWidget)
-  c:clear() assets.textBox:drawToCanvas(c, w.focused and "focused" or "idle")
+  c:clear() assets.textBox:draw(c, w.focused and "focused" or "idle")
 end
 
 function tdef.drawItemSlot(w)
   local center = {9, 9}
   local c = widget.bindCanvas(w.backingWidget)
-  c:clear() c:drawImage(assets.itemSlot .. ":" .. (w.hover and "hover" or "idle"), center, nil, nil, true)
+  c:clear() assets.itemSlot:draw(c, w.hover and "hover" or "idle", center)
   if w.glyph then
     if w.colorGlyph then
       c:drawImage(w.glyph, center, nil, nil, true)
@@ -149,7 +149,7 @@ function tdef.drawItemSlot(w)
   local ic = root.itemConfig(w:item())
   if ic and not w.hideRarity then
     local rarity = (ic.parameters.rarity or ic.config.rarity or "Common"):lower()
-    c:drawImage(assets.itemRarity .. ":" .. rarity .. (w.hover and "?brightness=50" or ""), center, nil, nil, true)
+    assets.itemRarity:draw(c, rarity .. (w.hover and "?brightness=50" or ""), center)
   end
 end
 
@@ -178,7 +178,7 @@ function tdef.onScroll(w, directives)
           else r[o] = r[o+2] - theme.scrollBarWidth end -- vertical on right
           r[i+2] = r[i+2] + p[i] -- set far end
           r[i] = r[i+2] - s[i] -- and near
-          assets.scrollBar:drawToCanvas(c, string.format("default%s?multiply=ffffff%02x", directives or theme.scrollBarDirectives, math.ceil(math.min(w._bar/30.0, 1.0) * 255)), r)
+          assets.scrollBar:draw(c, string.format("default%s?multiply=ffffff%02x", directives or theme.scrollBarDirectives, math.ceil(math.min(w._bar/30.0, 1.0) * 255)), r)
         end
       end
       w._bar = w._bar - 1

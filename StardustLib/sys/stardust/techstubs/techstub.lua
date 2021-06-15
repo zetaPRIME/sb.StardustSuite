@@ -205,6 +205,7 @@ function init()
     require(ovr)
     
     -- and hook in after
+    require "/lib/stardust/tech/input.hook.lua" -- hook input if not already
     local _uninit = uninit or function() end
     uninit = function()
       _uninit()

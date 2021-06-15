@@ -11,9 +11,10 @@
     - fix horizontal tab bar resetting scroll on tab change
     
     - make checkShift able to survive item-blocking
-    shift+scrolling on both-ways scrollareas
+    - shift+scrolling on both-ways scrollareas
     
     - actual tech hook
+    - add to techstub
     
 } content update {
     

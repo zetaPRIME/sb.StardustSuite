@@ -13,11 +13,11 @@ theme.assets = { -- default assets
   tabPanel = mg.ninePatch "tabPanel",
   tab = mg.ninePatch "tab",
   
-  checkBox = mg.asset "checkBox.png",
-  radioButton = mg.asset "radioButton.png",
+  checkBox = mg.extAsset "checkBox.png",
+  radioButton = mg.extAsset "radioButton.png",
   
-  itemSlot = mg.asset "itemSlot.png",
-  itemRarity = mg.asset "itemRarity.png",
+  itemSlot = mg.extAsset "itemSlot.png",
+  itemRarity = mg.extAsset "itemRarity.png",
 } local assets = theme.assets
 
 theme.scrollBarWidth = theme.scrollBarWidth or 6

@@ -70,6 +70,31 @@ do -- ninepatch assets
   end
 end
 
+do -- extended assets
+  local extAssetReg = { } -- registry
+  
+  local extAsset = { } -- prototype
+  local extAssetMeta = { __index = extAsset }
+  
+  function extAssetMeta.__tostring(self)
+    return self.image
+  end
+  
+  function extAssetMeta.__concat(self, other)
+    return self.image .. other
+  end
+  
+  function mg.extAsset(path)
+    path = mg.asset((path:match('^(.*)%..-$') or path) .. ".png")
+    path = path:match('^(.*)%..-$') or path
+    if extAssetReg[path] then return extAssetReg[path] end
+    local ast = setmetatable({ }, extAssetMeta) extAssetReg[path] = ast
+    ast.image = path .. ".png"
+    
+    return ast
+  end
+end
+
 function mg.measureString(str, wrapWidth, size)
   pane.addWidget({ type = "label", value = str, wrapWidth = wrapWidth, fontSize = size }, "__measure")
   local s = widget.getSize("__measure")

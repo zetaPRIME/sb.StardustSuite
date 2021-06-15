@@ -2,10 +2,10 @@ metagui = metagui or { }
 local mg = metagui
 
 do -- ninepatch assets
-  local nps = { }
+  local ninePatchReg = { }
   
-  local npp = { }
-  local nppm = { __index = npp }
+  local ninePatch = { }
+  local ninePatchMeta = { __index = ninePatch }
   
   -- calculates all points involved in a ninepatch
   local function npMatrix(r, m)
@@ -37,7 +37,7 @@ do -- ninepatch assets
   mg.npMatrix = npMatrix
   mg.npRs = npRs
   
-  function npp:drawToCanvas(c, f, r)
+  function ninePatch:drawToCanvas(c, f, r)
     if not r then
       local s = c:size()
       r = {0, 0, s[1], s[2]}
@@ -59,8 +59,8 @@ do -- ninepatch assets
     -- rectify path input
     path = mg.asset((path:match('^(.*)%..-$') or path) .. ".png")
     path = path:match('^(.*)%..-$') or path
-    if nps[path] then return nps[path] end
-    local np = setmetatable({ }, nppm) nps[path] = np
+    if ninePatchReg[path] then return ninePatchReg[path] end
+    local np = setmetatable({ }, ninePatchMeta) ninePatchReg[path] = np
     np.image = path .. ".png"
     local d = root.assetJson(path .. ".frames")
     np.margins = d.ninePatchMargins

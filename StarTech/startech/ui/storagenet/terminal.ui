@@ -5,6 +5,7 @@
   "icon" : "terminal.icon.png",
   "accentColor" : "bf7fff",
   "frackin:hueShift" : 220,
+  "frackin.v2:hueShift" : 0,
   "openWithInventory" : true,
   "scripts" : [ "terminal.lua" ],
   "children" : [

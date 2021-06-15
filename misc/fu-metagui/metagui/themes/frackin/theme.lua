@@ -92,6 +92,18 @@ local paletteFor do
     "ffe15c", "ffbd00", "c78b05", "875808", -- yellow bands
     "b3eeff", "7be1ff", "00c6ff", -- gems
   }
+  
+  if not theme.paletteShades then
+    theme.paletteShades = { }
+    local pal = theme.stockPalette or basePal
+    local rs = color.toHsl(pal[1]) -- root shade
+    for i = 1, 3 do
+      local cs = color.toHsl(pal[i+1]) -- comparison shade
+      theme.paletteShades[i] = { cs[2] / rs[2], cs[3] / rs[3] }
+    end
+  end
+  local ps = theme.paletteShades
+  
   local pals = { }--[theme.defaultAccentColor] = "" }
   local bgAlpha = 0.9
   paletteFor = function(col)
@@ -108,14 +120,14 @@ local paletteFor do
     else
       r = color.replaceDirective(basePal, {
         col, -- highlight
-        color.fromHsl { h, c(s * 1.11), c(l * 0.39), bgAlpha }, -- bg
-        color.fromHsl { h, c(s * 1.04), c(l * 0.25), bgAlpha }, -- bg dark
-        color.fromHsl { h, c(s * 1.04), c(l * 0.125), bgAlpha }, -- bg shadow
+        color.fromHsl { h, c(s * ps[1][1]), c(l * ps[1][2]), bgAlpha }, -- bg
+        color.fromHsl { h, c(s * ps[2][1]), c(l * ps[2][2]), bgAlpha }, -- bg dark
+        color.fromHsl { h, c(s * ps[3][1]), c(l * ps[3][2]), bgAlpha }, -- bg shadow
       })
     end
     
     --local hd = s > 0 and h - baseHue or 0
-    local hd = (mg.cfg["frackin:hueShift"] or 0) / 360
+    local hd = (mg.cfg[theme.hueShiftProperty or false] or mg.cfg["frackin:hueShift"] or 0) / 360
     if hd ~= 0 then -- adjust frame colors
       hd = (hd+0.5 % 1) - 0.5
       -- tone down some of the harsher results

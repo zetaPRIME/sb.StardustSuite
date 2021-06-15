@@ -13,6 +13,8 @@
         }
     },
     
+    "paletteShades" : [[1.11, 0.39], [1.04, 0.25], [1.04, 0.125]],
+    
     "useTabStyling" : true,
     
     "" : "" // eof

@@ -15,6 +15,7 @@
     
     "fallback" : ["frackin"],
     "stockPalette" : ["307af3", /*"1e4e9e",*/ "071f43", "051328", "060f1e"],
+    "hueShiftProperty" : "frackin.v2:hueShift",
     
     "useTabStyling" : true,
     

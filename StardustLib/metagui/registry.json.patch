@@ -7,6 +7,7 @@
     { "op" : "add", "path" : "/defaultTheme", "value" : "starbound" },
     { "op" : "add", "path" : "/themes/starbound", "value" : "/metagui/themes/starbound/" },
     { "op" : "add", "path" : "/themes/carbon", "value" : "/metagui/themes/carbon/" },
+    { "op" : "add", "path" : "/themes/chroma", "value" : "/metagui/themes/chroma/" },
     { "op" : "add", "path" : "/panes/metagui", "value" : {
       "example" : "/metagui/example.ui", // addressed as "metagui:example"
       "settings" : "/sys/metagui/settings/settings.ui"

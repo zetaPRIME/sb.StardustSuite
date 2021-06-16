@@ -3,3 +3,4 @@
 
 #### metaGUI
 - Theming backend improvements (`extAsset`)
+- Tool tip generation is now handled by the theme, allowing for far greater visual customization

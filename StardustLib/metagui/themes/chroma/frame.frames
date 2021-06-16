@@ -6,5 +6,6 @@
       [ "default" ]
     ]
   },
+  //"isHD" : true,
   "ninePatchMargins" : [8, 8, 8, 8]
 }

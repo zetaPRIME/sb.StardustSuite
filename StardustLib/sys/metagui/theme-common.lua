@@ -195,5 +195,53 @@ function tdef.errorSound()
   pane.playSound("/sfx/interface/clickon_error.ogg", 0, 1.0)
 end
 
+function tdef.toolTip(text)
+  local wrap = 160
+  local tt, inner = theme.toolTipBackground(mg.measureString(text, wrap))
+  tt.text = { type = "label", value = text, rect = inner, wrapWidth = wrap }
+  return tt
+end
+
+function tdef.toolTipBackground(innerSize)
+  local wrap = 160
+  
+  local np = assets.toolTip or assets.frame
+  local fs = np.frameSize
+  local fm = np.margins
+  local scale = np.isHD and 0.5 or 1.0
+  
+  local ts = innerSize -- alias
+  local ws = {ts[1] + (fm[1] + fm[3]) * scale, ts[2] + (fm[2] + fm[4]) * scale}
+  
+  local tt = { } -- tooltip output
+  
+  local r = {0, 0, ws[1], ws[2]}
+  local sr = {0, 0, fs[1], fs[2]}
+  local invm = {fm[1], fm[4], fm[3], fm[2]}
+  local scm = invm
+  if np.isHD then
+    scm = { } for k,v in pairs(invm) do scm[k] = v*0.5 end
+  end
+  local img = np:frameImage { "default", theme.toolTipDirectives }
+  
+  local rc, sc = mg.npRs(r, scm), mg.npRs(sr, invm)
+  for i=1,9 do
+    local rr, sr = rc[i], sc[i]
+    local srs, rrs = rect.size(sr), rect.size(rr)
+    local sz = vec2.mul({rrs[1] / srs[1], rrs[2] / srs[2]}, 1.0/scale)
+    tt[""..i] = {
+      type = "image", rect = rc[i], zlevel = -50, scale = scale,
+      file = string.format("%s?crop=%d;%d;%d;%d?scalenearest=%f;%f", img, sr[1], sr[2], sr[3], sr[4], sz[1], sz[2])
+    }
+  end
+  
+  tt.background = {
+    type = "background", zlevel = -100,
+    fileFooter = string.format("/assetmissing.png?crop=0;0;1;1?multiply=0000?scalenearest=%d;%d", ws[1], ws[2])
+  }
+  
+  return tt, rc[5] -- table, inner
+end
+
 -- copy in as defaults
 for k, v in pairs(tdef) do theme[k] = v theme.common[k] = v end

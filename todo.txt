@@ -8,7 +8,7 @@
     - extAsset
     - ^ universal directives?
     
-    put theme code in charge of generating tool tips
+    - put theme code in charge of generating tool tips
     
 } content update {
     

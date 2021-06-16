@@ -50,40 +50,7 @@ end
 function mg.toolTip(inp)
   -- convert an array of strings into a single string
   if type(inp) == "table" and type(inp[1]) == "string" then inp = table.concat(inp, "\n") end
-  if type(inp) ~= "string" then return inp end
-  local wrap = 160
+  if type(inp) ~= "string" then return inp end -- assume returning preconstructed table
   
-  local f = mg.theme.assets.frame
-  local fs = f.frameSize
-  local fm = f.margins
-  
-  local ts = mg.measureString(inp, wrap)
-  local ws = {ts[1] + fm[1] + fm[3], ts[2] + fm[2] + fm[4]}
-  
-  local tt = { } -- tooltip output
-  
-  local r = {0, 0, ws[1], ws[2]}
-  local sr = {0, 0, fs[1], fs[2]}
-  local invm = {fm[1], fm[4], fm[3], fm[2]}
-  local img = f.image--string.format("%s:%s", self.image, f)
-  
-  local rc, sc = mg.npRs(r, invm), mg.npRs(sr, invm)
-  for i=1,9 do
-    local rr, sr = rc[i], sc[i]
-    local srs, rrs = rect.size(sr), rect.size(rr)
-    tt[""..i] = {
-      type = "image", rect = rc[i], zlevel = -50,
-      file = string.format("%s?crop=%d;%d;%d;%d?scalenearest=%f;%f", img, sr[1], sr[2], sr[3], sr[4], rrs[1] / srs[1], rrs[2] / srs[2])
-    }
-    --c:drawImageRect(img, sc[i], rc[i])
-  end
-  
-  tt.background = {
-    type = "background", zlevel = -100,
-    fileFooter = string.format("/assetmissing.png?crop=0;0;1;1?multiply=0000?scalenearest=%d;%d", ws[1], ws[2])
-  }
-  
-  tt.text = { type = "label", value = inp, rect = rc[5], wrapWidth = wrap, }
-  
-  return tt
+  return theme.toolTip(inp)
 end

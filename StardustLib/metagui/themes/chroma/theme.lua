@@ -24,8 +24,8 @@ if not mg.cfg.accentColor or mg.cfg.accentColor == theme.defaultAccentColor then
 end
 
 local paletteFor do
-  local hlAlpha = 0.9 -- 1.0
-  local bgAlpha = 0.70
+  local hlAlpha = 0.9 -- subtle translucency on the highlights
+  local bgAlpha = 0.70 -- much clearer glass on anything else
   local glassColors = {
     {"7c50ff", hlAlpha}, -- reference color
     {"a88bff", hlAlpha}, -- highlight

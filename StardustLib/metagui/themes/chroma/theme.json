@@ -14,6 +14,8 @@
         }
     },
     
+    "listItemColor" : "#0000",
+    
     "useTabStyling" : true,
     //"tabsNoFocusFrame" : true,
     

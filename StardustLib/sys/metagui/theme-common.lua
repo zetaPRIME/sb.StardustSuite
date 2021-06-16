@@ -26,6 +26,10 @@ theme.scrollBarWidth = theme.scrollBarWidth or 6
 theme.itemSlotGlyphDirectives = theme.itemSlotGlyphDirectives or "?multiply=0000007f"
 theme.scrollBarDirectives = theme.scrollBarDirectives or ""
 
+theme.listItemColor = theme.listItemColor or "#0000002f" -- idle; slight darken
+theme.listItemColorHover = theme.listItemColorHover or "#ffffff1f" -- slight highlight
+-- theme.listItemColorSelected
+
 --
 
 function tdef.update() end -- default null
@@ -49,14 +53,13 @@ function tdef.drawListItem(w)
   if w.tabStyle and theme.useTabStyling then return theme.drawTab(w) end
   local c = widget.bindCanvas(w.backingWidget)
   c:clear() local r = rect.withSize({0, 0}, c:size())
-  if w.selected then -- highlight in accent
-    local color = mg.getColor("accent"):sub(1, 6) .. (w.hover and "7f" or "3f")
-    c:drawRect(r, "#" .. color)
+  if w.selected then -- highlight in accent by default
+    local color = theme.listItemColorSelected or table.concat { "#", mg.getColor("accent"):sub(1, 6), (w.hover and "7f" or "3f") }
+    c:drawRect(r, color)
+  elseif w.hover then
+    c:drawRect(r, theme.listItemColorHover)
   else
-    c:drawRect(r, "#0000002f") -- slight darken
-    if w.hover then
-      c:drawRect(r, "#ffffff1f") -- slight highlight
-    end
+    c:drawRect(r, theme.listItemColor)
   end
 end
 

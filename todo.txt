@@ -3,10 +3,11 @@
 > Beta v0.1.4 {
     
     > "Chroma" metaGUI theme {
-        listItem color vars
+        - listItem color vars
         check boxes
         radio buttons
         scroll bars
+        title bar (add backing canvases to layouts)
     }
     theme options in settings pane
     

@@ -21,8 +21,8 @@
       { "type" : "itemSlot", "id" : "cfgSlot", "autoInteract" : true },
       { "type" : "label", "id" : "apDisplay" },
       "spacer",
-      { "type" : "button", "id" : "reset", "caption" : "Reset" },
-      { "type" : "button", "id" : "apply", "caption" : "Apply" }
+      { "type" : "button", "id" : "reset", "size" : 48, "caption" : "Reset" },
+      { "type" : "button", "id" : "apply", "size" : 48, "caption" : "Apply" }
     ]
   ]
 }

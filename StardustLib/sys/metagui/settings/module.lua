@@ -30,7 +30,7 @@ do
   local function addThemeEntry(themeId)
     local theme = themes[themeId] or defaultInfo
     local li = p.themeList:addChild {
-      type = "listItem", size = {128, 32+2*2}, children = { -- set to 48 when preview pics are in
+      type = "listItem", size = {128, 32}, children = { -- set to 48 when preview pics are in
         { mode = "horizontal" },
         {
           { type = "label", color = theme.defaultAccentColor, text = theme.name },

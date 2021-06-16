@@ -2,9 +2,13 @@
 
 > Beta v0.1.4 {
     
+    > "Chroma" metaGUI theme
+    theme options in settings pane
+    
     - extAsset
-    start on Chroma theme
     - ^ universal directives?
+    
+    put theme code in charge of generating tool tips
     
 } content update {
     
@@ -25,16 +29,14 @@
         bookkeeping function as part of mg
     }
     
-    "Chroma" metaGUI theme
-    theme options in settings pane
     
     stock icon system w/ manifest so themes can override
     - hd (2x) assets (flag in frames file)
-    figure out how to flag non-ninepatches
-    ^ non-ninepatch asset object; can pcall root.assetJson to check for frames file
+    - figure out how to flag non-ninepatches
+    - ^ non-ninepatch asset object; can pcall root.assetJson to check for frames file
     
     metaGUI-powered docs system
-    ^ temporary asset root swap
+    - ^ temporary asset root swap
     
     store multiple EPPs within augpack for quick swapping
     

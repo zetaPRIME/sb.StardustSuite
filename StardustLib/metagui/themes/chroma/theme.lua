@@ -28,6 +28,9 @@ local paletteFor do
   }
   local glassPalette = { } for k,v in pairs(glassColors) do glassPalette[k] = v[1] end
   
+  -- shading depths
+  local satExp = 1.0
+  local lumExp = 1.25 -- 1.25
   do -- calculate relative sat and lum values
     glassColors[1][3] = 1.0
     glassColors[1][4] = 1.0
@@ -35,8 +38,8 @@ local paletteFor do
     for i = 2, #glassColors do
       local o = glassColors[i]
       local cs = color.toHsl(o[1])
-      o[3] = cs[2] / rs[2]
-      o[4] = cs[3] / rs[3]
+      o[3] = (cs[2] / rs[2]) ^ satExp
+      o[4] = (cs[3] / rs[3]) ^ lumExp
     end
   end
   

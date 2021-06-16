@@ -35,11 +35,12 @@ local paletteFor do
     glassColors[1][3] = 1.0
     glassColors[1][4] = 1.0
     local rs = color.toHsl(glassColors[1][1])
+    local function ex(v, e) if v < 1.0 then return v^e end return v end -- asymmetrical exponent
     for i = 2, #glassColors do
       local o = glassColors[i]
       local cs = color.toHsl(o[1])
-      o[3] = (cs[2] / rs[2]) ^ satExp
-      o[4] = (cs[3] / rs[3]) ^ lumExp
+      o[3] = ex(cs[2] / rs[2], satExp)
+      o[4] = ex(cs[3] / rs[3], lumExp)
     end
   end
   
@@ -64,3 +65,13 @@ local paletteFor do
 end
 
 theme.primaryDirectives = paletteFor "accent"
+
+function theme.drawButton(w)
+  local c = widget.bindCanvas(w.backingWidget)
+  c:clear() local pal = paletteFor(w.color or "accent")
+  assets.button:draw(c, {w.state or "idle", pal, false and "?multiply=ffffffbf" or nil})
+  --[[if w.color == "accent" then
+    assets.button:draw(c, "accent" .. pal .. "?multiply=ffffff7f")
+  end]]
+  theme.drawButtonContents(w)
+end

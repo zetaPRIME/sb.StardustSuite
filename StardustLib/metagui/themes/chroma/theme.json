@@ -15,7 +15,7 @@
     },
     
     "useTabStyling" : true,
-    "tabsNoFocusFrame" : true,
+    //"tabsNoFocusFrame" : true,
     
     "" : "" // eof
 }

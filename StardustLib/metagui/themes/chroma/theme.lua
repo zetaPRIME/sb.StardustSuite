@@ -15,12 +15,21 @@ for _, ast in pairs {
 --theme.primaryDirectives = "?multiply=" .. mg.getColor "accent" .. "?brightness=75?multiply=ffffffbf"
 theme.primaryDirectives = "?multiply=ffffffbf"
 
+if not mg.cfg.accentColor or mg.cfg.accentColor == theme.defaultAccentColor then
+  mg.cfg.accentColor = color.toHex(color.fromHsl {
+    util.randomInRange {0, 1},
+    util.randomInRange {0, 1},
+    util.randomInRange {0.5, 0.65},
+  })
+end
+
 local paletteFor do
-  local bgAlpha = 0.75
+  local hlAlpha = 0.9 -- 1.0
+  local bgAlpha = 0.70
   local glassColors = {
-    {"7c50ff", 1.0}, -- reference color
-    {"a88bff", 1.0}, -- highlight
-    {"6340cc", 1.0}, -- 80
+    {"7c50ff", hlAlpha}, -- reference color
+    {"a88bff", hlAlpha}, -- highlight
+    {"6340cc", hlAlpha}, -- 80
     {"4e32a3", bgAlpha}, -- 64
     {"322066", bgAlpha}, -- 40
     {"1f1440", bgAlpha}, -- 25

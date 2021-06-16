@@ -2,7 +2,12 @@
 
 > Beta v0.1.4 {
     
-    > "Chroma" metaGUI theme
+    > "Chroma" metaGUI theme {
+        listItem color vars
+        check boxes
+        radio buttons
+        scroll bars
+    }
     theme options in settings pane
     
     - extAsset

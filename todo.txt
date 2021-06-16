@@ -1,20 +1,10 @@
 -
 
-> Beta v0.1.3c {
+> Beta v0.1.4 {
     
-    settings pane {
-        - quickbar autodismiss option
-        - scrolling setting (wheel, fling, both)
-    }
-    
-    - horizontal scroll bar support
-    - fix horizontal tab bar resetting scroll on tab change
-    
-    - make checkShift able to survive item-blocking
-    - shift+scrolling on both-ways scrollareas
-    
-    - actual tech hook
-    - add to techstub
+    - extAsset
+    start on Chroma theme
+    - ^ universal directives?
     
 } content update {
     

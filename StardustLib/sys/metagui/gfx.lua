@@ -1,7 +1,20 @@
 metagui = metagui or { }
 local mg = metagui
 
-do -- ninepatch assets
+
+do -- asset type definitions
+  
+  -- common functions between asset types
+  local function frameImage(self, frame)
+    if type(frame) ~= "table" then frame = { frame or "default" } end
+    local t = {self.image, ":"} util.appendLists(t, frame)
+    if self.useThemeDirectives then table.insert(t, 4, mg.theme[self.useThemeDirectives]) end
+    return table.concat(t)
+  end
+  
+  ----------------------
+  -- ninepatch assets --
+  ----------------------
   local ninePatchReg = { }
   
   local ninePatch = { }
@@ -37,6 +50,8 @@ do -- ninepatch assets
   mg.npMatrix = npMatrix
   mg.npRs = npRs
   
+  ninePatch.frameImage = frameImage
+  
   function ninePatch:draw(c, f, r) -- canvas, frame, rect
     if not r then
       local s = c:size()
@@ -48,7 +63,7 @@ do -- ninepatch assets
     if self.isHD then
       scm = { } for k,v in pairs(invm) do scm[k] = v*0.5 end
     end
-    local img = string.format("%s:%s", self.image, f or "default")
+    local img = self:frameImage(f)
     
     local rc, sc = npRs(r, scm), npRs(sr, invm)
     for i=1,9 do c:drawImageRect(img, sc[i], rc[i]) end
@@ -70,9 +85,10 @@ do -- ninepatch assets
     
     return np
   end
-end
-
-do -- extended assets
+  
+  ---------------------
+  -- extended assets --
+  ---------------------
   local extAssetReg = { } -- registry
   
   local extAsset = { } -- prototype
@@ -82,14 +98,17 @@ do -- extended assets
     return self.image
   end
   
+  -- if a theme expects a string it'll probably be concatenating; give expected result
   function extAssetMeta.__concat(self, other)
     return self.image .. other
   end
   
+  extAsset.frameImage = frameImage
+  
   function extAsset:draw(c, f, pos, scale, rot)
     scale = scale or 1
     if self.isHD then scale = scale * 0.5 end
-    local img = string.format("%s:%s", self.image, f or "default")
+    local img = self:frameImage(f)
     c:drawImageDrawable(img, pos, scale, nil, rot)
   end
   
@@ -101,7 +120,7 @@ do -- extended assets
     offset = offset or {0, 0}
     scale = scale or 1
     if self.isHD then scale = scale * 0.5 end
-    local img = string.format("%s:%s", self.image, f or "default")
+    local img = self:frameImage(f)
     c:drawTiledImage(img, offset, r, scale)
   end
   

@@ -20,6 +20,8 @@ theme.assets = { -- default assets
   itemRarity = mg.extAsset "itemRarity.png",
 } local assets = theme.assets
 
+assets.scrollBar.useThemeDirectives = "scrollBarDirectives"
+
 theme.scrollBarWidth = theme.scrollBarWidth or 6
 theme.itemSlotGlyphDirectives = theme.itemSlotGlyphDirectives or "?multiply=0000007f"
 theme.scrollBarDirectives = theme.scrollBarDirectives or ""
@@ -74,7 +76,7 @@ function tdef.drawTab(w)
   
   assets.tab:draw(c, state)
   if w.selected then
-    assets.tab:draw(c, w.tabStyle .. ".accent?multiply=" .. mg.getColor(w.color or "accent"))
+    assets.tab:draw(c, {w.tabStyle .. ".accent", "?multiply=" .. mg.getColor(w.color or "accent")})
   end
 end
 
@@ -82,7 +84,7 @@ function tdef.drawButton(w)
   local c = widget.bindCanvas(w.backingWidget)
   c:clear() assets.button:draw(c, w.state or "idle")
   local acc = mg.getColor(w.color)
-  if acc then assets.button:draw(c, "accent?multiply=" .. acc) end
+  if acc then assets.button:draw(c, {"accent", "?multiply=" .. acc}) end
   theme.drawButtonContents(w)
 end
 
@@ -149,11 +151,11 @@ function tdef.drawItemSlot(w)
   local ic = root.itemConfig(w:item())
   if ic and not w.hideRarity then
     local rarity = (ic.parameters.rarity or ic.config.rarity or "Common"):lower()
-    assets.itemRarity:draw(c, rarity .. (w.hover and "?brightness=50" or ""), center)
+    assets.itemRarity:draw(c, {rarity, w.hover and "?brightness=50" or nil}, center)
   end
 end
 
-function tdef.onScroll(w, directives)
+function tdef.onScroll(w)
   local anim = w._bar or 0
   w._bar = 30*1.5
   if anim > 0 then return nil end
@@ -178,7 +180,7 @@ function tdef.onScroll(w, directives)
           else r[o] = r[o+2] - theme.scrollBarWidth end -- vertical on right
           r[i+2] = r[i+2] + p[i] -- set far end
           r[i] = r[i+2] - s[i] -- and near
-          assets.scrollBar:draw(c, string.format("default%s?multiply=ffffff%02x", directives or theme.scrollBarDirectives, math.ceil(math.min(w._bar/30.0, 1.0) * 255)), r)
+          assets.scrollBar:draw(c, {"default", string.format("?multiply=ffffff%02x", math.ceil(math.min(w._bar/30.0, 1.0) * 255))}, r)
         end
       end
       w._bar = w._bar - 1

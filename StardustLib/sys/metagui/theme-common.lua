@@ -76,7 +76,7 @@ function tdef.drawTab(w)
   
   assets.tab:draw(c, state)
   if w.selected then
-    assets.tab:draw(c, {w.tabStyle .. ".accent", "?multiply=" .. mg.getColor(w.color or "accent")})
+    assets.tab:draw(c, {w.tabStyle .. ".accent", "?multiply=", mg.getColor(w.color or "accent")})
   end
 end
 

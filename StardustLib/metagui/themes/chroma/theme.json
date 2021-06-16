@@ -1,9 +1,10 @@
 {
     "name" : "Chroma",
-    "description" : "a",
+    "description" : "Smooth, clear glass.",
     "sortWeight" : -10,
     
-    "defaultAccentColor" : "bf7fff",
+    //"defaultAccentColor" : "7c50ff",
+    "defaultAccentColor" : "7f6fff", // blurple (but not discord blurple)
     
     "metrics" : {
         "borderMargins" : { // left, top, right, bottom

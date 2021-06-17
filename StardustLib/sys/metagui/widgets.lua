@@ -39,11 +39,15 @@ end do -- layout ---------------------------------------------------------------
     
     self.expandMode = param.expandMode or self.expandMode
     
+    if param.canvasBacked then
+      self.subWidgets = { canvas = mkwidget(base, { type = "canvas" }) }
+    end
+    
     local scissoring = param.scissoring
     if scissoring == nil then scissoring = true end
-    
     self.backingWidget = mkwidget(base, { type = "layout", layoutType = "basic", zlevel = param.zLevel, scissoring = scissoring })
-    if debug.showLayoutBoxes then -- image to make it visible (random color)
+    
+    if debug.showLayoutBoxes and not param.canvasBacked then -- image to make it visible (random color)
       widget.addChild(self.backingWidget, { type = "image", file = string.format("/assetmissing.png?crop=0;0;1;1?multiply=0000?replace;0000=%06x4f", sb.makeRandomSource():randu32() % 0x1000000), scale = 1024 })
     end
     if type(param.children) == "table" then -- iterate through and add children
@@ -167,6 +171,17 @@ end do -- layout ---------------------------------------------------------------
     for _, c in pairs(self.children or { }) do c:updateGeometry(true) end
     -- finally, apply
     if not noApply then self:applyGeometry() end
+  end
+  
+  function widgets.layout:applyGeometry(so)
+    mg.widgetBase.applyGeometry(self, so) -- base first
+    if self.subWidgets then
+      local pos, size = widget.getPosition(self.backingWidget), widget.getSize(self.backingWidget)
+      for _,sw in pairs(self.subWidgets) do -- sync position
+        widget.setPosition(sw, pos)
+        widget.setSize(sw, size)
+      end
+    end
   end
 end do -- panel -------------------------------------------------------------------------------------------------------------------------------------
   widgets.panel = mg.proto(mg.widgetBase, {
@@ -413,9 +428,10 @@ end do -- scroll area ----------------------------------------------------------
   end
   function widgets.scrollArea:applyGeometry(so)
     mg.widgetBase.applyGeometry(self, so) -- base first
+    local pos, size = widget.getPosition(self.backingWidget), widget.getSize(self.backingWidget)
     for _,sw in pairs(self.subWidgets) do -- sync position
-      widget.setPosition(sw, widget.getPosition(self.backingWidget))
-      widget.setSize(sw, widget.getSize(self.backingWidget))
+      widget.setPosition(sw, pos)
+      widget.setSize(sw, size)
     end
   end
 end do -- spacer ------------------------------------------------------------------------------------------------------------------------------------

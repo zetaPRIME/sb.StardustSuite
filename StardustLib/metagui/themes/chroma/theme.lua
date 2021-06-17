@@ -5,15 +5,21 @@ require "/lib/stardust/color.lua"
 local mg = metagui
 local assets = theme.assets
 
+assets.windowBody = mg.ninePatch "windowBody"
+assets.titleBarLeft = mg.ninePatch "titleBarLeft"
+assets.titleBarRight = mg.ninePatch "titleBarRight"
+
 for _, ast in pairs {
+  assets.windowBody, assets.titleBarLeft, assets.titleBarRight,
   assets.frame, assets.panel,
   assets.textBox,
   assets.tabPanel, assets.tab,
   assets.checkBox, assets.radioButton,
   assets.itemSlot,
 } do ast.useThemeDirectives = "primaryDirectives" end
---theme.primaryDirectives = "?multiply=" .. mg.getColor "accent" .. "?brightness=75?multiply=ffffffbf"
-theme.primaryDirectives = "?multiply=ffffffbf"
+
+assets.closeButton = mg.extAsset "closeButton"
+assets.closeButton.useThemeDirectives = "closeButtonDirectives"
 
 if not mg.cfg.accentColor or mg.cfg.accentColor == theme.defaultAccentColor then
   mg.cfg.accentColor = color.toHex(color.fromHsl {
@@ -74,6 +80,69 @@ local paletteFor do
 end
 
 theme.primaryDirectives = paletteFor "accent"
+theme.closeButtonDirectives = paletteFor "3f3fff"
+
+local installBg do
+  local function bgDraw(self)
+    local c = widget.bindCanvas(self.subWidgets.canvas)
+    c:clear()
+    self._bg:draw(c, self._bgDirectives)
+  end
+  
+  installBg = function(w, bg, directives)
+    w._bg = bg
+    w._bgDirectives = directives
+    w.draw = bgDraw
+  end
+end
+
+local fw = { } -- frame widgets table
+function theme.decorate()
+  local style = mg.cfg.style
+  
+  if style == "window" then
+    mg.widgetContext = fw
+    
+    frame:addChild {
+      type = "layout", size = frame.size, mode = "vertical", spacing = 0, children = {
+        { -- title bar
+          { id = "titleBar", spacing = 0, size = 20 },
+          { { id = "titleBarLeft", mode = "horizontal", size = 20, canvasBacked = true, spacing = 2 },
+            2,
+            { id = "icon", type = "image" },
+            { id = "title", type = "label", align = "left", inline = true },
+            16,
+          },
+          { { id = "titleBarRight", mode = "horizontal", size = 20, expandMode = {2, 0}, canvasBacked = true, },
+            
+          },
+        },
+        { { id = "body", canvasBacked = true, expandMode = {2, 2} } },
+      }
+    }
+    
+    installBg(fw.titleBarLeft, assets.titleBarLeft)
+    installBg(fw.titleBarRight, assets.titleBarRight)
+    installBg(fw.body, assets.windowBody)
+    
+    mg.widgetContext = nil
+  else
+    widget.addChild(frame.backingWidget, { type = "canvas", position = {0, 0}, size = frame.size }, "canvas")
+  end
+end
+
+function theme.drawFrame()
+  local style = mg.cfg.style
+  
+  if (style == "window") then
+    fw.icon.explicitSize = (not mg.cfg.icon) and {0, 0} or nil
+    fw.icon:setFile(mg.cfg.icon)
+    fw.title:setText(mg.cfg.title)
+  else
+    c = widget.bindCanvas(frame.backingWidget .. ".canvas")
+    c:clear() assets.frame:draw(c)
+  end
+end
 
 function theme.drawButton(w)
   local c = widget.bindCanvas(w.backingWidget)

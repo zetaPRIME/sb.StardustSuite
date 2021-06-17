@@ -8,7 +8,7 @@
     
     "metrics" : {
         "borderMargins" : { // left, top, right, bottom
-            "window" : [ 3, 22, 3, 3 ],
+            "window" : [ 4, 21, 4, 4 ],
             "panel" : [ 3, 3, 3, 3 ],
             "contextMenu" : [2, 2, 2, 2]
         }

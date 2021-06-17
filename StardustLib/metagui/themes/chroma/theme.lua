@@ -20,6 +20,8 @@ for _, ast in pairs {
 
 assets.closeButton = mg.extAsset "closeButton"
 assets.closeButton.useThemeDirectives = "closeButtonDirectives"
+assets.closeButtonSmall = mg.extAsset "closeButtonSmall"
+assets.closeButtonSmall.useThemeDirectives = "closeButtonDirectives"
 
 if not mg.cfg.accentColor or mg.cfg.accentColor == theme.defaultAccentColor then
   mg.cfg.accentColor = color.toHex(color.fromHsl {
@@ -80,7 +82,7 @@ local paletteFor do
 end
 
 theme.primaryDirectives = paletteFor "accent"
-theme.closeButtonDirectives = paletteFor "ff3f3f"
+theme.closeButtonDirectives = paletteFor "cc0044"
 
 local installBg do
   local function bgDraw(self)
@@ -114,7 +116,7 @@ function theme.decorate()
             14,
           },
           { { id = "titleBarRight", mode = "horizontal", size = 20, expandMode = {2, 0}, canvasBacked = true, scissoring = false },
-            "spacer", { id = "closeButton", type = "iconButton", visible = false },
+            "spacer", { id = "closeButton", type = "iconButton" },
           },
         },
         { { id = "body", canvasBacked = true, expandMode = {2, 2} } },
@@ -125,7 +127,7 @@ function theme.decorate()
     installBg(fw.titleBarRight, assets.titleBarRight)
     installBg(fw.body, assets.windowBody)
     
-    fw.closeButton:setImage(assets.closeButton)
+    --fw.closeButton:setImage(assets.closeButton)
     fw.closeButton.onClick = pane.dismiss
     
     mg.widgetContext = nil
@@ -143,7 +145,8 @@ function theme.drawFrame()
     fw.title:setText(mg.cfg.title)
     
     local fitClose = frame.size[1] - fw.titleBarLeft:preferredSize()[1] >= 20
-    fw.closeButton:setVisible(fitClose)
+    fw.closeButton:setImage(fitClose and assets.closeButton or assets.closeButtonSmall)
+    --fw.closeButton:setVisible(fitClose)
     fw.titleBarRight.explicitSize = (not fitClose) and {2, 20} or nil
     fw.titleBarRight.expandMode = (not fitClose) and {0, 0} or {2, 0}
     --[[mg.startEvent(function()

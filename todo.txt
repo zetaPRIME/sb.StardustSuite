@@ -8,9 +8,11 @@
         - radio buttons
         scroll bars
         - title bar (add backing canvases to layouts)
-        close button frames
+        - close button frames
         
         item rarities
+        
+        figure out some natural color variation within a pane?
     }
     theme options in settings pane
     

@@ -1,6 +1,6 @@
 { // -*- grammar-ext: json -*-
   "frameGrid" : {
-    "size" : [23, 20],
+    "size" : [14, 20],
     "dimensions" : [3, 1],
     "names" : [
       [ "idle", "hover", "press" ]

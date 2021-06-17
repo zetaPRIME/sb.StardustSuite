@@ -85,6 +85,7 @@ do -- asset type definitions
     
     return np
   end
+  function mg.isNinePatch(ast) return type(ast) == "table" and getmetatable(ast) == ninePatchMeta end
   
   ---------------------
   -- extended assets --
@@ -133,11 +134,12 @@ do -- asset type definitions
     
     local res, d = pcall(root.assetJson, path .. ".frames")
     if not res then d = { } end
-    ast.frameSize = d.frameGrid.size
+    ast.frameSize = res and d.frameGrid.size or root.imageSize(ast.image)
     ast.isHD = d.isHD
     
     return ast
   end
+  function mg.isExtAsset(ast) return type(ast) == "table" and getmetatable(ast) == extAssetMeta end
 end
 
 function mg.measureString(str, wrapWidth, size)

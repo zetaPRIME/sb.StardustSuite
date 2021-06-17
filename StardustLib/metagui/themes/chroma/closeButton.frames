@@ -1,11 +1,15 @@
 { // -*- grammar-ext: json -*-
   "frameGrid" : {
-    "size" : [40, 20],
+    "size" : [23, 20],
     "dimensions" : [1, 1],
     "names" : [
-      [ "default" ]
+      [ "idle" ]
     ]
   },
+  "aliases" : {
+    "hover" : "idle",
+    "press" : "idle"
+  },
   //"isHD" : true,
-  "ninePatchMargins" : [0, 0, 2, 0]
+  "" : "" // eof
 }

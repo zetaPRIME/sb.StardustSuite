@@ -98,16 +98,20 @@ end
 
 function tdef.drawIconButton(w)
   local c = widget.bindCanvas(w.backingWidget) c:clear()
-  local file
-  if w.state == "idle" then file = w.image
-  elseif w.pressImage and w.state == "press" then file = w.pressImage
+  if mg.isExtAsset(w.image) then
+    w.image:draw(c, { w.state }, vec2.mul(c:size(), 0.5))
   else
-    file = w.hoverImage or w.image
-    if w.state == "press" then file = file .. "?brightness=-50"
-    elseif not w.hoverImage then file = file .. "?brightness=50" end
+    local file
+    if w.state == "idle" then file = w.image
+    elseif w.pressImage and w.state == "press" then file = w.pressImage
+    else
+      file = w.hoverImage or w.image
+      if w.state == "press" then file = file .. "?brightness=-50"
+      elseif not w.hoverImage then file = file .. "?brightness=50" end
+    end
+    
+    c:drawImageDrawable(file, vec2.mul(c:size(), 0.5), 1.0)
   end
-  
-  c:drawImageDrawable(file, vec2.mul(c:size(), 0.5), 1.0)
 end
 
 function tdef.drawCheckBox(w)

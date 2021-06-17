@@ -80,7 +80,7 @@ local paletteFor do
 end
 
 theme.primaryDirectives = paletteFor "accent"
-theme.closeButtonDirectives = paletteFor "3f3fff"
+theme.closeButtonDirectives = paletteFor "ff3f3f"
 
 local installBg do
   local function bgDraw(self)
@@ -108,13 +108,13 @@ function theme.decorate()
         { -- title bar
           { id = "titleBar", spacing = 0, size = 20 },
           { { id = "titleBarLeft", mode = "horizontal", size = 20, canvasBacked = true, spacing = 2 },
-            2,
+            1,
             { id = "icon", type = "image" },
             { id = "title", type = "label", align = "left", inline = true },
-            16,
+            14,
           },
-          { { id = "titleBarRight", mode = "horizontal", size = 20, expandMode = {2, 0}, canvasBacked = true, },
-            
+          { { id = "titleBarRight", mode = "horizontal", size = 20, expandMode = {2, 0}, canvasBacked = true, scissoring = false },
+            "spacer", { id = "closeButton", type = "iconButton", visible = false },
           },
         },
         { { id = "body", canvasBacked = true, expandMode = {2, 2} } },
@@ -124,6 +124,9 @@ function theme.decorate()
     installBg(fw.titleBarLeft, assets.titleBarLeft)
     installBg(fw.titleBarRight, assets.titleBarRight)
     installBg(fw.body, assets.windowBody)
+    
+    fw.closeButton:setImage(assets.closeButton)
+    fw.closeButton.onClick = pane.dismiss
     
     mg.widgetContext = nil
   else
@@ -138,6 +141,15 @@ function theme.drawFrame()
     fw.icon.explicitSize = (not mg.cfg.icon) and {0, 0} or nil
     fw.icon:setFile(mg.cfg.icon)
     fw.title:setText(mg.cfg.title)
+    
+    local fitClose = frame.size[1] - fw.titleBarLeft:preferredSize()[1] >= 20
+    fw.closeButton:setVisible(fitClose)
+    fw.titleBarRight.explicitSize = (not fitClose) and {2, 20} or nil
+    fw.titleBarRight.expandMode = (not fitClose) and {0, 0} or {2, 0}
+    --[[mg.startEvent(function()
+    coroutine.yield()
+      fw.titleBarRight:updateGeometry()
+    end)]]
   else
     c = widget.bindCanvas(frame.backingWidget .. ".canvas")
     c:clear() assets.frame:draw(c)

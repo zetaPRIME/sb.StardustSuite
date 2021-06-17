@@ -542,17 +542,23 @@ end do -- icon button ----------------------------------------------------------
   
   function widgets.iconButton:draw() theme.drawIconButton(self) end
   function widgets.iconButton:setImage(main, hover, press)
-    if not hover and not press and main:sub(-1, -1) == ':' then
-      self.image = main .. "idle"
-      self.hoverImage = main .. "hover"
-      self.pressImage = main .. "press"
+    if not main then return end
+    if mg.isExtAsset(main) then
+      self.image = main
+      self.imgSize = main.frameSize
     else
-      self.image = mg.path(main)
-      self.hoverImage = mg.path(hover)
-      self.pressImage = mg.path(press)
+      if not hover and not press and main:sub(-1, -1) == ':' then
+        self.image = main .. "idle"
+        self.hoverImage = main .. "hover"
+        self.pressImage = main .. "press"
+      else
+        self.image = mg.path(main)
+        self.hoverImage = mg.path(hover)
+        self.pressImage = mg.path(press)
+      end
+      
+      self.imgSize = root.imageSize(self.image)
     end
-    
-    self.imgSize = root.imageSize(self.image)
     self:queueGeometryUpdate()
     self:queueRedraw()
   end

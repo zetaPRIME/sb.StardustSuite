@@ -7,7 +7,10 @@
         - check boxes
         - radio buttons
         scroll bars
-        title bar (add backing canvases to layouts)
+        - title bar (add backing canvases to layouts)
+        close button frames
+        
+        item rarities
     }
     theme options in settings pane
     

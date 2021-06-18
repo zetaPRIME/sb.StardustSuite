@@ -20,7 +20,6 @@ for _, ast in pairs {
 for _, ast in pairs {
   assets.checkBox, assets.radioButton,
   assets.tab,
-  assets.scrollBar,
 } do ast.useThemeDirectives = "secondaryDirectives" end
 
 assets.closeButton = mg.extAsset "closeButton"
@@ -90,12 +89,14 @@ theme.primaryDirectives = paletteFor "accent"
 theme.closeButtonDirectives = paletteFor "cc0044"
 do
   local col = color.toHsl(mg.getColor "accent")
-  col[1] = (col[1] + 3/16) % 1.0 -- hue shift
+  col[1] = (col[1] + 3/24) % 1.0 -- hue shift
   col[3] = util.clamp(col[3] + 0.2, 0, 1) -- bit brighter
   col = color.fromHsl(col)
   theme.secondaryDirectives = paletteFor(col)
   theme.listItemColorSelected = color.hexWithAlpha(col, 0.25, true)
   theme.listItemColorSelectedHover = color.hexWithAlpha(col, 0.5, true)
+  
+  theme.scrollBarDirectives = theme.secondaryDirectives .. "?multiply=ffffff7f"
 end
 
 local installBg do

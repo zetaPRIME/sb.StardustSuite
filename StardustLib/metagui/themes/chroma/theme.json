@@ -15,6 +15,7 @@
     },
     
     "listItemColor" : "#0000",
+    "scrollBarDirectives" : "?multiply=ffffff7f",
     
     "useTabStyling" : true,
     //"tabsNoFocusFrame" : true,

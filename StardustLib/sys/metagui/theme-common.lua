@@ -54,7 +54,7 @@ function tdef.drawListItem(w)
   local c = widget.bindCanvas(w.backingWidget)
   c:clear() local r = rect.withSize({0, 0}, c:size())
   if w.selected then -- highlight in accent by default
-    local color = theme.listItemColorSelected or table.concat { "#", mg.getColor("accent"):sub(1, 6), (w.hover and "7f" or "3f") }
+    local color = (w.hover and theme.listItemColorSelectedHover or theme.listItemColorSelected) or table.concat { "#", mg.getColor("accent"):sub(1, 6), (w.hover and "7f" or "3f") }
     c:drawRect(r, color)
   elseif w.hover then
     c:drawRect(r, theme.listItemColorHover)

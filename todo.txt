@@ -12,7 +12,10 @@
         
         item rarities
         
-        figure out some natural color variation within a pane?
+        > figure out some natural color variation within a pane?
+        "accent" color on buttons probably just bg but brighter?
+        
+        mg "highlight" color? base/accent/highlight??
     }
     theme options in settings pane
     
@@ -22,6 +25,12 @@
     dynItemAnim: lights
     (mention dynItemAnim in changelog)
     
+    transmatter network rewrite {
+        coroutine-powered transaction system (requests initiate transactions, but the controller operates storage providers directly)
+        
+        cache-building task - transactions suspended until complete, cache affected in lockstep? except storage buses can be manipulated externally
+        cache keeps track of providers that have each item for expediency (and probably how much?)
+    }
     
     
 } big things to do by Milestone 2 {
@@ -35,6 +44,7 @@
         bookkeeping function as part of mg
     }
     
+    eliminate ninepatch overlapping when too small (clamp areas to half render size)
     
     stock icon system w/ manifest so themes can override
     - hd (2x) assets (flag in frames file)

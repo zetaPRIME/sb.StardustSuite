@@ -69,8 +69,7 @@ do
   end
   
   function itemutil.canStack(i1, i2)
-    if i1.name ~= i2.name then return false end -- if they're not the same item...
-    return deepCompare(i1.parameters, i2.parameters) -- I don't think anything outside of parameters has any bearing
+    return root.itemDescriptorsMatch(i1, i2, true) -- just use the native function; potentially much faster than lua iteration
   end
   
   local function dive(tbl, path)

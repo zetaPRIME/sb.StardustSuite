@@ -3,6 +3,15 @@ require "/scripts/vec2.lua"
 require "/lib/stardust/network.lua"
 --require "/lib/stardust/sync.lua"
 
+storagenet = { }
+function storagenet:onConnect()
+  object.say "connected!"
+end
+
+function storagenet:onDisconnect()
+  object.say "disconnected."
+end
+
 openPlayers = {}
 inUse = false
 playerTimeout = -1

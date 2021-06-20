@@ -3,26 +3,58 @@ require "/scripts/util.lua"
 
 require "/lib/stardust/network.lua"
 require "/lib/stardust/tasks.lua"
+require "/lib/stardust/interop.lua"
 --require "/lib/stardust/itemutil.lua"
+
+local nullFunc = function() end
 
 local processes = taskQueue()
 
-local deviceMap = { } -- map<objId, list<device>>
+local devices = { }
+--[[ map<objId, device>
+  device = {
+    handle
+    storage = map<storageProvider, true>
+  }
+]]
 
 local itemCache = { }
-
---[[
-  cache structure:
-  itemname = {
+--[[ map<itemname, cache>
+  cache = {
     types = {
       [1] = {
         descriptor = <item descriptor>
-        
+        storage = map<provider, count>
       }
       ...
     }
   }
 ]]
+
+local handleProto = { }
+local handleMeta = { __index = handleProto }
+handleProto.connected = true -- indicator
+
+-- event stubs
+handleProto.onConnect = nullFunc
+handleProto.onDisconnect = nullFunc
+
+function handleProto:disconnect()
+  local dev = devices[self.id]
+  if dev then
+    for sp in pairs(dev.storage) do
+      sp:disconnect()
+    end
+    
+    devices[self.id] = nil
+  end
+  self:onDisconnect()
+  setmetatable(self, nil) -- deactivate
+end
+
+
+
+----------------------------------------------------------------
 
 function init()
   
@@ -43,8 +75,29 @@ processes:spawn("networkManager", function()
   
   while true do
     local old = pool
-    pool = network.getPool(nil, "startech:storagenet")
+    pool = network.getPool(nil, "startech:storagenet.device")
     local delta = pool:delta(old)
+    
+    for id in pairs(delta.removed) do
+      local dev = devices[id]
+      if dev then dev.handle:disconnect() end
+    end
+    
+    for id in pairs(delta.added) do
+      local env = interop.hack(id)
+      if env then
+        if not env.storagenet then env.storagenet = { } end
+        local handle = env.storagenet
+        setmetatable(handle, handleMeta)
+        handle.id = id
+        handle.env = env
+        
+        local dev = { handle = handle, storage = { } }
+        devices[id] = dev
+        
+        handle:onConnect()
+      end
+    end
     
     
     util.wait(5)

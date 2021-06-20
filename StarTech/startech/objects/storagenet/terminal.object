@@ -60,7 +60,8 @@
   "inputNodes" : [ [0, 0] ],
   
   "networkTags" : {
-    "storageNet" : true
+    "storageNet" : true,
+    "startech:storagenet.device" : true
   }
   
   //

@@ -7,6 +7,7 @@ require "/lib/stardust/interop.lua"
 --require "/lib/stardust/itemutil.lua"
 
 local nullFunc = function() end
+local nullTable = { }
 
 local processes = taskQueue()
 
@@ -31,6 +32,78 @@ local itemCache = { }
   }
 ]]
 
+local cacheProto = { }
+local cacheMeta = { __index = cacheProto }
+
+function cacheProto:iterate()
+  return coroutine.wrap(function()
+    coroutine.yield(self.normal)
+    for e in pairs(self.variants) do coroutine.yield(e) end
+  end)
+end
+function cacheProto:match(itm)
+  if not itm then return nil end
+  for sc in self:iterate() do
+    if root.itemDescriptorsMatch(itm, sc.descriptor, true) then return sc end
+  end
+  return nil -- explicit
+end
+
+
+local function cacheFor(itm, create)
+  local isDesc = type(itm) == "table"
+  local id = isDesc and itm.name or itm
+  local mc = itemCache[id]
+  if not mc then
+    if not create then return nil end
+    mc = setmetatable({
+      id = id,
+      normal = {
+        descriptor = { name = id, count = 0, parameters = nullTable },
+        storage = { },
+      },
+      variants = { },
+    }, cacheMeta)
+    mc.entry = mc
+    mc.normal.entry = mc
+    itemCache[id] = mc
+  end
+  if not isDesc then return mc end
+  local sc = mc:match(itm)
+  if not sc then
+    if not create then return nil end
+    sc = {
+      entry = mc,
+      descriptor = { name = id, count = 0, parameters = itm.parameters },
+      storage = { },
+    }
+    mc.variants[sc] = true
+  end
+  return sc
+end
+
+local storageProto = { }
+local storageMeta = { __index = storageProto }
+
+function storageProto:getPriority() return 0 end
+storageProto.tryTakeItem = nullFunc
+storageProto.tryPutItem = nullFunc
+
+storageProto.onConnect = nullFunc
+storageProto.onDisconnect = nullFunc
+
+function storageProto:updateItemCounts(lst)
+  for _, itm in pairs(lst) do
+    
+  end
+end
+
+function storageProto:disconnect()
+  
+end
+
+-- -- --
+
 local handleProto = { }
 local handleMeta = { __index = handleProto }
 handleProto.connected = true -- indicator
@@ -52,6 +125,20 @@ function handleProto:disconnect()
   setmetatable(self, nil) -- deactivate
 end
 
+function handleProto:registerStorage(proto, ...)
+  if not proto.__meta then proto.__meta = { __index = proto } end -- stash this
+  setmetatable(proto, storageMeta)
+  local dev = devices[self.id]
+  local sp = setmetatable({
+    handle = self,
+    connected = true,
+    cache = { }, -- mirror main cache layout?? actually, just plonk the main cache entries in here? maybe only subentries
+  }, proto.__meta)
+  dev.storage[sp] = true
+  sp:onConnect(...)
+  return sp
+end
+
 
 
 ----------------------------------------------------------------
@@ -62,6 +149,18 @@ function init()
   
   -- set all outputs positive for chunkloading purposes
   for i=1, object.outputNodeCount() do object.setOutputNodeLevel(i-1, true) end
+  
+  -- TEMP TESTING
+  cacheFor({name = "lol", parameters = { chicken = "yes" }}, true)
+  
+  function b(itm)
+    local str = cacheFor(itm) and "yes" or "no"
+    sb.logInfo("cache says " .. str)
+  end
+  
+  b { name = "lol", parameters = { } }
+  b { name = "lol", parameters = { fumble = 3 } }
+  b { name = "lol", parameters = { chicken = "yes" } }
   
 end
 

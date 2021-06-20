@@ -192,27 +192,24 @@ function updateNetwork()
   -- refresh master pool
   controller.pool = network.getPool(nil, "storageNet")
   -- and hook back up
-  for i = 1, #(controller.pool) do
-    world.callScriptedEntity(controller.pool[i], "shared._var", "controller", controller)
-    world.callScriptedEntity(controller.pool[i], "onStorageNetUpdate") -- give it a ping
+  for id in pairs(controller.pool) do
+    world.callScriptedEntity(id, "shared._var", "controller", controller)
+    world.callScriptedEntity(id, "onStorageNetUpdate") -- give it a ping
   end
-  local sp = controller.pool.tagged("storageNet.storage")
+  local sp = controller.pool:tagged("storageNet.storage")
   
-  controller.poolStorage, controller.poolStorageSortable = {}, {}
-  local i = 1
-  for k,v in ipairs(sp) do
-    local driver = interop.getShared(v).storageProvider
+  controller.poolStorage, controller.poolStorageSortable = { }, { }
+  for id in pairs(sp) do
+    local driver = interop.getShared(id).storageProvider
     if driver then -- apparently it can derp out like that
       if driver._array then -- object provides multiple distinct storage elements (implement as metatable to keep iteration from hitting)
-        for k,subdriver in pairs(driver) do -- probably don't want ipairs; allow holes for 
-          controller.poolStorage[i] = subdriver
-          controller.poolStorageSortable[i] = subdriver
-          i = i + 1
+        for k,subdriver in pairs(driver) do -- probably don't want ipairs; allow holes for
+          table.insert(controller.poolStorage, subdriver)
+          table.insert(controller.poolStorageSortable, subdriver)
         end
       else -- just add the one
-        controller.poolStorage[i] = driver
-        controller.poolStorageSortable[i] = driver
-        i = i + 1 -- VERY IMPORTANT!
+        table.insert(controller.poolStorage, driver)
+        table.insert(controller.poolStorageSortable, driver)
       end
     end
   end

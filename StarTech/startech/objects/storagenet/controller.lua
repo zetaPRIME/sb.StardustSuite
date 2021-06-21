@@ -21,7 +21,7 @@ local devices = { }
 
 local itemCache = { }
 --[[ map<itemname, cache>
-  cache = {
+  cache = { not accurate anymore
     types = {
       [1] = {
         descriptor = <item descriptor>
@@ -34,6 +34,8 @@ local itemCache = { }
 
 local cacheProto = { }
 local cacheMeta = { __index = cacheProto }
+local subcacheProto = { }
+local subcacheMeta = { __index = subcacheProto }
 
 function cacheProto:iterate()
   return coroutine.wrap(function()
@@ -47,6 +49,20 @@ function cacheProto:match(itm)
     if root.itemDescriptorsMatch(itm, sc.descriptor, true) then return sc end
   end
   return nil -- explicit
+end
+
+function cacheProto:recalculate()
+  for v in self:iterate() do v:recalculate() end
+end
+function subcacheProto:recalculate()
+  local c = 0
+  for s, cc in pairs(self.storage) do
+    c = c + cc
+  end
+  self.descriptor.count = c
+  if c <= 0 then -- reap
+    self.entry.variants[self] = nil
+  end
 end
 
 
@@ -72,11 +88,11 @@ local function cacheFor(itm, create)
   local sc = mc:match(itm)
   if not sc then
     if not create then return nil end
-    sc = {
+    sc = setmetatable({
       entry = mc,
       descriptor = { name = id, count = 0, parameters = itm.parameters },
       storage = { },
-    }
+    }, subcacheMeta)
     mc.variants[sc] = true
   end
   return sc
@@ -93,13 +109,38 @@ storageProto.onConnect = nullFunc
 storageProto.onDisconnect = nullFunc
 
 function storageProto:updateItemCounts(lst)
+  if self.dead then return end
+  if lst.name then lst = {lst} end -- allow descriptor input
   for _, itm in pairs(lst) do
-    
+    local sc = cacheFor(itm, itm.count > 0)
+    if sc then
+      local prev = sc.storage[self] or 0
+      sc.storage[self] = itm.count > 0 and itm.count or nil -- set or clear contributing count
+      self.cache[sc] = itm.count > 0 or nil -- set whether this is contributing
+      local d = itm.count - prev
+      sc.descriptor.count = sc.descriptor.count + d
+      if sc.descriptor.count <= 0 then -- reap
+        sc.entry.variants[sc] = nil
+      end
+    end
   end
 end
 
+function storageProto:clearItemCounts()
+  if self.dead then return end
+  local lst = { }
+  for sc in pairs(self.cache) do -- assemble list of zero-counts
+    table.insert(lst, { name = sc.descriptor.name, parameters = sc.descriptor.parameters, count = 0 })
+  end
+  self:updateItemCounts(lst)
+end
+
 function storageProto:disconnect()
-  
+  self:clearItemCounts()
+  local dev = devices[self.handle.id]
+  dev.storage[self] = nil -- remove from listing
+  self:onDisconnect()
+  self.dead = true
 end
 
 -- -- --
@@ -132,7 +173,7 @@ function handleProto:registerStorage(proto, ...)
   local sp = setmetatable({
     handle = self,
     connected = true,
-    cache = { }, -- mirror main cache layout?? actually, just plonk the main cache entries in here? maybe only subentries
+    cache = { }, -- only need this as a set of each individual variant affected
   }, proto.__meta)
   dev.storage[sp] = true
   sp:onConnect(...)

@@ -7,6 +7,7 @@ require "/lib/stardust/interop.lua"
 --require "/lib/stardust/itemutil.lua"
 
 local nullFunc = function() end
+local returnZero = function() return 0 end
 local nullTable = { }
 
 local processes = taskQueue()
@@ -92,9 +93,8 @@ local storageProto = { }
 local storageMeta = { __index = storageProto }
 storageProto.priority = 0
 
-function storageProto:getPriority() return 0 end
-storageProto.tryTakeItem = nullFunc
-storageProto.tryPutItem = nullFunc
+storageProto.tryTakeItem = returnZero
+storageProto.tryPutItem = returnZero
 
 storageProto.onConnect = nullFunc
 storageProto.onDisconnect = nullFunc
@@ -202,13 +202,14 @@ function handleProto:startTransaction(arg)
   
   return tr
 end
+handleProto.transaction = handleProto.startTransaction -- alias
 
 function transactionProto:run()
   if self.dead then return self end
   local s, err = coroutine.resume(self.crt)
   if not s then
     sb.logError("Transaction error: " .. err)
-    self:fail()
+    self:fail "error"
   elseif coroutine.status(self.crt) == "dead" then -- finished naturally
     self.dead = true
     self:onFinish()
@@ -216,7 +217,7 @@ function transactionProto:run()
   return self -- chainable
 end
 
-function transactionProto:runUntilFinish(sync) while not self.dead do self:run() end end
+function transactionProto:runUntilFinish(sync) while not self.dead do self:run() end return self end
 function transactionProto:waitFor() while not self.dead do coroutine.yield() end end
 
 transactionProto.onFinish = nullFunc()
@@ -225,6 +226,37 @@ function transactionProto:fail(ftype)
   self.dead = true
   self.failType = ftype
   self:onFail()
+end
+
+-- -- --
+
+function transactionDef:request()
+  if not self.args.item then return self:fail "invalid" end
+  local itm = self.args.item
+  local sc = cacheFor(itm)
+  if not sc then return self:fail "notFound" end
+  if not self.args.partial and sc.descriptor.count < itm.count then return self:fail "notFound" end
+  itm.parameters = sc.descriptor.parameters -- deduplicate
+  
+  local req = { name = itm.name, parameters = itm.parameters } -- dummy request item
+  local needed = itm.count
+  local count = 0
+  local sl = util.mergeTable({ }, sc.storage) -- copy so iteration doesn't get wonked when counts get updated
+  for sp in pairs(sl) do
+    req.count = needed - count
+    count = count + (sp:tryTakeItem(req) or 0)
+    if count >= needed then break end
+  end
+  
+  -- might as well reuse request for result
+  req.count = count
+  self.result = req
+end
+
+function transactionDef:insert()
+  if not self.args.item then return self:fail "invalid" end
+  local itm = self.args.item
+  local sc = cacheFor(itm, true)
 end
 
 ----------------------------------------------------------------

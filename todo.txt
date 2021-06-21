@@ -37,6 +37,10 @@
         
         item insert/withdrawal
         drives: updateinfo
+        terminal: {
+            animation + player open tracking
+            insertion
+        }
     }
     
     preassembled filter system so don't need to re-tokenize on every test

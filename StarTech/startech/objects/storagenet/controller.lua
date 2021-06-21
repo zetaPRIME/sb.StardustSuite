@@ -12,12 +12,8 @@ local nullTable = { }
 
 local processes = taskQueue()
 
-local devices = { }
---[[ map<objId, device>
-  device = {
-    handle
-    storage = map<storageProvider, true>
-  } ]]
+local devices = { } -- map<objId, { handle, storage = map<storageProvider, true> }>
+local storageByPriority
 
 local itemCache = { }
 local displayCache
@@ -89,6 +85,16 @@ local function cacheFor(itm, create)
   return sc
 end
 
+local function priorityList()
+  if storageByPriority then return storageByPriority end
+  storageByPriority = { }
+  for id, dev in pairs(devices) do
+    for sp in pairs(dev.storage) do storageByPriority[sp] = sp end
+  end
+  table.sort(storageByPriority, function(a, b) return b.priority < a.priority end)
+  return storageByPriority
+end
+
 local storageProto = { }
 local storageMeta = { __index = storageProto }
 storageProto.priority = 0
@@ -133,6 +139,7 @@ function storageProto:disconnect()
   dev.storage[self] = nil -- remove from listing
   self:onDisconnect()
   self.dead = true
+  storageByPriority = nil -- invalidate
 end
 
 -- -- --
@@ -186,6 +193,7 @@ function handleProto:registerStorage(proto, ...)
   }, proto.__meta)
   dev.storage[sp] = true
   sp:onConnect(...)
+  storageByPriority = nil -- invalidate
   return sp
 end
 
@@ -253,10 +261,26 @@ function transactionDef:request()
   self.result = req
 end
 
-function transactionDef:insert()
-  if not self.args.item then return self:fail "invalid" end
-  local itm = self.args.item
-  local sc = cacheFor(itm, true)
+do -- encapsulate
+  local function insertIteration(sc)
+    return coroutine.wrap(function()
+      if sc then -- 
+        for sp in pairs(sc.storage) do coroutine.yield(sp) end
+      end
+      for _, sp in pairs(priorityList()) do coroutine.yield(sp) end
+    end)
+  end
+  function transactionDef:insert()
+    if not self.args.item then return self:fail "invalid" end
+    local itm = self.args.item
+    
+    local req = { name = itm.name, count = itm.count, parameters = itm.parameters } -- operate on a copy
+    for sp in insertIteration(cacheFor(itm)) do
+      req.count = req.count - (sp:tryPutItem(req) or 0)
+      if req.count <= 0 then return end -- no leftovers
+    end
+    self.result = req -- return leftovers
+  end
 end
 
 ----------------------------------------------------------------

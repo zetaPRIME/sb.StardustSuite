@@ -61,6 +61,24 @@ function provider:tryTakeItem(req, test)
   return rc
 end
 
+function provider:tryPutItem(req, test)
+  if req.count <= 0 then return 0 end -- not actually inserting anything
+  local itm, idx
+  for i, ii in pairs(self.item.parameters.contents) do -- find existing stack
+    if root.itemDescriptorsMatch(req, ii, true) then itm, idx = ii, i break end
+  end
+  local count = req.count
+  if itm then
+    itm.count = itm.count + count
+  else
+    itm = { name = req.name, parameters = req.parameters, count = count }
+    table.insert(self.item.parameters.contents, itm)
+  end
+  self:updateItemCounts(itm)
+    
+  return count
+end
+
 function storagenet:onConnect()
   storage.drives = storage.drives or { }
   for slot in pairs(storage.drives) do storagenet:registerStorage(provider, slot) end

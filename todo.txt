@@ -35,11 +35,14 @@
         - proper displayCache support
         - skeleton of transaction system
         
-        item insert/withdrawal
-        drives: updateinfo
+        - item insert/withdrawal
+        drives: {
+            updateInfo
+            capacity tracking
+        }
         terminal: {
             animation + player open tracking
-            insertion
+            - insertion
         }
     }
     

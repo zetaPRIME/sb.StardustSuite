@@ -19,16 +19,8 @@ local devices = { }
   } ]]
 
 local itemCache = { }
---[[ map<itemname, cache>
-  cache = { not accurate anymore
-    types = {
-      [1] = {
-        descriptor = <item descriptor>
-        storage = map<provider, count>
-      }
-      ...
-    }
-  } ]]
+local displayCache
+local displayCacheId
 
 local cacheProto = { }
 local cacheMeta = { __index = cacheProto }
@@ -107,7 +99,8 @@ storageProto.onConnect = nullFunc
 storageProto.onDisconnect = nullFunc
 
 function storageProto:updateItemCounts(lst)
-  if self.dead then return end
+  if self.dead or not lst then return end
+  displayCache = nil -- invalidate old terminal cache
   if lst.name then lst = {lst} end -- allow descriptor input
   for _, itm in pairs(lst) do
     local sc = cacheFor(itm, itm.count > 0)
@@ -164,6 +157,19 @@ function handleProto:disconnect()
   setmetatable(self, nil) -- deactivate
 end
 
+function handleProto:getDisplayCache()
+  if not displayCache then -- assemble
+    displayCache = { }
+    displayCacheId = sb.makeUuid()
+    for id, e in pairs(itemCache) do
+      for v in e:iterate() do
+        if v.descriptor.count > 0 then table.insert(displayCache, v.descriptor) end
+      end
+    end
+  end
+  return displayCache, displayCacheId
+end
+
 function handleProto:registerStorage(proto, ...)
   if not proto.__meta then proto.__meta = { __index = proto } end -- stash this
   setmetatable(proto, storageMeta)
@@ -177,9 +183,6 @@ function handleProto:registerStorage(proto, ...)
   sp:onConnect(...)
   return sp
 end
-
--- TEMP TEMP TEMP TEMP TEMP
-handleProto.tmpCache = itemCache
 
 ----------------------------------------------------------------
 

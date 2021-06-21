@@ -30,23 +30,16 @@ end
 
 function svc.listItems()
   if not storagenet.connected then return { } end
-  if false then
-    return { { name = "copperore", count = 23, parameters = { } } }
-  end
-  --
-  local lst = { }
-  for id, e in pairs(storagenet.tmpCache) do
-    for v in e:iterate() do
-      --dbg("found item " .. v.descriptor.name .. " of count " .. v.descriptor.count)
-      if v.descriptor.count > 0 then table.insert(lst, v.descriptor) end
-      --lst[tostring(v.descriptor)] = v.descriptor.count > 0 and v.descriptor or nil
-    end
-  end
-  return lst
+  
+  local cache = storagenet:getDisplayCache()
+  return cache
 end
 
-function svc.updateItems()
-  return svc.listItems()
+function svc.updateItems(msg, isLocal, updateId)
+  if not storagenet.connected then return { } end
+  
+  local cache, id = storagenet:getDisplayCache()
+  if id ~= updateId then return cache end
 end
 
 -- -- --

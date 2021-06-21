@@ -28,16 +28,18 @@
     transmatter network rewrite {
         coroutine-powered transaction system (requests initiate transactions, but the controller operates storage providers directly)
         
-        cache-building task - transactions suspended until complete, cache affected in lockstep? except storage buses can be manipulated externally
-        cache keeps track of providers that have each item for expediency (and probably how much?)
-        
         storage buses can hook containers' notification callbacks, maybe keep track of deltas idk
         
-        x individual things should probably hook themselves into/out of the network so the controller doesn't need to poll
-          nope, that can't take intermediate link breaks into account
+        todo:
         
-        hmm.
+        - proper displayCache support
+        
+        skeleton of transaction system
+        
+        item insert/withdrawal
     }
+    
+    preassembled filter system so don't need to re-tokenize on every test
     
     
 } big things to do by Milestone 2 {

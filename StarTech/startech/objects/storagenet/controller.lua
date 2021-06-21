@@ -133,6 +133,11 @@ function storageProto:clearItemCounts()
   self:updateItemCounts(lst)
 end
 
+function storageProto:setPriority(p)
+  self.priority = p
+  storageByPriority = nil -- invalidate old
+end
+
 function storageProto:disconnect()
   self:clearItemCounts()
   local dev = devices[self.handle.id]

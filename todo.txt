@@ -22,9 +22,6 @@
     transmatter network rewrite {
         storage buses can hook containers' notification callbacks, maybe keep track of deltas idk
         
-        terminal {
-            - animation + player open tracking
-        }
         storage bus
         import bus
         

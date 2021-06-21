@@ -33,6 +33,7 @@ function provider:onConnect(slot)
   self.item = storage.drives[slot]
   if not self.item.parameters.contents then self.item.parameters.contents = { } end
   self.driveParameters = itemutil.getCachedConfig(self.item).config.driveParameters
+  self.priority = self.item.parameters.priority
   self:updateItemCounts(self.item.parameters.contents)
   self.dirty = true
   driveProviders[slot] = self
@@ -172,6 +173,7 @@ function svc.setInfo(slot, filter, priority)
   local sp = driveProviders[slot]
   if not sp then return nil end
   sp.item.parameters.priority = priority
+  sp:setPriority(priority)
   if filter == "" then filter = nil end
   sp.item.parameters.filter = filter
   sp:updateInfo()

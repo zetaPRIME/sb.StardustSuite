@@ -205,6 +205,14 @@ function init()
   
 end
 
+function uninit()
+  while true do -- break all connections
+    local id, dev = pairs(devices)(devices)
+    if not dev then break end
+    dev.handle:disconnect()
+  end
+end
+
 function update(dt)
   processes:run()
 end

@@ -33,7 +33,6 @@
   "inputNodes" : [ [0, 0] ],
   
   "networkTags" : {
-    "storageNet" : true,
-    "storageNet.storage" : true // HERP DERP
+    "startech:storagenet.device" : true
   }
 }

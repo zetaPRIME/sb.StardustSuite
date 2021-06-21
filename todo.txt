@@ -33,10 +33,10 @@
         todo:
         
         - proper displayCache support
-        
-        skeleton of transaction system
+        - skeleton of transaction system
         
         item insert/withdrawal
+        drives: updateinfo
     }
     
     preassembled filter system so don't need to re-tokenize on every test

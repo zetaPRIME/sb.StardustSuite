@@ -105,3 +105,14 @@ function init()
   updateLights()
   for k, f in pairs(svc) do message.setHandler("drivebay:"..k, function(_, _, ...) return f(...) end) end
 end
+
+function die()
+  local pos = world.entityPosition(entity.id())
+  
+  while true do -- disconnect and drop all drives
+    local _, sp = pairs(driveProviders)(driveProviders)
+    if not sp then break end
+    sp:disconnect()
+    world.spawnItem(sp.item, pos)
+  end
+end

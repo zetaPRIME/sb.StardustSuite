@@ -90,6 +90,7 @@ end
 
 local storageProto = { }
 local storageMeta = { __index = storageProto }
+storageProto.priority = 0
 
 function storageProto:getPriority() return 0 end
 storageProto.tryTakeItem = nullFunc
@@ -139,6 +140,10 @@ end
 local handleProto = { }
 local handleMeta = { __index = handleProto }
 handleProto.connected = true -- indicator
+local transactionProto = { }
+local transactionMeta = { __index = transactionProto }
+local transactionDef = { } -- functions
+local transactionQueue = { }
 
 -- event stubs
 handleProto.onConnect = nullFunc
@@ -182,6 +187,44 @@ function handleProto:registerStorage(proto, ...)
   dev.storage[sp] = true
   sp:onConnect(...)
   return sp
+end
+
+function handleProto:startTransaction(arg)
+  if not arg or not arg[1] then return nil end
+  local func = transactionDef[arg[1]]
+  if not func then return nil end
+  local tr = setmetatable({ args = arg, handle = self }, transactionMeta)
+  
+  tr.crt = coroutine.create(func, tr)
+  tr:run() -- first tick
+  
+  if not tr.dead then transactionQueue[tr] = true end
+  
+  return tr
+end
+
+function transactionProto:run()
+  if self.dead then return self end
+  local s, err = coroutine.resume(self.crt)
+  if not s then
+    sb.logError("Transaction error: " .. err)
+    self:fail()
+  elseif coroutine.status(self.crt) == "dead" then -- finished naturally
+    self.dead = true
+    self:onFinish()
+  end
+  return self -- chainable
+end
+
+function transactionProto:runUntilFinish(sync) while not self.dead do self:run() end end
+function transactionProto:waitFor() while not self.dead do coroutine.yield() end end
+
+transactionProto.onFinish = nullFunc()
+transactionProto.onFail = nullFunc
+function transactionProto:fail(ftype)
+  self.dead = true
+  self.failType = ftype
+  self:onFail()
 end
 
 ----------------------------------------------------------------
@@ -252,5 +295,20 @@ processes:spawn("networkManager", function()
     
     
     util.wait(5)
+  end
+end)
+
+processes:spawn("transactions", function()
+  while true do
+    -- if we implement transaction process limits later, we can change this to "finish our set first"
+    local cq = transactionQueue
+    transactionQueue = { }
+    
+    for tr in pairs(cq) do
+      tr:run()
+      if not tr.dead then transactionQueue[tr] = true end
+    end
+    
+    coroutine.yield()
   end
 end)

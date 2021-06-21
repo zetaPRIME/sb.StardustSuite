@@ -43,7 +43,7 @@
   "outputNodes" : [ [ 0, 1 ] ],
   
   "networkTags" : {
-    "storageNet" : true
+    "startech:storagenet.controller" : true
   },
 
   "openSounds" : [ "/sfx/objects/metalbox_open.ogg" ],

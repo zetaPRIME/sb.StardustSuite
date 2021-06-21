@@ -16,8 +16,7 @@ local devices = { }
   device = {
     handle
     storage = map<storageProvider, true>
-  }
-]]
+  } ]]
 
 local itemCache = { }
 --[[ map<itemname, cache>
@@ -29,8 +28,7 @@ local itemCache = { }
       }
       ...
     }
-  }
-]]
+  } ]]
 
 local cacheProto = { }
 local cacheMeta = { __index = cacheProto }
@@ -180,7 +178,8 @@ function handleProto:registerStorage(proto, ...)
   return sp
 end
 
-
+-- TEMP TEMP TEMP TEMP TEMP
+handleProto.tmpCache = itemCache
 
 ----------------------------------------------------------------
 
@@ -192,16 +191,8 @@ function init()
   for i=1, object.outputNodeCount() do object.setOutputNodeLevel(i-1, true) end
   
   -- TEMP TESTING
-  cacheFor({name = "lol", parameters = { chicken = "yes" }}, true)
+  --cacheFor({name = "ironbar", parameters = { }}, true).descriptor.count = 3
   
-  function b(itm)
-    local str = cacheFor(itm) and "yes" or "no"
-    sb.logInfo("cache says " .. str)
-  end
-  
-  b { name = "lol", parameters = { } }
-  b { name = "lol", parameters = { fumble = 3 } }
-  b { name = "lol", parameters = { chicken = "yes" } }
   
 end
 

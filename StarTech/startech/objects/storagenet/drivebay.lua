@@ -43,6 +43,24 @@ function provider:onDisconnect()
   updateLights()
 end
 
+function provider:tryTakeItem(req, test)
+  if req.count <= 0 then return 0 end -- not actually requesting anything
+  local itm, idx
+  for i, ii in pairs(self.item.parameters.contents) do
+    if root.itemDescriptorsMatch(req, ii, true) then itm, idx = ii, i break end
+  end
+  if not itm then return 0 end -- not found
+  local rc = math.min(itm.count, req.count)
+  if not test then
+    itm.count = itm.count - rc
+    if itm.count <= 0 then
+      table.remove(self.item.parameters.contents, idx)
+    end
+    self:updateItemCounts(itm)
+  end
+  return rc
+end
+
 function storagenet:onConnect()
   storage.drives = storage.drives or { }
   for slot in pairs(storage.drives) do storagenet:registerStorage(provider, slot) end

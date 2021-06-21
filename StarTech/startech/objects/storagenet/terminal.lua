@@ -44,7 +44,7 @@ end
 
 function svc.request(msg, isLocal, item, player)
   if not storagenet.connected then return end
-  local tr = storagenet:transaction { "request", item = item, partial = true }
+  local tr = storagenet:transaction { "request", item = item }
   
   local result = tr:runUntilFinish().result
   if result and result.count > 0 then

@@ -195,7 +195,7 @@ function handleProto:startTransaction(arg)
   if not func then return nil end
   local tr = setmetatable({ args = arg, handle = self }, transactionMeta)
   
-  tr.crt = coroutine.create(func, tr)
+  tr.crt = coroutine.create(func)
   tr:run() -- first tick
   
   if not tr.dead then transactionQueue[tr] = true end
@@ -206,7 +206,7 @@ handleProto.transaction = handleProto.startTransaction -- alias
 
 function transactionProto:run()
   if self.dead then return self end
-  local s, err = coroutine.resume(self.crt)
+  local s, err = coroutine.resume(self.crt, self)
   if not s then
     sb.logError("Transaction error: " .. err)
     self:fail "error"
@@ -220,7 +220,7 @@ end
 function transactionProto:runUntilFinish(sync) while not self.dead do self:run() end return self end
 function transactionProto:waitFor() while not self.dead do coroutine.yield() end end
 
-transactionProto.onFinish = nullFunc()
+transactionProto.onFinish = nullFunc
 transactionProto.onFail = nullFunc
 function transactionProto:fail(ftype)
   self.dead = true
@@ -235,7 +235,7 @@ function transactionDef:request()
   local itm = self.args.item
   local sc = cacheFor(itm)
   if not sc then return self:fail "notFound" end
-  if not self.args.partial and sc.descriptor.count < itm.count then return self:fail "notFound" end
+  if self.args.exact and sc.descriptor.count < itm.count then return self:fail "notFound" end -- exactitude not hard-guaranteed
   itm.parameters = sc.descriptor.parameters -- deduplicate
   
   local req = { name = itm.name, parameters = itm.parameters } -- dummy request item

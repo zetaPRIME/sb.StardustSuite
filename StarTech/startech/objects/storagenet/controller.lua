@@ -235,6 +235,15 @@ processes:spawn("networkManager", function()
         local dev = { handle = handle, storage = { } }
         devices[id] = dev
         
+        if not env["$$storagenet.hooked"] then
+          env["$$storagenet.hooked"] = true
+          local _uninit = env.uninit or nullFunc
+          function env.uninit(...)
+            if env.storagenet.active then env.storagenet:disconnect() end -- immediate discard
+            _uninit(...)
+          end
+        end
+        
         handle:onConnect()
       end
     end

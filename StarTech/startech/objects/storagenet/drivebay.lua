@@ -1,6 +1,7 @@
 --
 require "/lib/stardust/network.lua"
 require "/lib/stardust/playerext.lua"
+require "/lib/stardust/itemutil.lua"
 
 storagenet = { }
 
@@ -31,7 +32,9 @@ function provider:onConnect(slot)
   self.slot = slot
   self.item = storage.drives[slot]
   if not self.item.parameters.contents then self.item.parameters.contents = { } end
+  self.driveParameters = itemutil.getCachedConfig(self.item).config.driveParameters
   self:updateItemCounts(self.item.parameters.contents)
+  self.dirty = true
   driveProviders[slot] = self
   lights[slot] = true
   updateLights()
@@ -57,6 +60,7 @@ function provider:tryTakeItem(req, test)
       table.remove(self.item.parameters.contents, idx)
     end
     self:updateItemCounts(itm)
+    self.dirty = true -- mark capacity as needing update
   end
   return rc
 end
@@ -68,15 +72,42 @@ function provider:tryPutItem(req, test)
     if root.itemDescriptorsMatch(req, ii, true) then itm, idx = ii, i break end
   end
   local count = req.count
-  if itm then
-    itm.count = itm.count + count
-  else
-    itm = { name = req.name, parameters = req.parameters, count = count }
-    table.insert(self.item.parameters.contents, itm)
+  if not test then
+    if itm then
+      itm.count = itm.count + count
+    else
+      itm = { name = req.name, parameters = req.parameters, count = count }
+      table.insert(self.item.parameters.contents, itm)
+    end
+    self:updateItemCounts(itm)
+    self.dirty = true -- mark capacity as needing update
   end
-  self:updateItemCounts(itm)
     
   return count
+end
+
+function provider:updateCapacity()
+  if not self.dirty then return end
+  local bits = 0
+  for k,item in ipairs(self.item.parameters.contents) do
+    bits = bits + typeBits + item.count
+  end
+  self.item.parameters.bitsUsed = bits
+  self.dirty = nil
+end
+function provider:updateInfo() -- refresh description
+  self:updateCapacity()
+  local fDesc, pDesc = "", ""
+  if self.item.parameters.filter and self.item.parameters.filter ~= "" then
+    fDesc = table.concat({ "\n^green;Filter: ^blue;", self.item.parameters.filter })
+  end
+  if (self.item.parameters.priority or 0) ~= 0 then
+    pDesc = table.concat({ "\n^green;Priority: ^blue;", self.item.parameters.priority  })
+  end
+  self.item.parameters.description = table.concat({
+    self.driveParameters.description, "\n^green;Bytes used: ^blue;",
+    math.ceil(self.item.parameters.bitsUsed / 8), " / ", math.ceil(self.driveParameters.capacity / 8), fDesc, pDesc
+  })
 end
 
 function storagenet:onConnect()
@@ -95,6 +126,8 @@ local svc = { } -- message handlers
 function svc.getDisplayItems() -- get drives for display; no sending hueg contents table
   local i = { false, false, false, false, false, false, false, false }
   for slot, itm in pairs(storage.drives) do
+    local sp = driveProviders[slot]
+    if sp then sp:updateInfo() end -- update description
     i[slot] = { name = itm.name, count = 1, parameters = { } }
     for k, v in pairs(itm.parameters) do
       if k ~= "contents" then i[slot].parameters[k] = v end
@@ -111,7 +144,10 @@ function svc.swapDrive(pid, slot, item)
   end
   
   local sp = driveProviders[slot]
-  if sp then sp:disconnect() end -- kill provider
+  if sp then
+    sp:updateInfo()
+    sp:disconnect()
+  end -- kill provider
   local old = storage.drives[slot] -- hold old item for a sec
   storage.drives[slot] = item
   if item and storagenet.connected then
@@ -132,7 +168,7 @@ function svc.setInfo(slot, filter, priority)
   sp.item.parameters.priority = priority
   if filter == "" then filter = nil end
   sp.item.parameters.filter = filter
-  sp:commit()
+  sp:updateInfo()
 end
 
 -- -- --
@@ -148,6 +184,7 @@ function die()
   while true do -- disconnect and drop all drives
     local _, sp = pairs(driveProviders)(driveProviders)
     if not sp then break end
+    sp:updateInfo() -- give correct description
     sp:disconnect()
     world.spawnItem(sp.item, pos)
   end

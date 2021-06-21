@@ -32,7 +32,7 @@
         - item insert/withdrawal
         drives: {
             - updateInfo
-            capacity tracking
+            - capacity tracking
         }
         terminal: {
             animation + player open tracking

@@ -73,9 +73,15 @@ function provider:tryPutItem(req, test)
   end
   local count = req.count
   if not test then
+    self:updateCapacity()
+    local bitsLeft = self.driveParameters.capacity - self.item.parameters.bitsUsed
     if itm then
+      count = math.min(count, bitsLeft)
+      if count <= 0 then return 0 end -- can't fit any
       itm.count = itm.count + count
     else
+      count = math.min(count, bitsLeft - typeBits)
+      if count <= 0 then return 0 end -- can't fit any
       itm = { name = req.name, parameters = req.parameters, count = count }
       table.insert(self.item.parameters.contents, itm)
     end

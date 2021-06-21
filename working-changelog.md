@@ -1,3 +1,7 @@
+### StarTech
+- Transmatter network has been **entirely rewritten** - everything should be much more stable now
+  - The Controller has had its shading redone to better suit the style of the other parts
+
 ### Stardust Core+Lite
 - Added an outline to the Quickbar button glyph to match the style of the other icons
 

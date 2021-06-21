@@ -20,24 +20,13 @@
     theme options in settings pane
     
     transmatter network rewrite {
-        coroutine-powered transaction system (requests initiate transactions, but the controller operates storage providers directly)
-        
         storage buses can hook containers' notification callbacks, maybe keep track of deltas idk
         
-        todo:
-        
-        - proper displayCache support
-        - skeleton of transaction system
-        
-        - item insert/withdrawal
-        drives: {
-            - updateInfo
-            - capacity tracking
+        terminal {
+            - animation + player open tracking
         }
-        terminal: {
-            animation + player open tracking
-            - insertion
-        }
+        storage bus
+        import bus
         
         preassembled filter system so don't need to re-tokenize on every test
         ^ use __call

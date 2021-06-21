@@ -5,25 +5,21 @@ require "/lib/stardust/tasks.lua"
 
 storagenet = { }
 
-local provider = { }
-
 function storagenet:onConnect()
-  object.say "connected!"
-  --prov = storagenet:registerStorage(provider)
+  
 end
 
 function storagenet:onDisconnect()
-  object.say "disconnected."
-end
-
-function provider:onConnect()
-  self:updateItemCounts(world.containerItems(entity.id()))
+  
 end
 
 local svc = { }
 local openPlayers = { }
+local playerTimeout = -1
+local inUse
+local lastUsedBy
 
-function dbg(txt)
+local function dbg(txt)
   sb.logInfo(txt)
   object.say(txt)
 end
@@ -52,10 +48,44 @@ function svc.request(msg, isLocal, item, player)
   end
 end
 
+-- player tracking
+function svc.playerOpen(msg, isLocal, pid)
+  openPlayers[pid] = true
+  lastUsedBy = pid
+  playerTimeout = math.floor(60 * 0.5) -- give some extra time to account for potential client lag on loading
+end
+
+function svc.playerClose(msg, isLocal, pid)
+  openPlayers[pid] = nil
+end
+
+function svc.playerHeartbeat(msg, isLocal, pid)
+  playerTimeout = math.max(playerTimeout, math.floor(60 * 0.25))
+  openPlayers[pid] = true -- might as well pick back up
+end
+
 -- -- --
 
 function init()
   for k, v in pairs(svc) do message.setHandler(k, v) end
+end
+
+function update(dt)
+  playerTimeout = playerTimeout - 1
+  if playerTimeout == 0 then openPlayers = {} end -- assume last player has lost dialog if no update recieved
+  
+  local isOpen = false
+  local pos = entity.position()
+  for pid in pairs(openPlayers) do
+    isOpen = true
+    local ppos = world.entityPosition(pid)
+    if not ppos or world.magnitude(pos, ppos) > 8 then openPlayers[pid] = nil end
+  end
+  
+  if isOpen ~= inUse then
+    object.setAnimationParameter("active", isOpen)
+  end
+  inUse = isOpen
 end
 
 _ccdis = false

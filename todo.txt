@@ -23,7 +23,8 @@
         storage buses can hook containers' notification callbacks, maybe keep track of deltas idk
         
         > storage bus
-        fix multiple-stacks-of-same
+        - reimplement configuration
+        do we want to poll?
         
         import bus
         

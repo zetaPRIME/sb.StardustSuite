@@ -29,6 +29,8 @@ function provider:onConnect(id)
   cp.onUpdate = phOnUpdate
   cp.onDisconnect = phOnDisconnect
   
+  self.filter = storage.filter and itemutil.filter(storage.filter) or nil
+  
   self:refreshCounts()
 end
 
@@ -107,6 +109,7 @@ end
 
 function setOrientation(o)
   storage.orientation = o
+  object.setAnimationParameter("orientation", storage.orientation)
   tryHookUp()
 end
 
@@ -115,14 +118,44 @@ function setPriority(p)
   if sp then sp:setPriority(p) end
 end
 
+function setFilter(f)
+  if f == "" then f = nil end
+  storage.filter = f
+  if sp then sp.filter = f and itemutil.filter(f) or nil end
+end
 
+-- -- --
 
+local svc = { }
 
+function svc.wrenchInteract(msg, isLocal, player, shiftHeld)
+  if shiftHeld then
+    return {
+      interact = {
+        id = entity.id(),
+        type = config.getParameter("interactAction"),
+        config = { gui = { }, scripts = {"/metagui.lua"}, config = "startech:storagebus.config" }
+      }
+    }
+  else
+    local dl = {"v","<","^",">"}
+    setOrientation((storage.orientation % 4) + 1)
+    object.say(dl[storage.orientation])
+  end
+end
 
-
-
-
-
+function svc.getInfo() return { filter = storage.filter or "", priority = storage.priority } end
+function svc.setInfo(msg, isLocal, filter, priority)
+  setPriority(priority)
+  local pr = "Priority set: " .. storage.priority .. "\n"
+  if filter == "" then
+    setFilter()
+    object.say(pr .. "Filter cleared")
+  else
+    setFilter(filter)
+    object.say(pr .. "Filter set: " .. filter)
+  end
+end
 
 -- -- --
 
@@ -132,4 +165,6 @@ function init()
   object.setAnimationParameter("orientation", storage.orientation)
   
   object.setInteractive(false)
+  
+  for k, v in pairs(svc) do message.setHandler(k, v) end
 end

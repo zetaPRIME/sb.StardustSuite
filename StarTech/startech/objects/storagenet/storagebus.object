@@ -28,8 +28,8 @@
   
   "animationScripts" : [ "storagebus.render.lua" ],
   
-  /*"interactAction" : "ScriptPane",
-  "interactData" : "/startech/interface/storagenet/storagebus.config",*/
+  "interactAction" : "ScriptPane",
+  "interactData" : "/startech/interface/storagenet/storagebus.config",
 
   /*"animation" : "/objects/wired/logic/logic.animation",
 

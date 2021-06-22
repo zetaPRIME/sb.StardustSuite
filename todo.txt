@@ -35,6 +35,10 @@
         nuke old versions
     }
     
+    taskQueue:install()
+    containerTracker:(stuff)
+    blockNext
+    
     maybe adjust things (tasks, controller) to use unified prototype and metatable
     
 } content update {

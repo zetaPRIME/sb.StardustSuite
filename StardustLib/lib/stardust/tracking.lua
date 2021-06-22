@@ -21,6 +21,7 @@ do
   
   ctProto.onDisconnect = nullFunc
   function ctProto:disconnect()
+    if self.dead then return end -- already done
     self.dead = true
     self:onDisconnect()
     active[self] = nil

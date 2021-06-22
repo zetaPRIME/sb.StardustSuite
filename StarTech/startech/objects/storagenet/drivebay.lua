@@ -74,6 +74,7 @@ end
 
 function provider:tryPutItem(req, test)
   if req.count <= 0 then return 0 end -- not actually inserting anything
+  if self.filter and not self.filter(req) then return 0 end -- fails filter test
   local itm, idx
   for i, ii in pairs(self.item.parameters.contents) do -- find existing stack
     if root.itemDescriptorsMatch(req, ii, true) then itm, idx = ii, i break end
@@ -86,7 +87,6 @@ function provider:tryPutItem(req, test)
     if count <= 0 then return 0 end -- can't fit any
     if not test then itm.count = itm.count + count end
   else
-    if self.filter and not self.filter(req) then return 0 end -- fails filter test
     count = math.min(count, bitsLeft - typeBits)
     if count <= 0 then return 0 end -- can't fit any
     if not test then

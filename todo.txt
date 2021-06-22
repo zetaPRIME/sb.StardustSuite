@@ -22,16 +22,20 @@
     transmatter network rewrite {
         storage buses can hook containers' notification callbacks, maybe keep track of deltas idk
         
-        storage bus
+        > storage bus
+        fix multiple-stacks-of-same
+        
         import bus
         
         enhancements {
             drives - quick lookup cache (matching structure to controller, or maybe even keyed by??)
+            rectification transaction
         }
         
         any-of filters
         
         !! don't need to worry about keys being removed during iteration; remove workarounds in controler
+        make sure removal removes storage tracking entry when relevant
         nuke old versions
     }
     

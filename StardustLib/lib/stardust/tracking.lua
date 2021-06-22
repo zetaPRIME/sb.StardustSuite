@@ -36,12 +36,36 @@ do
     end
     self:onUpdate()
   end
+  
+  -- Does what it says on the tin. Be careful, this will cause you to miss any changes that tick, not just your own!
   function cpProto:blockNextUpdate()
     self._block = true
-    return self
+    return self -- chainable, since you're probably operating on it
   end
   
-  -- TODO getContents etc.
+  function cpProto:contents()
+    return world.containerItems(self.id)
+  end
+  function cpProto:amountOf(req)
+    return world.containerAvailable(self.id, { name = req.name, parameters = req.parameters, count = 1 })
+  end
+  
+  function cpProto:insert(req, exact) -- returns number inserted
+    local canFit = math.min(world.containerItemsCanFit(self.id, req), req.count)
+    if exact and canFit < req.count then return 0 end
+    world.containerAddItems(self.id, req)
+    return canFit
+  end
+  function cpProto:consume(req, exact) -- returns number removed
+    if exact then
+      return world.containerConsume(req) and req.count or 0
+    end
+    local avail = math.min(self:amountOf(req), req.count)
+    world.containerConsume { name = req.name, parameters = req.parameters, count = avail }
+    return avail
+  end
+  
+  --- --- ---
   
   function containerProxy(id)
     if not id or not world.containerSize(id) then return end -- nothing here

@@ -14,8 +14,7 @@ local sp
 local tryHookUp
 
 local function phOnUpdate(self)
-  self.sp:clearItemCounts()
-  self.sp:updateItemCounts(world.containerItems(self.id))
+  self.sp:refreshCounts()
 end
 local function phOnDisconnect(self)
   self.sp:disconnect()
@@ -30,12 +29,30 @@ function provider:onConnect(id)
   cp.onUpdate = phOnUpdate
   cp.onDisconnect = phOnDisconnect
   
-  self:updateItemCounts(world.containerItems(id))
+  self:refreshCounts()
 end
 
 function provider:onDisconnect()
   self.cp:disconnect()
   sp = nil
+end
+
+function provider:refreshCounts()
+  local old = self.contentsCache or { }
+  local new = self.cp:contents()
+  local tl = { } -- tracking list
+  for _,itm in pairs(old) do
+    tl[storagenet:getCacheFor(itm, true)] = true
+  end
+  for _,itm in pairs(new) do
+    tl[storagenet:getCacheFor(itm, true)] = true
+  end
+  for e in pairs(tl) do
+    tl[e] = { name = e.descriptor.name, parameters = e.descriptor.parameters, count = self.cp:amountOf(e.descriptor) }
+  end
+  self:updateItemCounts(tl)
+  
+  self.contentsCache = new
 end
 
 function storagenet:onConnect()
@@ -48,7 +65,7 @@ function provider:tryPutItem(req, test)
   
   local leftover
   if not test then
-    self.cp:blockNextUpdate()
+    --self.cp:blockNextUpdate()
     leftover = world.containerAddItems(self.id, req)
   end
   if not leftover then leftover = { name = req.name, parameters = req.parameters, count = 0 } end
@@ -62,7 +79,7 @@ function provider:tryTakeItem(req, test)
   local count = math.min(req.count, avail)
   
   if not test then
-    self.cp:blockNextUpdate()
+    --self.cp:blockNextUpdate()
     world.containerConsume(self.id, { name = req.name, parameters = req.parameters, count = count })
     self:updateItemCounts { name = req.name, parameters = req.parameters, count = avail - count }
   end

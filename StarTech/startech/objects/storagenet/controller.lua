@@ -188,6 +188,11 @@ function handleProto:getDisplayCache()
   return displayCache, displayCacheId
 end
 
+-- I guess our cache system is the most performant way to index items
+function handleProto:getCacheFor(itm, create)
+  return cacheFor(itm, create)
+end
+
 function handleProto:registerStorage(proto, ...)
   if not proto.__meta then proto.__meta = { __index = proto } end -- stash this
   setmetatable(proto, storageMeta)

@@ -79,21 +79,22 @@ function provider:tryPutItem(req, test)
     if root.itemDescriptorsMatch(req, ii, true) then itm, idx = ii, i break end
   end
   local count = req.count
-  -- TODO fix what the test flag actually does
-  if not test then
-    self:updateCapacity()
-    local bitsLeft = self.driveParameters.capacity - self.item.parameters.bitsUsed
-    if itm then
-      count = math.min(count, bitsLeft)
-      if count <= 0 then return 0 end -- can't fit any
-      itm.count = itm.count + count
-    else
-      if self.filter and not self.filter(req) then return 0 end -- fails filter test
-      count = math.min(count, bitsLeft - typeBits)
-      if count <= 0 then return 0 end -- can't fit any
+  self:updateCapacity()
+  local bitsLeft = self.driveParameters.capacity - self.item.parameters.bitsUsed
+  if itm then
+    count = math.min(count, bitsLeft)
+    if count <= 0 then return 0 end -- can't fit any
+    if not test then itm.count = itm.count + count end
+  else
+    if self.filter and not self.filter(req) then return 0 end -- fails filter test
+    count = math.min(count, bitsLeft - typeBits)
+    if count <= 0 then return 0 end -- can't fit any
+    if not test then
       itm = { name = req.name, parameters = req.parameters, count = count }
       table.insert(self.item.parameters.contents, itm)
     end
+  end
+  if not test then
     self:updateItemCounts(itm)
     self.dirty = true -- mark capacity as needing update
   end

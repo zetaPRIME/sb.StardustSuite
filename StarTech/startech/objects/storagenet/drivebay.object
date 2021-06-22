@@ -4,8 +4,8 @@
   
   "category" : "storagenet.storage",
   "price" : 500,
-  //"description" : "A drive bay for holding and accessing transmatter storage discs.",
-  "description" : "^red;Pending system rewrite to fix data loss! Please use Storage Buses instead for now.^reset;",
+  "description" : "A drive bay for holding and accessing transmatter storage discs.",
+  //"description" : "^red;Pending system rewrite to fix data loss! Please use Storage Buses instead for now.^reset;",
   "shortdescription" : "Transmatter Drive Bay",
   "health" : 5.73,
 

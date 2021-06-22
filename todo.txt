@@ -25,18 +25,17 @@
         storage bus
         import bus
         
-        - preassembled filter system so don't need to re-tokenize on every test
-        - ^ use __call
-        - install filter system in drive
-        
-        - add constructed filter logic to terminal ui
-        
         enhancements {
             drives - quick lookup cache (matching structure to controller, or maybe even keyed by??)
         }
+        
+        any-of filters
+        
+        !! don't need to worry about keys being removed during iteration; remove workarounds in controler
+        nuke old versions
     }
     
-    - fix text duping when attempting to backspace the start of a text box
+    maybe adjust things (tasks, controller) to use unified prototype and metatable
     
 } content update {
     

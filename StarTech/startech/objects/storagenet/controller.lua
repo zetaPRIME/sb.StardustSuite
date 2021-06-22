@@ -139,11 +139,12 @@ function storageProto:setPriority(p)
 end
 
 function storageProto:disconnect()
+  if self.dead then return end -- already done
   self:clearItemCounts()
   local dev = devices[self.handle.id]
   dev.storage[self] = nil -- remove from listing
-  self:onDisconnect()
   self.dead = true
+  self:onDisconnect()
   storageByPriority = nil -- invalidate
 end
 

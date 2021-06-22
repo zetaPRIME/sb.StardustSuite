@@ -28,8 +28,8 @@
   
   "animationScripts" : [ "storagebus.render.lua" ],
   
-  "interactAction" : "ScriptPane",
-  "interactData" : "/startech/interface/storagenet/storagebus.config",
+  /*"interactAction" : "ScriptPane",
+  "interactData" : "/startech/interface/storagenet/storagebus.config",*/
 
   /*"animation" : "/objects/wired/logic/logic.animation",
 
@@ -39,8 +39,7 @@
   "animationPosition" : [-8, -8], */
   
   "networkTags" : {
-    "storageNet" : true,
-    "storageNet.storage" : true
+    "startech:storagenet.device" : true
   },
   
   "inputNodes" : [ [0, 0] ]

@@ -112,8 +112,7 @@ function storageProto:updateItemCounts(lst, cacheIndexed)
   for k, itm in pairs(lst) do
     local sc, count
     if cacheIndexed then
-      sc = k
-      count = itm
+      sc, count = k, itm
     else
       sc = cacheFor(itm, itm.count > 0)
       count = itm.count

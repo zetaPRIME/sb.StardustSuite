@@ -62,24 +62,23 @@ function provider:tryPutItem(req, test)
   if req.count <= 0 then return 0 end -- nothing to insert
   if self.filter and not self.filter(req) then return 0 end -- excluded
   
-  local leftover
+  local count = math.min(world.containerItemsCanFit(self.id, req), req.count)
   if not test then
     --self.cp:blockNextUpdate()
-    leftover = world.containerAddItems(self.id, req)
+    self.cp:insert(req)
   end
-  if not leftover then leftover = { name = req.name, parameters = req.parameters, count = 0 } end
   if not test then self:updateItemCounts { name = req.name, parameters = req.parameters, count = world.containerAvailable(self.id, req) } end
-  return req.count - leftover.count
+  return count
 end
 
 function provider:tryTakeItem(req, test)
   if req.count <= 0 then return 0 end -- not requesting any
-  local avail = world.containerAvailable(self.id, req)
+  local avail = self.cp:amountOf(req)
   local count = math.min(req.count, avail)
   
   if not test then
     --self.cp:blockNextUpdate()
-    world.containerConsume(self.id, { name = req.name, parameters = req.parameters, count = count })
+    self.cp:consume { name = req.name, parameters = req.parameters, count = count }
     self:updateItemCounts { name = req.name, parameters = req.parameters, count = avail - count }
   end
   

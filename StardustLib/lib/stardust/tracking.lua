@@ -61,7 +61,7 @@ do
       return world.containerConsume(req) and req.count or 0
     end
     local avail = math.min(self:amountOf(req), req.count)
-    world.containerConsume { name = req.name, parameters = req.parameters, count = avail }
+    world.containerConsume(self.id, { name = req.name, parameters = req.parameters, count = avail })
     return avail
   end
   

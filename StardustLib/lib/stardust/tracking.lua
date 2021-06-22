@@ -29,6 +29,17 @@ do
   end
   
   ctProto.onUpdate = nullFunc
+  function ctProto:sendUpdate()
+    if self._block then
+      self._block = nil
+      return
+    end
+    self:onUpdate()
+  end
+  function ctProto:blockNextUpdate()
+    self._block = true
+    return self
+  end
   
   -- TODO getContents etc.
   

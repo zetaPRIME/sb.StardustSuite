@@ -14,9 +14,6 @@ local sp
 local tryHookUp
 
 local function phOnUpdate(self)
-  if self.blockUpdate then return end -- already being taken care of
-  object.say("update hook #" .. self.tcount)
-  self.tcount = self.tcount + 1
   self.sp:clearItemCounts()
   self.sp:updateItemCounts(world.containerItems(self.id))
 end
@@ -32,9 +29,6 @@ function provider:onConnect(id)
   ct.sp = self
   ct.onUpdate = phOnUpdate
   ct.onDisconnect = phOnDisconnect
-  
-  -- testing
-  ct.tcount = 1
   
   self:updateItemCounts(world.containerItems(id))
 end
@@ -54,12 +48,11 @@ function provider:tryPutItem(req, test)
   
   local leftover
   if not test then
-    self.ct.blockUpdate = true
+    self.ct:blockNextUpdate()
     leftover = world.containerAddItems(self.id, req)
-    self.ct.blockUpdate = nil
   end
   if not leftover then leftover = { name = req.name, parameters = req.parameters, count = 0 } end
-  if not test then self:updateItemCounts(leftover) end
+  if not test then self:updateItemCounts { name = req.name, parameters = req.parameters, count = world.containerAvailable(self.id, req) } end
   return req.count - leftover.count
 end
 
@@ -69,9 +62,8 @@ function provider:tryTakeItem(req, test)
   local count = math.min(req.count, avail)
   
   if not test then
-    self.ct.blockUpdate = true
+    self.ct:blockNextUpdate()
     world.containerConsume(self.id, { name = req.name, parameters = req.parameters, count = count })
-    self.ct.blockUpdate = nil
     self:updateItemCounts { name = req.name, parameters = req.parameters, count = avail - count }
   end
   

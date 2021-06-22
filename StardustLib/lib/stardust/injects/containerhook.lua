@@ -9,7 +9,7 @@ local function nullFunc() end
 local _cc = _ENV.containerCallback or nullFunc
 function containerCallback()
   _cc()
-  for ct in pairs(hook.active) do ct:onUpdate() end
+  for ct in pairs(hook.active) do ct:sendUpdate() end
 end
 
 local _uninit = _ENV.uninit or nullFunc

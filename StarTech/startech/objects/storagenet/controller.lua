@@ -19,10 +19,14 @@ local itemCache = { }
 local displayCache
 local displayCacheId
 
-local cacheProto = { }
-local cacheMeta = { __index = cacheProto }
-local subcacheProto = { }
-local subcacheMeta = { __index = subcacheProto }
+local function proto()
+  local p = { }
+  p.__index = p
+  return p
+end
+
+local cacheProto = proto()
+local subcacheProto = proto()
 
 function cacheProto:iterate()
   return coroutine.wrap(function()
@@ -66,7 +70,7 @@ local function cacheFor(itm, create)
         storage = { },
       },
       variants = { },
-    }, cacheMeta)
+    }, cacheProto)
     mc.entry = mc
     mc.normal.entry = mc
     itemCache[id] = mc
@@ -79,7 +83,7 @@ local function cacheFor(itm, create)
       entry = mc,
       descriptor = { name = id, count = 0, parameters = itm.parameters },
       storage = { },
-    }, subcacheMeta)
+    }, subcacheProto)
     mc.variants[sc] = true
   end
   return sc
@@ -95,8 +99,7 @@ local function priorityList()
   return storageByPriority
 end
 
-local storageProto = { }
-local storageMeta = { __index = storageProto }
+local storageProto = proto()
 storageProto.priority = 0
 
 storageProto.tryTakeItem = returnZero
@@ -156,11 +159,9 @@ end
 
 -- -- --
 
-local handleProto = { }
-local handleMeta = { __index = handleProto }
+local handleProto = proto()
 handleProto.connected = true -- indicator
-local transactionProto = { }
-local transactionMeta = { __index = transactionProto }
+local transactionProto = proto()
 local transactionDef = { } -- functions
 local transactionQueue = { }
 
@@ -201,7 +202,7 @@ end
 
 function handleProto:registerStorage(proto, ...)
   if not proto.__meta then proto.__meta = { __index = proto } end -- stash this
-  setmetatable(proto, storageMeta)
+  setmetatable(proto, storageProto)
   local dev = devices[self.id]
   local sp = setmetatable({
     handle = self,
@@ -218,7 +219,7 @@ function handleProto:startTransaction(arg)
   if not arg or not arg[1] then return nil end
   local func = transactionDef[arg[1]]
   if not func then return nil end
-  local tr = setmetatable({ args = arg, handle = self }, transactionMeta)
+  local tr = setmetatable({ args = arg, handle = self }, transactionProto)
   
   tr.crt = coroutine.create(func)
   tr:run() -- first tick
@@ -346,7 +347,7 @@ processes:spawn("networkManager", function()
       if env then
         if not env.storagenet then env.storagenet = { } end
         local handle = env.storagenet
-        setmetatable(handle, handleMeta)
+        setmetatable(handle, handleProto)
         handle.id = id
         handle.env = env
         

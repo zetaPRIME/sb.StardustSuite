@@ -36,17 +36,12 @@
         any-of filters
         
         !! don't need to worry about keys being removed during iteration; remove workarounds in controler
-        make sure removal removes storage tracking entry when relevant
-        - optimize for case of cache-indexed count update
         nuke old versions
     }
     
     taskQueue:install()
-    containerTracker:(stuff)
-    blockNext
-    rename containerTracker and tracking.lua
     
-    maybe adjust things (tasks, controller) to use unified prototype and metatable
+    - maybe adjust things (tasks, controller) to use unified prototype and metatable
     
 } content update {
     

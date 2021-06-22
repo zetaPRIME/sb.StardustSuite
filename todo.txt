@@ -25,9 +25,9 @@
         storage bus
         import bus
         
-        preassembled filter system so don't need to re-tokenize on every test
-        ^ use __call
-        install filter system in drive
+        - preassembled filter system so don't need to re-tokenize on every test
+        - ^ use __call
+        - install filter system in drive
     }
     
     

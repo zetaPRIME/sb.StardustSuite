@@ -34,6 +34,7 @@ function provider:onConnect(slot)
   if not self.item.parameters.contents then self.item.parameters.contents = { } end
   self.driveParameters = itemutil.getCachedConfig(self.item).config.driveParameters
   self.priority = self.item.parameters.priority
+  self:updateFilter()
   self:updateItemCounts(self.item.parameters.contents)
   self.dirty = true
   driveProviders[slot] = self
@@ -73,6 +74,7 @@ function provider:tryPutItem(req, test)
     if root.itemDescriptorsMatch(req, ii, true) then itm, idx = ii, i break end
   end
   local count = req.count
+  -- TODO fix what the test flag actually does
   if not test then
     self:updateCapacity()
     local bitsLeft = self.driveParameters.capacity - self.item.parameters.bitsUsed
@@ -81,6 +83,7 @@ function provider:tryPutItem(req, test)
       if count <= 0 then return 0 end -- can't fit any
       itm.count = itm.count + count
     else
+      if self.filter and not self.filter(req) then return 0 end -- fails filter test
       count = math.min(count, bitsLeft - typeBits)
       if count <= 0 then return 0 end -- can't fit any
       itm = { name = req.name, parameters = req.parameters, count = count }
@@ -115,6 +118,11 @@ function provider:updateInfo() -- refresh description
     self.driveParameters.description, "\n^green;Bytes used: ^blue;",
     math.ceil(self.item.parameters.bitsUsed / 8), " / ", math.ceil(self.driveParameters.capacity / 8), fDesc, pDesc
   })
+end
+function provider:updateFilter()
+  if not self.item.parameters.filter then
+    self.filter = nil
+  else self.filter = itemutil.filter(self.item.parameters.filter) end
 end
 
 function storagenet:onConnect()
@@ -176,6 +184,7 @@ function svc.setInfo(slot, filter, priority)
   sp:setPriority(priority)
   if filter == "" then filter = nil end
   sp.item.parameters.filter = filter
+  sp:updateFilter()
   sp:updateInfo()
 end
 

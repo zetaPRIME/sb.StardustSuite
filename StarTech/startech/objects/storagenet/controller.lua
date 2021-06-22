@@ -89,7 +89,7 @@ local function priorityList()
   if storageByPriority then return storageByPriority end
   storageByPriority = { }
   for id, dev in pairs(devices) do
-    for sp in pairs(dev.storage) do storageByPriority[sp] = sp end
+    for sp in pairs(dev.storage) do table.insert(storageByPriority, sp) end
   end
   table.sort(storageByPriority, function(a, b) return b.priority < a.priority end)
   return storageByPriority
@@ -272,7 +272,7 @@ do -- encapsulate
       if sc then -- 
         for sp in pairs(sc.storage) do coroutine.yield(sp) end
       end
-      for _, sp in pairs(priorityList()) do coroutine.yield(sp) end
+      for _, sp in pairs(priorityList()) do sb.logInfo("key " .. tostring(_)) coroutine.yield(sp) end
     end)
   end
   function transactionDef:insert()

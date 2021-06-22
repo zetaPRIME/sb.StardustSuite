@@ -29,13 +29,14 @@
         - ^ use __call
         - install filter system in drive
         
-        add constructed filter logic to terminal ui
+        - add constructed filter logic to terminal ui
         
         enhancements {
             drives - quick lookup cache (matching structure to controller, or maybe even keyed by??)
         }
     }
     
+    fix text duping when attempting to backspace the start of a text box
     
 } content update {
     

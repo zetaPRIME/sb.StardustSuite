@@ -1,5 +1,6 @@
 ### StarTech
 - Transmatter network has been **entirely rewritten** - everything should be much more stable now
+  - Terminal search should be much more performant now - `/` is no longer needed to enable filter syntax and filters are compiled once instead of re-interpreting the string for each item in the list
   - The Controller and various buses have had their shading redone to better suit the style of the other parts
 
 ### Stardust Core+Lite
@@ -10,6 +11,7 @@
 - `pool:delta(old)` - compares two pools and lists IDs added and removed
 - Added `tasks.lua`, a coroutine helper
 - Reworked `interop.lua` slightly - added `exec()` and changed `hack()` to use it
+- Added filter precompilation to `itemutil.lua` - create filter once and run on multiple items
 
 #### metaGUI
 - Theming backend improvements (`extAsset`)

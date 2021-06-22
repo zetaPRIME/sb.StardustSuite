@@ -142,7 +142,7 @@ do
       end
     end
     
-    -- specials!
+    -- specials! essentially slash-commands
     filterTypes["/"] = function(item, config, match)
       return (filterTypes[match] or gfalse)(item, config, match)
     end
@@ -150,7 +150,8 @@ do
     filterTypes.isBlock = function(item, config)
       return not not (item.parameters.materialId or config.config.materialId)
     end
-    --
+    
+    -- -- --
     
     local filterProto = { }
     filterProto.__index = filterProto -- use as own metatable
@@ -182,14 +183,6 @@ do
     
     function itemutil.matchFilter(filter, item, config)
       return itemutil.filter(filter)(item, config)
-      --[[if not config then config = itemutil.getCachedConfig(item) end
-      
-      for tkn in filter:gmatch("%S+") do
-        local f, m, r = filterTypes[tkn:sub(1,1)], tkn:sub(2)
-        if f and m and m ~= "" then r = f(item, config, m) else r = filterTypes.default(item, config, tkn) end
-        if r then return true end
-      end
-      return false]]
     end
     
   end

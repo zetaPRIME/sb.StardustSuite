@@ -56,32 +56,23 @@ function uninit()
 	world.sendEntityMessage(src, "playerClose", pid)
 end
 
-local search = ""
+local filter
 function refreshDisplay()
-  --prevShownItems = shownItems
-  local shownItems = {}
+  local shownItems = { }
   local i = 1
-  if search == "" then
+  if not filter then
     for k,v in pairs(termItems) do
       shownItems[i] = v
       i = i + 1
     end
-  elseif search:sub(1, 2) == "/ " then
-    local filter = search:sub(3)
-    for k,v in pairs(termItems) do
-      if itemutil.matchFilter(filter, v) then
-        shownItems[i] = v
-        i = i + 1
-      end
-    end
   else
     for k,v in pairs(termItems) do
-      if string.find(string.lower(v.parameters.shortdescription or root.itemConfig(v).config.shortdescription), search) then
+      if filter(v) then
         shownItems[i] = v
         i = i + 1
       end
     end
-  end
+	end
   
   table.sort(shownItems, itemSortByCount)
 	
@@ -149,7 +140,8 @@ function btn:onClick()
 end]]
 
 function searchBar:onTextChanged()
-	search = self.text
+	if self.text == "" then filter = nil
+	else filter = itemutil.filter(self.text) end
 	refreshDisplay()
 end
 -- clear text if unfocused by hitting escape

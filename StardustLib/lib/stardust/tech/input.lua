@@ -2,7 +2,7 @@
 
 require "/scripts/vec2.lua"
 
-input = {
+local input = {
   key = { },
   keyLast = { },
   keyDown = { },
@@ -10,6 +10,7 @@ input = {
   dir = {0, 0},
   dirN = {0, 0},
 }
+_ENV.input = input
 
 local _i = true
 function input.update(p)

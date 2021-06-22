@@ -5,6 +5,7 @@
 
 ### Stardust Core+Lite
 - Added an outline to the Quickbar button glyph to match the style of the other icons
+- `input.lua` is now properly resilient against displacement (fixes issues caused by hooks)
 
 ### Stardust Core
 - Modernized `network.lua` somewhat; pool objects now use method syntax (`pool:tagged()`) and are keyed by object ID instead of sequentially

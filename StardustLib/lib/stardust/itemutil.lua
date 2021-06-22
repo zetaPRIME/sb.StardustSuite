@@ -121,16 +121,16 @@ do
   -- filter system
   do
     local function gfalse() return false end
-    local filterTypes = {}
+    local filterTypes = { }
     
-    filterTypes.default = function(item, config, match)
-      return not not (item.parameters.shortdescription or config.config.shortdescription):lower():find(match:lower()) -- same as entering search box
+    function filterTypes.default(item, config, match)
+      return not not (item.parameters.shortdescription or config.config.shortdescription):lower():find(match:lower(), 1, true) -- same as entering search box
     end
     filterTypes["_"] = function(item, config, match) -- _internalname
-      return not not item.name:lower():find(match:lower())
+      return not not item.name:lower():find(match:lower(), 1, true)
     end
     filterTypes["@"] = function(item, config, match) -- @category; only internal names for now, have to figure out how to do otherwise
-      return not not (item.parameters.category or config.config.category or ""):lower():find(match:lower()) -- same as entering search box
+      return not not (item.parameters.category or config.config.category or ""):lower():find(match:lower(), 1, true) -- same as entering search box
     end
     filterTypes["#"] = function(item, config, match) -- #tag (because what else); matches overall type, then item tags, then colony tags
       local mlow = match:lower()
@@ -142,13 +142,17 @@ do
       end
     end
     
-    -- specials! essentially slash-commands
-    filterTypes["/"] = function(item, config, match)
-      return (filterTypes[match] or gfalse)(item, config, match)
+    -- specials! essentially slash-commands --
+    
+    function filterTypes.isBlock(item, config)
+      return not not (item.parameters.materialId or config.config.materialId)
     end
     
-    filterTypes.isBlock = function(item, config)
-      return not not (item.parameters.materialId or config.config.materialId)
+    function filterTypes.type(item, config, arg)
+      return root.itemType(item.name) == arg
+    end
+    function filterTypes.typesub(item, config, arg)
+      return not not root.itemType(item.name):find(arg, 1, true)
     end
     
     -- -- --
@@ -167,13 +171,23 @@ do
     function itemutil.filter(fs)
       local ft = setmetatable({ steps = { } }, filterProto)
       
-      for tkn in fs:gmatch("%S+") do
-        local f, m, step = filterTypes[tkn:sub(1,1)], tkn:sub(2)
+      for tk in fs:gmatch("%S+") do
+        local ch, m, step = tk:sub(1,1), tk:sub(2)
+        local f = filterTypes[ch]
         if f and m and m ~= "" then
           step = function(i, c) return f(i, c, m) end
+        elseif ch == "/" then
+          local p
+          local sep = m:find("=", 1, true)
+          if sep then
+            p = m:sub(sep+1)
+            m = m:sub(1,sep-1)
+          end
+          local f = filterTypes[m]
+          if f then step = function(i, c) return f(i, c, p) end end
         else
           f = filterTypes.default
-          step = function(i, c) return f(i, c, tkn) end
+          step = function(i, c) return f(i, c, tk) end
         end
         if step then table.insert(ft.steps, step) end
       end

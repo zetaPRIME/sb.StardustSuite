@@ -16,11 +16,11 @@ local function spawnhooks()
 end
 
 do
-  local ctProto = { }
-  ctProto.__index = ctProto
+  local cpProto = { }
+  cpProto.__index = cpProto
   
-  ctProto.onDisconnect = nullFunc
-  function ctProto:disconnect()
+  cpProto.onDisconnect = nullFunc
+  function cpProto:disconnect()
     if self.dead then return end -- already done
     self.dead = true
     self:onDisconnect()
@@ -28,32 +28,32 @@ do
     self.hook.active[self] = nil
   end
   
-  ctProto.onUpdate = nullFunc
-  function ctProto:sendUpdate()
+  cpProto.onUpdate = nullFunc
+  function cpProto:sendUpdate()
     if self._block then
       self._block = nil
       return
     end
     self:onUpdate()
   end
-  function ctProto:blockNextUpdate()
+  function cpProto:blockNextUpdate()
     self._block = true
     return self
   end
   
   -- TODO getContents etc.
   
-  function containerTracker(id)
+  function containerProxy(id)
     if not id or not world.containerSize(id) then return end -- nothing here
-    local ct = setmetatable({ id = id }, ctProto)
+    local cp = setmetatable({ id = id }, cpProto)
     
     world.callScriptedEntity(id, "require", "/lib/stardust/injects/containerhook.lua")
-    ct.hook = world.callScriptedEntity(id, "$$cthook.get")
-    if not ct.hook then return end -- error installing
+    cp.hook = world.callScriptedEntity(id, "$$cphook.get")
+    if not cp.hook then return end -- error installing
     
-    active[ct] = true
-    ct.hook.active[ct] = true
+    active[cp] = true
+    cp.hook.active[cp] = true
     
-    return ct
+    return cp
   end
 end

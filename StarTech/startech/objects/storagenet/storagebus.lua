@@ -24,17 +24,17 @@ end
 function provider:onConnect(id)
   sp = self
   self.id = id
-  local ct = containerTracker(id)
-  self.ct = ct
-  ct.sp = self
-  ct.onUpdate = phOnUpdate
-  ct.onDisconnect = phOnDisconnect
+  local cp = containerProxy(id)
+  self.cp = cp
+  cp.sp = self
+  cp.onUpdate = phOnUpdate
+  cp.onDisconnect = phOnDisconnect
   
   self:updateItemCounts(world.containerItems(id))
 end
 
 function provider:onDisconnect()
-  self.ct:disconnect()
+  self.cp:disconnect()
   sp = nil
 end
 
@@ -48,7 +48,7 @@ function provider:tryPutItem(req, test)
   
   local leftover
   if not test then
-    self.ct:blockNextUpdate()
+    self.cp:blockNextUpdate()
     leftover = world.containerAddItems(self.id, req)
   end
   if not leftover then leftover = { name = req.name, parameters = req.parameters, count = 0 } end
@@ -62,7 +62,7 @@ function provider:tryTakeItem(req, test)
   local count = math.min(req.count, avail)
   
   if not test then
-    self.ct:blockNextUpdate()
+    self.cp:blockNextUpdate()
     world.containerConsume(self.id, { name = req.name, parameters = req.parameters, count = count })
     self:updateItemCounts { name = req.name, parameters = req.parameters, count = avail - count }
   end

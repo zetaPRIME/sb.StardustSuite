@@ -105,17 +105,24 @@ storageProto.tryPutItem = returnZero
 storageProto.onConnect = nullFunc
 storageProto.onDisconnect = nullFunc
 
-function storageProto:updateItemCounts(lst)
+function storageProto:updateItemCounts(lst, cacheIndexed)
   if self.dead or not lst then return end
   displayCache = nil -- invalidate old terminal cache
   if lst.name then lst = {lst} end -- allow descriptor input
-  for _, itm in pairs(lst) do
-    local sc = cacheFor(itm, itm.count > 0)
+  for k, itm in pairs(lst) do
+    local sc, count
+    if cacheIndexed then
+      sc = k
+      count = itm
+    else
+      sc = cacheFor(itm, itm.count > 0)
+      count = itm.count
+    end
     if sc then
       local prev = sc.storage[self] or 0
-      sc.storage[self] = itm.count > 0 and itm.count or nil -- set or clear contributing count
-      self.cache[sc] = itm.count > 0 or nil -- set whether this is contributing
-      local d = itm.count - prev
+      sc.storage[self] = count > 0 and count or nil -- set or clear contributing count
+      self.cache[sc] = count > 0 or nil -- set whether this is contributing
+      local d = count - prev
       sc.descriptor.count = sc.descriptor.count + d
       if sc.descriptor.count <= 0 then -- reap
         sc.entry.variants[sc] = nil

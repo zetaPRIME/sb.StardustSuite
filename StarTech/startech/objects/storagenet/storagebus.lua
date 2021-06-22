@@ -40,17 +40,16 @@ end
 function provider:refreshCounts()
   local old = self.contentsCache or { }
   local new = self.cp:contents()
+  
   local tl = { } -- tracking list
   for _,itm in pairs(old) do
-    tl[storagenet:getCacheFor(itm, true)] = true
+    tl[storagenet:getCacheFor(itm, true)] = 0
   end
   for _,itm in pairs(new) do
-    tl[storagenet:getCacheFor(itm, true)] = true
+    local c = storagenet:getCacheFor(itm, true)
+    tl[c] = (tl[c] or 0) + itm.count
   end
-  for e in pairs(tl) do
-    tl[e] = { name = e.descriptor.name, parameters = e.descriptor.parameters, count = self.cp:amountOf(e.descriptor) }
-  end
-  self:updateItemCounts(tl)
+  self:updateItemCounts(tl, true)
   
   self.contentsCache = new
 end

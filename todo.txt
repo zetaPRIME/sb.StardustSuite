@@ -36,6 +36,7 @@
         
         !! don't need to worry about keys being removed during iteration; remove workarounds in controler
         make sure removal removes storage tracking entry when relevant
+        - optimize for case of cache-indexed count update
         nuke old versions
     }
     

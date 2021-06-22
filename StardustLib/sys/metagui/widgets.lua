@@ -1193,7 +1193,7 @@ end do -- text box -------------------------------------------------------------
           self:setText(self.text:sub(1, m and m:len() or 0) .. self.text:sub(self.cursorPos+1))
           self:setCursorPosition(m and m:len() or 0)
         else
-          self:setText(self.text:sub(1, self.cursorPos-1) .. self.text:sub(self.cursorPos+1))
+          self:setText(self.text:sub(1, math.max(0, self.cursorPos-1)) .. self.text:sub(self.cursorPos+1))
           self:moveCursor(-1)
         end
       else -- try as printable key

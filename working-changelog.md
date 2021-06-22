@@ -17,3 +17,4 @@
 - Theming backend improvements (`extAsset`)
 - Tool tip generation is now handled by the theme, allowing for far greater visual customization
 - New layout attribute: `canvasBacked`
+- Fixed an issue where backspacing the beginning of a textBox would duplicate the text

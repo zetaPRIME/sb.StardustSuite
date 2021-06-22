@@ -121,18 +121,18 @@ do
   -- filter system
   do
     local function gfalse() return false end
-    local filterTypes = { }
+    local filterDef = { }
     
-    function filterTypes.default(item, config, match)
+    function filterDef.default(item, config, match)
       return not not (item.parameters.shortdescription or config.config.shortdescription):lower():find(match:lower(), 1, true) -- same as entering search box
     end
-    filterTypes["_"] = function(item, config, match) -- _internalname
+    filterDef["_"] = function(item, config, match) -- _internalname
       return not not item.name:lower():find(match:lower(), 1, true)
     end
-    filterTypes["@"] = function(item, config, match) -- @category; only internal names for now, have to figure out how to do otherwise
+    filterDef["@"] = function(item, config, match) -- @category; only internal names for now, have to figure out how to do otherwise
       return not not (item.parameters.category or config.config.category or ""):lower():find(match:lower(), 1, true) -- same as entering search box
     end
-    filterTypes["#"] = function(item, config, match) -- #tag (because what else); matches overall type, then item tags, then colony tags
+    filterDef["#"] = function(item, config, match) -- #tag (because what else); matches overall type, then item tags, then colony tags
       local mlow = match:lower()
       local type = root.itemType(item.name)
       if type == mlow or root.itemHasTag(item.name, mlow) then return true end
@@ -144,14 +144,14 @@ do
     
     -- specials! essentially slash-commands --
     
-    function filterTypes.isBlock(item, config)
+    function filterDef.isBlock(item, config)
       return not not (item.parameters.materialId or config.config.materialId)
     end
     
-    function filterTypes.type(item, config, arg)
+    function filterDef.type(item, config, arg)
       return root.itemType(item.name) == arg
     end
-    function filterTypes.typesub(item, config, arg)
+    function filterDef.typesub(item, config, arg)
       return not not root.itemType(item.name):find(arg, 1, true)
     end
     
@@ -173,7 +173,7 @@ do
       
       for tk in fs:gmatch("%S+") do
         local ch, m, step = tk:sub(1,1), tk:sub(2)
-        local f = filterTypes[ch]
+        local f = filterDef[ch]
         if f and m and m ~= "" then
           step = function(i, c) return f(i, c, m) end
         elseif ch == "/" then
@@ -183,10 +183,10 @@ do
             p = m:sub(sep+1)
             m = m:sub(1,sep-1)
           end
-          local f = filterTypes[m]
+          local f = filterDef[m]
           if f then step = function(i, c) return f(i, c, p) end end
         else
-          f = filterTypes.default
+          f = filterDef.default
           step = function(i, c) return f(i, c, tk) end
         end
         if step then table.insert(ft.steps, step) end

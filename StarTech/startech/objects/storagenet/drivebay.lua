@@ -99,13 +99,14 @@ end
 function provider:updateCapacity()
   if not self.dirty then return end
   local bits = 0
-  for k,item in ipairs(self.item.parameters.contents) do
+  for k,item in pairs(self.item.parameters.contents) do
     bits = bits + typeBits + item.count
   end
   self.item.parameters.bitsUsed = bits
   self.dirty = nil
 end
-function provider:updateInfo() -- refresh description
+function provider:updateInfo(forceCapacity) -- refresh description
+  if force then self.dirty = true end
   self:updateCapacity()
   local fDesc, pDesc = "", ""
   if self.item.parameters.filter and self.item.parameters.filter ~= "" then
@@ -160,7 +161,7 @@ function svc.swapDrive(pid, slot, item)
   
   local sp = driveProviders[slot]
   if sp then
-    sp:updateInfo()
+    sp:updateInfo(true)
     sp:disconnect()
   end -- kill provider
   local old = storage.drives[slot] -- hold old item for a sec
@@ -201,7 +202,7 @@ function die()
   while true do -- disconnect and drop all drives
     local _, sp = pairs(driveProviders)(driveProviders)
     if not sp then break end
-    sp:updateInfo() -- give correct description
+    sp:updateInfo(true) -- give correct description
     sp:disconnect()
     world.spawnItem(sp.item, pos)
   end

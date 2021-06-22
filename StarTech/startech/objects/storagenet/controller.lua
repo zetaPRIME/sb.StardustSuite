@@ -267,8 +267,7 @@ function transactionDef:request()
   local req = { name = itm.name, parameters = itm.parameters } -- dummy request item
   local needed = itm.count
   local count = 0
-  local sl = util.mergeTable({ }, sc.storage) -- copy so iteration doesn't get wonked when counts get updated
-  for sp in pairs(sl) do
+  for sp in pairs(sc.storage) do -- entries can only be removed here so we don't need to precopy
     req.count = needed - count
     count = count + (sp:tryTakeItem(req) or 0)
     if count >= needed then break end

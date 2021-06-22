@@ -35,13 +35,11 @@
         
         any-of filters
         
-        !! don't need to worry about keys being removed during iteration; remove workarounds in controler
+        - don't need to worry about keys being removed during iteration; remove workarounds in controler
         nuke old versions
     }
     
     taskQueue:install()
-    
-    - maybe adjust things (tasks, controller) to use unified prototype and metatable
     
 } content update {
     

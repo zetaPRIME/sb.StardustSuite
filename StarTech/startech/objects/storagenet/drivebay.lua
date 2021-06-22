@@ -59,7 +59,12 @@ function provider:tryTakeItem(req, test)
   if not test then
     itm.count = itm.count - rc
     if itm.count <= 0 then
-      table.remove(self.item.parameters.contents, idx)
+      if type(idx) ~= "number" then -- something screwy is happening, fix to array
+        self.item.parameters.contents[idx] = nil
+        self:reseatIndices()
+      else
+        table.remove(self.item.parameters.contents, idx)
+      end
     end
     self:updateItemCounts(itm)
     self.dirty = true -- mark capacity as needing update
@@ -124,6 +129,16 @@ function provider:updateFilter()
   if not self.item.parameters.filter then
     self.filter = nil
   else self.filter = itemutil.filter(self.item.parameters.filter) end
+end
+
+function provider:reseatIndices()
+  local old, new = self.item.parameters.contents, { }
+  local i = 1
+  for k,v in pairs(old) do
+    new[i] = v
+    i = i + 1
+  end
+  self.item.parameters.contents = new
 end
 
 function storagenet:onConnect()

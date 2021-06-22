@@ -28,6 +28,12 @@
         - preassembled filter system so don't need to re-tokenize on every test
         - ^ use __call
         - install filter system in drive
+        
+        add constructed filter logic to terminal ui
+        
+        enhancements {
+            drives - quick lookup cache (matching structure to controller, or maybe even keyed by??)
+        }
     }
     
     

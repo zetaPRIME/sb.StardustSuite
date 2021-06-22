@@ -272,7 +272,7 @@ do -- encapsulate
       if sc then -- 
         for sp in pairs(sc.storage) do coroutine.yield(sp) end
       end
-      for _, sp in pairs(priorityList()) do sb.logInfo("key " .. tostring(_)) coroutine.yield(sp) end
+      for _, sp in pairs(priorityList()) do coroutine.yield(sp) end
     end)
   end
   function transactionDef:insert()

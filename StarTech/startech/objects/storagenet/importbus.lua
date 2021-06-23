@@ -77,7 +77,7 @@ function svc.wrenchInteract(msg, isLocal, player, shiftHeld)
   end
 end
 
-function svc.getInfo() return { filter = storage.filter or "", priority = storage.priority } end
+function svc.getInfo() return { filter = storage.filter or "", priority = "n/a" } end
 function svc.setInfo(msg, isLocal, filter, priority)
   local pr = ""--"Priority set: " .. storage.priority .. "\n"
   if filter == "" then

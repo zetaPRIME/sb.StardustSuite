@@ -15,12 +15,12 @@ for _, ast in pairs {
   assets.textBox,
   assets.tabPanel, assets.tab,
   assets.itemSlot,
-} do ast.useThemeDirectives = "primaryDirectives" end
+} do ast.useThemeDirectives = "baseColorDirectives" end
 
 for _, ast in pairs {
   assets.checkBox, assets.radioButton,
   assets.tab,
-} do ast.useThemeDirectives = "secondaryDirectives" end
+} do ast.useThemeDirectives = "trimColorDirectives" end
 
 assets.closeButton = mg.extAsset "closeButton"
 assets.closeButton.useThemeDirectives = "closeButtonDirectives"
@@ -85,18 +85,24 @@ local paletteFor do
   end
 end
 
-theme.primaryDirectives = paletteFor "accent"
+theme.baseColorDirectives = paletteFor "accent"
 theme.closeButtonDirectives = paletteFor "cc0044"
 do
-  local col = color.toHsl(mg.getColor "accent")
-  col[1] = (col[1] + 3/24) % 1.0 -- hue shift
-  col[3] = util.clamp(col[3] + 0.2, 0, 1) -- bit brighter
-  col = color.fromHsl(col)
-  theme.secondaryDirectives = paletteFor(col)
-  theme.listItemColorSelected = color.hexWithAlpha(col, 0.25, true)
-  theme.listItemColorSelectedHover = color.hexWithAlpha(col, 0.5, true)
+  local hdiff = 3/24
   
-  theme.scrollBarDirectives = theme.secondaryDirectives .. "?multiply=ffffff7f"
+  local col = color.toHsl(mg.getColor "accent")
+  local h = col[1]
+  col[3] = util.clamp(col[3] + 0.2, 0, 1) -- bit brighter
+  col[1] = (h + hdiff) % 1.0 -- hue shift
+  mg.cfg.accentColor = color.toHex(color.fromHsl(col)) -- set actual accent color
+  col[1] = (h - hdiff) % 1.0 -- hue shift
+  col = color.fromHsl(col)
+  theme.trimColorDirectives = paletteFor(col) -- and now secondary color for unaccented things
+  local ac = mg.getColor "accent"
+  theme.listItemColorSelected = color.hexWithAlpha(ac, 0.25, true)
+  theme.listItemColorSelectedHover = color.hexWithAlpha(ac, 0.5, true)
+  
+  theme.scrollBarDirectives = paletteFor "accent" .. "?multiply=ffffff7f"
 end
 
 local installBg do
@@ -176,7 +182,7 @@ end
 
 function theme.drawButton(w)
   local c = widget.bindCanvas(w.backingWidget)
-  c:clear() local pal = w.color and paletteFor(w.color) or theme.secondaryDirectives
+  c:clear() local pal = w.color and paletteFor(w.color) or theme.trimColorDirectives
   assets.button:draw(c, {w.state or "idle", pal, false and "?multiply=ffffffbf" or nil})
   --[[if w.color == "accent" then
     assets.button:draw(c, "accent" .. pal .. "?multiply=ffffff7f")

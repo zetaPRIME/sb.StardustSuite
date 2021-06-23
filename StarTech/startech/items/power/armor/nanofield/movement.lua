@@ -475,7 +475,7 @@ do local s = movement.state("flight")
   function s:controlUpdate(par)
     par = par or { }
     mcontroller.clearControls()
-    mcontroller.controlParameters{
+    mcontroller.controlParameters {
       gravityEnabled = par.gravityEnabled or false,
       frictionEnabled = false,
       liquidImpedance = -100, -- full speed in water
@@ -485,7 +485,8 @@ do local s = movement.state("flight")
       maximumPlatformCorrectionVelocityFactor = 0.0,
       speedLimit = (not par.limitSpeed) and 500 or nil,
     }
-    mcontroller.controlModifiers{ movementSuppressed = true } -- disable harder, and also don't paddle at the air
+    mcontroller.controlModifiers { movementSuppressed = true } -- disable harder, and also don't paddle at the air
+    mcontroller.controlParameters { collisionEnabled = not self.stats.noclip }
   end
   
   function s:main()

@@ -1,0 +1,54 @@
+{ // -*- grammar-ext: json -*-
+  "itemName" : "startech:adminwing",
+  "shortdescription" : "Admin Flight",
+  "inventoryIcon" : "essencewing.icon.png",
+  "description" : "Soar through the skies. Or the walls. Or the floor. Or the ceiling.",
+  "category" : "startech:elytra",
+  "rarity" : "Essential",
+  "maxStack" : 1,
+  "tooltipKind" : "stardustlib.withPreview",
+  "largeImage" : "/startech/items/power/armor/elytra/essencewing.png?scalenearest=2",
+  "price" : 5000,
+  
+  "startech:elytraStats" : {
+    // copy of Essentia Booster
+    "flightSpeed" : 50, "boostSpeed" : 64, "force" : 1.2, "boostForce" : 1.4,
+    
+    // no heat
+    "heatAirIdle" : 0, "heatAirThrust" : 0, "heatAirBoost" : 0,
+    "heatWaterIdle" : 0, "heatWaterThrust" : 0, "heatWaterBoost" : 0,
+    "heatSpaceIdle" : 0, "heatSpaceThrust" : -0, "heatSpaceBoost" : 0,
+    
+    // still very effective in water
+    "speedMultWater" : 1.0, "forceMultWater" : 1.0,
+    
+    // slightly quicker in space
+    "forceMultSpace" : 1.1,
+    
+    // and the special sauce
+    "noclip" : true,
+    
+    "special" : {
+      "type" : "blinkdash",
+      "cooldownTime" : 0.1
+    },
+    
+    // invisible
+    "providesEnergyColor" : false, // no reason for this to override energy color
+    "energyColor" : "ff2f00", // red-orange in case anything actually uses this
+    "imgFront" : "/assetmissing.png",
+    "imgBack" : "/assetmissing.png",
+    
+    // and silent
+    "soundThrust" : "/sfx/npc/boss/kluexboss_vortex_windy.ogg",
+    "soundThrustVolume" : 0.0,
+    
+    "visualStatus" : [ ] // maybe use blinkout for a visual thing
+  },
+  
+  "stardustlib:moduleStats" : {
+    "startech:elytra" : [
+      //["increased", "heatDissipation", 0.15]
+    ]
+  }
+}

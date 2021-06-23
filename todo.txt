@@ -28,13 +28,12 @@
             expose rectify in terminal (hamburger button beside search)
         }
         
-        any-of filters
-        
-        - don't need to worry about keys being removed during iteration; remove workarounds in controler
-        nuke old versions
+        ! nuke old versions
     }
     
     taskQueue:install()
+    
+    - admin elytra that disables collisions
     
 } content update {
     

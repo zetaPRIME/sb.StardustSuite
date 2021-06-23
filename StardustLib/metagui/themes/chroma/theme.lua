@@ -30,8 +30,8 @@ assets.closeButtonSmall.useThemeDirectives = "closeButtonDirectives"
 if not mg.cfg.accentColor or mg.cfg.accentColor == theme.defaultAccentColor then
   mg.cfg.accentColor = color.toHex(color.fromHsl {
     util.randomInRange {0, 1},
-    util.randomInRange {0, 1},
-    util.randomInRange {0.5, 0.65},
+    util.randomInRange {0.5, 1},
+    util.randomInRange {0.5, 0.75},
   })
 end
 

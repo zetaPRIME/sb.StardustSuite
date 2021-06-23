@@ -155,6 +155,8 @@ do
       return not not root.itemType(item.name):find(arg, 1, true)
     end
     
+    filterDef.id = filterDef["_"] -- longform alias
+    
     -- -- --
     
     local filterProto = { }
@@ -162,6 +164,14 @@ do
     
     function filterProto:__call(item, cfg)
       if not cfg then cfg = itemutil.getCachedConfig(item) end
+      
+      if self.any then
+        for k,f in pairs(self.steps) do
+          if f(item, cfg) then return true end
+        end
+        return false
+      end
+      
       for k,f in pairs(self.steps) do
         if not f(item, cfg) then return false end
       end
@@ -173,9 +183,9 @@ do
       
       for tk in fs:gmatch("%S+") do
         local ch, m, step = tk:sub(1,1), tk:sub(2)
-        local f = filterDef[ch]
-        if f and m and m ~= "" then
-          step = function(i, c) return f(i, c, m) end
+        
+        if ch == "%" and not ft[m] then
+          ft[m] = true
         elseif ch == "/" then
           local p
           local sep = m:find("=", 1, true)
@@ -186,9 +196,15 @@ do
           local f = filterDef[m]
           if f then step = function(i, c) return f(i, c, p) end end
         else
-          f = filterDef.default
-          step = function(i, c) return f(i, c, tk) end
+          local f = filterDef[ch]
+          if f and m and m ~= "" then
+            step = function(i, c) return f(i, c, m) end
+          else
+            f = filterDef.default
+            step = function(i, c) return f(i, c, tk) end
+          end
         end
+        
         if step then table.insert(ft.steps, step) end
       end
       

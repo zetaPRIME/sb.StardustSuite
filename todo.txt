@@ -19,6 +19,7 @@
     }
     theme options in settings pane
     allow theme to modify context menu post-generation
+    scroll wheel on text boxes
     
     transmatter network rewrite {
         
@@ -32,8 +33,6 @@
     }
     
     taskQueue:install()
-    
-    - admin elytra that disables collisions
     
 } content update {
     

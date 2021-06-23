@@ -3,6 +3,8 @@
 require "/scripts/util.lua"
 require "/sys/quickbar/conditions.lua"
 
+theme.listItemColor = "#00000000" -- transparent unless hovered
+
 local actions = { }
 qbActions = actions -- alias in global for execs
 local function nullfunc() end

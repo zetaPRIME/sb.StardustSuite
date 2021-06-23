@@ -138,9 +138,16 @@ function svc.wrenchInteract(msg, isLocal, player, shiftHeld)
       }
     }
   else
-    local dl = {"v","<","^",">"}
+    if storagenet.connected and not sp then
+      tryHookUp()
+      if sp then
+        object.say("Connection established.")
+        return
+      end
+    end
     setOrientation((storage.orientation % 4) + 1)
-    object.say(dl[storage.orientation])
+    --local dl = {"v","<","^",">"}
+    --object.say(dl[storage.orientation])
   end
 end
 

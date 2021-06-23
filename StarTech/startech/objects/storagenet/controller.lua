@@ -303,7 +303,10 @@ do -- encapsulate
 end
 
 -- signal storage to perform consistency checks/repairs (essentially chkdisk/defrag)
+local rectifyInProgress
 function transactionDef:rectify()
+  if rectifyInProgress then return end -- nope
+  rectifyInProgress = true
   local sl = { } -- assemble operating list
   for id, dev in pairs(devices) do
     for sp in pairs(dev.storage) do
@@ -316,6 +319,7 @@ function transactionDef:rectify()
       sp:rectify() -- should be one per tick, but leave yielding to things that implement it
     end
   end
+  rectifyInProgress = nil
 end
 
 ----------------------------------------------------------------

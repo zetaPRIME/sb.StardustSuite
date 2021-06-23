@@ -82,6 +82,13 @@ do
     world.containerConsume(self.id, { name = req.name, parameters = req.parameters, count = avail })
     return avail
   end
+  function cpProto:consumeSlot(slot, count, exact) -- returns number consumed
+    if exact then
+      return world.containerConsumeAt(self.id, slot-1, count) and count or 0
+    end
+    local get = world.containerTakeNumItemsAt(self.id, slot-1, count)
+    return get and get.count or 0
+  end
   
   --- --- ---
   

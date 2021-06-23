@@ -124,7 +124,7 @@ function update(dt)
         item = { name = itm.name, parameters = itm.parameters, count = draw }
       }:runUntilFinish().result or { count = 0 }).count
       if taken > 0 then
-        world.containerConsumeAt(proxy.id, slot-1, taken)
+        proxy:consumeSlot(slot, taken)
         idle = false
         break
       end

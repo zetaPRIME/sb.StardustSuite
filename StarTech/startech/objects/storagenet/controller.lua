@@ -105,6 +105,8 @@ storageProto.priority = 0
 storageProto.tryTakeItem = returnZero
 storageProto.tryPutItem = returnZero
 
+storageProto.rectify = nullFunc
+
 storageProto.onConnect = nullFunc
 storageProto.onDisconnect = nullFunc
 
@@ -297,6 +299,22 @@ do -- encapsulate
       if req.count <= 0 then return end -- no leftovers
     end
     self.result = req -- return leftovers
+  end
+end
+
+-- signal storage to perform consistency checks/repairs (essentially chkdisk/defrag)
+function transactionDef:rectify()
+  local sl = { } -- assemble operating list
+  for id, dev in pairs(devices) do
+    for sp in pairs(dev.storage) do
+      sl[sp] = true
+    end
+  end
+  
+  for sp in pairs(sl) do
+    if not sp.dead then
+      sp:rectify() -- should be one per tick, but leave yielding to things that implement it
+    end
   end
 end
 

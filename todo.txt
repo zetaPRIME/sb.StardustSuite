@@ -30,7 +30,9 @@
         
         enhancements {
             drives - quick lookup cache (matching structure to controller, or maybe even keyed by??)
-            rectification transaction
+            - rectification transaction
+            drive rectify
+            expose rectify in terminal (hamburger button beside search)
         }
         
         any-of filters

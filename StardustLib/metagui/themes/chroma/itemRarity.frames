@@ -1,0 +1,9 @@
+{ // -*- grammar-ext: json -*-
+  "frameGrid" : {
+    "size" : [18, 18],
+    "dimensions" : [1, 1],
+    "names" : [
+      [ "default" ]
+    ]
+  }
+}

@@ -197,3 +197,37 @@ function theme.drawCheckBox(w)
   img:draw(c, state, pos)
   img:draw(c, cstate, pos)
 end
+
+local rarityColors = {
+  common    = "f6f6f6",
+  uncommon  = "42c53e",
+  rare      = "3ea8c5",
+  legendary = "893ec5",
+  essential = "c3c53e",
+}
+for k,v in pairs(rarityColors) do -- adjust brightness
+  local hsl = color.toHsl(v)
+  hsl[3] = util.clamp(hsl[3], 0.525, 0.8)
+  rarityColors[k] = color.toHex(color.fromHsl(hsl))
+end
+
+function theme.drawItemSlot(w)
+  local center = {9, 9}
+  local c = widget.bindCanvas(w.backingWidget)
+  c:clear() assets.itemSlot:draw(c, w.hover and "hover" or "idle", center)
+  if w.glyph then
+    if w.colorGlyph then
+      c:drawImage(w.glyph, center, nil, nil, true)
+    else
+      c:drawImage(w.glyph .. theme.itemSlotGlyphDirectives, center, nil, nil, true)
+    end
+  end
+  local ic = root.itemConfig(w:item())
+  if ic and not w.hideRarity then
+    local hover = w.hover or not w:isMouseInteractable() -- always full brightness if can't recieve hover
+    local rarity = (ic.parameters.rarity or ic.config.rarity or "Common"):lower()
+    local directives = {"default", paletteFor(rarityColors[rarity]), "?multiply=ffffffdf", false and hover and "?brightness=25" or nil}
+    local passes = hover and 3 or 1
+    for i = 1,passes do assets.itemRarity:draw(c, directives, center) end -- reinforce opacity when highlighted
+  end
+end

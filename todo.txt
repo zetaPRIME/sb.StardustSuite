@@ -10,7 +10,7 @@
         - title bar (add backing canvases to layouts)
         - close button frames
         
-        item rarities
+        - item rarities
         
         > figure out some natural color variation within a pane?
         "accent" color on buttons probably just bg but brighter?

@@ -133,13 +133,30 @@ function provider:updateFilter()
 end
 
 function provider:reseatIndices()
-  local old, new = self.item.parameters.contents, { }
-  local i = 1
+  local old, new, i = self.item.parameters.contents, { }, 1
   for k,v in pairs(old) do
     new[i] = v
     i = i + 1
   end
   self.item.parameters.contents = new
+end
+
+-- sweep through and combine all like stacks ("defrag")
+function provider:rectify()
+  local tl = { }
+  for _, itm in pairs(self.item.parameters.contents) do
+    local c = storagenet:getCacheFor(itm, true)
+    tl[c] = (tl[c] or 0) + itm.count
+  end
+  self:updateItemCounts(tl, true) -- do this while we're here
+  local ol, i = { }, 1
+  for sc, count in pairs(tl) do
+    ol[i] = { name = sc.descriptor.name, parameters = sc.descriptor.parameters, count = count }
+    i = i + 1
+  end
+  -- and reinstall
+  self.item.parametes.contents = ol
+  coroutine.yield() -- one per tick
 end
 
 function storagenet:onConnect()

@@ -133,7 +133,7 @@ function svc.wrenchInteract(msg, isLocal, player, shiftHeld)
     return {
       interact = {
         id = entity.id(),
-        type = config.getParameter("interactAction"),
+        type = "ScriptPane",
         config = { gui = { }, scripts = {"/metagui.lua"}, config = "startech:storagebus.config" }
       }
     }

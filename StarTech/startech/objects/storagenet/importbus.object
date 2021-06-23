@@ -1,16 +1,13 @@
 { // -*- grammar-ext: json -*-
   "objectName" : "startech:storagenet.importbus",
-  "colonyTags" : ["wired"],
   "printable" : false,
   "rarity" : "Common",
   "description" : "An import bus. Draws items from external inventories into a transmatter storage network.",
   "shortdescription" : "Transmatter Import Bus",
-  "race" : "human",
-
+  
   "category" : "storagenet",
   "price" : 500,
 
-  //"inventoryIcon" : "importbus.png?blendadd=/startech/objects/storagenet/exportbus.png;-4;0",
   "inventoryIcon" : "importbus.png",
   "orientations" : [
     {
@@ -27,21 +24,10 @@
   "scripts" : [ "importbus.lua" ],
   "scriptDelta" : 60,
   
-  //"animation" : "storagebus.animation",
   "animationScripts" : [ "storagebus.render.lua" ],
   
-  "interactAction" : "ScriptPane",
-  "interactData" : "/startech/interface/storagenet/importbus.config",
-
-  /*"animation" : "/objects/wired/logic/logic.animation",
-
-  "animationParts" : {
-    "switch" : "/objects/wired/logic/bulb.png"
-  },
-  "animationPosition" : [-8, -8], */
-  
   "networkTags" : {
-    "storageNet" : true
+    "startech:storagenet.device" : true
   },
   
   "inputNodes" : [ [0, 0] ]

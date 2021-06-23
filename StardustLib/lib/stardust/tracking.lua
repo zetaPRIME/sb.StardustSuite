@@ -50,6 +50,24 @@ do
     return world.containerAvailable(self.id, { name = req.name, parameters = req.parameters, count = 1 })
   end
   
+  function cpProto:inputContents()
+    local contents = self:contents()
+    if self.inputSlots then -- include inputs if defined
+      for s in pairs(contents) do if not self.inputSlots[s] then contents[s] = nil end end
+    elseif self.outputSlots then -- or exclude outputs
+      for s in pairs(contents) do if self.outputSlots[s] then contents[s] = nil end end
+    end return contents
+  end
+  
+  function cpProto:outputContents()
+    local contents = self:contents()
+    if self.outputSlots then -- include outputs if defined
+      for s in pairs(contents) do if not self.outputSlots[s] then contents[s] = nil end end
+    elseif self.inputSlots then -- or exclude inputs
+      for s in pairs(contents) do if self.inputSlots[s] then contents[s] = nil end end
+    end return contents
+  end
+  
   function cpProto:insert(req, exact) -- returns number inserted
     local canFit = math.min(world.containerItemsCanFit(self.id, req), req.count)
     if exact and canFit < req.count then return 0 end
@@ -58,7 +76,7 @@ do
   end
   function cpProto:consume(req, exact) -- returns number removed
     if exact then
-      return world.containerConsume(req) and req.count or 0
+      return world.containerConsume(self.id, req) and req.count or 0
     end
     local avail = math.min(self:amountOf(req), req.count)
     world.containerConsume(self.id, { name = req.name, parameters = req.parameters, count = avail })
@@ -67,7 +85,15 @@ do
   
   --- --- ---
   
+  local function toSet(lst)
+    if not lst then return nil end
+    local set = { }
+    for _,v in pairs(lst) do set[v] = true end
+    return set
+  end
+  
   function containerProxy(id)
+    if type(id) == "table" then id = world.objectAt(id) end -- if table, assume position
     if not id or not world.containerSize(id) then return end -- nothing here
     local cp = setmetatable({ id = id }, cpProto)
     
@@ -77,6 +103,10 @@ do
     
     active[cp] = true
     cp.hook.active[cp] = true
+    
+    local sc = world.getObjectParameter(id, "slotConfig", { })
+    cp.inputSlots = toSet(sc.input)
+    cp.outputSlots = toSet(sc.output)
     
     return cp
   end

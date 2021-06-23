@@ -18,9 +18,11 @@
         mg "highlight" color? base/accent/highlight??
     }
     theme options in settings pane
+    allow theme to modify context menu post-generation
     
     transmatter network rewrite {
-        import bus
+        > import bus
+        - take only from output slots
         
         enhancements {
             drives - quick lookup cache (matching structure to controller, or maybe even keyed by??)

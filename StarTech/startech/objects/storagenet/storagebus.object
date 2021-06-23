@@ -1,11 +1,9 @@
 { // -*- grammar-ext: json -*-
   "objectName" : "startech:storagenet.storagebus",
-  "colonyTags" : ["wired"],
   "printable" : false,
   "rarity" : "Common",
   "description" : "A storage bus. Connects external storage to a transmatter network.",
   "shortdescription" : "Transmatter Storage Bus",
-  "race" : "human",
 
   "category" : "storagenet.storage",
   "price" : 500,
@@ -27,16 +25,6 @@
   "scriptDelta" : 0,
   
   "animationScripts" : [ "storagebus.render.lua" ],
-  
-  "interactAction" : "ScriptPane",
-  "interactData" : "/startech/interface/storagenet/storagebus.config",
-
-  /*"animation" : "/objects/wired/logic/logic.animation",
-
-  "animationParts" : {
-    "switch" : "/objects/wired/logic/bulb.png"
-  },
-  "animationPosition" : [-8, -8], */
   
   "networkTags" : {
     "startech:storagenet.device" : true

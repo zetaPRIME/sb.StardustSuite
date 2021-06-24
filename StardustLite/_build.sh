@@ -14,6 +14,8 @@ function deploy { # deploy target files from Stardust Core
 deploy interface.config.patch
 deploy panes.config.patch
 
+deploy interface/windowconfig/chatbubbles.config.patch
+
 deploy interface/scripted/mmupgrade
 
 deploy metagui.lua

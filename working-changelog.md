@@ -10,6 +10,7 @@
 - Added `tasks.lua`, a coroutine helper
 - Added `itemutil.lua` to Stardust Core Lite
 - Added filter precompilation to `itemutil.lua` - create filter once and run on multiple items
+- Tweaked chat bubble wrap width and padding to make longer messages easier to read.
 
 ### Stardust Core
 - Modernized `network.lua` somewhat; pool objects now use method syntax (`pool:tagged()`) and are keyed by object ID instead of sequentially

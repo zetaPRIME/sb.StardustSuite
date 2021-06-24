@@ -153,7 +153,7 @@ function mg.getColor(c)
   if c == "none" then return nil end
   if c == "accent" then
     if mg.cfg.accentColor == "accent" then return "7f7f7f" end
-    return mg.getColor(mg.cfg.accentColor)
+    return mg.getColor(mg.cfg.accentColor or theme.defaultAccentColor)
   end
   return c
 end

@@ -67,7 +67,6 @@ local defaultAccentColor = settings.accentColor or themedata.defaultAccentColor
 -- apply config to ui data
 uicfg.theme = theme
 uicfg.themePath = registry.themes[theme]
-uicfg.accentColor = uicfg.accentColor or defaultAccentColor
 
 -- actually construct the base
 uicfg.style = uicfg.style or "window" -- default window style

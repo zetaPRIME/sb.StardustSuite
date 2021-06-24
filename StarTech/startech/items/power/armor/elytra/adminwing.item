@@ -40,6 +40,8 @@
     "imgBack" : "/assetmissing.png",
     
     // and silent
+    "soundActivate" : "silent.ogg",
+    "soundDeactivate" : "silent.ogg",
     "soundThrust" : "/sfx/npc/boss/kluexboss_vortex_windy.ogg",
     "soundThrustVolume" : 0.0,
     

@@ -12,10 +12,10 @@
         
         - item rarities
         
-        > figure out some natural color variation within a pane?
-        "accent" color on buttons probably just bg but brighter?
+        - figure out some natural color variation within a pane
         
-        mg "highlight" color? base/accent/highlight??
+        allow specifying basecolor and accent separately
+        - mg: change how default accent color is applied
     }
     theme options in settings pane
     allow theme to modify context menu post-generation

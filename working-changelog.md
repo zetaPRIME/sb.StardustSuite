@@ -6,13 +6,14 @@
 ### Stardust Core+Lite
 - Added an outline to the Quickbar button glyph to match the style of the other icons
 - `input.lua` is now properly resilient against displacement (fixes issues caused by hooks)
+- Added `tasks.lua`, a coroutine helper
+- Added `itemutil.lua` to Stardust Core Lite
+- Added filter precompilation to `itemutil.lua` - create filter once and run on multiple items
 
 ### Stardust Core
 - Modernized `network.lua` somewhat; pool objects now use method syntax (`pool:tagged()`) and are keyed by object ID instead of sequentially
 - `pool:delta(old)` - compares two pools and lists IDs added and removed
-- Added `tasks.lua`, a coroutine helper
 - Reworked `interop.lua` slightly - added `exec()` and changed `hack()` to use it
-- Added filter precompilation to `itemutil.lua` - create filter once and run on multiple items
 
 #### metaGUI
 - Theming backend improvements (`extAsset`)

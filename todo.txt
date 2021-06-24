@@ -11,7 +11,7 @@ add integration info to startech part of readme (generators, autosmelter)
     - scroll wheel on text boxes
     ^ respect scroll mode
     
-    FIX SCROLLING UP ONLY HAPPENING EVERY OTHER TICK
+    - FIX SCROLLING UP ONLY HAPPENING EVERY OTHER TICK
     
     transmatter network rewrite {
         add some logging stuff to rectification?

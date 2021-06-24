@@ -479,7 +479,7 @@ function init() ----------------------------------------------------------------
     wheel.proto = {
       type = "scrollArea", position = {0, 0}, size = size, verticalScroll = false, children = {
         fill = { type = "widget", position = {0, 0}, size },
-        target = { type = "widget", position = wheel.offset, size = {size[1], 72} },
+        target = { type = "widget", position = wheel.offset, size = {size[1], 71} },
         over = { type = "widget", position = wheel.offset, size = {size[1], 1000} },
       }
     }

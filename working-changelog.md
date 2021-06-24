@@ -21,5 +21,6 @@
 - Theming backend improvements (`extAsset`)
 - Tool tip generation is now handled by the theme, allowing for far greater visual customization
 - New layout attribute: `canvasBacked`
+- Fixed an issue where scrolling up would only work every second wheel click
 - Fixed an issue where backspacing the beginning of a textBox would duplicate the text
 - Text boxes can now be scrolled with the scroll wheel when contents exceed their width

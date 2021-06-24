@@ -4,6 +4,13 @@ local widgets = mg.widgetTypes
 local mkwidget = mg.mkwidget
 local debug = mg.debugFlags
 
+local scrollMode = { }
+mg.startEvent(function()
+  coroutine.yield() -- queue
+  scrollMode = mg.settings.scrollMode or {true, true}
+  if not scrollMode[1] and not scrollMode[2] then scrollMode = {true, true} end -- force both if both disabled
+end)
+
 do
 end do -- layout ------------------------------------------------------------------------------------------------------------------------------------
   widgets.layout = mg.proto(mg.widgetBase, {
@@ -233,13 +240,6 @@ end do -- scroll area ----------------------------------------------------------
     scrollBars = true,
     thumbScrolling = true,
   })
-  
-  local scrollMode = { }
-  mg.startEvent(function()
-    coroutine.yield() -- queue
-    scrollMode = mg.settings.scrollMode or {true, true}
-    if not scrollMode[1] and not scrollMode[2] then scrollMode = {true, true} end -- force both if both disabled
-  end)
   
   local sizeMod = {0, 0}
   local scrollFriction = 0.025
@@ -1105,7 +1105,7 @@ end do -- text box -------------------------------------------------------------
         end
         self:setCursorPosition(fcp)
       end
-      return self:captureMouse(btn)
+      return scrollMode[2] and self:captureMouse(btn)
     elseif not down and btn == self:mouseCaptureButton() then
       return self:releaseMouse()
     end
@@ -1115,7 +1115,7 @@ end do -- text box -------------------------------------------------------------
       self:setScrollPosition(self.scrollPos - delta[1])
     end
   end
-  function widgets.textBox:isWheelInteractable() return self.textWidth > (self.size[1] - self.frameWidth*2) end
+  function widgets.textBox:isWheelInteractable() return scrollMode[1] and self.textWidth > (self.size[1] - self.frameWidth*2) end
   function widgets.textBox:onMouseWheelEvent(dir)
     self:setScrollPosition(self.scrollPos + dir*15)
   end

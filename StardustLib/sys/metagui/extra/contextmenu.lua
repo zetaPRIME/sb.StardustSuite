@@ -1,5 +1,7 @@
 -- metaGUI context menu - runtime
 
+theme.listItemColor = "#00000000" -- transparent unless hovered
+
 local hooks = metagui.ipc[metagui.cfg.menuId]
 metagui.ipc[metagui.cfg.menuId] = nil -- clean up
 hooks.dismiss = function() pane.dismiss() end

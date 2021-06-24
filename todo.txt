@@ -5,35 +5,21 @@ add integration info to startech part of readme (generators, autosmelter)
 > Beta v0.1.4 {
     
     > "Chroma" metaGUI theme {
-        - listItem color vars
-        - check boxes
-        - radio buttons
-        - scroll bars
-        - title bar (add backing canvases to layouts)
-        - close button frames
-        
-        - item rarities
-        
-        - figure out some natural color variation within a pane
-        
         allow specifying basecolor and accent separately
-        - mg: change how default accent color is applied
     }
     theme options in settings pane
-    - allow theme to modify context menu post-generation
-    scroll wheel on text boxes
+    - scroll wheel on text boxes
+    ^ respect scroll mode
+    
+    FIX SCROLLING UP ONLY HAPPENING EVERY OTHER TICK
     
     transmatter network rewrite {
-        
-        enhancements {
-            drives - quick lookup cache (matching structure to controller, or maybe even keyed by??)
-            - expose rectify in terminal (hamburger button beside search)
-        }
+        add some logging stuff to rectification?
+        have it give a fail reason when already running
         
         ! nuke old versions
     }
     
-    - taskQueue:install()
     
 } content update {
     

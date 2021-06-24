@@ -1115,6 +1115,10 @@ end do -- text box -------------------------------------------------------------
       self:setScrollPosition(self.scrollPos - delta[1])
     end
   end
+  function widgets.textBox:isWheelInteractable() return self.textWidth > (self.size[1] - self.frameWidth*2) end
+  function widgets.textBox:onMouseWheelEvent(dir)
+    self:setScrollPosition(self.scrollPos + dir*15)
+  end
   
   function widgets.textBox:focus()
     if not self.focused then

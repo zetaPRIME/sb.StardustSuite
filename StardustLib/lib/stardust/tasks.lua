@@ -1,17 +1,16 @@
 -- task queues
 
 local nullFunc = function() end
+local function proto() local p = { } p.__index = p return p end
 
-local taskQueue = { }
-local taskQueueMeta = { __index = taskQueue }
-local task = { }
-local taskMeta = { __index = task }
+local taskQueue = proto()
+local task = proto()
 
 function _ENV.taskQueue()
   local queue = setmetatable({
     tasks = { },
     byId = { },
-  }, taskQueueMeta)
+  }, taskQueue)
   
   return queue
 end
@@ -23,7 +22,7 @@ function taskQueue:run()
     if coroutine.status(t.crt) == "dead" then t.dead = true end
     if not t.dead and not t.paused then
       _ENV.runningTask = t
-      local f, err = coroutine.resume(t.crt)
+      local f, err = coroutine.resume(t.crt, t) -- pass task as own argument
       if coroutine.status(t.crt) == "dead" then
         t.dead = true
         if not f then sb.logError(err) end
@@ -40,7 +39,8 @@ function taskQueue:run()
   end
   _ENV.runningTask = nil
   self.tasks = next
-end
+  if self.handleTickRate and script then script.setUpdateDelta(next[1] and 1 or 0) end
+end taskQueue.__call = taskQueue.run
 
 function taskQueue:spawn(...)
   local func, id
@@ -57,12 +57,26 @@ function taskQueue:spawn(...)
     index = #self.tasks+1,
     id = id,
     crt = coroutine.create(func),
-  }, taskMeta)
+  }, task)
   
   self.tasks[t.index] = t
   if id then self.byId[id] = t end
   
+  if self.handleTickRate and script then script.setUpdateDelta(1) end
+  
   return t
+end
+
+function taskQueue:install()
+  if self.installed then return self end -- don't double install
+  self.installed = true
+  if metagui then -- don't break shit
+    mg.startEvent(function() while true do coroutine.yield() self() end end)
+    return self
+  end
+  _ENV.update = function() self() end
+  self.handleTickRate = true
+  return self
 end
 
 -- marks task dead

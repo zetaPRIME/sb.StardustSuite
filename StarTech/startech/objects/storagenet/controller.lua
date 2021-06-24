@@ -10,7 +10,7 @@ local nullFunc = function() end
 local returnZero = function() return 0 end
 local nullTable = { }
 
-local processes = taskQueue()
+local processes = taskQueue():install()
 
 local devices = { } -- map<objId, { handle, storage = map<storageProvider, true> }>
 local storageByPriority
@@ -343,10 +343,6 @@ function uninit()
     if not dev then break end
     dev.handle:disconnect()
   end
-end
-
-function update(dt)
-  processes:run()
 end
 
 processes:spawn("networkManager", function()

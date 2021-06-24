@@ -1,5 +1,7 @@
 -
 
+add integration info to startech part of readme (generators, autosmelter)
+
 > Beta v0.1.4 {
     
     > "Chroma" metaGUI theme {
@@ -51,6 +53,9 @@
         store tracking globally
         bookkeeping function as part of mg
     }
+    
+    text box selections
+    multiline text boxes?
     
     eliminate ninepatch overlapping when too small (clamp areas to half render size)
     

@@ -20,21 +20,20 @@ add integration info to startech part of readme (generators, autosmelter)
         - mg: change how default accent color is applied
     }
     theme options in settings pane
-    allow theme to modify context menu post-generation
+    - allow theme to modify context menu post-generation
     scroll wheel on text boxes
     
     transmatter network rewrite {
         
         enhancements {
             drives - quick lookup cache (matching structure to controller, or maybe even keyed by??)
-            - drive rectify ("defrag")
-            expose rectify in terminal (hamburger button beside search)
+            - expose rectify in terminal (hamburger button beside search)
         }
         
         ! nuke old versions
     }
     
-    taskQueue:install()
+    - taskQueue:install()
     
 } content update {
     

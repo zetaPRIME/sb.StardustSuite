@@ -13,6 +13,8 @@ function storagenet:onDisconnect()
   
 end
 
+local queue = taskQueue()
+
 local svc = { }
 local openPlayers = { }
 local playerTimeout = -1
@@ -46,6 +48,14 @@ function svc.request(msg, isLocal, item, player)
   if result and result.count > 0 then
     world.sendEntityMessage(player, "playerext:giveItemToCursor", result, true)
   end
+end
+
+function svc.rectify()
+  if not storagenet.connected then return end
+  queue:spawn("rectify", function()
+    storagenet:transaction { "rectify" }:runUntilFinish()
+    object.say("Check complete.")
+  end)
 end
 
 -- player tracking
@@ -86,6 +96,8 @@ function update(dt)
     object.setAnimationParameter("active", isOpen)
   end
   inUse = isOpen
+  
+  queue()
 end
 
 _ccdis = false

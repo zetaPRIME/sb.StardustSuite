@@ -146,3 +146,11 @@ function searchBar:onTextChanged()
 end
 -- clear text if unfocused by hitting escape
 function searchBar:onEscape() self:setText() end
+
+local cmenu = {
+	{ "Check and repair storage", function() world.sendEntityMessage(pane.sourceEntity(), "rectify") end },
+}
+
+function btnMenu:onClick()
+	metagui.contextMenu(cmenu)
+end

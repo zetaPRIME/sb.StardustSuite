@@ -155,6 +155,10 @@ function mg.getColor(c)
     if mg.cfg.accentColor == "accent" then return "7f7f7f" end
     return mg.getColor(mg.cfg.accentColor or theme.defaultAccentColor)
   end
+  if c == "base" then
+    if mg.cfg.baseColor == "base" then return "3f3f3f" end
+    return mg.getColor(mg.cfg.baseColor or theme.defaultBaseColor or "accent")
+  end
   return c
 end
 

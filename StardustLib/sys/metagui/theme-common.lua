@@ -250,5 +250,7 @@ function tdef.toolTipBackground(innerSize)
   return tt, rc[5] -- table, inner
 end
 
+function tdef.modifyContextMenu(cfg) end -- stub
+
 -- copy in as defaults
 for k, v in pairs(tdef) do theme[k] = v theme.common[k] = v end

@@ -41,10 +41,14 @@ function mg.contextMenu(m)
   cfg.anchor = { "bottomLeft",
     vec2.add(vec2.mul(vec2.add(mg.windowPosition, mg.mousePosition), {1, -1}), {-bm[1] - pushIn, calcSize[2] - bm[2] - pushIn} )
   }
+  theme.modifyContextMenu(cfg) -- give theme a chance to edit whatever it likes
   mg.ipc[menuId] = hooks
   lastMenu = hooks
   player.interact("ScriptPane", { gui = { }, scripts = {"/metagui.lua"}, config = cfg }, 0)
 end
+mg.registerUninit(function() -- close any paired menus when this pane closes
+  if lastMenu and lastMenu.dismiss then lastMenu.dismiss() end
+end)
 
 -- generate themed tool tip from wrapped text
 function mg.toolTip(inp)

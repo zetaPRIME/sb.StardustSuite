@@ -27,7 +27,7 @@ function input.update(p)
   input.keyLast = input.key -- push back
   input.key = { -- assemble keys
     up = m.up, down = m.down, left = m.left, right = m.right,
-    jump = m.jump, sprint = not m.run,
+    jump = m.jump, walk = not m.run, sprint = not m.run,
     t1 = m.special1, t2 = m.special2, t3 = m.special3,
     m1 = m.primaryFire, m2 = m.altFire,
   }

@@ -237,6 +237,7 @@ function transactionProto:run()
   local s, err = coroutine.resume(self.crt, self)
   if not s then
     sb.logError("Transaction error: " .. err)
+    self.error = err
     self:fail "error"
   elseif coroutine.status(self.crt) == "dead" then -- finished naturally
     self.dead = true
@@ -246,13 +247,15 @@ function transactionProto:run()
 end
 
 function transactionProto:runUntilFinish(sync) while not self.dead do self:run() end return self end
-function transactionProto:waitFor() while not self.dead do coroutine.yield() end end
+function transactionProto:waitFor() while not self.dead do coroutine.yield() end return self end
 
 transactionProto.onFinish = nullFunc
 transactionProto.onFail = nullFunc
+transactionProto._onFailInternal = nullFunc
 function transactionProto:fail(ftype)
   self.dead = true
   self.failType = ftype
+  self:_onFailInternal()
   self:onFail()
 end
 
@@ -305,7 +308,8 @@ end
 -- signal storage to perform consistency checks/repairs (essentially chkdisk/defrag)
 local rectifyInProgress
 function transactionDef:rectify()
-  if rectifyInProgress then return end -- nope
+  if rectifyInProgress then return self:fail "alreadyRunning" end -- nope
+  function self:_onFailInternal() rectifyInProgress = false end
   rectifyInProgress = true
   local sl = { } -- assemble operating list
   for id, dev in pairs(devices) do

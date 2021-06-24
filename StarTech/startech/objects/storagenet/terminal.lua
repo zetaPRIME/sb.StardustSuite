@@ -53,8 +53,16 @@ end
 function svc.rectify()
   if not storagenet.connected then return end
   queue:spawn("rectify", function()
-    storagenet:transaction { "rectify" }:runUntilFinish()
-    object.say("Check complete.")
+    local tr = storagenet:transaction { "rectify" }:waitFor()
+    if tr.failType then
+      if tr.failType == "alreadyRunning" then
+        object.say "Check already in progress."
+      elseif tr.failType == "error" then
+        object.say("Error while running transaction:\n" .. tr.error:sub(1, tr.error:find("\n") or -1))
+      end
+    else
+      object.say "Check and repair complete."
+    end
   end)
 end
 

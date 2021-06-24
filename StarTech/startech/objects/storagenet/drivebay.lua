@@ -155,7 +155,7 @@ function provider:rectify()
     i = i + 1
   end
   -- and reinstall
-  self.item.parametes.contents = ol
+  self.item.parameters.contents = ol
   coroutine.yield() -- one per tick
 end
 

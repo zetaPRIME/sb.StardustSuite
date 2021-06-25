@@ -1064,6 +1064,7 @@ end do -- text box -------------------------------------------------------------
   
   function widgets.textBox:init(base, param)
     self.caption = param.caption
+    self.color = param.color
     
     self.expandMode = param.expandMode
     if param.inline then self.expandMode = {0, 0} end
@@ -1079,6 +1080,12 @@ end do -- text box -------------------------------------------------------------
     widget.setSize(self.subWidgets.content, vec2.add(widget.getSize(self.backingWidget), {self.frameWidth*-2, 0}))
     local c = widget.bindCanvas(self.subWidgets.content) c:clear()
     local color = self.focused and "#ffffff" or "#bfbfbf"
+    if self.color then
+      if type(self.color == "string") then -- hexcode or color name
+        color = mg.getColor(self.color:gsub("#", ""))
+        color = color and ("#" .. color)
+      else color = self.color end -- assume rgb255 table
+    end
     local vc = self.size[2]/2
     if self.focused then -- cursor
       local p = mg.measureString(self.text:sub(1, self.cursorPos))[1] - self.scrollPos
@@ -1136,6 +1143,10 @@ end do -- text box -------------------------------------------------------------
       self:queueRedraw()
       mg.startEvent(self.onTextChanged, self)
     end
+  end
+  function widgets.textBox:setColor(c)
+    self.color = c
+    self:queueRedraw()
   end
   
   function widgets.textBox:setScrollPosition(p)

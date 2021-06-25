@@ -320,6 +320,7 @@ A text entry field.
 ##### Attributes
 ```js
 "caption" : "Search...", // Text to display when unfocused and no text is entered.
+"color" : "accent", // Text color.
 "inline" : true, // Alias for an expandMode of [0, 0].
 "expand" : true, // Alias for an expandMode of [2, 0].
 ```
@@ -328,6 +329,7 @@ A text entry field.
 textBox:focus() -- Grabs keyboard focus.
 textBox:blur() -- Releases focus.
 textBox:setText(string) -- Sets contents.
+textBox:setColor(color) -- Sets text color.
 
 textBox:setCursorPosition(int) -- Sets the position of the text cursor, in characters.
 textBox:moveCursor(int) -- Moves the cursor by a given number of characters.

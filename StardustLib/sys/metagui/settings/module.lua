@@ -31,7 +31,9 @@ do
   
   local function themeSelected(w)
     metagui.settings.theme = w.theme
-    tp.tab:setVisible(not not themes[w.theme].hasSettingsPanel)
+    local theme = themes[w.theme]
+    tp.tab.titleWidget:setText(theme.name)
+    tp.tab:setVisible(not not theme.hasSettingsPanel)
   end
   
   local function addThemeEntry(themeId)

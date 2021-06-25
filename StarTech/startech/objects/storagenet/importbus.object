@@ -2,7 +2,7 @@
   "objectName" : "startech:storagenet.importbus",
   "printable" : false,
   "rarity" : "Common",
-  "description" : "An import bus. Draws items from external inventories into a transmatter storage network.",
+  "description" : "An import bus. Draws items from external inventories into a transmatter storage network. ^lightgray;(Work in progress)",
   "shortdescription" : "Transmatter Import Bus",
   
   "category" : "storagenet",

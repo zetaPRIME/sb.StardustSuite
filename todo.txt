@@ -5,7 +5,7 @@ add integration info to startech part of readme (generators, autosmelter)
 > Beta v0.1.4 {
     
     > "Chroma" metaGUI theme {
-        allow specifying basecolor and accent separately
+        - allow specifying basecolor and accent separately
     }
     theme options in settings pane
     

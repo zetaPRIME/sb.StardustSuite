@@ -27,14 +27,6 @@ assets.closeButton.useThemeDirectives = "closeButtonDirectives"
 assets.closeButtonSmall = mg.extAsset "closeButtonSmall"
 assets.closeButtonSmall.useThemeDirectives = "closeButtonDirectives"
 
-if not mg.cfg.accentColor or mg.cfg.accentColor == theme.defaultAccentColor then
-  mg.cfg.accentColor = color.toHex(color.fromHsl {
-    util.randomInRange {0, 1},
-    util.randomInRange {0.5, 1},
-    util.randomInRange {0.5, 0.75},
-  })
-end
-
 local paletteFor do
   local hlAlpha = 0.9 -- subtle translucency on the highlights
   local bgAlpha = 0.70 -- much clearer glass on anything else
@@ -85,24 +77,51 @@ local paletteFor do
   end
 end
 
-theme.baseColorDirectives = paletteFor "accent"
-theme.closeButtonDirectives = paletteFor "cc0044"
-do
-  local hdiff = 3/24
+do -- figure out colors
+  local baseColor = mg.cfg.baseColor
+  local trimColor = mg.cfg.trimColor
+  local accentColor = mg.cfg.accentColor
   
-  local col = color.toHsl(mg.getColor "accent")
+  if accentColor and not baseColor then
+    baseColor = accentColor
+    accentColor = nil
+  end
+  
+  if not baseColor then -- roll something nice and bright
+    baseColor = color.toHex(color.fromHsl {
+      util.randomInRange {0, 1},
+      util.randomInRange {0.5, 1},
+      util.randomInRange {0.5, 0.75},
+    })
+  end
+  
+  local hdiff = 3/24
+  local col = color.toHsl(baseColor)
   local h = col[1]
   col[3] = util.clamp(col[3] + 0.2, 0, 1) -- bit brighter
-  col[1] = (h + hdiff) % 1.0 -- hue shift
-  mg.cfg.accentColor = color.toHex(color.fromHsl(col)) -- set actual accent color
-  col[1] = (h - hdiff) % 1.0 -- hue shift
-  col = color.fromHsl(col)
-  theme.trimColorDirectives = paletteFor(col) -- and now secondary color for unaccented things
-  local ac = mg.getColor "accent"
-  theme.listItemColorSelected = color.hexWithAlpha(ac, 0.25, true)
-  theme.listItemColorSelectedHover = color.hexWithAlpha(ac, 0.5, true)
+  if not trimColor then -- fill out trim
+    col[1] = (h - hdiff) % 1.0 -- hue shift
+    trimColor = color.toHex(color.fromHsl(col))
+  end
+  if not accentColor then -- fill out accent
+    col[1] = (h + hdiff) % 1.0 -- hue shift
+    accentColor = color.toHex(color.fromHsl(col)) 
+  end
   
-  theme.scrollBarDirectives = paletteFor "accent" .. "?multiply=ffffff7f"
+  -- save back
+  mg.cfg.baseColor = baseColor
+  mg.cfg.trimColor = trimColor
+  mg.cfg.accentColor = accentColor
+  
+  theme.baseColorDirectives = paletteFor(baseColor)
+  theme.trimColorDirectives = paletteFor(trimColor)
+  theme.accentColorDirectives = paletteFor(accentColor)
+  
+  theme.listItemColorSelected = color.hexWithAlpha(accentColor, 0.25, true)
+  theme.listItemColorSelectedHover = color.hexWithAlpha(accentColor, 0.5, true)
+  theme.scrollBarDirectives = theme.accentColorDirectives .. "?multiply=ffffff7f"
+  
+  theme.closeButtonDirectives = paletteFor "cc0044"
 end
 
 local installBg do
@@ -236,4 +255,10 @@ function theme.drawItemSlot(w)
     local passes = hover and 3 or 1
     for i = 1,passes do assets.itemRarity:draw(c, directives, center) end -- reinforce opacity when highlighted
   end
+end
+
+function theme.modifyContextMenu(cfg)
+  cfg.baseColor = mg.cfg.baseColor
+  cfg.trimColor = mg.cfg.trimColor
+  cfg.accentColor = mg.cfg.accentColor
 end

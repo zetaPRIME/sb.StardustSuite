@@ -87,6 +87,8 @@ do -- figure out colors
     accentColor = nil
   end
   
+  if theme.settings.overrideColors then baseColor, trimColor, accentColor = nil end
+  
   if not baseColor then -- if no color scheme specified by pane...
     if theme.settings.randomColor then -- roll something nice and bright
       baseColor = color.toHex(color.fromHsl {

@@ -16,6 +16,11 @@ ts.layout = {
     { type = "label", inline = true, text = "Accent" }, { type = "textBox", id = "accentColor" },
   } },
   
+  {
+    { type = "checkBox", id = "overrideColors" },
+    { type = "label", text = "Override pane-specified colors" },
+  },
+  
 }
 
 local function onColorChanged(self)
@@ -37,6 +42,7 @@ function ts:init()
   
   -- and load in settings
   ts.randomColor:setChecked(ts.settings.randomColor)
+  ts.overrideColors:setChecked(ts.settings.overrideColors)
   
   ts.baseColor:setText(ts.settings.baseColor)
   ts.trimColor:setText(ts.settings.trimColor)
@@ -45,6 +51,7 @@ end
 
 function ts:save()
   ts.settings.randomColor = ts.randomColor.checked
+  ts.settings.overrideColors = ts.overrideColors.checked
   
   ts.settings.baseColor = color.validateHex(ts.baseColor.text)
   ts.settings.trimColor = color.validateHex(ts.trimColor.text)

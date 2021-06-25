@@ -17,7 +17,7 @@
     ]},
     [
       { "type" : "textBox", "id" : "searchBar", "caption" : "Search..." },
-      { "type" : "button", "id" : "btnMenu", "caption" : "=", "color" : "accent", "size" : [13, 13], "expandMode" : [0, 0] }
+      { "type" : "iconButton", "id" : "btnMenu", "image" : "menu.png" }
     ]
   ]
 }

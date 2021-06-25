@@ -8,11 +8,8 @@ add integration info to startech part of readme (generators, autosmelter)
         allow specifying basecolor and accent separately
     }
     theme options in settings pane
-    - scroll wheel on text boxes
-    - ^ respect scroll mode
     
     transmatter network rewrite {
-        add some logging stuff to rectification?
         
         ! nuke old versions
     }
@@ -53,6 +50,7 @@ add integration info to startech part of readme (generators, autosmelter)
     
     option to always show beacon and enemy radar (deployment)
     
+    add some logging stuff to drive rectification
     
 } and unspecified {
     modules system for nanofield so other mods can add their own things

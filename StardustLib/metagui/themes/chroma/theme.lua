@@ -87,12 +87,18 @@ do -- figure out colors
     accentColor = nil
   end
   
-  if not baseColor then -- roll something nice and bright
-    baseColor = color.toHex(color.fromHsl {
-      util.randomInRange {0, 1},
-      util.randomInRange {0.5, 1},
-      util.randomInRange {0.5, 0.75},
-    })
+  if not baseColor then -- if no color scheme specified by pane...
+    if theme.settings.randomColor then -- roll something nice and bright
+      baseColor = color.toHex(color.fromHsl {
+        util.randomInRange {0, 1},
+        util.randomInRange {0.5, 1},
+        util.randomInRange {0.5, 0.75},
+      })
+    else
+      baseColor = baseColor or theme.settings.baseColor or theme.defaultAccentColor
+      trimColor = trimColor or theme.settings.trimColor
+      accentColor = accentColor or theme.settings.accentColor
+    end
   end
   
   local hdiff = 3/24

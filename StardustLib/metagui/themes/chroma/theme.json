@@ -8,6 +8,10 @@
     
     "hasSettingsPanel" : true,
     
+    "defaultSettings" : {
+        "randomColor" : true
+    },
+    
     "metrics" : {
         "borderMargins" : { // left, top, right, bottom
             "window" : [ 4, 21, 4, 4 ],

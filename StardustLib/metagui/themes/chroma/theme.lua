@@ -87,7 +87,7 @@ do -- figure out colors
     accentColor = nil
   end
   
-  if theme.settings.overrideColors then baseColor, trimColor, accentColor = nil end
+  if theme.settings.overrideColors and not mg.cfg._chroma_keepcolors then baseColor, trimColor, accentColor = nil end
   
   if not baseColor then -- if no color scheme specified by pane...
     if theme.settings.randomColor then -- roll something nice and bright
@@ -266,6 +266,7 @@ function theme.drawItemSlot(w)
 end
 
 function theme.modifyContextMenu(cfg)
+  cfg._chroma_keepcolors = true
   cfg.baseColor = mg.cfg.baseColor
   cfg.trimColor = mg.cfg.trimColor
   cfg.accentColor = mg.cfg.accentColor

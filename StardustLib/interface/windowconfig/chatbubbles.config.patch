@@ -1,4 +1,4 @@
 [ // -*- grammar-ext: json -*-
-    { "op" : "add", "path" : "/textPadding", "value" : [2, 2] },
+    { "op" : "add", "path" : "/textPadding", "value" : [4, 2] },
     { "op" : "add", "path" : "/textWrapWidth", "value" : 200 }
 ]

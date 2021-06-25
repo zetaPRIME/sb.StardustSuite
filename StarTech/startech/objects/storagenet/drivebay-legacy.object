@@ -24,22 +24,10 @@
     }
   ],
   
-  "scripts" : [ "drivebay-legacy.lua" ],
-  "scriptDelta" : 1,
-  
-  "animationScripts" : [ "drivebay.render.lua" ],
-  
-  "inputNodes" : [ [0, 0] ],
-  
-  "networkTags" : {
-    "storageNet" : true,
-    "storageNet.storage" : true // HERP DERP
-  },
-
   "openSounds" : [ "/sfx/objects/locker_open.ogg" ],
   "closeSounds" : [ "/sfx/objects/locker_close.ogg" ],
   "slotCount" : 8,
-  "uiConfig" : "/startech/interface/storagenet/drivebay-legacy.config",
+  "uiConfig" : "/interface/chests/chest9.config",
   "frameCooldown" : 5,
   "autoCloseCooldown" : 3600
 }

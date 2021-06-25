@@ -6,7 +6,7 @@ add integration info to startech part of readme (generators, autosmelter)
     
     transmatter network rewrite {
         
-        ! nuke old versions
+        - ! nuke old versions
     }
     
     - make import bus craftable, but mark as WIP

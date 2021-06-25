@@ -33,7 +33,6 @@
       "collision" : "platform"
     }
   ],
-  "animation" : "controller.animation",
   "animationScripts" : [ "controller.render.lua" ],
   
   "scripts" : [ "controller.lua" ],

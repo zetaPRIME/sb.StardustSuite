@@ -2,9 +2,11 @@
 require "/scripts/util.lua"
 
 do
-  color = { }
+  local color = { }
+  _ENV.color = color
   
   function color.toHex(rgb, hash)
+    if not rgb then return nil end
     local h = hash and "#" or ""
     if type(rgb) == "string" then return string.format("%s%s", h, rgb:gsub("#","")) end
     return string.format(rgb[4] and "%s%02x%02x%02x%02x" or "%s%02x%02x%02x", h,
@@ -15,15 +17,44 @@ do
     )
   end
   
+  local function cl(n) return util.clamp(n, 0, 1) end
   function color.toRgb(hex)
     if type(hex) == "table" then return hex end
     hex = hex:gsub("#", "") -- strip hash if present
-    return {
-      tonumber(hex:sub(1, 2), 16) / 255,
-      tonumber(hex:sub(3, 4), 16) / 255,
-      tonumber(hex:sub(5, 6), 16) / 255,
-      (hex:len() == 8) and (tonumber(hex:sub(7, 8), 16) / 255)
-    }
+    local len = hex:len()
+    if len == 3 or len == 4 then
+      return {
+        tonumber(hex:sub(1, 1), 16) / 15,
+        tonumber(hex:sub(2, 2), 16) / 15,
+        tonumber(hex:sub(3, 3), 16) / 15,
+        (len == 4) and (tonumber(hex:sub(4, 4), 16) / 15) or nil
+      }
+    elseif len >= 6 and len <= 8 then
+      return {
+        tonumber(hex:sub(1, 2), 16) / 255,
+        tonumber(hex:sub(3, 4), 16) / 255,
+        tonumber(hex:sub(5, 6), 16) / 255,
+        (len == 8) and (tonumber(hex:sub(7, 8), 16) / 255) or nil
+      }
+    end
+  end
+  
+  local validDigits = {
+    ["0"] = true, ["1"] = true, ["2"] = true, ["3"] = true, ["4"] = true,
+    ["5"] = true, ["6"] = true, ["7"] = true, ["8"] = true, ["9"] = true,
+    a = true, b = true, c = true, d = true, e = true, f = true,
+    A = true, B = true, C = true, D = true, E = true, F = true,
+  }
+  function color.validateHex(hex, hash)
+    if type(hex) ~= "string" then return nil end
+    hex = hex:gsub("#", "") -- strip hash if present
+    local len = hex:len()
+    --if len < 6 then return nil end -- no short right now
+    if len < 3 or len == 5 or len > 8 then return nil end -- wrong char count
+    for i=1,len do
+      if not validDigits[hex:sub(i, i)] then return nil end
+    end
+    return color.toHex(color.toRgb(hex), hash)
   end
   
   function color.toRgb255(c)
@@ -32,14 +63,7 @@ do
       math.floor(0.5 + rgb[2] * 255),
       math.floor(0.5 + rgb[3] * 255),
       rgb[4] and math.floor(0.5 + (rgb[4] or 1.0) * 255)
-    } elseif type(c) == "string" then
-      hex = c:gsub("#", "") -- strip hash if present
-      return {
-      tonumber(hex:sub(1, 2), 16),
-      tonumber(hex:sub(3, 4), 16),
-      tonumber(hex:sub(5, 6), 16),
-      (hex:len() == 8) and (tonumber(hex:sub(7, 8), 16))
-    } end
+    } elseif type(c) == "string" then return color.toRgb255(color.toRgb(c)) end
   end
   
   function color.withAlpha(c, a)

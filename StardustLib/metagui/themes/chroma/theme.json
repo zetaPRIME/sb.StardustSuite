@@ -6,6 +6,8 @@
     //"defaultAccentColor" : "7c50ff",
     "defaultAccentColor" : "7f6fff", // blurple (but not discord blurple)
     
+    "hasSettingsPanel" : true,
+    
     "metrics" : {
         "borderMargins" : { // left, top, right, bottom
             "window" : [ 4, 21, 4, 4 ],

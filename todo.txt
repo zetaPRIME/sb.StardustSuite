@@ -7,7 +7,7 @@ add integration info to startech part of readme (generators, autosmelter)
     > "Chroma" metaGUI theme {
         - allow specifying basecolor and accent separately
     }
-    theme options in settings pane
+    - theme options in settings pane
     
     transmatter network rewrite {
         

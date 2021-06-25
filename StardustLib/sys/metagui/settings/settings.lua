@@ -43,6 +43,7 @@ function moduleProto:page(p)
 end
 
 function pageProto:init() end
+function pageProto:onSwitch() end
 function pageProto:save() end
 
 function tabField:onTabChanged(tab)
@@ -57,6 +58,7 @@ function tabField:onTabChanged(tab)
     
     table.insert(loadedPages, page)
   end
+  page:onSwitch()
 end
 
 function apply:onClick()
@@ -90,6 +92,7 @@ for _, m in ipairs(modSort) do
       title = pg.title, icon = pg.icon,
     }
     tab.page = pg
+    pg.tab = tab
   end
 end
 setAssetPath()

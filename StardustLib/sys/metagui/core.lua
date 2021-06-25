@@ -430,6 +430,11 @@ function init() ----------------------------------------------------------------
   mg.theme.id = mg.cfg.theme
   mg.theme.path = mg.cfg.themePath
   _ENV.theme = mg.theme -- alias
+  
+  -- load theme settings
+  mg.theme.settings = util.mergeTable({ }, mg.theme.defaultSettings or { })
+  util.mergeTable(mg.theme.settings, mg.settings.themeSettings and mg.settings.themeSettings[mg.theme.id] or { })
+  
   module "theme-common" -- load theme defaults and common utils
   require(mg.theme.path .. "theme.lua") -- load in theme
   

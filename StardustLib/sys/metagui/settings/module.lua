@@ -16,6 +16,12 @@ do
     }
   }
   
+  local tp = m:page { title = "Theme Settings", icon = "themesettings.png",
+    contents = {
+      { type = "layout", id = "stack", mode = "stack", expandMode = {2, 2} }
+    }
+  }
+  
   local themes = { }
   local defaultInfo = {
     -- defaultAccentColor = "accent",
@@ -25,6 +31,7 @@ do
   
   local function themeSelected(w)
     metagui.settings.theme = w.theme
+    tp.tab:setVisible(not not themes[w.theme].hasSettingsPanel)
   end
   
   local function addThemeEntry(themeId)
@@ -63,6 +70,55 @@ do
       addThemeEntry(theme.id)
     end
   end
+  
+  -- -- --
+  
+  function _ENV.themeSettings()
+    return themes[mg.settings.theme].settingsModule
+  end
+  
+  local themeSettings = { }
+  themeSettings.__index = themeSettings
+  
+  function themeSettings:init() end
+  function themeSettings:save() end
+  
+  function tp:init()
+    --
+  end
+  
+  function tp:onSwitch()
+    local theme = themes[mg.settings.theme]
+    if not theme.settingsModule then
+      -- set up settings table
+      if not mg.settings.themeSettings then mg.settings.themeSettings = { } end
+      local tst = util.mergeTable({ }, theme.defaultSettings or { })
+      util.mergeTable(tst, mg.settings.themeSettings[theme.id] or { })
+      mg.settings.themeSettings[theme.id] = tst -- install
+      
+      -- and the module itself
+      local ts = setmetatable({ theme = theme, settings = tst }, themeSettings)
+      theme.settingsModule = ts
+      
+      mg.cfg.assetPath = theme.path
+      mg.widgetContext = ts
+      require(theme.path .. "settings.lua")
+      ts.page = mg.createImplicitLayout(ts.contents or ts.layout, tp.stack, { mode = "vertical", expandMode = {2, 2} })
+      ts:init()
+    end
+    
+    for _, pg in pairs(tp.stack.children) do
+      pg:setVisible(pg == theme.settingsModule.page)
+    end
+  end
+  
+  function tp:save()
+    for _, t in pairs(themes) do
+      if t.settingsModule then t.settingsModule:save() end
+    end
+  end
+  
+  
 end
 do
   local p = m:page { title = "General", icon = "settings.icon.png",

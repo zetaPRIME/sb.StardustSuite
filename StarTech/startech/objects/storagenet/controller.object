@@ -20,6 +20,9 @@
   "hylotlDescription" : "A cargo crate of modern design.",
   "novakidDescription" : "A basic lookin' crate. Could hold valuable cargo...",*/
   
+  "fenthesDescription" : "Good old transmatter network. Nice to finally have one up and running again.",
+  "avaliDescription" : "To think that technology such as this could be created with such readily available materials...\n\nImagine if tech like this were integrated with sync crystals?",
+  
   "jewelGrants" : [["description", "I, uh, don't think it's supposed to go here...?"]],
 
   "inventoryIcon" : "controller.icon.png",

@@ -1,5 +1,6 @@
 ### StarTech
-- Transmatter network has been **entirely rewritten** - everything should be much more stable now
+- Transmatter network has been **entirely rewritten** - everything should be much more stable now.
+  - Removed the warning from Drive Bays; since the codebase has been completely rewritten, data loss *should* no longer be an issue.
   - Terminal search should be much more performant now - `/` is no longer needed to enable filter syntax and filters are compiled once instead of re-interpreting the string for each item in the list
   - Terminals now have the option to check and attempt to repair attached storage. For drives, this combines any stray stacks of the same item and forces a contigious sequence of entries.
   - The Controller and various buses have had their shading redone to better suit the style of the terminal, and the Drive Bay has been shined up a bit.
@@ -20,6 +21,7 @@
 
 #### metaGUI
 - Themes can now have their own **settings page** for greater customization
+- New stock theme: **Chroma**, a bright and colorful array of translucent glass. Colors can be customized, or left to be chosen at random.
 - Theming backend improvements (`extAsset`)
 - Tool tip generation is now handled by the theme, allowing for far greater visual customization
 - New layout attribute: `canvasBacked`

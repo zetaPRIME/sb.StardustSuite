@@ -4,12 +4,6 @@ add integration info to startech part of readme (generators, autosmelter)
 
 > Beta v0.1.4 {
     
-    transmatter network rewrite {
-        
-        - ! nuke old versions
-    }
-    
-    - make import bus craftable, but mark as WIP
     do I want to slip in a smelting recipe for slime?
     
 } content update {

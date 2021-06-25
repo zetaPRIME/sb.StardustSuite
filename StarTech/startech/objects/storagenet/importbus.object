@@ -24,7 +24,7 @@
   "scripts" : [ "importbus.lua" ],
   "scriptDelta" : 60,
   
-  "animationScripts" : [ "storagebus.render.lua" ],
+  "animationScripts" : [ "bus.render.lua" ],
   
   "networkTags" : {
     "startech:storagenet.device" : true

@@ -36,7 +36,7 @@
       [ // bottom bar
         //"spacer",
         { "type" : "textBox", "id" : "txtCount", "caption" : "How many?", "expand" : true },
-        { "type" : "button", "id" : "btnCraft", "caption" : "Craft" }
+        { "type" : "button", "id" : "btnCraft", "caption" : "Craft", "color" : "accent" }
       ]
     ]
   ]

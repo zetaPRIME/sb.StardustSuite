@@ -5,10 +5,19 @@ add integration info to startech part of readme (generators, autosmelter)
 > Beta v0.1.5 {
     
     metaGUI: fix builder lua detection when more than one dot
-    - theme settings icon doesn't come back properly when starting on a theme that doesn't have it
-    - use native for metagui stack check
+    
+    radio buttons: findWithValue, selectWithValue
     
     do I want to slip in a smelting recipe for slime?
+    
+    export bus {
+        precache items passing filter match
+        pick one item at a time
+        get signals on item entry created or removed (batch on next tick?)
+        copy display cache as array on first load, sort by count to pick next item??
+        
+        hmm,
+    }
     
 } content update {
     

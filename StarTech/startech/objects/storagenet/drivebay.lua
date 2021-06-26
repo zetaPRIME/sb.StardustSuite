@@ -225,6 +225,7 @@ end
 -- -- --
 
 function init()
+  if not storage.drives then storage.drives = { } end -- init table
   updateLights()
   for k, f in pairs(svc) do message.setHandler("drivebay:"..k, function(_, _, ...) return f(...) end) end
 end

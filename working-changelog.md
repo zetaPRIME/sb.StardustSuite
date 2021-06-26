@@ -1,4 +1,5 @@
 ### StarTech
+- Fixed an issue where a freshly placed drive bay didn't create its drives table, causing any drives slotted in to be lost
 
 ### Stardust Core+Lite
 

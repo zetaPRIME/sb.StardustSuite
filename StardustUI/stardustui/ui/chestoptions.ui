@@ -4,6 +4,7 @@
   "title" : "Container Options",
   "icon" : "settings.icon.png",
   "accentColor" : "7f7787", // a nice near-gray for themes that tint the whole window
+  "openWithInventory" : true,
   "uniqueBy" : "path",
   "scripts" : [ "chestoptions.lua" ],
   "children" : [

@@ -49,5 +49,10 @@ function apply:onClick()
   waitPromise(world.sendEntityMessage(src, "saveOptions"))
   
   waitPromise(world.sendEntityMessage(src, "")) -- wait for one more sync, then...
-  player.interact("OpenContainer", nil, src) -- reopen chest UI
+  --player.interact("OpenContainer", nil, src) -- reopen chest UI
+  pane.dismiss() -- close (which reopens the chest UI)
 end
+
+metagui.registerUninit(function()
+  player.interact("OpenContainer", nil, src) -- reopen chest UI
+end)

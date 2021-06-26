@@ -50,7 +50,10 @@ cfg.children = {
 
 local icfg = root.itemConfig { name = world.entityTypeName(src), parameters = { }, count = 1 }
 
-cfg.icon = util.absolutePath(icfg.directory, world.getObjectParameter(src, "inventoryIcon"))
+local icon = world.getObjectParameter(src, "inventoryIcon")
+if type(icon) == "string" then
+  cfg.icon = util.absolutePath(icfg.directory, icon)
+end
 cfg.title = world.getObjectParameter(src, "shortdescription")
 
 local esUIColors = {

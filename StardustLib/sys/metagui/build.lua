@@ -15,7 +15,7 @@ if pane.containerEntityId then
     player.interact("OpenContainer", nil, pane.sourceEntity())
     return pane.dismiss()
   end
-  ipc.openContainerProxy = true
+  ipc.openContainerProxy = pane.sourceEntity()
 end
 
 -- determine UI json

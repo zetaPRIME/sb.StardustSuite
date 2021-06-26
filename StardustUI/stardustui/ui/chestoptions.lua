@@ -53,6 +53,14 @@ function apply:onClick()
   pane.dismiss() -- close (which reopens the chest UI)
 end
 
+function update()
+  if metagui.ipc.openContainerProxy then pane.dismiss() end
+end
+
 metagui.registerUninit(function()
-  player.interact("OpenContainer", nil, src) -- reopen chest UI
+  if metagui.ipc.openContainerProxy then -- guard against weird container behavior
+    player.interact("OpenContainer", nil, metagui.ipc.openContainerProxy) -- force reopen specified container
+  else
+    player.interact("OpenContainer", nil, src) -- reopen chest UI
+  end
 end)

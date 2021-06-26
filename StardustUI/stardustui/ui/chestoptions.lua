@@ -46,7 +46,7 @@ function apply:onClick()
   world.sendEntityMessage(src, "keepContent", keepItems.checked)
   world.sendEntityMessage(src, "interfaceColors", radColor:getGroupValue())
   -- signal to show save message
-  waitPromise(world.sendEntityMessage(src, "saveOptions"))
+  --waitPromise(world.sendEntityMessage(src, "saveOptions"))
   
   waitPromise(world.sendEntityMessage(src, "")) -- wait for one more sync, then...
   pane.dismiss() -- close (which reopens the chest UI)

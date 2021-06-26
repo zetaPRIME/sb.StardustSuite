@@ -72,8 +72,8 @@ do -- asset type definitions
   
   function mg.ninePatch(path)
     -- rectify path input
-    path = mg.asset((path:match('^(.*)%..-$') or path) .. ".png")
-    path = path:match('^(.*)%..-$') or path
+    path = mg.asset((path:match('^(.*)%.[^.]-$') or path) .. ".png")
+    path = path:match('^(.*)%.[^.]-$') or path
     if ninePatchReg[path] then return ninePatchReg[path] end
     local np = setmetatable({ }, ninePatchMeta) ninePatchReg[path] = np
     np.image = path .. ".png"
@@ -126,8 +126,8 @@ do -- asset type definitions
   end
   
   function mg.extAsset(path)
-    path = mg.asset((path:match('^(.*)%..-$') or path) .. ".png")
-    path = path:match('^(.*)%..-$') or path
+    path = mg.asset((path:match('^(.*)%.[^.]-$') or path) .. ".png")
+    path = path:match('^(.*)%.[^.]-$') or path
     if extAssetReg[path] then return extAssetReg[path] end
     local ast = setmetatable({ }, extAssetMeta) extAssetReg[path] = ast
     ast.image = path .. ".png"

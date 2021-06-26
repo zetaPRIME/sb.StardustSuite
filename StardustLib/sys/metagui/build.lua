@@ -29,7 +29,7 @@ if type(uicfg) == "string" then
   -- still a string after resolving (if necessary)?
   if type(uicfg) == "string" then
     local fn = uicfg
-    if fn:lower():match('%.(.-)$') == "lua" then -- build script
+    if fn:lower():match('%.([^.]-)$') == "lua" then -- build script
       inputdata = inputdata or config.getParameter("data") or { }
       require(fn) uicfg = _ENV.cfg -- execute and grab result
       -- and push in automatically

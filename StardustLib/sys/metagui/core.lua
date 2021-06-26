@@ -32,7 +32,7 @@ end
 function mg.asset(path)
   if not path then return nil end
   if path:sub(1, 1) == '/' then return path end
-  local ext = path:match('^.*%.(.-)$')
+  local ext = path:match('^.*%.([^.]-)$')
   local op = mg.cfg.themePath .. path
   if ext == "png" and not root.nonEmptyRegion(op) then
     if theme and theme.fallback then

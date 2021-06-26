@@ -41,7 +41,7 @@ cfg.children = {
   } },
   { { size = 16 },
     -1, -- tiny bit of space away from edge
-    { type = "label", text = "(" .. numSlots .. " slots)" },
+    { type = "label", text = numSlots .. " slots" },
     "spacer",
     { id = "esOptions", type = "iconButton", image = "minimenu.png", visible = not not hasES },
     { id = "takeAll", type = "button", caption = "Take All", size = 38, color = "accent" },

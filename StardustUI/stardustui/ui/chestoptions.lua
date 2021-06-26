@@ -49,6 +49,7 @@ function apply:onClick()
   --waitPromise(world.sendEntityMessage(src, "saveOptions"))
   
   waitPromise(world.sendEntityMessage(src, "")) -- wait for one more sync, then...
+  coroutine.yield() -- one more frame to eliminate the rare chance that color doesn't update
   pane.dismiss() -- close (which reopens the chest UI)
 end
 

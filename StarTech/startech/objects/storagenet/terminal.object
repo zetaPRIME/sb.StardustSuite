@@ -5,6 +5,18 @@
   "rarity" : "Rare",
   "description" : "A storage terminal which provides access to a transmatter network's contents.",
   "shortdescription" : "Transmatter Terminal",
+  
+  "apexDescription" : "An entire compound's storage at your fingertips.",
+  //"avianDescription" : "",
+  "floranDescription" : "Ssshove trophiesss in, ssshow off from anywhere.",
+  //"glitchDescription" : "",
+  //"humanDescription" : "",
+  //"hylotlDescription" : "",
+  //"novakidDescription" : "",
+  "feneroxDescription" : "Put things in, take things out. Like magic!",
+  
+  "fenthesDescription" : "",
+  "avaliDescription" : "This panel provides for storage what the Nexus does for information. One could probably link the two with a little work.",
 
   "category" : "storagenet",
   "price" : 500,
@@ -34,20 +46,7 @@
   },
   "animationPosition" : [-8, -8],
   
-  //"uiConfig" : "/startech/interface/storagenet/terminal.config",
   "uiConfig" : "/metagui/container.config", "ui" : "startech:terminal",
-  /*"interactAction" : "OpenCraftingInterface", // lolwut
-  "interactData" : {
-    "config" : "/startech/interface/storagenet/terminal.config",
-    "paneLayoutOverride" : {
-      "windowtitle" : {
-        "subtitle" : "Everything at your fingertips"
-      }
-    }
-  },//*/
-  
-  //"interactAction" : "ScriptConsole",
-  //"interactData" : "/objects/generic/arcadegame/arcadegamegui.config",
   
   "objectType" : "container",
 

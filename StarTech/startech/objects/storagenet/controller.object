@@ -1,9 +1,7 @@
 { // -*- grammar-ext: json -*-
   "objectName" : "startech:storagenet.controller",
-  //"colonyTags" : ["outpost","storage","commerce"],
   "rarity" : "Rare",
   "objectType" : "container",
-  //"tooltipKind" : "container",
   "description" : "The core of a transmatter storage network.",
   "shortdescription" : "Transmatter Controller",
   "race" : "generic",
@@ -12,13 +10,14 @@
   "printable" : false,
   "health" : 32,
 
-  /*"apexDescription" : "A mysterious cargo crate.",
-  "avianDescription" : "I wonder what's in here.",
-  "floranDescription" : "Floran ship Floran in cargo crate. Leap out. Sssurprise!",
-  "glitchDescription" : "Intrigued. A cargo container - anything could be inside.",
-  "humanDescription" : "Ooh, cargo!",
-  "hylotlDescription" : "A cargo crate of modern design.",
-  "novakidDescription" : "A basic lookin' crate. Could hold valuable cargo...",*/
+  "apexDescription" : "This machine coordinates storage and automation for an entire installation.",
+  //"avianDescription" : "I wonder what's in here.",
+  "floranDescription" : "Ssshiny glowiesss.",
+  //"glitchDescription" : "Intrigued. A cargo container - anything could be inside.",
+  //"humanDescription" : "Ooh, cargo!",
+  //"hylotlDescription" : "A cargo crate of modern design.",
+  "novakidDescription" : "This'ere thing's glowin' brighter than me.",
+  "feneroxDescription" : "Glowy box! Holds things.",
   
   "fenthesDescription" : "Good old transmatter network. Nice to finally have one up and running again.",
   "avaliDescription" : "To think that technology such as this could be created with such readily available materials...\n\nImagine if tech like this were integrated with sync crystals?",

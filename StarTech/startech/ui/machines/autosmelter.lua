@@ -36,5 +36,4 @@ function takeAll:onClick()
     player.giveItem(world.containerItemAt(id, i))
     world.containerTakeAt(id, i)
   end
-  for i = 1,15 do coroutine.yield() end
 end

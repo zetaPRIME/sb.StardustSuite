@@ -13,8 +13,17 @@ function takeAll:onClick()
 end
 
 function esOptions:onClick()
-  player.interact("ScriptPane", { gui = { }, scripts = {"/metagui.lua"}, config = "stardustui:chestoptions", data = { src = src } }, src)
+  metagui.ipc._stardustui_chestopts = true
+  pane.dismiss()
+  --player.interact("OpenContainer", nil, src)
+  --player.interact("ScriptPane", { gui = { }, scripts = {"/metagui.lua"}, config = "stardustui:chestoptions", data = { src = src } }, src)
 end
+
+metagui.registerUninit(function()
+  if metagui.ipc._stardustui_chestopts then
+    player.interact("OpenContainer", nil, src)
+  end
+end)
 
 do -- mimic ES effect of activating retention on first open
   local keep = world.getObjectParameter(src, "keepContent")

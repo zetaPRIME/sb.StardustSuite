@@ -1,6 +1,6 @@
 --
 
-local src = metagui.cfg.inputData.src
+local src = metagui.cfg.inputData.src or pane.sourceEntity()
 
 local uiColors = {
   {"?hueshift=-110?saturation=40?brightness=10", "d10004", "Red"}, -- red
@@ -49,18 +49,11 @@ function apply:onClick()
   waitPromise(world.sendEntityMessage(src, "saveOptions"))
   
   waitPromise(world.sendEntityMessage(src, "")) -- wait for one more sync, then...
-  --player.interact("OpenContainer", nil, src) -- reopen chest UI
   pane.dismiss() -- close (which reopens the chest UI)
 end
 
-function update()
-  if metagui.ipc.openContainerProxy then pane.dismiss() end
-end
-
 metagui.registerUninit(function()
-  if metagui.ipc.openContainerProxy then -- guard against weird container behavior
-    player.interact("OpenContainer", nil, metagui.ipc.openContainerProxy) -- force reopen specified container
-  else
+  if metagui.ipc.openContainerProxy == src then -- if not opening another container...
     player.interact("OpenContainer", nil, src) -- reopen chest UI
   end
 end)

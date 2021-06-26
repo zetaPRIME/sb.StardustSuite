@@ -10,6 +10,8 @@ add integration info to startech part of readme (generators, autosmelter)
     
     do I want to slip in a smelting recipe for slime?
     
+    - make chest proxy config a second container variant
+    
 } content update {
     
     get Pulse Knuckles to a good usable state

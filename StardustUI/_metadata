@@ -1,8 +1,8 @@
 {
-  "version" : "Alpha v0.32",
+  "version" : "Beta v0.1.x",
   "friendlyName" : "Stardust UI",
   "name" : "StardustUI",
-  "author" : "zetaPRIME",
+  "author" : "Zia Satazaki",
   "description" : "... Stuff!",
-  "requires" : [ "StardustLib" ]
+  "includes" : [ "StardustLib", "QuickbarMini", "Enhanced Storage" ]
 }

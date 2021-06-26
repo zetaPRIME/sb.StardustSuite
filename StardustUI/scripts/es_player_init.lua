@@ -1,0 +1,2 @@
+-- this file is here to disable the "idiot check" and associated radio message from Enhanced Storage
+-- our modifications trip it, but we are very much compatible

@@ -2,7 +2,9 @@
 
 add integration info to startech part of readme (generators, autosmelter)
 
-> Beta v0.1.4 {
+> Beta v0.1.5 {
+    
+    metaGUI: fix builder lua detection when more than one dot
     
     do I want to slip in a smelting recipe for slime?
     

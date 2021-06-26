@@ -1,31 +1,7 @@
 ### StarTech
-- Transmatter network has been **entirely rewritten** - everything should be much more stable now.
-  - Removed the warning from Drive Bays; since the codebase has been completely rewritten, data loss *should* no longer be an issue.
-  - Terminal search should be much more performant now - `/` is no longer needed to enable filter syntax and filters are compiled once instead of re-interpreting the string for each item in the list
-  - Terminals now have the option to check and attempt to repair attached storage. For drives, this combines any stray stacks of the same item and forces a contigious sequence of entries.
-  - The Controller and various buses have had their shading redone to better suit the style of the terminal, and the Drive Bay has been shined up a bit.
 
 ### Stardust Core+Lite
-- Added an outline to the Quickbar button glyph to match the style of the other icons
-- `input.lua` is now properly resilient against displacement (fixes issues caused by hooks)
-- Added `tasks.lua`, a coroutine helper
-- Added `itemutil.lua` to Stardust Core Lite
-- Added filter precompilation to `itemutil.lua` - create filter once and run on multiple items
-- Added `color.validateHex()` and support for short hex codes to `color.lua`
-- Tweaked chat bubble wrap width and padding to make longer messages easier to read.
 
 ### Stardust Core
-- Modernized `network.lua` somewhat; pool objects now use method syntax (`pool:tagged()`) and are keyed by object ID instead of sequentially
-- `pool:delta(old)` - compares two pools and lists IDs added and removed
-- Reworked `interop.lua` slightly - added `exec()` and changed `hack()` to use it
 
 #### metaGUI
-- Themes can now have their own **settings page** for greater customization
-- New stock theme: **Chroma**, a bright and colorful array of translucent glass. Colors can be customized, or left to be chosen at random.
-- Theming backend improvements (`extAsset`)
-- Tool tip generation is now handled by the theme, allowing for far greater visual customization
-- New layout attribute: `canvasBacked`
-- Text boxes now have a `color` attribute (determines text color) and matching `setColor()` method
-- Fixed an issue where scrolling up would only work every second wheel click
-- Fixed an issue where backspacing the beginning of a textBox would duplicate the text
-- Text boxes can now be scrolled with the scroll wheel when contents exceed their width

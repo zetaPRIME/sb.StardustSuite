@@ -1,5 +1,5 @@
 [ // -*- grammar-ext: json -*-
-  { "op": "replace", "path": "/mainBar/size", "value": [42, 45] },
+  /*{ "op": "replace", "path": "/mainBar/size", "value": [42, 45] },
   
   { "op": "replace", "path": "/mainBar/collections/pos", "value": [99999, 99999] },
   { "op": "replace", "path": "/mainBar/collections/poly", "value": [ [99999, 99999], [99999, 99999], [99999, 99999], [99999, 99999] ] },
@@ -13,5 +13,5 @@
   { "op": "replace", "path": "/mainBar/beam/pos", "value": [20, 0] },
   { "op": "replace", "path": "/mainBar/beam/poly", "value": [ [20, 0], [37, 0], [37, 17], [20, 17] ] },
   
-  { "op" : "replace", "path" : "/cursorTooltip/mmUpgradeText", "value" : "Things" }
+  { "op" : "replace", "path" : "/cursorTooltip/mmUpgradeText", "value" : "Things" }*/
 ]

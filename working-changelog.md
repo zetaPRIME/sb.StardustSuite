@@ -1,9 +1,9 @@
 ### StarTech
 - Fixed an issue where a freshly placed drive bay didn't create its drives table, causing any drives slotted in to be lost
 
-### Stardust Core+Lite
-
 ### Stardust Core
+
+### Stardust Core+Lite
 
 #### metaGUI
 - Added radio button methods `findValue()` and `selectValue()`

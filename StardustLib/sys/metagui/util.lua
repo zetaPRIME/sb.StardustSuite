@@ -54,9 +54,7 @@ function mg.keyToChar(k, accel)
 end
 
 function mg.itemsCanStack(i1, i2)
-  if not i1 and not i2 then return true elseif not i1 or not i2 then return false end
-  if i1.name ~= i2.name then return false end
-  return compare(i1.parameters, i2.parameters)
+  return root.itemDescriptorsMatch(i1, i2, true)
 end
 
 function mg.itemStacksToCursor(item)

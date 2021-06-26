@@ -6,11 +6,9 @@ add integration info to startech part of readme (generators, autosmelter)
     
     metaGUI: fix builder lua detection when more than one dot
     theme settings icon doesn't come back properly when starting on a theme that doesn't have it
-    use native for metagui stack check
+    - use native for metagui stack check
     
     do I want to slip in a smelting recipe for slime?
-    
-    - make chest proxy config a second container variant
     
 } content update {
     

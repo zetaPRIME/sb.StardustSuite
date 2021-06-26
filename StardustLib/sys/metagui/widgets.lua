@@ -571,6 +571,7 @@ end do -- checkbox -------------------------------------------------------------
   
   local broadcastLevel = 2
   local hRadioFind = { } -- empty table as private event handle
+  local hRadioValueFind = { }
   
   function widgets.checkBox:init(base, param)
     self.state = "idle"
@@ -586,7 +587,10 @@ end do -- checkbox -------------------------------------------------------------
       end
     end)
     self:subscribeEvent(hRadioFind, function(self, group)
-      if self.radioGroup == group and self.checked then return  self end
+      if self.radioGroup == group and self.checked then return self end
+    end)
+    self:subscribeEvent(hRadioValueFind, function(self, group, val)
+      if self.radioGroup == group and self.value == val then return self end
     end)
   end
   
@@ -642,6 +646,18 @@ end do -- checkbox -------------------------------------------------------------
     local c = self:getGroupChecked()
     if c then return c.value end
     return nil -- explicit nil
+  end
+  
+  function widgets.checkBox:findValue(val)
+    if not self.radioGroup then return nil end
+    if self.value == val then return self end
+    return self:wideBroadcast(broadcastLevel, hRadioValueFind, self.radioGroup, val)
+  end
+  
+  function widgets.checkBox:selectValue(val)
+    local c = self:findValue(val)
+    if c then c:setChecked(true) end
+    return c -- might as well
   end
   --
 end do -- label -------------------------------------------------------------------------------------------------------------------------------------

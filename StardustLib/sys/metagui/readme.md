@@ -313,6 +313,8 @@ checkBox:setChecked(b)
 local bool = checkBox.checked
 checkBox:getGroupChecked() -- If widget is a radio button, returns the checked widget of its group.
 checkBox:getGroupValue() -- Same as above, except returns the widget's value attribute.
+checkBox:findValue(val) -- If widget is a radio button, returns its sibling with given value if it exists.
+checkBox:selectValue(val) -- Same as above, but sets the specified sibling checked.
 ```
 
 ### Text Box

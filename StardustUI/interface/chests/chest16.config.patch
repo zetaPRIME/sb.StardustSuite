@@ -1,5 +1,5 @@
 [ // -*- grammar-ext: json -*-
-  /* bare minimum to not crash
+  //* bare minimum to not crash
   { "op" : "add", "path" : "/gui", "value" : { "itemGrid" : { "type" : "itemgrid", "dimensions" : [0, 0], "spacing" : [0, 0] } } },
   { "op" : "add", "path" : "/scripts", "value" : [ "/stardustui/cheststub.lua" ] }
   // */

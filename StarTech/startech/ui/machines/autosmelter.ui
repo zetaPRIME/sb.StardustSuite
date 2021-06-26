@@ -12,7 +12,7 @@
       ],
       [
         { "id" : "outputGrid", "type" : "itemGrid", "slots" : 9, "columns" : 3, "containerSlot" : 4 },
-        { "id" : "takeAll", "type" : "button", "caption" : "Take All" }
+        { "id" : "takeAll", "type" : "button", "caption" : "Take All", "color" : "accent" }
       ]
     ],
     [

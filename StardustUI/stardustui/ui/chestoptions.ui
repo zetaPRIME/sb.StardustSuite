@@ -1,0 +1,28 @@
+{ //  -*- grammar-ext: json -*-
+  "style" : "window", // window (has titlebar), panel (just a frame) etc.
+  "size" : [140, 190], // *internal* size (not including chrome)
+  "title" : "Container Options",
+  "icon" : "settings.icon.png",
+  "accentColor" : "7f7787", // a nice near-gray for themes that tint the whole window
+  "uniqueBy" : "path",
+  "scripts" : [ "chestoptions.lua" ],
+  "children" : [
+    { "type" : "textBox", "id" : "txtName", "caption" : "Name container" },
+    [
+      { "type" : "checkBox", "id" : "keepItems" },
+      { "type" : "label", "text" : "Retain items when broken" }
+    ],
+    { "type" : "panel", "style" : "concave", "children" : [
+      { "type" : "scrollArea", "children" : [
+        [
+          { "type" : "checkBox", "id" : "radColor", "radioGroup" : "color" },
+          { "type" : "label", "text" : "No color" }
+        ]
+      ] }
+    ] },
+    [ "spacer",
+      { "type" : "button", "id" : "apply", "size" : 48, "caption" : "Apply" },
+      { "type" : "button", "id" : "cancel", "size" : 48, "caption" : "Cancel" }
+    ]
+  ]
+}

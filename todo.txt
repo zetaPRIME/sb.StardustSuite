@@ -28,6 +28,8 @@ add integration info to startech part of readme (generators, autosmelter)
     dynItemAnim: lights
     (mention dynItemAnim in changelog)
     
+    pulse grapple? instant link, steady force in direction of point
+    pauses elytra thrust
     
 } big things to do by Milestone 2 {
     THREAT GENERATION SYSTEM {

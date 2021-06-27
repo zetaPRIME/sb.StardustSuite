@@ -27,23 +27,28 @@ for _,s in pairs(world.getObjectParameter(src, "scripts") or { }) do
 end
 
 cfg.size = {
-  util.clamp(slotWidth, hasES and 4.5 or 4, 10) * 20 - 2,
+  util.clamp(slotWidth, hasES and 4.25 or 4, 10) * 20 - 2,
   util.clamp(slotHeight, 3, 10.5) * 20 - 2 + 16+2,
 }
 local overflow = slotHeight > 10
-if overflow then cfg.size[1] = cfg.size[1] + 4 end -- compensate for the added width of the panel
 
-cfg.children = {
-  { type = overflow and "panel" or "layout", style = "concave", mode = "vertical", children = {
-    { type = "scrollArea", expandMode = {2, 2}, children = {
-      { id = "itemGrid", type = "itemGrid", slots = numSlots, columns = slotWidth, containerSlot = 1 }
-    } },
-  } },
+-- only spawn the scroll area when overflow happens
+local grid = { id = "itemGrid", type = "itemGrid", slots = numSlots, columns = slotWidth, containerSlot = 1 }
+if overflow then
+  cfg.size[1] = cfg.size[1] + 4+2 -- compensate for the added width of the panel, plus room for count
+  grid = { type = "panel", style = "concave", mode = "vertical", children = { -- and wrap in scrolling
+    { type = "scrollArea", expandMode = {2, 2}, children = { grid } },
+  } }
+end
+
+cfg.children = { { scissoring = false }, -- allow count to slightly overlap window border
+  grid,
   { { size = 16 },
     -1, -- tiny bit of space away from edge
     { type = "label", text = numSlots .. " slots" },
     "spacer",
     { id = "esOptions", type = "iconButton", image = "minimenu.png", visible = not not hasES },
+    -3, -- slightly less space
     { id = "takeAll", type = "button", caption = "Take All", size = 38, color = "accent" },
   },
 }

@@ -5,16 +5,46 @@ cfg = {
   scripts = { "chest.lua" },
 }
 
-
 local src = pane.sourceEntity()
 local numSlots = world.containerSize(src)
 
-local widths = { 3, 4, 6, 8, 10 }
-local slotWidth = 3
-for _, n in pairs(widths) do
-  if numSlots >= n*n then
-    slotWidth = n
-  else break end
+local widths = { 4, 5, 6, 7, 8, 10 }
+local wdef = {
+  [1] = 1,
+  [2] = 2,
+  [3] = 3,
+  [4] = 2,
+  [5] = 3,
+  [6] = 3,
+  [7] = 4,
+  [8] = 4,
+  [9] = 3,
+  [10] = 5,
+  [11] = 4,
+  [12] = 4,
+  
+  [19] = 4,
+}
+local function ssp(sw)
+  local sh = math.ceil(numSlots / sw)
+  local mn = math.min(sw, sh)
+  local mx = math.max(sw, sh)
+  local rem = numSlots % sw
+  
+  local p = mn/mx
+  if rem == math.ceil(sw/2) then
+  else p = p - (rem / sw) * 2 end
+  if sw > sh then p = p - 0.25 end
+  
+  return p
+end
+
+local slotWidth
+if numSlots >= 100 then slotWidth = 10
+elseif wdef[numSlots] then slotWidth = wdef[numSlots]
+else
+  table.sort(widths, function(a, b) return ssp(a) > ssp(b) end)
+  slotWidth = widths[1]
 end
 local slotHeight = math.ceil(numSlots / slotWidth)
 
@@ -33,12 +63,14 @@ cfg.size = {
 local overflow = slotHeight > 10
 
 -- only spawn the scroll area when overflow happens
-local grid = { id = "itemGrid", type = "itemGrid", slots = numSlots, columns = slotWidth, containerSlot = 1 }
+local grid = { id = "itemGrid", type = "itemGrid", expandMode = {2, 2}, slots = numSlots, columns = math.min(slotWidth, numSlots), containerSlot = 1 }
 if overflow then
   cfg.size[1] = cfg.size[1] + 4+2 -- compensate for the added width of the panel, plus room for count
   grid = { type = "panel", style = "concave", mode = "vertical", children = { -- and wrap in scrolling
     { type = "scrollArea", expandMode = {2, 2}, children = { grid } },
   } }
+else
+  grid = { type = "layout", mode = "horizontal", scissoring = false, expandMode = {2, 2}, children = { "spacer", grid, "spacer" } }
 end
 
 cfg.children = { { scissoring = false }, -- allow count to slightly overlap window border

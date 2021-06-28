@@ -43,8 +43,14 @@ local slotWidth
 if numSlots >= 100 then slotWidth = 10
 elseif wdef[numSlots] then slotWidth = wdef[numSlots]
 else
-  table.sort(widths, function(a, b) return ssp(a) > ssp(b) end)
-  slotWidth = widths[1]
+  local p = -1000
+  for _, sw in pairs(widths) do
+    local pp = ssp(sw)
+    if pp > p then
+      slotWidth = sw
+      p = pp
+    end
+  end
 end
 local slotHeight = math.ceil(numSlots / slotWidth)
 

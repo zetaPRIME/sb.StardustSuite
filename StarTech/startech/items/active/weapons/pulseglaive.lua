@@ -7,6 +7,7 @@ function init() initPulseWeapon()
   activeItem.setTwoHandedGrip(false)
   activeItem.setBackArmFrame("rotation")
   
+  animator.setSoundVolume("quickCharge", 0.75)
   animator.setSoundVolume("open", 1.5)
   animator.setSoundVolume("beam", 0.75)
   animator.setSoundPitch("beam", 1.0)
@@ -43,6 +44,8 @@ cfg {
   
   chargeTime = 4/5,
   fireTime = 2/5,
+  
+  quickChargeMult = 0.5,
   
   --baseDps = 15,
   beamDamageMult = 1.05,
@@ -312,12 +315,11 @@ local function chargeCursor(v)
   activeItem.setCursor(string.format("/cursors/reticle%i.cursor", a))
 end
 
-local quickChargeMult = 0.5
 function beamOpen(quick)
   local md = 0.3
   animator.playSound("open")
   if quick then animator.playSound("quickCharge") end
-  local ct = (cfg.openTime / stats.charge) * (quick and quickChargeMult or 1)
+  local ct = (cfg.openTime / stats.charge) * (quick and cfg.quickChargeMult or 1)
   for v in dynItem.tween(ct) do
     local sv = 0.5 + math.cos(v * math.pi) * -0.5
     dynItem.aimAt(dynItem.aimDir, dynItem.aimAngle - md)
@@ -349,7 +351,7 @@ function beamCharge(quick)
   animator.setSoundVolume("charge", 0)
   animator.playSound("charge", -1)
   local cancel
-  local ct = (cfg.chargeTime / stats.charge) * (quick and quickChargeMult or 1)
+  local ct = (cfg.chargeTime / stats.charge) * (quick and cfg.quickChargeMult or 1)
   for v in dynItem.tween(ct) do
     if not dynItem.fire then cancel = true break end
     dynItem.aimAt(dynItem.aimDir, dynItem.aimAngle - md)

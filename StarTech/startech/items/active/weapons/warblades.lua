@@ -46,7 +46,7 @@ function update(dt, fireMode)
   activeItem.setFacingDirection(dir)
   --armature.bones.frontShoulder.rotation = (angle - rot*dir)--*dir
   --armature.bones.backShoulder.rotation = (angle - rot*dir)--*dir
-  dynAnim.setArmAngles(angle - rot*dir)
+  dynAnim.setArmAngles(angle - rot*dir, -angle - rot*dir)
   
   if fireMode ~= lastFireMode and fireMode == "primary" then
     --[[if state == 1 then
@@ -65,7 +65,10 @@ function update(dt, fireMode)
       state = 1
     end]]
     --sb.logInfo("state change " .. state .. ", arm state " .. dynAnim.frontArmState())
-    mcontroller.setRotation(math.pi*4)
+    --mcontroller.setRotation(math.pi*4)
+    local id = entity.id()
+    sb.logInfo("id " .. id)
+    --sb.logInfo("mouth dist: " .. vec2.mag(vec2.sub(world.entityPosition(id), world.entityMouthPosition(id))))
   end
   lastFireMode = fireMode
   

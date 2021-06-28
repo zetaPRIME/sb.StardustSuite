@@ -22,7 +22,12 @@ add integration info to startech part of readme (generators, autosmelter)
         hmm,
     }
     
-} content update {
+    HUDs!! {
+        player generic script
+        can install to?? metatable crap? or just module scripts loaded in
+    }
+    
+} content update(s) {
     
     get Pulse Knuckles to a good usable state
     dynItemAnim: lights
@@ -30,6 +35,10 @@ add integration info to startech part of readme (generators, autosmelter)
     
     pulse grapple? instant link, steady force in direction of point
     pauses elytra thrust
+    
+    pulse siphon - device that can pull energy from (specific) players
+    
+    - pulsestrike glaive: charge much faster if buffered after combo finisher
     
 } big things to do by Milestone 2 {
     THREAT GENERATION SYSTEM {
@@ -151,14 +160,14 @@ the BIG IDEA UPDATE {
         warblades
         pulse rifle
         shardstorm
+        flux knives
+        pulse chakram similar to razorwave
     }
 }
 
 old - for (maybe not) next update {
     ...
 } then {
-    pulse rifle
-    flux knives
     give the glaive a light source paired with energy
     
     proper tool tip for fp-containing objects
@@ -168,13 +177,6 @@ old - for (maybe not) next update {
     give Pulsestrike Glaive a secondary that isn't just the combo finisher
     maybe an alt finisher to main fire combo if buffered during?
     rework phase drill to be tiered and also maybe a dynitem
-    pulse chakram similar to razorwave
-}
-
-attempt to diagnose drive corruption {
-    happens consistently after reloading if you have a second drive in the same bay as a fully loaded 256k
-    corrupts the second drive
-    does not happen with a fresh drive in a separate bay
 }
 
 ? hook engine {
@@ -226,9 +228,8 @@ power stuffs {
     vector rifle - railgun sniper with mechanics similar to Splatoon's chargers or Warframe's Ferrox
     artemis bow - bouncy ray a la the shadowbeam staff from Terraria
     
-    maybe a way to add a pulse battery to stock equipment
-    
     powered lamp that fills a large region with full-bright light (basically volumetric lighting at the cost of fp)
+    ^ local animator.
     
     more smelter-type machines
     ^ chance bias stat (inverse exponent to random number)
@@ -236,6 +237,7 @@ power stuffs {
     prefix and move power categories to stardustlib?
     
     eventually make transmatter network require power (after rewrite)
+    ^ why? just because AE did it??
 }
 
 compost bin that makes food age faster, for use as biofuel
@@ -336,19 +338,5 @@ Aetheri species mod {
     Hunger system {
         Stat locked so that food doesn't replenish; instead, it's based on exposure to the stars
         Regenerates in about a minute when exposed to sun or starlight; 2-3x faster while on ship
-    }
-}
-
-// Transmatter network reimplementation { // not sure if it's needed or if drive bays just need further fixing up
-    Controller {
-        API {
-            callable via both callScriptedEntity and sendEntityMessage
-            each request runs as a coroutine placed on a queue for suspendability and environment cleanliness
-            
-            ...
-        }
-        Network Scan Module {
-            periodically scans the network pool, assembles the list of storage devices and notifies peripherals
-        }
     }
 }

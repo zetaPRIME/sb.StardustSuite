@@ -117,8 +117,10 @@
     //"beam" : [ "/sfx/melee/mech_energysword_swing1.ogg", "/sfx/melee/mech_energysword_swing2.ogg", "/sfx/melee/mech_energysword_swing3.ogg", "/sfx/melee/mech_energysword_swing4.ogg" ],
     //"beam" : [ "/sfx/gun/magnorbs_fire5.ogg", "/sfx/gun/magnorbs_fire6.ogg", "/sfx/gun/magnorbs_fire7.ogg" ],
     "finisher" : [ "/sfx/melee/timepierce_swing1.ogg" ],
+    "quickCharge" : [ "/sfx/interface/sniper_mark_start1.ogg" ],
     "open" : [ "/sfx/gun/mech_beamsniper_windup1.ogg" ],
     "charge" : [ "/sfx/gun/aegisaltpistol_loop2.ogg" ],
+    "charged" : [ "/sfx/interface/sniper_mark_stop2.ogg" ],
     "fire" : [ "/sfx/gun/grenadeblast_electric1.ogg" ],
     "fail" : [ "/sfx/interface/energy_out2.ogg" ]
   }

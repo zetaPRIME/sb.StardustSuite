@@ -444,11 +444,12 @@ do local s = movement.state "rail"
     if neutral then slope = slope * (math.abs(relX)*2) end
     mcontroller.addMomentum({slope * dt * (input.key.down and 100 or 80), 0})
     mcontroller.addMomentum({input.dir[1] * dt * (slope == 0 and 30 or 15), 0})
-    if (slope == 0 or neutral) and input.dir[1] == 0 and math.abs(mcontroller.xVelocity()) <= 2.5 then
+    local tvel = math.abs(mcontroller.xVelocity())
+    if (slope == 0 or neutral) and input.dir[1] == 0 and tvel <= 2.5 then
       slope = 0 -- allow full stall at the bottom of a 90 degree corner
       mcontroller.setXVelocity(0) -- help stop on flat rails
-      if not input.key.down then tech.setParentState("Stand") end -- and allow standing up if stationary
     end
+    if slope == 0 and tvel <= 2.5 and not input.key.down then tech.setParentState("Stand") end -- and allow standing up if stationary
     self.lastSlope = slope
     
     local speed = math.abs(mcontroller.xVelocity())

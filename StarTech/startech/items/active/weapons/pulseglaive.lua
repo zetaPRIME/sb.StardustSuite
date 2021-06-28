@@ -246,7 +246,7 @@ function thrust(finisher)
     animator.translateTransformationGroup("weapon", {0, len * util.lerp(v^0.25, 1.3, 1)})
     animator.rotateTransformationGroup("weapon", (math.pi * -0.5) + a)
   end
-  if not released then return beamOpen end
+  if not released then return beamOpen, finisher end
   if finisher then return cooldown end
   if buffered then return slash end
   --
@@ -312,10 +312,13 @@ local function chargeCursor(v)
   activeItem.setCursor(string.format("/cursors/reticle%i.cursor", a))
 end
 
-function beamOpen()
+local quickChargeMult = 0.5
+function beamOpen(quick)
   local md = 0.3
   animator.playSound("open")
-  for v in dynItem.tween(cfg.openTime / stats.charge) do
+  if quick then animator.playSound("quickCharge") end
+  local ct = (cfg.openTime / stats.charge) * (quick and quickChargeMult or 1)
+  for v in dynItem.tween(ct) do
     local sv = 0.5 + math.cos(v * math.pi) * -0.5
     dynItem.aimAt(dynItem.aimDir, dynItem.aimAngle - md)
     animBlade(sv)
@@ -325,7 +328,7 @@ function beamOpen()
     animator.translateTransformationGroup("weapon", {0, cfg.thrustLength * util.lerp(sv, 1.0, 0.4)})
     animator.rotateTransformationGroup("weapon", (math.pi * -0.5) + md)
   end
-  return beamCharge
+  return beamCharge, quick
   --[[while dynItem.fire do
     dynItem.aimAt(dynItem.aimDir, dynItem.aimAngle - md)
     coroutine.yield()
@@ -339,14 +342,15 @@ local function flash()
   return flashTb[math.floor((dynItem.time*30) % 3) + 1]
 end
 
-function beamCharge()
+function beamCharge(quick)
   animator.setPartTag("fx2", "partImage", asset "orb")
   
   local md = 0.3
   animator.setSoundVolume("charge", 0)
   animator.playSound("charge", -1)
   local cancel
-  for v in dynItem.tween(cfg.chargeTime / stats.charge) do
+  local ct = (cfg.chargeTime / stats.charge) * (quick and quickChargeMult or 1)
+  for v in dynItem.tween(ct) do
     if not dynItem.fire then cancel = true break end
     dynItem.aimAt(dynItem.aimDir, dynItem.aimAngle - md)
     animator.setSoundPitch("charge", util.lerp(v ^ 2, 0.5, 2.0))
@@ -362,6 +366,7 @@ function beamCharge()
     animator.translateTransformationGroup("fx2", dynItem.offsetPoly{{-0.5/8, 24/8}}[1])
     dynItem.normalizeTransformationGroup("fx2")]]
   end
+  if not cancel then animator.playSound("charged") end
   while dynItem.fire do
     dynItem.aimAt(dynItem.aimDir, dynItem.aimAngle - md)
     setEnergy(0.5)

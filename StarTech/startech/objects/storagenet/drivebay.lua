@@ -45,6 +45,7 @@ end
 function provider:onDisconnect()
   driveProviders[self.slot] = nil
   lights[self.slot] = nil
+  self:updateInfo(true) -- force correct description
   updateLights()
 end
 
@@ -114,17 +115,7 @@ end
 function provider:updateInfo(forceCapacity) -- refresh description
   if force then self.dirty = true end
   self:updateCapacity()
-  local fDesc, pDesc = "", ""
-  if self.item.parameters.filter and self.item.parameters.filter ~= "" then
-    fDesc = table.concat({ "\n^green;Filter: ^blue;", self.item.parameters.filter })
-  end
-  if (self.item.parameters.priority or 0) ~= 0 then
-    pDesc = table.concat({ "\n^green;Priority: ^blue;", self.item.parameters.priority  })
-  end
-  self.item.parameters.description = table.concat({
-    self.driveParameters.description, "\n^green;Bytes used: ^blue;",
-    math.ceil(self.item.parameters.bitsUsed / 8), " / ", math.ceil(self.driveParameters.capacity / 8), fDesc, pDesc
-  })
+  updateDriveInfo(self.item)
 end
 function provider:updateFilter()
   if not self.item.parameters.filter then
@@ -156,6 +147,7 @@ function provider:rectify()
   end
   -- and reinstall
   self.item.parameters.contents = ol
+  self:updateInfo(true) -- force capacity and info refresh
   coroutine.yield() -- one per tick
 end
 
@@ -166,6 +158,23 @@ end
 
 function updateLights()
   object.setAnimationParameter("lights", lights)
+end
+
+function updateDriveInfo(itm)
+  if not itm then return end
+  local driveParameters = itemutil.getCachedConfig(itm).config.driveParameters
+  local fDesc, pDesc = "", ""
+  if itm.parameters.filter and itm.parameters.filter ~= "" then
+    fDesc = table.concat({ "\n^green;Filter: ^blue;", itm.parameters.filter })
+  end
+  if (itm.parameters.priority or 0) ~= 0 then
+    pDesc = table.concat({ "\n^green;Priority: ^blue;", itm.parameters.priority  })
+  end
+  itm.parameters.description = table.concat({
+    driveParameters.description, "\n^green;Bytes used: ^blue;",
+    math.ceil((itm.parameters.bitsUsed or 0) / 8), " / ", math.ceil(driveParameters.capacity / 8), fDesc, pDesc
+  })
+  return itm
 end
 
 -- -- --
@@ -194,7 +203,6 @@ function svc.swapDrive(pid, slot, item)
   
   local sp = driveProviders[slot]
   if sp then
-    sp:updateInfo(true)
     sp:disconnect()
   end -- kill provider
   local old = storage.drives[slot] -- hold old item for a sec
@@ -206,20 +214,24 @@ function svc.swapDrive(pid, slot, item)
 end
 
 function svc.getInfo(slot)
-  local sp = driveProviders[slot]
-  if not sp then return nil end
-  return { slot = slot, filter = sp.item.parameters.filter or "", priority = sp.item.parameters.priority or 0 }
+  local itm = storage.drives[slot]
+  if not itm then return nil end
+  return { slot = slot, filter = itm.parameters.filter or "", priority = itm.parameters.priority or 0 }
 end
 
 function svc.setInfo(slot, filter, priority)
-  local sp = driveProviders[slot]
-  if not sp then return nil end
-  sp.item.parameters.priority = priority
-  sp:setPriority(priority)
+  local itm = storage.drives[slot]
+  if not itm then return end
+  itm.parameters.priority = priority
   if filter == "" then filter = nil end
-  sp.item.parameters.filter = filter
-  sp:updateFilter()
-  sp:updateInfo()
+  itm.parameters.filter = filter
+  
+  local sp = driveProviders[slot]
+  if sp then -- update provider to match
+    sp:setPriority(priority)
+    sp:updateFilter()
+    sp:updateInfo()
+  else updateDriveInfo(itm) end -- or if not connected, directly update description
 end
 
 -- -- --
@@ -236,8 +248,10 @@ function die()
   while true do -- disconnect and drop all drives
     local _, sp = pairs(driveProviders)(driveProviders)
     if not sp then break end
-    sp:updateInfo(true) -- give correct description
     sp:disconnect()
-    world.spawnItem(sp.item, pos)
+  end
+  
+  for _, itm in pairs(storage.drives) do
+    world.spawnItem(itm, pos)
   end
 end

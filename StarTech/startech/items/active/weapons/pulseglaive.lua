@@ -47,11 +47,7 @@ cfg {
   
   quickChargeMult = 0.5,
   
-  --baseDps = 15,
   beamDamageMult = 1.05,
-  
-  meleePowerCost = 250,
-  beamPowerCost = 1000,
   
   -- visuals
   idleHoldAngle = math.pi * -0.575,
@@ -186,7 +182,7 @@ function cooldown() -- ...with a flourish
 end
 
 function thrust(finisher)
-  if not drawPower(cfg.meleePowerCost) then return fail end
+  if not drawPowerFor(cfg.thrustTime) then return fail end
   
   local buffered, released
   local function inp()
@@ -246,7 +242,7 @@ local function sigexp(n, x)
 end
 
 function slash(num)
-  if not drawPower(cfg.meleePowerCost) then return fail end
+  if not drawPowerFor(cfg.slashTime) then return fail end
   
   num = num or 1
   local slashDir = ((num % 2) == 0) and 1 or -1
@@ -371,7 +367,7 @@ function beamCharge(quick)
 end
 
 function beamFire()
-  if not drawPower(cfg.beamPowerCost) then return fail end
+  if not drawPowerFor(cfg.beamDamageMult) then return fail end
   
   local md = 0.3
   local dir, angle = dynItem.aimDir, dynItem.aimAngle

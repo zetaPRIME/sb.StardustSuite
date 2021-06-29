@@ -18,7 +18,7 @@ end
 
 cfg { -- defaults
   baseDps = 15,
-  basePowerDraw = 1500,
+  basePowerDraw = 500, -- per second per 100% damage
 }
 
 stats { -- default stats

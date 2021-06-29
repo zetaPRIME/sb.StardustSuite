@@ -30,12 +30,10 @@ cfg {
   assaultRange = 80, -- maximum tile range for assault rifle fire
   -- shorter than the pulsestrike glaive's 150
   assaultSpread = 0.015, -- maximum angle variance
-  assaultPowerCost = 250,
   
   shotgunFireTime = 2/3,
   shotgunDamageMult = 1.1, -- compensate for manual retrigger
   shotgunKnockback = 32, -- gtfo
-  shotgunPowerCost = 1000,
   
   pulseTime = 1/4,
 }
@@ -117,7 +115,7 @@ end dynItem.comboSystem(idle)
 local beamPt = {4, 0/8}
 
 function assaultFire()
-  if not drawPower(cfg.assaultPowerCost) then return fail end
+  if not drawPowerFor(cfg.assaultFireTime) then return fail end
   doBody()
   animator.playSound("fire")
   
@@ -169,7 +167,7 @@ end
 
 local burstPt = {28/8, 1/8}
 function shotgunFire()
-  if not drawPower(cfg.shotgunPowerCost) then return fail end
+  if not drawPowerFor(cfg.shotgunFireTime) then return fail end
   
   animator.playSound("shotgunFire")
   strike(cfg.shotgunFireTime * cfg.shotgunDamageMult, dmgtype "plasmashotgun",

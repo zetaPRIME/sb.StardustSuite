@@ -1,4 +1,5 @@
 ### StarTech
+- Power costs for Pulse Weapons have been overhauled and are now proportional to weapon damage for a given action
 - Pulsestrike Glaive now plays an indicator sound when fully charged, and charges faster when buffered off the combo finisher
 - pulse rifle
 - grinding

@@ -401,8 +401,9 @@ do local s = movement.state "rail"
   
   function s:updateEffectiveStats(sg, psg)
     util.appendLists(sg, {
-      "startech:grinding.vis"
+      "startech:grinding.vis",
     })
+    if self.forcedCrouch then table.insert(sg, { stat = "stardustlib:forcedCrouch", amount = 1.0 }) end
   end
   
   function s:main()
@@ -437,6 +438,7 @@ do local s = movement.state "rail"
     end self.lastTile = rc.tilePos
     
     tech.setParentState("Duck")
+    self.forcedCrouch = true
     mcontroller.setYVelocity(0)
     
     local relX = x - rc.tilePos[1]
@@ -455,7 +457,7 @@ do local s = movement.state "rail"
       slope = 0 -- allow full stall at the bottom of a 90 degree corner
       mcontroller.setXVelocity(0) -- help stop on flat rails
     end
-    if slope == 0 and tvel <= 2.5 and not input.key.down then tech.setParentState("Stand") end -- and allow standing up if stationary
+    if slope == 0 and tvel <= 2.5 and not input.key.down then tech.setParentState("Stand") self.forcedCrouch = false end -- and allow standing up if stationary
     self.lastSlope = slope
     
     local speed = math.abs(mcontroller.xVelocity())

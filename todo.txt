@@ -16,7 +16,7 @@ add integration info to startech part of readme (generators, autosmelter)
     rail grind crap {
         - place sounds in startech space
         - rail spark status effect
-        signal forced ducking to dynitemanim
+        - signal forced ducking to dynitemanim
         signal nanofield about forced lift as part of pulse knuckles
     }
     

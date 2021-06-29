@@ -153,7 +153,7 @@ end
 
 function sweepKick()
   local time = 0.4
-  local ground = mcontroller.onGround()
+  local ground = mcontroller.onGround() or status.statPositive "startech:onRail"
   local mparams = {
     airJumpProfile = {
       jumpSpeed = 0,
@@ -163,6 +163,8 @@ function sweepKick()
   --[[for v in dynItem.tween(0.1) do
     mcontroller.controlCrouch()
   end--]]
+  
+  world.sendEntityMessage(entity.id(), "startech:exitRail")
   
   dynAnim.setArmStates("mid")
   dynAnim.setArmAngles(math.pi * -3/8)

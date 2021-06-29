@@ -17,7 +17,7 @@ add integration info to startech part of readme (generators, autosmelter)
         - place sounds in startech space
         - rail spark status effect
         - signal forced ducking to dynitemanim
-        signal nanofield about forced lift as part of pulse knuckles
+        - signal nanofield about forced lift as part of pulse knuckles
     }
     
     do I want to slip in a smelting recipe for slime?

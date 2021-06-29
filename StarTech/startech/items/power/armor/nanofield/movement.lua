@@ -368,6 +368,12 @@ do local s = movement.state "rail"
     --
   end
   
+  message.setHandler("startech:exitRail", function(msg, isLocal) if isLocal then movement.call "exitRail" end end)
+  
+  function s:exitRail()
+    return movement.switchState("ground", true, true)
+  end
+  
   function s:init()
     self.xOffset = 0
     self.yOffset = 0
@@ -401,6 +407,7 @@ do local s = movement.state "rail"
   
   function s:updateEffectiveStats(sg, psg)
     util.appendLists(sg, {
+      { stat = "startech:onRail", amount = 1.0 },
       "startech:grinding.vis",
     })
     if self.forcedCrouch then table.insert(sg, { stat = "stardustlib:forcedCrouch", amount = 1.0 }) end

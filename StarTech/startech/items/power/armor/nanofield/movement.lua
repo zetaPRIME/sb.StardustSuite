@@ -382,8 +382,8 @@ do local s = movement.state "rail"
       self.lastTile = rc.tilePos
       self.lastDiffTile = self.lastTile--vec2.add(rc.tilePos, {util.toDirection(mcontroller.xVelocity()), 0})
       
-      sound.play("/aetheri/sfx/railGrindHit.ogg", 0.64, 1.1)
-      self.sfx = sound.newLoop("/aetheri/sfx/railGrindLoop.ogg")
+      sound.play("/startech/items/power/armor/nanofield/railGrindHit.ogg", 0.64, 1.1)
+      self.sfx = sound.newLoop("/startech/items/power/armor/nanofield/railGrindLoop.ogg")
     else -- no rail collision? no thanks
       return movement.switchState("ground")
     end

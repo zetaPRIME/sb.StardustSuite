@@ -79,15 +79,6 @@ function strike(dmg, type, poly, kb)
   } }
 end
 
-function polyFan(width, rad, pts)
-  local p = {{0, 0}}
-  pts = pts or 7
-  for i = 1, pts do
-    table.insert(p, vec2.rotate({rad, 0}, (2 * ((i-1)/(pts-1)) - 1) * width))
-  end
-  return p
-end
-
 function animBlade(v)
   animator.resetTransformationGroup("arm1a")
   animator.resetTransformationGroup("arm1b")
@@ -169,12 +160,6 @@ function idle()
     coroutine.yield()
   end
 end dynItem.comboSystem(idle)
-
-function fail() -- not enough fp
-  pulseEnergy(0.5) -- "attempt" to power up
-  animator.stopAllSounds("fail")
-  animator.playSound("fail")
-end
 
 function cooldown() -- ...with a flourish
   activeItem.setTwoHandedGrip(false)

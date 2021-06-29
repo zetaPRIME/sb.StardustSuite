@@ -112,3 +112,28 @@ do -- energy pulse
     end)
   end
 end
+
+-- some geometry utilities
+
+function spread(angle, range, exp)
+  if not range or range == 0 then return angle end
+  local r = math.random()*2-1
+  r = math.abs(r)^(exp or 1) * (r >= 0 and 1 or -1)
+  return angle + r*range
+end
+
+function polyFan(width, rad, pts)
+  local p = {{0, 0}}
+  pts = pts or 7
+  for i = 1, pts do
+    table.insert(p, vec2.rotate({rad, 0}, (2 * ((i-1)/(pts-1)) - 1) * width))
+  end
+  return p
+end
+
+-- and the failure state for combos
+function fail() -- not enough fp
+  pulseEnergy(0.5) -- "attempt" to power up
+  animator.stopAllSounds("fail")
+  animator.playSound("fail")
+end

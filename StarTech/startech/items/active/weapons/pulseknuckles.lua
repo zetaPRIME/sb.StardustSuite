@@ -35,15 +35,6 @@ function strike(dmg, type, poly, kb)
   } }
 end
 
-function polyFan(width, rad, pts)
-  local p = {{0, 0}}
-  pts = pts or 7
-  for i = 1, pts do
-    table.insert(p, vec2.rotate({rad, 0}, (2 * ((i-1)/(pts-1)) - 1) * width))
-  end
-  return p
-end
-
 local effTime = 0.175
 local effCount = 0
 local effLayer = {"Player+1", 0}

@@ -86,26 +86,10 @@ function strike(dmg, type, poly, kb)
   } }
 end
 
-function polyFan(width, rad, pts)
-  local p = {{0, 0}}
-  pts = pts or 7
-  for i = 1, pts do
-    table.insert(p, vec2.rotate({rad, 0}, (2 * ((i-1)/(pts-1)) - 1) * width))
-  end
-  return p
-end
-
 function shotVec(mag)
   local v = dynItem.aimVector(nil, nil, 1)
   if mcontroller.onGround() then v[2] = math.abs(v[2]) + 0.05 end -- reflect upwards if on ground
   return vec2.mul(vec2.norm(v), mag)
-end
-
-function spread(angle, range, exp)
-  if not range or range == 0 then return angle end
-  local r = math.random()*2-1
-  r = math.abs(r)^(exp or 1) * (r >= 0 and 1 or -1)
-  return angle + r*range
 end
 
 function setMuzzle(b)
@@ -129,12 +113,6 @@ function idle()
     coroutine.yield()
   end
 end dynItem.comboSystem(idle)
-
-function fail() -- not enough fp
-  pulseEnergy(0.5) -- "attempt" to power up
-  animator.stopAllSounds("fail")
-  animator.playSound("fail")
-end
 
 local beamPt = {4, 0/8}
 

@@ -57,6 +57,7 @@ end
 function openConfigPane(index)
   local p = waitFor(world.sendEntityMessage(pane.sourceEntity(), "drivebay:getInfo", index))
   local info = p:result()
+  if not info then return end -- drive removed?
   metagui.ipc["startech:drivebay.config"] = {
     slot = index, filter = info.filter, priority = info.priority,
     apply = function(...) metagui.startEvent(applyConfig, ...) end

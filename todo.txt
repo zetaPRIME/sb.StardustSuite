@@ -4,6 +4,8 @@ add integration info to startech part of readme (generators, autosmelter)
 
 > Beta v0.1.5 {
     
+    overhaul pulse weapon energy draw
+    
     rail grind crap {
         place sounds in startech space
         rail spark status effect

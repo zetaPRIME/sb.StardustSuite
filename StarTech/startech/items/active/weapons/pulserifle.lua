@@ -26,9 +26,12 @@ dynItem.aimVOffset = 0/8 -- -4.5/8
 
 cfg {
   assaultFireTime = 1/8,
+  shotgunFireTime = 2/3,
   
   assaultPowerCost = 250,
   shotgunPowerCost = 1000,
+  
+  pulseTime = 1/4,
 }
 
 function doBody()
@@ -77,11 +80,27 @@ function strike(dmg, type, poly, kb)
   } }
 end
 
+function polyFan(width, rad, pts)
+  local p = {{0, 0}}
+  pts = pts or 7
+  for i = 1, pts do
+    table.insert(p, vec2.rotate({rad, 0}, (2 * ((i-1)/(pts-1)) - 1) * width))
+  end
+  return p
+end
+
+function setMuzzle(b)
+  if b then animator.setGlobalTag("muzzleflashDirectives", "")
+  else animator.setGlobalTag("muzzleflashDirectives", "?multiply=0000") end
+end
+
 function idle()
   --activeItem.setTwoHandedGrip(false)
   --activeItem.setOutsideOfHand(false)
   --activeItem.setCursor()
   --animBlade(0)
+  
+  setMuzzle(false)
   
   doBody()
   animator.resetTransformationGroup("weapon")
@@ -91,7 +110,7 @@ function idle()
     --dynItem.aimAt(dynItem.aimDir, cfg.idleHoldAngle)
     
     if dynItem.firePress then dynItem.firePress = false return assaultFire end
-    if dynItem.altFirePress then dynItem.altFirePress = false return thrust, true end -- for now just skip to the finisher
+    if dynItem.altFirePress then dynItem.altFirePress = false return shotgunFire end
     coroutine.yield()
   end
 end dynItem.comboSystem(idle)
@@ -138,14 +157,41 @@ function assaultFire()
   animator.setPartTag("fx", "fxDirectives", "")
   animator.setPartTag("fx", "partImage", assetRaw "pulseglaive-beam")
   
+  setMuzzle(true)
   for v in dynItem.tween(cfg.assaultFireTime) do
     setEnergy(1 - v)
     animator.resetTransformationGroup("weapon")
     animator.rotateTransformationGroup("weapon", 0.05 * (1-v))
     animator.translateTransformationGroup("weapon", {-1.5/8 * (1-v), 0/8})
     
-    animator.setPartTag("fx", "fxDirectives", color.alphaDirective((1-v) * 0.5))
-    setFx("fx", dir, angle, beamPt, {dist*8 + 12, 0.125 * (1-v)})
+    animator.setPartTag("fx", "fxDirectives", color.alphaDirective((1-v) * 0.75))
+    setFx("fx", dir, angle, beamPt, {dist*8 + 12, 0.15 * (1-v)})
   end
+  setMuzzle(false)
   if dynItem.fire then return assaultFire end
+end
+
+local burstPt = {28/8, 1/8}
+function shotgunFire()
+  if not drawPower(cfg.shotgunPowerCost) then return fail end
+  
+  animator.playSound("shotgunFire")
+  strike(cfg.shotgunFireTime, dmgtype "plasmashotgun", dynItem.offsetPoly(polyFan(math.pi * 0.05, 16), true, dynItem.aimAngle), 32)
+  
+  animator.setPartTag("fx", "fxDirectives", "")
+  animator.setPartTag("fx", "partImage", asset "shotgunfx")
+  
+  local dir, angle = dynItem.aimDir, dynItem.aimAngle
+  for v in dynItem.tween(cfg.shotgunFireTime) do
+    local vv = (1-v)^3
+    setEnergy(vv)
+    
+    animator.resetTransformationGroup("weapon")
+    animator.rotateTransformationGroup("weapon", 0.15 * vv)
+    animator.translateTransformationGroup("weapon", {-3/8 * vv, 0/8})
+    
+    animator.setPartTag("fx", "fxDirectives", color.alphaDirective(vv))
+    local bv = math.max(0, 1-v*2)
+    setFx("fx", dir, angle, burstPt, {bv^2 * 1.5, math.max(0, -1 + bv*2)})
+  end
 end

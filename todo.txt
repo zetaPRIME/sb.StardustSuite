@@ -27,8 +27,6 @@ add integration info to startech part of readme (generators, autosmelter)
         can install to?? metatable crap? or just module scripts loaded in
     }
     
-    - fix 1-slot chest wonkiness
-    
 } content update(s) {
     
     get Pulse Knuckles to a good usable state

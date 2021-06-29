@@ -1,0 +1,24 @@
+{ // -*- grammar-ext: json -*-
+  "itemName" : "startech:pulserifle",
+  "shortdescription" : "Pulse Rifle",
+  "description" : "A powerful hybrid assault rifle and shotgun.",
+  "category" : "startech:power.weapon",
+  "inventoryIcon" : "pulserifle.png",
+  "rarity" : "Legendary",
+  "maxStack" : 1,
+  "twoHanded" : true,
+  "itemTags" : ["weapon", "ranged", "assaultrifle", "shotgun", "energy"],
+  "tooltipKind" : "stardustlib.withPreview",
+  "largeImage" : "/startech/items/active/weapons/pulserifle.png?scalenearest=3",
+  //"builder" : "/startech/items/active/weapons/buildpulseweapon.lua",
+  
+  "stardustlib:usesAP" : true,
+  "startech:configurable" : true,
+  "startech:configuratorUI" : "startech:configurator.tree",
+  "stardustlib:skillTree" : "/startech/skilltree/pulseglaive.config",
+  
+  "level" : 1,
+
+  "animation" : "pulserifle.animation",
+  "scripts" : ["pulserifle.lua"]
+}

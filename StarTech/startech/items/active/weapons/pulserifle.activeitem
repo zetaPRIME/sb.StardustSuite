@@ -1,7 +1,8 @@
 { // -*- grammar-ext: json -*-
   "itemName" : "startech:pulserifle",
   "shortdescription" : "Pulse Rifle",
-  "description" : "A powerful hybrid assault rifle and shotgun.",
+  //"description" : "A powerful hybrid assault rifle and shotgun.",
+  "description" : "Assault rifle for long-range sustained fire, plasma burst shotgun for when things get up close and personal.",
   "category" : "startech:power.weapon",
   "inventoryIcon" : "pulserifle.png",
   "rarity" : "Legendary",

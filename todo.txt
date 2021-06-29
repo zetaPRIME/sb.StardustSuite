@@ -4,7 +4,14 @@ add integration info to startech part of readme (generators, autosmelter)
 
 > Beta v0.1.5 {
     
-    overhaul pulse weapon energy draw
+    overhaul pulse weapon energy draw (proportional to damage)
+    
+    pulse rifle {
+        skill tree config
+        punchthrough stats
+        recipe
+        
+    }
     
     rail grind crap {
         place sounds in startech space

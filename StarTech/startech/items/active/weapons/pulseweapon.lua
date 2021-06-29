@@ -18,6 +18,7 @@ end
 
 cfg { -- defaults
   baseDps = 15,
+  basePowerDraw = 1500,
 }
 
 stats { -- default stats
@@ -86,6 +87,8 @@ function dmgtype(t) return "electric" .. t end -- visual damage type
 function drawPower(amt) return power.drawEquipEnergy(amt, false, 50) >= amt end
 function baseStatus() return table.unpack(cfg.baseStatus) end
 function damage(m) return m * (cfg.baseDps or 1.0) * stats.damage * status.stat("powerMultiplier", 1.0) end
+-- draw power for a given proportion of DPS - take own damage multiplier (power output) into account but not armor bonus
+function drawPowerFor(m) return drawPower(m * cfg.basePowerDraw * stats.damage) end
 
 do -- energy pulse
   local pulseId = -1

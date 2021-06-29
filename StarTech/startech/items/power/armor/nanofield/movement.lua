@@ -399,6 +399,12 @@ do local s = movement.state "rail"
     --if vel[2] > 0 and not self.forceJump then mcontroller.controlJump(true) end
   end
   
+  function s:updateEffectiveStats(sg, psg)
+    util.appendLists(sg, {
+      "startech:grinding.vis"
+    })
+  end
+  
   function s:main()
     local dt = script.updateDt()
     mcontroller.clearControls()

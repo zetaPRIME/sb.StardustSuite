@@ -1,0 +1,8 @@
+{ // -*- grammar-ext: json -*-
+  "name" : "startech:grinding.vis",
+  "effectConfig" : { },
+
+  "scripts" : [ "grinding.vis.lua" ],
+
+  "animationConfig" : "grinding.vis.animation"
+}

@@ -1,0 +1,84 @@
+{ // -*- grammar-ext: json -*-
+  "particleEmitters" : {
+    "sparkParticles" : {
+      "emissionRate" : 150.0,
+      "particles" : [
+        {
+          "particle" : {
+            "type" : "ember",
+            "size" : 1.0,
+            "color" : [253, 143, 77, 255],
+            "fade" : 1.0,
+            "initialVelocity" : [0, 5.0],
+            "finalVelocity" : [0, -15.0],
+            "approach" : [20, 20],
+            "light" : [51, 27, 1],
+            "destructionTime" : 1.5,
+            "destructionAction" : "fade",
+            "layer" : "back",
+            "collidesLiquid" : true,
+            "variance" : {
+              "position" : [0.125, 0.125],
+              "initialVelocity" : [1.5, 5.0],
+              "finalVelocity" : [1.5, 1.5],
+              "size" : 0.5
+            }
+          },
+          "offset" : [0.0, 0.0]
+        },
+        {
+          "particle" : {
+            "type" : "ember",
+            "size" : 1.0,
+            "color" : [255, 255, 95, 255],
+            "fade" : 1.0,
+            "initialVelocity" : [0, 5.0],
+            "finalVelocity" : [0, -15.0],
+            "approach" : [20, 20],
+            "light" : [51, 27, 1],
+            "destructionTime" : 1.5,
+            "destructionAction" : "fade",
+            "layer" : "back",
+            "collidesLiquid" : true,
+            "variance" : {
+              "position" : [0.125, 0.125],
+              "initialVelocity" : [1.5, 5.0],
+              "finalVelocity" : [1.5, 1.5],
+              "size" : 0.5
+            }
+          },
+          "offset" : [0.0, 0.0]
+        },
+        {
+          "particle" : {
+            "type" : "ember",
+            "size" : 1.0,
+            "color" : [255, 255, 222, 255],
+            "fade" : 1.0,
+            "initialVelocity" : [0, 5.0],
+            "finalVelocity" : [0, -15.0],
+            "approach" : [20, 20],
+            "light" : [51, 27, 1],
+            "destructionTime" : 1.5,
+            "destructionAction" : "fade",
+            "layer" : "back",
+            "collidesLiquid" : true,
+            "variance" : {
+              "position" : [0.125, 0.125],
+              "initialVelocity" : [1.5, 5.0],
+              "finalVelocity" : [1.5, 1.5],
+              "size" : 0.5
+            }
+          },
+          "offset" : [0.0, 0.0]
+        }
+      ]
+    }
+  },
+
+  "sounds" : {
+    "charge" : [ "/sfx/tech/tech_rocketjump_charge2.ogg" ],
+    "chargeLoop" : [ ],
+    "boost" : [ "/sfx/tech/tech_rocketjump_release.ogg" ]
+  }
+}

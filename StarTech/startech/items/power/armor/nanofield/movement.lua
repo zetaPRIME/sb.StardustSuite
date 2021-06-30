@@ -228,7 +228,7 @@ do local s = movement.state "ground"
   end
   
   function s:onStrikeEnemy(id, dmg, effDmg, kind)
-    if stats.flags.hangStrike then
+    if stats.flags.hangStrike and self.airJumps then
       if not movement.zeroG and not mcontroller.onGround() and contains(player.primaryHandItemTags(), "melee") then
         mcontroller.setYVelocity(math.max(10, mcontroller.yVelocity())) -- hang in air
         if self.airJumps < stats.stat.airJump and status.overConsumeResource("energy", 25) then

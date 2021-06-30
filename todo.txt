@@ -10,6 +10,7 @@ add integration info to startech part of readme (generators, autosmelter)
         > skill tree config
         - punchthrough stats
         - recipe
+        use bounding box center?
     }
     
     do I want to slip in a smelting recipe for slime?

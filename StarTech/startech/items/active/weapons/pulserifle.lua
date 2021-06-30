@@ -6,7 +6,7 @@ function init() initPulseWeapon()
   activeItem.setHoldingItem(true)
   activeItem.setTwoHandedGrip(true)
   
-  animator.setSoundVolume("fire", 0.85)
+  animator.setSoundVolume("fire", flags.noAuto and 1.0 or 0.85)
   
   animator.setPartTag("body", "partImage", asset "body")
   animator.setPartTag("energy", "partImage", asset "energy")
@@ -120,7 +120,7 @@ function assaultFire()
   animator.playSound("fire")
   
   local dir, angle = dynItem.aimDir, dynItem.aimAngle
-  angle = spread(angle, cfg.assaultSpread / stats.accuracy, 3 * stats.accuracy)
+  angle = spread(angle, cfg.assaultSpread / stats.accuracy, math.max(2, 3 * stats.accuracy))
   
   local line = dynItem.offsetPoly({ {0, 2/8}, {cfg.assaultRange, 2/8} }, false, angle)
   local pos = vec2.add(mcontroller.position(), {0, 0})
@@ -162,7 +162,7 @@ function assaultFire()
     setFx("fx", dir, angle, beamPt, {dist*8 + 12, 0.15 * util.lerp(1-v, 0.4, 1)})
   end
   setMuzzle(false)
-  if dynItem.fire then return assaultFire end
+  if dynItem.fire and not flags.noAuto then return assaultFire end
 end
 
 local burstPt = {28/8, 1/8}

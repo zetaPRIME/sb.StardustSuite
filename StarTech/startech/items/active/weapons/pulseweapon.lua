@@ -12,6 +12,7 @@ require "/sys/stardust/skilltree/calc.lua"
 do
   cfg = (type(cfg) == "table") and cfg or { }
   stats = (type(stats) == "table") and stats or { }
+  flags = (type(flags) == "table") and flags or { }
   local mt = { __call = util.mergeTable }
   setmetatable(cfg, mt) setmetatable(stats, mt)
 end
@@ -80,6 +81,7 @@ function initPulseWeapon()
   if stat then
     for k,v in pairs(stat) do stats[k] = skilltree.calculateFinalStat(v) end
   end
+  util.mergeTable(flags, skillData.flags)
   
   refreshEnergyColor()
   message.setHandler("startech:refreshEnergyColor", refreshEnergyColor)

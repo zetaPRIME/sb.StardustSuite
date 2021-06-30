@@ -422,7 +422,12 @@ do local s = movement.state "rail"
     }
     
     if input.keyDown.jump then -- jump off
-      mcontroller.addMomentum({0, 75})
+      mcontroller.addMomentum {0, 75}
+      if input.key.up then -- jump a bit higher
+        mcontroller.addMomentum {0, 15}
+      else -- add some bunny hop
+        mcontroller.addMomentum {input.dir[1] * 17, 0}
+      end
       self.forceJump = true
       return movement.switchState("ground", true, true)
     end

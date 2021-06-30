@@ -7,7 +7,7 @@ add integration info to startech part of readme (generators, autosmelter)
     - overhaul pulse weapon energy draw (proportional to damage)
     
     pulse rifle {
-        skill tree config
+        > skill tree config
         - punchthrough stats
         - recipe
     }

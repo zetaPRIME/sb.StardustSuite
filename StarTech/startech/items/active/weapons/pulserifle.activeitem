@@ -16,7 +16,7 @@
   "stardustlib:usesAP" : true,
   "startech:configurable" : true,
   "startech:configuratorUI" : "startech:configurator.tree",
-  "stardustlib:skillTree" : "/startech/skilltree/pulseglaive.config",
+  "stardustlib:skillTree" : "/startech/skilltree/pulserifle.config",
   
   "level" : 1,
 

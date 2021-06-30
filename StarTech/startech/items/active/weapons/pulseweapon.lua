@@ -26,7 +26,7 @@ stats { -- default stats
   speed = 1.0,
   charge = 1.0,
   accuracy = 1.0,
-  punchthrough = 1.0,
+  punchthrough = 0.0,
 }
 
 function assetPath(s) cfg.assetPath = s end

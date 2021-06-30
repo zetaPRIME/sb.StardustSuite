@@ -14,6 +14,8 @@ add integration info to startech part of readme (generators, autosmelter)
     
     do I want to slip in a smelting recipe for slime?
     
+    nanofield wall jump
+    
     export bus {
         precache items passing filter match
         pick one item at a time

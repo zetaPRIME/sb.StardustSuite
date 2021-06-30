@@ -30,7 +30,6 @@ cfg {
   assaultRange = 80, -- maximum tile range for assault rifle fire
   -- shorter than the pulsestrike glaive's 150
   assaultSpread = 0.015, -- maximum angle variance
-  assaultPunchthrough = 5, -- base punchthrough
   
   shotgunFireTime = 2/3,
   shotgunDamageMult = 1.1, -- compensate for manual retrigger
@@ -139,7 +138,7 @@ function assaultFire()
     local ap = vec2.sub(hpos, lc[1])
     local dist = vec2.dot(ab, ap) / (vec2.mag(ab))
     line[2] = vec2.add(line[1], vec2.mul(vec2.norm(ab), dist))
-    applyPunchthrough(line, cfg.assaultPunchthrough * stats.punchthrough)
+    applyPunchthrough(line, stats.punchthrough)
   else -- stop at tile collision
     line[2] = vec2.sub(lc[2], pos)
   end

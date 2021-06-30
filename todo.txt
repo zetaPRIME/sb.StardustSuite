@@ -8,9 +8,8 @@ add integration info to startech part of readme (generators, autosmelter)
     
     pulse rifle {
         skill tree config
-        punchthrough stats
-        recipe
-        
+        - punchthrough stats
+        - recipe
     }
     
     do I want to slip in a smelting recipe for slime?

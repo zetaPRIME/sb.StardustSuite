@@ -18,13 +18,15 @@ end
 
 cfg { -- defaults
   baseDps = 15,
-  basePowerDraw = 500, -- per second per 100% damage
+  basePowerDraw = 1000, -- per second per 100% damage
 }
 
 stats { -- default stats
   damage = 1.0,
   speed = 1.0,
   charge = 1.0,
+  accuracy = 1.0,
+  punchthrough = 1.0,
 }
 
 function assetPath(s) cfg.assetPath = s end

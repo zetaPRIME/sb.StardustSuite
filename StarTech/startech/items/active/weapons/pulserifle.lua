@@ -6,7 +6,7 @@ function init() initPulseWeapon()
   activeItem.setHoldingItem(true)
   activeItem.setTwoHandedGrip(true)
   
-  --animator.setSoundVolume("finisher", 0.75)
+  animator.setSoundVolume("fire", 0.85)
   
   animator.setPartTag("body", "partImage", asset "body")
   animator.setPartTag("energy", "partImage", asset "energy")
@@ -30,6 +30,7 @@ cfg {
   assaultRange = 80, -- maximum tile range for assault rifle fire
   -- shorter than the pulsestrike glaive's 150
   assaultSpread = 0.015, -- maximum angle variance
+  assaultPunchthrough = 5, -- base punchthrough
   
   shotgunFireTime = 2/3,
   shotgunDamageMult = 1.1, -- compensate for manual retrigger
@@ -120,7 +121,7 @@ function assaultFire()
   animator.playSound("fire")
   
   local dir, angle = dynItem.aimDir, dynItem.aimAngle
-  angle = spread(angle, cfg.assaultSpread, 3)
+  angle = spread(angle, cfg.assaultSpread / stats.accuracy, 3 * stats.accuracy)
   
   local line = dynItem.offsetPoly({ {0, 2/8}, {cfg.assaultRange, 2/8} }, false, angle)
   local pos = vec2.add(mcontroller.position(), {0, 0})
@@ -138,7 +139,7 @@ function assaultFire()
     local ap = vec2.sub(hpos, lc[1])
     local dist = vec2.dot(ab, ap) / (vec2.mag(ab))
     line[2] = vec2.add(line[1], vec2.mul(vec2.norm(ab), dist))
-    applyPunchthrough(line, 5)
+    applyPunchthrough(line, cfg.assaultPunchthrough * stats.punchthrough)
   else -- stop at tile collision
     line[2] = vec2.sub(lc[2], pos)
   end

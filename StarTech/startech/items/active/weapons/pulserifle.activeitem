@@ -1,8 +1,8 @@
 { // -*- grammar-ext: json -*-
   "itemName" : "startech:pulserifle",
   "shortdescription" : "Pulse Rifle",
-  //"description" : "A powerful hybrid assault rifle and shotgun.",
-  "description" : "Assault rifle for long-range sustained fire, plasma burst shotgun for when things get up close and personal.",
+  //"description" : "^violet;Assault rifle^reset; for long-range sustained fire, ^violet;plasma burst shotgun^reset; for when things get up close and personal.",
+  "description" : "Nimble hitscan ^violet;assault rifle^reset; at range; ^violet;plasma burst shotgun^reset; up close. A simpler offering, but no less effective for it.",
   "category" : "startech:power.weapon",
   "inventoryIcon" : "pulserifle.png",
   "rarity" : "Legendary",

@@ -37,7 +37,7 @@ local function saveItem(itm)
   
   local category = itemutil.property(itm, "category")
   if category == "startech:power.weapon" then -- pulse weapon
-    local dmg = calc(skillData.stats.damage)
+    local dmg = calc(skillData.stats.damage) * calc(skillData.stats.speed)
     local tier = dmg*2 - 1
     itm.parameters.level = tier
     itm.parameters.tooltipFields.bottomLabel = string.format(

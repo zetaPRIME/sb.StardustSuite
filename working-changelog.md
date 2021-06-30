@@ -3,6 +3,7 @@
 - Power costs for Pulse Weapons have been overhauled and are now proportional to weapon damage for a given action. This includes the weapon's own (skill tree) damage multiplier, but not bonuses from armor or other sources.
 - Pulsestrike Glaive now plays an indicator sound when fully charged, and charges faster when buffered off the combo finisher
 - Nanofield users now find themselves able to ~~roll around at the speed of sound~~ grind on rails. Hold down and sprint to land on one!
+- Pulse weapon tool tips now take attack speed into account
 - Fixed an issue where drive bays would fail to drop their drives when broken if not connected to a controller (*heavy sigh*)
 - Fixed an issue where drive configuration couldn't be edited while disconnected
 

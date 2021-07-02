@@ -81,7 +81,7 @@ function initPulseWeapon()
   if stat then
     for k,v in pairs(stat) do stats[k] = skilltree.calculateFinalStat(v) end
   end
-  util.mergeTable(flags, skillData.flags)
+  util.mergeTable(flags, skilldata and skillData.flags or { })
   
   refreshEnergyColor()
   message.setHandler("startech:refreshEnergyColor", refreshEnergyColor)

@@ -412,7 +412,9 @@ function skilltree.nodeUnlockLevel(n, visual)
 end
 
 function skilltree.currentAP()
-  return (player.getProperty("stardustlib:ap") or 0) - apToSpend
+  local ap = player.getProperty "stardustlib:ap"
+  if type(ap) ~= "number" or ap ~= ap or ap - 1 == ap then ap = 0 end -- NaN/inf protection
+  return ap - apToSpend
 end
 function skilltree.nodeCost(n)
   if n.fixedCost then return n.fixedCost, true end

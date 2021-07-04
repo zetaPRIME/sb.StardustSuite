@@ -1,7 +1,7 @@
 ### StarTech
-- Fixed an issue where pulse weapons would be broken until their Configurator was opened
 
 ### Stardust Core
+- basic NaN and inf protection for AP
 
 ### Stardust Core+Lite
 

@@ -413,7 +413,13 @@ end
 
 function skilltree.currentAP()
   local ap = player.getProperty "stardustlib:ap"
-  if type(ap) ~= "number" or ap ~= ap or ap - 1 == ap then ap = 0 end -- NaN/inf protection
+  if type(ap) ~= "number" or ap ~= ap then -- nil/wrong type/NaN protection
+    ap = 0
+    player.setProperty("stardustlib:ap", ap)
+  elseif ap - 1 == ap then -- inf protection
+    ap = 2^53 -- maximum consecutive integer
+    player.setProperty("stardustlib:ap", ap)
+  end
   return ap - apToSpend
 end
 function skilltree.nodeCost(n)

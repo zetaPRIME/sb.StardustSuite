@@ -233,6 +233,7 @@ function skilltree.init(canvas, treePath, data, saveFunc)
     skillData.uuid = sb.makeUuid()
   end
   skilltree.uuid = skillData.uuid
+  skilltree.skillData = skillData -- okay, we need this exposed
   skilltree.saveChanges()
   skilltree.initUI()
 end
@@ -326,6 +327,7 @@ function skilltree.recalculateStats(saveBeforeDisplay)
   if statsDisplay then
     -- calculate display stat values
     local displayStats = util.mergeTable({ }, skillData.stats)
+    skilltree.displayStats = displayStats
     for path in pairs(nodesToUnlock) do doGrants(nodes[path], displayStats) end
     
     local statNames = (skilltree.defs or { }).statNames or { }

@@ -74,14 +74,6 @@ function toggleStats:onClick()
   self:setText(sidebarContainer.visible and "<" or ">")
 end
 
-function skilltree.modifyStatDisplay.damage(txt, v)
-  local tier = v*2 - 1
-  return txt .. string.format(" ^lightgray;(tier ^white;%s^lightgray;)^reset;", skilltree.displayNumber(tier))
-end
-function skilltree.modifyStatDisplay.charge(txt, v)
-  return v ~= 1.0 and txt or ""
-end
-
 function update()
   -- ...
 end

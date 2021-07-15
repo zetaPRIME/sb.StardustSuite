@@ -4,6 +4,9 @@ add integration info to startech part of readme (generators, autosmelter)
 
 > Beta v0.1.6 {
     
+    LOAD ON DEMAND FOR TERMINAL
+    ^ keep visible item slot rows only
+    
     pulse rifle {
         use bounding box center?
     }

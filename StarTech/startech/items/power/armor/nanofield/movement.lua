@@ -144,7 +144,7 @@ do local s = movement.state "ground"
     
     self.airJumps = 0
     if fromGrounded then
-      self.airJumps = stats.stat.airJump
+      self.airJumps = stats.stat.airJump or 0
       input.keyDown.jump = false -- consume
     end
     

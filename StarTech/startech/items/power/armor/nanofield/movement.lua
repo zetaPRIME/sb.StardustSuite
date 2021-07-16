@@ -645,7 +645,7 @@ do local s = movement.state "flight"
     mcontroller.clearControls()
     
     appearance.setWingsVisible(false)
-    self.thrustLoop:discard()
+    if self.thrustLoop then self.thrustLoop:discard() end
     sound.play(self.stats.soundDeactivate)
     appearance.setEnergyColor()
     

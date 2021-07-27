@@ -1,5 +1,5 @@
 # metaGUI - a primer
-##### As of StardustLib Alpha v0.51
+##### As of Stardust Core Beta v0.1.5c
 - [Your first UI](#your-first-ui)
 - [Widget reference](#widget-reference)
   - [Layout](#layout)

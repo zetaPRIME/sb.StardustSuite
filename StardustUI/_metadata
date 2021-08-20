@@ -4,5 +4,7 @@
   "name" : "StardustUI",
   "author" : "Zia Satazaki",
   "description" : "... Stuff!",
+  "link" : "steam://url/CommunityFilePage/2580225248",
+  "steamContentId" : "2580225248",
   "includes" : [ "StardustLib", "QuickbarMini", "Enhanced Storage" ]
 }

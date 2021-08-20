@@ -43,6 +43,15 @@ add integration info to startech part of readme (generators, autosmelter)
     - pulsestrike glaive: charge much faster if buffered after combo finisher
     
 } big things to do by Milestone 2 {
+    !!! metaGUI passive keysub {
+        can focus canvas then delete to capture without intercepting (FROM OTHER GAMEPLAY)
+        this will still block input to other panes!!
+        share passive keysub between all panes, whether requesting or not
+        notify all panes when click focus changed?? need to pass escape event to active pane!
+        
+        UI flag to only spawn if something needs it so as to prevent unnecessary input blocking for other things
+    }
+    
     THREAT GENERATION SYSTEM {
         self.board:getList("targets")
     }

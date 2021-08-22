@@ -6,3 +6,6 @@
 ### Stardust Core+Lite
 
 #### metaGUI
+- Fixed potential lag source with item slots (as present in container proxies) by making sure the items are actually different before updating the backing slot
+
+### Stardust UI

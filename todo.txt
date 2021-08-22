@@ -1,5 +1,7 @@
 -
 
+- HOTFIX: fix metaGUI container lag! check item difference before updating
+
 add integration info to startech part of readme (generators, autosmelter)
 
 > Beta v0.1.6 {

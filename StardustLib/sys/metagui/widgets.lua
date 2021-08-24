@@ -888,8 +888,9 @@ end do -- item slot ------------------------------------------------------------
   
   function widgets.itemSlot:item() return widget.itemSlotItem(self.subWidgets.slot) end
   function widgets.itemSlot:setItem(itm)
+    if root.itemDescriptorsMatch(itm, self.itemCache, true) then return itm end
     local old = self:item()
-    if root.itemDescriptorsMatch(itm, old, true) then return itm end
+    self.itemCache = itm
     self.storedCount = itm and itm.count or 0
     widget.setItemSlotItem(self.subWidgets.slot, itm)
     self:queueRedraw()

@@ -1,6 +1,10 @@
 -
 
-- HOTFIX: fix metaGUI container lag! check item difference before updating
+!! container update overhaul {
+    global loop, list of extant container slots
+    single pull of entire container contents
+    cache slot item lua-side instead of pulling from c++ land to check (and thus incurring further conversion overhead)
+}
 
 add integration info to startech part of readme (generators, autosmelter)
 

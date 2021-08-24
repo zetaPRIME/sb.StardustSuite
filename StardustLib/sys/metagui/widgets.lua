@@ -841,7 +841,7 @@ end do -- item slot ------------------------------------------------------------
         coroutine.yield()
         while not self.deleted do
           self:setItem(world.containerItemAt(cid, (self.containerSlot or 1) - 1))
-          coroutine.yield()
+          for i=1,10 do coroutine.yield() end
         end
       end)
     end

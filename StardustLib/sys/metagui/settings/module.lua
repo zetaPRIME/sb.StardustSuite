@@ -32,6 +32,10 @@ do
   local function themeSelected(w)
     metagui.settings.theme = w.theme
     local theme = themes[w.theme]
+    if not theme then -- default, no settings
+      tp.tab:setVisible(false)
+      return
+    end
     tp.tab.titleWidget:setText(theme.name)
     tp.tab:setVisible(not not theme.hasSettingsPanel)
   end

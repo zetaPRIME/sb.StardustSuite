@@ -1,8 +1,8 @@
 -
 
 !! container update overhaul {
-    global loop, list of extant container slots
-    single pull of entire container contents
+    - global loop, list of extant container slots
+    - single pull of entire container contents
     - cache slot item lua-side instead of pulling from c++ land to check (and thus incurring further conversion overhead)
 }
 
@@ -12,6 +12,8 @@ add integration info to startech part of readme (generators, autosmelter)
     
     LOAD ON DEMAND FOR TERMINAL
     ^ keep visible item slot rows only
+    
+    implement container hooking for update limiting
     
     pulse rifle {
         use bounding box center?

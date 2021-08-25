@@ -819,6 +819,28 @@ end do -- item slot ------------------------------------------------------------
     --
   end -- end modes
   
+  local containerSlots
+  local function containerLoop()
+    containerSlots = { }
+    coroutine.yield()
+    while true do
+      if containerSlots[1] then
+        local bag = world.containerItems(pane.sourceEntity())
+        local ns = { }
+        local ni = 1
+        for _,slot in pairs(containerSlots) do
+          if not slot.deleted then
+            ns[ni] = slot
+            ni = ni + 1
+            slot:setItem(bag[slot.containerSlot])
+          end
+        end
+        containerSlots = ns
+      end
+      for i=1,12 do coroutine.yield() end -- every 1/5 sec
+    end
+  end
+  
   function widgets.itemSlot:init(base, param)
     self.size = nil -- force recalculate
     self.hideRarity = param.hideRarity
@@ -836,14 +858,8 @@ end do -- item slot ------------------------------------------------------------
     }
     if param.item then self:setItem(param.item) end
     if self.autoInteract == "container" then -- start polling loop
-      mg.startEvent(function()
-        local cid = pane.sourceEntity()
-        coroutine.yield()
-        while not self.deleted do
-          self:setItem(world.containerItemAt(cid, (self.containerSlot or 1) - 1))
-          for i=1,10 do coroutine.yield() end
-        end
-      end)
+      if not containerSlots then mg.startEvent(containerLoop) end
+      table.insert(containerSlots, self)
     end
   end
   function widgets.itemSlot:preferredSize() return {18, 18} end

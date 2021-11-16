@@ -47,6 +47,7 @@ local function saveItem(itm)
     )
   end
   
+  cfgSlot:setItem(nil) --see https://github.com/zetaPRIME/sb.StardustSuite/pull/25
   cfgSlot:setItem(itm)
 end
 

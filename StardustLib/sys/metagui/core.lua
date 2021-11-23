@@ -386,7 +386,7 @@ local function spawnKeysub(respawn)
   }, 0)
 end
 local function killKeysub()
-  if mg.ipc.keysub and mg.ipc.keysub.master == mg then
+  if mg.ipc and mg.ipc.keysub and mg.ipc.keysub.master == mg then
     mg.ipc.keysub = nil
   end
 end

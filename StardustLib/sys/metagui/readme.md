@@ -379,6 +379,7 @@ An item slot. Functions the way you'd expect.
 "glyph" : "icon.png", // Glyph to display on slot background. Defaults to none.
 "colorGlyph" : true, // Specifies if the glyph is in color. Can also be specified as the glyph path.
 "color" : "accent", // Entirely theme-dependent; the slot's accent color, if the theme supports it.
+"directCache" : true, // If set, cache is set directly to the item table input instead of being copied.
 "item" : { "name" : "perfectlygenericitem", "count" : 1, "parameters" : { } } // Sets a starting item.
 ```
 ##### Methods
@@ -401,6 +402,7 @@ A grid of item slots.
 "spacing" : 2, // Spacing between slots. Integer or vector. Defaults to 2.
 
 "autoInteract" : true, // Passed to child slots.
+"directCache" : true, // ^
 "containerSlot" : 1, // Starting slot for container proxying. Implies "container" mode.
 ```
 ##### Methods

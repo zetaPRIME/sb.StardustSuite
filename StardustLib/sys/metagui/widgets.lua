@@ -850,6 +850,8 @@ end do -- item slot ------------------------------------------------------------
     self.autoInteract = param.autoInteract or param.auto
     self.containerSlot = param.containerSlot
     if self.containerSlot then self.autoInteract = "container" end
+    
+    self.directCache = param.directCache
     --
     self.backingWidget = mkwidget(base, { type = "canvas" })
     self.subWidgets = {
@@ -921,7 +923,11 @@ end do -- item slot ------------------------------------------------------------
       return itm
     end
     local old = self:item()
-    self.itemCache = deepCopy(itm)
+    if self.directCache then
+      self.itemCache = itm
+    else
+      self.itemCache = deepCopy(itm)
+    end
     self.storedCount = itm and itm.count or 0
     widget.setItemSlotItem(self.subWidgets.slot, itm)
     self:queueRedraw()
@@ -946,6 +952,8 @@ end do -- item grid ------------------------------------------------------------
     self.containerSlot = param.containerSlot
     if self.containerSlot then self.autoInteract = "container" end
     
+    self.directCache = param.directCache
+    
     self.backingWidget = mkwidget(base, { type = "layout", layoutType = "basic", scissoring = false })
     
     local slots = param.slots or 1
@@ -956,6 +964,7 @@ end do -- item grid ------------------------------------------------------------
     local s = self:addChild {
       type = "itemSlot",
       autoInteract = self.autoInteract,
+      directCache = self.directCache,
       item = item,
     }
     if not self.autoInteract then

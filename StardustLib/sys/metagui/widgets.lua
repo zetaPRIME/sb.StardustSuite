@@ -915,7 +915,11 @@ end do -- item slot ------------------------------------------------------------
   
   function widgets.itemSlot:item() return widget.itemSlotItem(self.subWidgets.slot) end
   function widgets.itemSlot:setItem(itm, force)
-    if not force and root.itemDescriptorsMatch(itm, self.itemCache, true) then return itm end
+    if not force
+      and root.itemDescriptorsMatch(itm, self.itemCache, true)
+      and (itm and itm.count or 0) == (self.itemCache and self.itemCache.count or 0) then
+      return itm
+    end
     local old = self:item()
     self.itemCache = deepCopy(itm)
     self.storedCount = itm and itm.count or 0

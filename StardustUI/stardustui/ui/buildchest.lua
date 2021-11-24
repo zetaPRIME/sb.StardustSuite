@@ -62,18 +62,20 @@ for _,s in pairs(world.getObjectParameter(src, "scripts") or { }) do
   if esScripts[s] then hasES = esScripts[s] break end
 end
 
+local barHeight = 9--16
+
 cfg.size = {
   util.clamp(slotWidth, hasES and 4.25 or 4, 10) * 20 - 2,
-  util.clamp(slotHeight, 3, 10.5) * 20 - 2 + 16+2,
+  util.clamp(slotHeight, 3, 10.5) * 20 - 2 + barHeight+2,
 }
 local overflow = slotHeight > 10
 
 -- only spawn the scroll area when overflow happens
-local grid = { id = "itemGrid", type = "itemGrid", expandMode = {2, 2}, slots = numSlots, columns = math.min(slotWidth, numSlots), containerSlot = 1 }
+local grid = { id = "itemGrid", type = "itemGrid", expandMode = {2, 2}, slots = numSlots, columns = math.min(slotWidth, numSlots), containerSlot = 1, directCache = true }
 if overflow then
   cfg.size[1] = cfg.size[1] + 4+2 -- compensate for the added width of the panel, plus room for count
   grid = { type = "panel", style = "concave", mode = "vertical", children = { -- and wrap in scrolling
-    { type = "scrollArea", expandMode = {2, 2}, children = { grid } },
+    { type = "scrollArea", expandMode = {2, 2}, children = { grid, 0 } },
   } }
 else
   grid = { type = "layout", mode = "horizontal", scissoring = false, expandMode = {2, 2}, children = { "spacer", grid, "spacer" } }
@@ -81,13 +83,17 @@ end
 
 cfg.children = { { scissoring = false }, -- allow count to slightly overlap window border
   grid,
-  { { size = 16 },
+  { { size = barHeight },
     -1, -- tiny bit of space away from edge
     { type = "label", text = numSlots .. " slots" },
     "spacer",
-    { id = "esOptions", type = "iconButton", image = "minimenu.png", visible = not not hasES },
+    { id = "esOptions", type = "iconButton", image = "minimenu.png", toolTip = "Container Options", visible = not not hasES },
     -3, -- slightly less space
-    { id = "takeAll", type = "button", caption = "Take All", size = 38, color = "accent" },
+    { id = "quickStack", type = "iconButton", image = "quickstack.png", toolTip = "Quick Stack" },
+    -3,
+    { id = "takeAll", type = "iconButton", image = "takeall.png", toolTip = "Take All" },
+    --{ id = "takeAll", type = "button", caption = "Take All", size = 38, color = "accent" },
+    -1, -- same spacer on the end too
   },
 }
 

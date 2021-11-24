@@ -1,7 +1,5 @@
 -
 
-skill trees are broken???
-
 add integration info to startech part of readme (generators, autosmelter)
 
 > Beta v0.1.6 {

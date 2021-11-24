@@ -902,11 +902,22 @@ end do -- item slot ------------------------------------------------------------
   function widgets.itemSlot:acceptsItem() return true end
   function widgets.itemSlot:onItemModified() end
   
+  local deepCopy
+  deepCopy = function(t)
+    if type(t) ~= "table" then return t end
+    local n = { }
+    for k,v in pairs(t) do
+      if type(v) == "table" then n[k] = deepCopy(v)
+      else n[k] = v end
+    end
+    return n
+  end
+  
   function widgets.itemSlot:item() return widget.itemSlotItem(self.subWidgets.slot) end
-  function widgets.itemSlot:setItem(itm)
-    if root.itemDescriptorsMatch(itm, self.itemCache, true) then return itm end
+  function widgets.itemSlot:setItem(itm, force)
+    if not force and root.itemDescriptorsMatch(itm, self.itemCache, true) then return itm end
     local old = self:item()
-    self.itemCache = itm
+    self.itemCache = deepCopy(itm)
     self.storedCount = itm and itm.count or 0
     widget.setItemSlotItem(self.subWidgets.slot, itm)
     self:queueRedraw()

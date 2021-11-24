@@ -384,7 +384,7 @@ An item slot. Functions the way you'd expect.
 ##### Methods
 ```lua
 itemSlot:item() -- Returns the current item.
-itemSlot:setItem(descriptor)
+itemSlot:setItem(descriptor, force) -- Avoids updating item slot if cache matches input unless force is set
 itemSlot:acceptsItem(item) -- Override to filter items accepted by autoInteract.
 ```
 ##### Events

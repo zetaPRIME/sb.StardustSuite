@@ -89,6 +89,7 @@ cfg.children = { { scissoring = false }, -- allow count to slightly overlap wind
     "spacer",
     { id = "esOptions", type = "iconButton", image = "minimenu.png", toolTip = "Container Options", visible = not not hasES },
     -3, -- slightly less space
+    --{ id = "sort", type = "iconButton", image = "sort.png", toolTip = "Sort" }, -3,
     { id = "quickStack", type = "iconButton", image = "quickstack.png", toolTip = "Quick Stack" },
     -3,
     { id = "takeAll", type = "iconButton", image = "takeall.png", toolTip = "Take All" },

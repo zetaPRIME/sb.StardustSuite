@@ -16,22 +16,53 @@ function quickStack:onClick()
   if not metagui.checkSync(true) then return end
   local id = pane.sourceEntity()
   local numSlots = world.containerSize(id)
-  for i = 0, numSlots - 1 do
-    local itm = world.containerItemAt(id, i)
-    if itm and itm.count > 0 then
-      local maxStack = metagui.itemMaxStack(itm)
-      local has = player.hasCountOfItem(itm, true)
-      local put = has --math.min(maxStack - itm.count, has)
-      local fits = world.containerItemsFitWhere(id, itm)
-      for k,v in pairs(fits.slots) do
-        sb.logInfo("slot " .. k .. " fit " .. v)
+  local fSlots = 0
+  
+  local data = { } -- data cache <descriptor, data>
+  local ds = { } -- data sorted
+  
+  local itms = world.containerItems(id)
+  for slot, itm in pairs(itms) do -- assemble data cache
+    fSlots = fSlots + 1 -- count up total slots filled
+    local has = player.hasCountOfItem(itm, true)
+    if has > 0 then
+      local d
+      for m, dd in pairs(data) do if root.itemDescriptorsMatch(itm, m, true) then d = dd break end end
+      if not d then
+        d = {
+          itm = itm, -- mirror within
+          slots = { },
+          firstSlot = slot,
+          maxStack = metagui.itemMaxStack(itm),
+          has = has,
+        }
+        sb.logInfo("has " .. has .. " " .. itm.name)
+        data[itm] = d
+        table.insert(ds, d) -- we need to sort this later
       end
-      --local rem = world.containerStackItems(id, { name = itm.name, count = put, parameters = itm.parameters })
-      --local fit = world.containerItemsCanFit(id, { name = itm.name, count = 1, parameters = itm.parameters })
-      --sb.logInfo(itm.name .. ": has " .. has .. " fit " .. fit)
-      --sb.logInfo("placed items: " .. (put - (rem and rem.count or 0)))
-      --sb.logInfo("put " .. put .. ", rem " .. (rem and rem.count or 0))
-      --player.consumeItem({ name = itm.name, count = put - (rem and rem.count or 0), parameters = itm.parameters }, true, true)
+      d.slots[slot] = itm.count
+    end
+  end
+  
+  fSlots = numSlots - fSlots -- from full slots to free slots
+  table.sort(ds, function(a, b) -- true == before
+    return a.maxStack > b.maxStack or (a.maxStack == b.maxStack and a.firstSlot < b.firstSlot)
+  end)
+  
+  for ix, d in ipairs(ds) do -- now to actually do the work
+    local put = 0
+    for s,c in pairs(d.slots) do put = put + (d.maxStack - c) end -- count up how many can be fit in existing stacks
+    while put < d.has and fSlots > 0 do -- consume free slots until satisfied
+      put = put + d.maxStack
+      fSlots = fSlots - 1
+    end
+    put = math.min(put, d.has) -- clamp to how much we actually have
+    local ii = { name = d.itm.name, parameters = d.itm.parameters, count = put }
+    player.consumeItem(ii, true, true)
+    while put > 0 do -- have to do it stack by stack because Of Course We Do
+      ii.count = math.min(put, d.maxStack)
+      put = put - ii.count
+      world.containerStackItems(id, ii)
     end
   end
 end

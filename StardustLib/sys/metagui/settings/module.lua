@@ -64,7 +64,7 @@ do
     end
     
     local def = registry.defaultTheme
-    if not themes[def] then for k in pairs(themes) do def = k break end end
+    if not themes[def] then def = next(themes) end
     defaultInfo.name = string.format(defaultInfo.name, themes[def].name)
     
     local themeOrder = { }

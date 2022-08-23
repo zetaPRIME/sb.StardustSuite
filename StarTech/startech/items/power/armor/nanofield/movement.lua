@@ -210,16 +210,12 @@ do local s = movement.state "ground"
     and not mcontroller.liquidMovement()
     --and mcontroller.yVelocity() < 0
     and input.keyDown.jump and self.airJumps >= 1 then
-      if stats.drawEnergy(250, false, 25) then
-        self.airJumps = self.airJumps - 1
-        mcontroller.controlJump(true)
-        mcontroller.setYVelocity(math.max(0, mcontroller.yVelocity()))
-        mcontroller.controlParameters({ airForce = 1750.0 }) -- allow easier direction control during jump
-        sound.play("/sfx/tech/tech_doublejump.ogg")
-        tech.setParentState("Fall") -- animate a bit even when already rising
-      else
-        sound.play("/sfx/interface/energy_out2.ogg")
-      end
+      self.airJumps = self.airJumps - 1
+      mcontroller.controlJump(true)
+      mcontroller.setYVelocity(math.max(0, mcontroller.yVelocity()))
+      mcontroller.controlParameters({ airForce = 1750.0 }) -- allow easier direction control during jump
+      sound.play("/sfx/tech/tech_doublejump.ogg")
+      tech.setParentState("Fall") -- animate a bit even when already rising
     end
     
     if movement.zeroG and not movement.zeroGPrev and stats.elytra then movement.switchState("flight") end

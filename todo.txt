@@ -23,7 +23,6 @@ HUD Manager {
     do I want to slip in a smelting recipe for slime?
     
     nanofield wall jump
-    !! REMOVE POWER COST FOR AIR JUMP
     
     export bus {
         precache items passing filter match

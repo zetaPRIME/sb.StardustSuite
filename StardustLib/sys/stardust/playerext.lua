@@ -86,7 +86,7 @@ function update(dt, ...)
     })
   end--]]
   
-  -- store held tool type for other scripts
+  -- store held tool type for other scripts (mainly localanimators)
   getmetatable ''["stardustlib:holdingTool"] = itemutil.property(player.primaryHandItem(), "stardustlib:toolType")
   
   -- clear HUD positions

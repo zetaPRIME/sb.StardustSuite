@@ -2,6 +2,13 @@
 
 add integration info to startech part of readme (generators, autosmelter)
 
+HUD Manager {
+    eventhook library thing
+    refactor current HUD stuff into hudmanager using said eventhook
+    
+    figure out how to handle extensibility?
+}
+
 > Beta v0.1.6 {
     
     LOAD ON DEMAND FOR TERMINAL
@@ -16,6 +23,7 @@ add integration info to startech part of readme (generators, autosmelter)
     do I want to slip in a smelting recipe for slime?
     
     nanofield wall jump
+    !! REMOVE POWER COST FOR AIR JUMP
     
     export bus {
         precache items passing filter match

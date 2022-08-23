@@ -88,3 +88,13 @@ function world.spawnProjectile(name, pos, src, dir, track, params)
   params.statusEffects = imbue(params.statusEffects or cfg.statusEffects, imbues)
   return spawnProjectile(name, pos, src, dir, track, params)
 end
+
+local _upd = Weapon.update
+function Weapon.update(...)
+  _upd(...)
+  
+  local hd = getmetatable''["stardustlib:hudData"]
+  if hd then
+    hd.targetPos = activeItem.ownerAimPosition()
+  end
+end

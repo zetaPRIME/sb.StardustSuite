@@ -39,6 +39,11 @@ function eventHook.subscribe(id, func)
   h[ck] = func
 end
 
+function eventHook.unsubscribe(id)
+  local h = hooks[id]
+  if h then h[ck] = nil end
+end
+
 function eventHook.call(id, ...)
   local h = hooks[id]
   if not h then return end

@@ -10,7 +10,7 @@ eventHook = { }
 
 local isInit
 function eventHook.init()
-  if isInit return end
+  if isInit then return end
   
   -- set up uninit hook
   local _uninit = uninit

@@ -1,3 +1,5 @@
+require "/lib/stardust/eventhook.lua"
+
 local hd = { }
 getmetatable''["stardustlib:hudData"] = hd
 
@@ -16,6 +18,9 @@ end]]
 
 function init()
   --
+  
+  eventHook.subscribe("lolwut")
+  eventHook.call("lolwut")
 end
 
 --setmetatable(_ENV, {__index = function(_, n) sb.logInfo("unknown func " .. n) end})

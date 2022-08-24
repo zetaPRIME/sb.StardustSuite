@@ -1,12 +1,14 @@
 --
-require "/lib/stardust/playerext.lua"
+require "/lib/stardust/eventhook.lua"
 
 function init()
-  script.setUpdateDelta(1)
+  if getmetatable''.clientSide then
+    eventHook.subscribe("stardustlib:drawLocal", draw)
+  end
 end
 
-function update()
-  playerext.queueLight {
+function draw(localAnimator)
+  localAnimator.addLightSource {
     active = true,
     position = mcontroller.position(),
     color = {190, 190, 190},

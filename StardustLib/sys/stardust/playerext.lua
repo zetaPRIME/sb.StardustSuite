@@ -1,5 +1,6 @@
 -- stardustlib player extension
 
+require "/lib/stardust/eventhook.lua"
 require "/lib/stardust/itemutil.lua"
 require "/lib/stardust/power.item.lua"
 
@@ -94,8 +95,9 @@ function update(dt, ...)
   
   localAnimator.clearLightSources()
   _update(dt, ...)
+  eventHook.call("stardustlib:drawLocal", localAnimator)
+  
   local pos = entity.position()
-  local pd = vec2.sub(pos, lastPos)
   -- process localAnimator queues
   for _, e in pairs(drawableQueue) do
     if e.absolute and e.position then e.position = vec2.sub(e.position, pos) end

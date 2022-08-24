@@ -2,5 +2,6 @@
   "name" : "startech:augpacklight",
   "effectConfig" : { },
 
-  "scripts" : [ "augpacklight.lua" ]
+  "scripts" : [ "augpacklight.lua" ],
+  "scriptDelta" : 0
 }

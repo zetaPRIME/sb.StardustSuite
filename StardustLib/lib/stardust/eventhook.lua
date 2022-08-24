@@ -1,4 +1,4 @@
--- eventHook: cross-context event subscription and propagation
+-- eventHook: cross-script event subscription and propagation
 
 local ck = { } -- context key
 local keystr = "stardustlib:eventHooks"

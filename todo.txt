@@ -3,10 +3,12 @@
 add integration info to startech part of readme (generators, autosmelter)
 
 HUD Manager {
-    eventhook library thing
+    - eventhook library
     refactor current HUD stuff into hudmanager using said eventhook
     
     figure out how to handle extensibility?
+    
+    do the marking thing in pulseweapon too
 }
 
 > Beta v0.1.6 {

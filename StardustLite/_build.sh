@@ -36,6 +36,7 @@ deploy lib/stardust/color.lua
 deploy lib/stardust/json.lua
 deploy lib/stardust/rng.lua
 deploy lib/stardust/tasks.lua
+deploy lib/stardust/eventhook.lua
 deploy lib/stardust/itemutil.lua
 deploy lib/stardust/augmentutil.lua
 deploy lib/stardust/augmentdefs.config

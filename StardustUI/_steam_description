@@ -3,6 +3,9 @@
 A UI revamp powered by metaGUI, aiming to bring themability and general system improvement to as many aspects of Starbound as possible.
 
 - Dynamic panes for all standard containers
--- Full* support for Enhanced Storage (sort coming soon)
+-- Item sorting (independently of ES)
+-- Full support for Enhanced Storage container options
+
+Item search is coming as soon as I figure out how to work it into the UI design >_>
 
 Follow development here: https://github.com/zetaPRIME/sb.StardustSuite

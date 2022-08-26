@@ -85,15 +85,15 @@ cfg.children = { { scissoring = false }, -- allow count to slightly overlap wind
   grid,
   { { size = barHeight },
     -1, -- tiny bit of space away from edge
-    { type = "label", text = numSlots .. " slots" },
-    "spacer",
+    { -- bar and label is an extension of the Take All button
+      { id = "slotsBar", mode = "h", expandMode = {2, 0}, size = barHeight },
+      { id = "slotsLabel", type = "label", text = numSlots .. " slots", expand = true },
+      { id = "takeAll", type = "iconButton", image = "takeall.png", toolTip = "Take All" },
+    },
+    -3, { id = "quickStack", type = "iconButton", image = "quickstack.png", toolTip = "Quick Stack" },
+    -3, { id = "sort", type = "iconButton", image = "sort.png", toolTip = "Sort" },
+    hasES and -3 or { },
     { id = "esOptions", type = "iconButton", image = "minimenu.png", toolTip = "Container Options", visible = not not hasES },
-    -3, -- slightly less space
-    --{ id = "sort", type = "iconButton", image = "sort.png", toolTip = "Sort" }, -3,
-    { id = "quickStack", type = "iconButton", image = "quickstack.png", toolTip = "Quick Stack" },
-    -3,
-    { id = "takeAll", type = "iconButton", image = "takeall.png", toolTip = "Take All" },
-    --{ id = "takeAll", type = "button", caption = "Take All", size = 38, color = "accent" },
     -1, -- same spacer on the end too
   },
 }

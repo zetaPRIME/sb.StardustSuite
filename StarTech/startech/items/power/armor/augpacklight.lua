@@ -2,9 +2,7 @@
 require "/lib/stardust/eventhook.lua"
 
 function init()
-  if getmetatable''.clientSide then
-    eventHook.subscribe("stardustlib:drawLocal", draw)
-  end
+  eventHook.subscribeClient("stardustlib:drawLocal", draw)
 end
 
 function draw(localAnimator)

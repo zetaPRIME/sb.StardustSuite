@@ -39,6 +39,14 @@ function eventHook.subscribe(id, func)
   h[ck] = func
 end
 
+function eventHook.subscribeClient(id, func)
+  if world and not world.players then eventHook.subscribe(id, func) end
+end
+
+function eventHook.subscribeServer(id, func)
+  if world and world.players then eventHook.subscribe(id, func) end
+end
+
 function eventHook.unsubscribe(id)
   local h = hooks[id]
   if h then h[ck] = nil end

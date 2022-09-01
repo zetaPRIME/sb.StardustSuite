@@ -1,7 +1,6 @@
 -- StardustLib.ItemUtil
 
 require "/scripts/util.lua"
-require "/lib/stardust/interop.lua"
 
 do
   itemutil = {}

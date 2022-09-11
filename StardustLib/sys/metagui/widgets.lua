@@ -462,6 +462,8 @@ end do -- canvas ---------------------------------------------------------------
   
   function widgets.canvas:preferredSize() return self.explicitSize or {64, 64} end
   function widgets.canvas:isMouseInteractable() return not self.mouseTransparent end
+  
+  function widgets.canvas:bind() return widget.bindCanvas(self.backingWidget) end
 end do -- button ------------------------------------------------------------------------------------------------------------------------------------
   widgets.button = mg.proto(mg.widgetBase, {
     expandMode = {1, 0}, -- will expand horizontally, but not vertically

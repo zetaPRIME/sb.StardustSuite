@@ -29,6 +29,8 @@ do
     if succ and oiu then mergeCCache(itemutil, oiu) end
   end
   
+  local function zpcall(...) return table.unpack({pcall(...)}, 2) end
+  
   function itemutil.getCachedConfig(item)
     if type(item) ~= "table" then item = { } end
     local name = item.name or "perfectlygenericitem"

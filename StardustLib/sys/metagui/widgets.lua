@@ -1274,6 +1274,9 @@ end do -- text box -------------------------------------------------------------
         -- StarExtensions paste
         local cb = clipboard.getText()
         if cb then
+          if not self.multiLine then -- strip newlines and replace with spaces (matches Firefox behavior)
+            cb = string.gsub(cb, "[\r\n]+", " ")
+          end
           self:setText(self.text:sub(1, self.cursorPos) .. cb .. self.text:sub(self.cursorPos+1))
           self:moveCursor(string.len(cb))
         end

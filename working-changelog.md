@@ -13,6 +13,7 @@
   - Better/more reliable shift hold checks
   - Basic cut/copy/paste for text fields
   - Logless fallback resolution
+- Fixed a bug where list items (including tabs) would exhibit strange behavior with buttons other than left and right click
 
 ### Stardust UI
 (0.1.6...)

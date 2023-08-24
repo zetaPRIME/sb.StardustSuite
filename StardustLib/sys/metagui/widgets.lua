@@ -1074,6 +1074,7 @@ end do -- list item ------------------------------------------------------------
   function widgets.listItem:onMouseEnter() self.hover = true self:queueRedraw() end
   function widgets.listItem:onMouseLeave() self.hover = false self:queueRedraw() end
   function widgets.listItem:onMouseButtonEvent(btn, down)
+    if btn ~= 0 and btn ~= 2 then return false end
     if down and not self:hasMouse() then
       self:captureMouse(btn)
       -- stop containing scroll area

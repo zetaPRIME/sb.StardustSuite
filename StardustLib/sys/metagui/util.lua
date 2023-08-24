@@ -73,6 +73,7 @@ function mg.itemMaxStack(item)
 end
 
 function mg.fastCheckShift() -- check the fast way through tech hooks, fail if not available
+  if input then return input.key("LShift") or input.key("RShift") end
   local p = world.sendEntityMessage(player.id(), "stardustlib:getTechInput")
   local r = p:succeeded() and p:result()
   if r then return r.key.sprint or false end

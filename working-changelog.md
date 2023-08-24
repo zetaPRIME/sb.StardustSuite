@@ -8,6 +8,8 @@
 - [wip] HUD manager
 
 #### metaGUI
+- StarExtensions integration
+  - Better/more reliable shift hold checks
 
 ### Stardust UI
 (0.1.6...)

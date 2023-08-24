@@ -7,5 +7,6 @@
   "link" : "steam://url/CommunityFilePage/1088459034",
   "steamContentId" : "2512589532",
   "priority" : -1000,
-  "includes" : [ ]
+  "includes" : [ ],
+  "permissions" : [ ]
 }

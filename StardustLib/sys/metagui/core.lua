@@ -29,18 +29,24 @@ function mg.path(path)
   return (mg.cfg.assetPath or "/") .. path
 end
 
+local function imageExists(p)
+  if starExtensions then
+    return not not root.assetOrigin(p)
+  end
+  return not not root.nonEmptyRegion(p)
+end
 function mg.asset(path)
   if not path then return nil end
   if path:sub(1, 1) == '/' then return path end
   local ext = path:match('^.*%.([^.]-)$')
   local op = mg.cfg.themePath .. path
-  if ext == "png" and not root.nonEmptyRegion(op) then
+  if ext == "png" and not imageExists(op) then
     if theme and theme.fallback then
       for _, t in ipairs(theme.fallback) do
         local tp = mg.registry.themes[t]
         if tp then
           local p = tp .. path
-          if root.nonEmptyRegion(p) then return p end
+          if imageExists(p) then return p end
         end
       end
     end

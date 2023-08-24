@@ -8,5 +8,5 @@
   "steamContentId" : "2512589532",
   "priority" : -1000,
   "includes" : [ ],
-  "permissions" : [ ]
+  "permissions" : [ "window", "clipboard" ]
 }

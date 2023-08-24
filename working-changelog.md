@@ -10,6 +10,7 @@
 #### metaGUI
 - StarExtensions integration
   - Better/more reliable shift hold checks
+  - Basic cut/copy/paste for text fields
 
 ### Stardust UI
 (0.1.6...)

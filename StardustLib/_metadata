@@ -8,5 +8,5 @@
   "steamContentId" : "764887546",
   "priority" : -1000,
   "includes" : [ "QuickbarMini" ],
-  "permissions" : [ "window" ]
+  "permissions" : [ "window", "clipboard" ]
 }

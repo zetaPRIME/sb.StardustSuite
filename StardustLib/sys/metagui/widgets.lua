@@ -1230,6 +1230,7 @@ end do -- text box -------------------------------------------------------------
   function widgets.textBox:acceptsKeyRepeat() return true end
   function widgets.textBox:onKeyEvent(key, down, accel, rep)
     if down then
+      local char = mg.keyToChar(key, accel)
       if key == mg.keys.enter or key == mg.keys.kpEnter then
         self:releaseFocus()
         mg.startEvent(self.onEnter, self)
@@ -1269,8 +1270,20 @@ end do -- text box -------------------------------------------------------------
           self:setText(self.text:sub(1, math.max(0, self.cursorPos-1)) .. self.text:sub(self.cursorPos+1))
           self:moveCursor(-1)
         end
+      elseif clipboard and char == "v" and accel.ctrl then
+        -- StarExtensions paste
+        local cb = clipboard.getText()
+        if cb then
+          self:setText(self.text:sub(1, self.cursorPos) .. cb .. self.text:sub(self.cursorPos+1))
+          self:moveCursor(string.len(cb))
+        end
+      elseif clipboard and char == "c" and accel.ctrl then
+        -- StarExtensions copy (preliminary)
+        clipboard.setText(self.text)
+      elseif clipboard and char == "x" and accel.ctrl then
+        -- StarExtensions cut (preliminary)
+        if not clipboard.setText(self.text) then self:setText("") end
       else -- try as printable key
-        local char = mg.keyToChar(key, accel)
         if char then
           self:setText(self.text:sub(1, self.cursorPos) .. char .. self.text:sub(self.cursorPos+1))
           self:moveCursor(1)

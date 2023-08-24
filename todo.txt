@@ -67,13 +67,16 @@ HUD Manager {
         self.board:getList("targets")
     }
     
-    metaGUI shift+click item tracking {
+    X metaGUI shift+click item tracking { shift clicking doesn't pick up from inventory with no container open >:|
         keep track of cursor item every frame
         store tracking globally
         bookkeeping function as part of mg
     }
     
+    attempt to provide non-StarExtensions multi-wheel
+    
     text box selections
+    (adjust cut/copy/paste!)
     multiline text boxes?
     
     eliminate ninepatch overlapping when too small (clamp areas to half render size)

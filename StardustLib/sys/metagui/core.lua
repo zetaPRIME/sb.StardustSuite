@@ -669,6 +669,14 @@ function update()
     mouseCaptor:onCaptureMouseMove(vec2.sub(mg.mousePosition, lmp))
   end
   
+  if wheelDir and input then -- if StarExtensions installed, try for more accurate scroll wheel speed
+    local wd = 0
+    for _, ev in pairs(input.events()) do
+      if ev.type == "MouseWheel" then wd = wd - ev.data.mouseWheel end
+    end
+    if wd ~= 0 then wheelDir = wd end
+  end
+  
   if wheelDir then -- send mouse wheel event
     local w = ww
     while w and (not w:isWheelInteractable() or not w:onMouseWheelEvent(wheelDir)) do

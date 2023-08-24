@@ -9,6 +9,7 @@
 
 #### metaGUI
 - StarExtensions integration
+  - Scroll wheel events count the number of notches moved per frame so you can scroll faster
   - Better/more reliable shift hold checks
   - Basic cut/copy/paste for text fields
   - Logless fallback resolution

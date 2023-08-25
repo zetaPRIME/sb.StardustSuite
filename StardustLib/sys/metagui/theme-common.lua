@@ -15,6 +15,7 @@ theme.assets = { -- default assets
   
   checkBox = mg.extAsset "checkBox.png",
   radioButton = mg.extAsset "radioButton.png",
+  sliderThumb = mg.extAsset "sliderThumb.png",
   
   itemSlot = mg.extAsset "itemSlot.png",
   itemRarity = mg.extAsset "itemRarity.png",
@@ -30,10 +31,13 @@ theme.listItemColor = theme.listItemColor or "#0000002f" -- idle; slight darken
 theme.listItemColorHover = theme.listItemColorHover or "#ffffff1f" -- slight highlight
 -- theme.listItemColorSelected
 
+theme.textBoxHeight = theme.textBoxHeight or assets.textBox.frameSize[2]
+
+theme.sliderHeight = theme.sliderHeight or assets.textBox.frameSize[2]
 theme.sliderPadding = theme.sliderPadding or 2
 theme.sliderTextColor = theme.sliderTextColor or theme.baseTextColor
 theme.sliderTextSize = theme.sliderTextSize or 8
-theme.sliderThumbWidth = 10
+theme.sliderThumbWidth = assets.sliderThumb.frameSize[1]
 
 --
 
@@ -169,8 +173,9 @@ function tdef.drawSlider(w)
   local p = util.clamp((w.value - w.min) / (w.max - w.min), 0.0, 1.0) -- proportion
   local tl = tr[3] - tr[1] - thumbWidth
   local tp = tl * p
-  tp = tp + tr[1]
-  assets.button:draw(c, w.state, {tp, 0, tp + thumbWidth, s[2]})
+  tp = tp + tr[1] + thumbWidth/2
+  --assets.button:draw(c, w.state, {tp, 0, tp + thumbWidth, s[2]})
+  assets.sliderThumb:draw(c, w.state, {tp, s[2]/2}, 1.0, 0)
   
   if p > 0.5 then
     c:drawText(""..w.value, { position = {tp - theme.sliderPadding, s[2]/2}, horizontalAnchor = "right", verticalAnchor = "mid" }, theme.sliderTextSize, color)

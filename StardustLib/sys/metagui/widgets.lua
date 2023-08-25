@@ -1132,7 +1132,7 @@ end do -- text box -------------------------------------------------------------
     self.backingWidget = mkwidget(base, { type = "canvas" })
     self.subWidgets = { content = mkwidget(base, { type = "canvas" }) }
   end
-  function widgets.textBox:preferredSize() return {96, 14} end
+  function widgets.textBox:preferredSize() return {96, theme.sliderHeight} end
   function widgets.textBox:draw()
     theme.drawTextBox(self)
     widget.setPosition(self.subWidgets.content, vec2.add(widget.getPosition(self.backingWidget), {self.frameWidth, 0}))
@@ -1319,7 +1319,7 @@ end do -- slider ---------------------------------------------------------------
     
     self.backingWidget = mkwidget(base, { type = "canvas" })
   end
-  function widgets.slider:preferredSize() return {96, 14} end
+  function widgets.slider:preferredSize() return {96, theme.sliderHeight} end
   function widgets.slider:draw()
     theme.drawSlider(self)
   end

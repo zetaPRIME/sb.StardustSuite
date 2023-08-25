@@ -44,7 +44,8 @@
           ]
         }, { "title" : "Really long tab to force it to scroll horizontally",
           "contents" : [
-            { "type" : "slider", "range" : [0, 100], "value" : 25 }
+            { "type" : "label", "text" : "we have ^#bf7fff;~ s l i d e r s ~^reset;" },
+            { "type" : "slider", "range" : [0, 100], "step" : 1, "value" : 25 }
           ]
         }
       ],

@@ -1308,6 +1308,7 @@ end do -- slider ---------------------------------------------------------------
     expandMode = {1, 0},
     
     buffer = 0,
+    rawBuffer = 0,
   })
   
   function widgets.slider:init(base, param)
@@ -1326,6 +1327,10 @@ end do -- slider ---------------------------------------------------------------
   
   function widgets.slider:isMouseInteractable() return true end
   function widgets.slider:isWheelInteractable() return true end
+  function widgets.slider:onMouseEnter()
+    self.state = "hover"
+    self:queueRedraw()
+  end
   function widgets.slider:onCaptureMouseMove()
     local orig = self.value
     local mx = self:relativeMousePosition()[1]
@@ -1347,7 +1352,19 @@ end do -- slider ---------------------------------------------------------------
     self.min = math.min(min, max)
     self.max = math.max(min, max)
     
-    self.buffer = math.max(mg.measureString(""..min, nil, theme.sliderTextSize)[1], mg.measureString(""..max, nil, theme.sliderTextSize)[1])
+    self.rawBuffer = math.max(mg.measureString(""..min, nil, theme.sliderTextSize)[1], mg.measureString(""..max, nil, theme.sliderTextSize)[1])
+    self.buffer = self.rawBuffer
+    do -- automatically sync adjacent sliders' buffer widths
+      local b = 0
+      for _,w in pairs(self.parent.children) do
+        if w.widgetType == "slider" then b = math.max(b, w.rawBuffer) end
+      end
+      
+      for _,w in pairs(self.parent.children) do
+        if w.widgetType == "slider" then w.buffer = b w:queueRedraw() end
+      end
+    end
+    
     self:queueRedraw()
   end
   function widgets.slider:setValue(v, raw)

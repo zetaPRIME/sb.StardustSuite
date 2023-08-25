@@ -4,7 +4,16 @@ add integration info to startech part of readme (generators, autosmelter)
 
 metaGUI tinkering 2023 {
     > slider widget {
-        > actual assets
+        - actual assets
+        theme assets {
+            Chroma
+            Carbon
+            FU
+        }
+        better buffer width sync magic
+        fixed number of decimal digits depending on range/granularity
+        scrollwheel step heuristic for step=0?
+        
         ADD TO DOCS
     }
     

@@ -15,6 +15,8 @@ theme.assets = { -- default assets
   
   checkBox = mg.extAsset "checkBox.png",
   radioButton = mg.extAsset "radioButton.png",
+  
+  sliderBackground = mg.ninePatch "sliderBackground",
   sliderThumb = mg.extAsset "sliderThumb.png",
   
   itemSlot = mg.extAsset "itemSlot.png",
@@ -33,7 +35,7 @@ theme.listItemColorHover = theme.listItemColorHover or "#ffffff1f" -- slight hig
 
 theme.textBoxHeight = theme.textBoxHeight or assets.textBox.frameSize[2]
 
-theme.sliderHeight = theme.sliderHeight or assets.textBox.frameSize[2]
+theme.sliderHeight = theme.sliderHeight or assets.sliderBackground.frameSize[2]
 theme.sliderPadding = theme.sliderPadding or 2
 theme.sliderTextColor = theme.sliderTextColor or theme.baseTextColor
 theme.sliderTextSize = theme.sliderTextSize or 8
@@ -160,13 +162,15 @@ function tdef.drawSlider(w)
   local tb = w.buffer + theme.sliderPadding
   local tr = {tb, 0, s[1] - tb, s[2]} -- rect within slider area proper
   
+  local pfx = "^shadow;"
+  
   -- draw slider background
-  assets.textBox:draw(c, "idle", tr)
+  assets.sliderBackground:draw(c, "idle", tr)
   -- draw range values
   local color = mg.getColor(theme.sliderTextColor)
   if color then color = "#" .. color end
-  c:drawText(""..w.min, { position = {w.buffer / 2, s[2]/2}, horizontalAnchor = "mid", verticalAnchor = "mid" }, theme.sliderTextSize, color)
-  c:drawText(""..w.max, { position = {s[1] - w.buffer / 2, s[2]/2}, horizontalAnchor = "mid", verticalAnchor = "mid" }, theme.sliderTextSize, color)
+  c:drawText(pfx..w.min, { position = {w.buffer / 2, s[2]/2}, horizontalAnchor = "mid", verticalAnchor = "mid" }, theme.sliderTextSize, color)
+  c:drawText(pfx..w.max, { position = {s[1] - w.buffer / 2, s[2]/2}, horizontalAnchor = "mid", verticalAnchor = "mid" }, theme.sliderTextSize, color)
   
   -- and then the thumb
   local thumbWidth = theme.sliderThumbWidth
@@ -178,9 +182,9 @@ function tdef.drawSlider(w)
   assets.sliderThumb:draw(c, w.state, {tp, s[2]/2}, 1.0, 0)
   
   if p > 0.5 then
-    c:drawText(""..w.value, { position = {tp - theme.sliderPadding, s[2]/2}, horizontalAnchor = "right", verticalAnchor = "mid" }, theme.sliderTextSize, color)
+    c:drawText(pfx..w.value, { position = {tp - thumbWidth/2 - theme.sliderPadding, s[2]/2}, horizontalAnchor = "right", verticalAnchor = "mid" }, theme.sliderTextSize, color)
   else
-    c:drawText(""..w.value, { position = {tp + thumbWidth + theme.sliderPadding, s[2]/2}, horizontalAnchor = "left", verticalAnchor = "mid" }, theme.sliderTextSize, color)
+    c:drawText(pfx..w.value, { position = {tp + thumbWidth/2 + theme.sliderPadding, s[2]/2}, horizontalAnchor = "left", verticalAnchor = "mid" }, theme.sliderTextSize, color)
   end
   
 end

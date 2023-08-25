@@ -4,7 +4,7 @@ add integration info to startech part of readme (generators, autosmelter)
 
 metaGUI tinkering 2023 {
     > slider widget {
-        actually support range defs
+        - actually support range defs
         actual assets
         ADD TO DOCS
     }

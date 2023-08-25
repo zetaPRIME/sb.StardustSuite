@@ -1312,7 +1312,7 @@ end do -- slider ---------------------------------------------------------------
   
   function widgets.slider:init(base, param)
     self.granularity = param.granularity or param.step
-    self:setRange()
+    self:setRange(param.range or param.min, param.max)
     if type(param.value) == "number" then self:setValue(param.value) end
     
     self.state = "idle"
@@ -1342,6 +1342,7 @@ end do -- slider ---------------------------------------------------------------
   
   function widgets.slider:setRange(min, max)
     if not min and not max then min, max = self.min, self.max end -- nothing given, just use current values
+    if not max then max = 0 end
     if type(min) == "table" then min, max = min[1] or 0, min[2] or 0 end
     self.min = math.min(min, max)
     self.max = math.max(min, max)

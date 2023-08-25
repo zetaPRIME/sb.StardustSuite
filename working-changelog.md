@@ -8,6 +8,7 @@
 - [wip] HUD manager
 
 #### metaGUI
+- Added Slider widget
 - StarExtensions integration
   - Scroll wheel events count the number of notches moved per frame so you can scroll faster
   - Better/more reliable shift hold checks

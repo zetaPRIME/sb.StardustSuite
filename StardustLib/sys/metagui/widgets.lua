@@ -1301,6 +1301,69 @@ end do -- text box -------------------------------------------------------------
   function widgets.textBox:onTextChanged() end
   function widgets.textBox:onEnter() end
   function widgets.textBox:onEscape() end
+end do -- slider ------------------------------------------------------------------------------------------------------------------------------------
+  widgets.slider = mg.proto(widgets.button, {
+    min = 0, max = 100, value = 0,
+    granularity = 1,
+    expandMode = {1, 0},
+    
+    buffer = 0,
+  })
+  
+  function widgets.slider:init(base, param)
+    self.granularity = param.granularity or param.step
+    self:setRange()
+    if type(param.value) == "number" then self:setValue(param.value) end
+    
+    self.state = "idle"
+    
+    self.backingWidget = mkwidget(base, { type = "canvas" })
+  end
+  function widgets.slider:preferredSize() return {96, 14} end
+  function widgets.slider:draw()
+    theme.drawSlider(self)
+  end
+  
+  function widgets.slider:isMouseInteractable() return true end
+  function widgets.slider:isWheelInteractable() return true end
+  function widgets.slider:onCaptureMouseMove()
+    local orig = self.value
+    local mx = self:relativeMousePosition()[1]
+    local tb = self.buffer + theme.sliderPadding + (theme.sliderThumbWidth / 2)
+    local tl = self.size[1] - tb * 2
+    self:setValue(self.min + (mx - tb) * (self.max - self.min) / tl)
+    --self:setValue()
+    mg.startEvent(self.onValueChanged, self)
+  end
+  function widgets.slider:onMouseWheelEvent(dir)
+    self:setValue(self.value + self.granularity * dir)
+    mg.startEvent(self.onValueChanged, self)
+  end
+  
+  function widgets.slider:setRange(min, max)
+    if not min and not max then min, max = self.min, self.max end -- nothing given, just use current values
+    if type(min) == "table" then min, max = min[1] or 0, min[2] or 0 end
+    self.min = math.min(min, max)
+    self.max = math.max(min, max)
+    
+    self.buffer = math.max(mg.measureString(""..min, nil, theme.sliderTextSize)[1], mg.measureString(""..max, nil, theme.sliderTextSize)[1])
+    self:queueRedraw()
+  end
+  function widgets.slider:setValue(v, raw)
+    self.value = v
+    if not raw and type(self.granularity) == "number" and self.granularity > 0 then
+      self.value = math.floor(self.value / self.granularity + 0.5) * self.granularity
+    end
+    self.value = util.clamp(self.value, self.min, self.max)
+    self:queueRedraw()
+  end
+  
+  widgets.slider.setText = false
+  
+  -- events out
+  function widgets.slider:onValueChanged() end
+  
+  
 end do -- tab field ---------------------------------------------------------------------------------------------------------------------------------
   widgets.tabField = mg.proto(mg.widgetBase, {
     expandMode = {1, 2}, -- can expand to fill horizontally, wants to expand vertically

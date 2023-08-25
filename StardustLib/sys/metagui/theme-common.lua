@@ -30,6 +30,11 @@ theme.listItemColor = theme.listItemColor or "#0000002f" -- idle; slight darken
 theme.listItemColorHover = theme.listItemColorHover or "#ffffff1f" -- slight highlight
 -- theme.listItemColorSelected
 
+theme.sliderPadding = theme.sliderPadding or 2
+theme.sliderTextColor = theme.sliderTextColor or theme.baseTextColor
+theme.sliderTextSize = theme.sliderTextSize or 8
+theme.sliderThumbWidth = 10
+
 --
 
 function tdef.update() end -- default null
@@ -142,6 +147,37 @@ end
 function tdef.drawTextBox(w)
   local c = widget.bindCanvas(w.backingWidget)
   c:clear() assets.textBox:draw(c, w.focused and "focused" or "idle")
+end
+
+function tdef.drawSlider(w)
+  local c = widget.bindCanvas(w.backingWidget)
+  c:clear()
+  local s = c:size()
+  local tb = w.buffer + theme.sliderPadding
+  local tr = {tb, 0, s[1] - tb, s[2]} -- rect within slider area proper
+  
+  -- draw slider background
+  assets.textBox:draw(c, "idle", tr)
+  -- draw range values
+  local color = mg.getColor(theme.sliderTextColor)
+  if color then color = "#" .. color end
+  c:drawText(""..w.min, { position = {w.buffer / 2, s[2]/2}, horizontalAnchor = "mid", verticalAnchor = "mid" }, theme.sliderTextSize, color)
+  c:drawText(""..w.max, { position = {s[1] - w.buffer / 2, s[2]/2}, horizontalAnchor = "mid", verticalAnchor = "mid" }, theme.sliderTextSize, color)
+  
+  -- and then the thumb
+  local thumbWidth = theme.sliderThumbWidth
+  local p = util.clamp((w.value - w.min) / (w.max - w.min), 0.0, 1.0) -- proportion
+  local tl = tr[3] - tr[1] - thumbWidth
+  local tp = tl * p
+  tp = tp + tr[1]
+  assets.button:draw(c, w.state, {tp, 0, tp + thumbWidth, s[2]})
+  
+  if p > 0.5 then
+    c:drawText(""..w.value, { position = {tp - theme.sliderPadding, s[2]/2}, horizontalAnchor = "right", verticalAnchor = "mid" }, theme.sliderTextSize, color)
+  else
+    c:drawText(""..w.value, { position = {tp + thumbWidth + theme.sliderPadding, s[2]/2}, horizontalAnchor = "left", verticalAnchor = "mid" }, theme.sliderTextSize, color)
+  end
+  
 end
 
 function tdef.drawItemSlot(w)

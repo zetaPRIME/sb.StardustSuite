@@ -2,6 +2,16 @@
 
 add integration info to startech part of readme (generators, autosmelter)
 
+metaGUI tinkering 2023 {
+    > slider widget {
+        actually support range defs
+        actual assets
+        ADD TO DOCS
+    }
+    
+    button right click option
+}
+
 HUD Manager {
     - eventhook library
     refactor current HUD stuff into hudmanager using said eventhook

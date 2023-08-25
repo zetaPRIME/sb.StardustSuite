@@ -1317,6 +1317,8 @@ end do -- slider ---------------------------------------------------------------
     rawBuffer = 0,
   })
   
+  local namedSiblingPools = { }
+  
   function widgets.slider:init(base, param)
     self.granularity = param.granularity or param.step
     self:setRange(param.range or param.min, param.max)
@@ -1325,7 +1327,56 @@ end do -- slider ---------------------------------------------------------------
     self.state = "idle"
     
     self.backingWidget = mkwidget(base, { type = "canvas" })
+    
+    -- find/create sibling pool
+    local pool = param.pool or param.siblingPool
+    if type(pool) == "string" then -- named pool
+      self.siblingPool = namedSiblingPools[pool]
+      if not self.siblingPool then
+        self.siblingPool = { }
+        namedSiblingPools[pool] = self.siblingPool
+      end
+      self.siblingPool[self] = true
+    elseif self.parent and self.parent.widgetType == "layout" then -- auto pool
+      self.siblingPool = { [self] = true }
+      if self.parent.mode == "vertical" then -- immediate siblings
+        for _, w in pairs(self.parent.children) do
+          if w.widgetType == "slider" and w ~= self then
+            if w.siblingPool then -- join existing
+              self.siblingPool = w.siblingPool
+              self.siblingPool[self] = true
+              break
+            else self.siblingPool[w] = true end
+          end
+        end
+      elseif self.parent.mode == "horizontal" then -- grouped siblings
+        local pp = self.parent.parent
+        if pp and pp.widgetType == "layout" and pp.mode == "vertical" then
+          for _, l in pairs(pp.children) do
+            if l.widgetType == "layout" and l.mode == "horizontal" then -- valid layout
+              local sc
+              for _, w in pairs(l.children) do
+                if w.widgetType == "slider" and w ~= self then
+                  if w.siblingPool then -- join existing
+                    self.siblingPool = w.siblingPool
+                    self.siblingPool[self] = true
+                    sc = true break
+                  else self.siblingPool[w] = true end
+                end
+              end
+              if sc then break end
+            end
+          end
+        end
+      end
+    end
+    if self.siblingPool then self:setRange() end -- kick buffer
   end
+  function widgets.slider:uninit()
+    -- remove self from pool
+    if self.siblingPool then self.siblingPool[self] = nil end
+  end
+  
   function widgets.slider:preferredSize() return {96, theme.sliderHeight} end
   function widgets.slider:draw()
     theme.drawSlider(self)
@@ -1360,15 +1411,10 @@ end do -- slider ---------------------------------------------------------------
     
     self.rawBuffer = math.max(mg.measureString(""..min, nil, theme.sliderTextSize)[1], mg.measureString(""..max, nil, theme.sliderTextSize)[1])
     self.buffer = self.rawBuffer
-    do -- automatically sync adjacent sliders' buffer widths
+    if self.siblingPool then -- automatically sync adjacent sliders' buffer widths
       local b = 0
-      for _,w in pairs(self.parent.children) do
-        if w.widgetType == "slider" then b = math.max(b, w.rawBuffer) end
-      end
-      
-      for _,w in pairs(self.parent.children) do
-        if w.widgetType == "slider" then w.buffer = b w:queueRedraw() end
-      end
+      for w in pairs(self.siblingPool) do b = math.max(b, w.rawBuffer) end
+      for w in pairs(self.siblingPool) do w.buffer = b w:queueRedraw() end
     end
     
     self:queueRedraw()

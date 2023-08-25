@@ -128,6 +128,7 @@ function widgetBase:preferredSize() return {0, 0} end
 function widgetBase:center() return vec2.add(self.position, vec2.mul(self.size, 0.5)) end
 
 function widgetBase:init() end
+function widgetBase:uninit() end
 
 function widgetBase:queueRedraw() redrawQueue[self] = true end
 function widgetBase:draw() end
@@ -219,6 +220,7 @@ function widgetBase:clearChildren()
 end
 function widgetBase:delete()
   widgetBase.clearChildren(self) -- clear down first
+  self:uninit() -- let the widget do its own cleanup
   if self.parent then -- remove from parent
     for k, v in pairs(self.parent.children) do
       if v == self then table.remove(self.parent.children, k) break end

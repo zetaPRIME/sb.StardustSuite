@@ -673,8 +673,13 @@ end do -- label ----------------------------------------------------------------
     self.align = param.align
     self.expandMode = param.expandMode
     
+    
     if param.inline then self.expandMode = {0, 0} end
     if param.expand then self.expandMode = {2, 0} end
+    if param.width then
+      self.width = param.width
+      self.expandMode = {0, 0}
+    end
     
     self.backingWidget = mkwidget(base, { type = "canvas" })
   end
@@ -684,6 +689,7 @@ end do -- label ----------------------------------------------------------------
     local s = mg.measureString(self.text, width, self.fontSize)
     -- extra pixel to fit cut-off descenders in multiline text
     if s[2] > math.ceil(self.fontSize or 8) then s[2] = s[2] + 1 end
+    if self.width then s[1] = self.width end
     return s
   end
   

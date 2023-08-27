@@ -13,12 +13,14 @@ for _, ast in pairs {
   assets.windowBody, assets.titleBarLeft, assets.titleBarRight,
   assets.frame, assets.panel,
   assets.textBox,
+  assets.sliderBackground,
   assets.tabPanel, assets.tab,
   assets.itemSlot,
 } do ast.useThemeDirectives = "baseColorDirectives" end
 
 for _, ast in pairs {
   assets.checkBox, assets.radioButton,
+  assets.sliderThumb,
   assets.tab,
 } do ast.useThemeDirectives = "trimColorDirectives" end
 

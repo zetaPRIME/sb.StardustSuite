@@ -6,7 +6,7 @@ metaGUI tinkering 2023 {
     > slider widget {
         - actual assets
         theme assets {
-            Chroma
+            - Chroma
             Carbon
             FU
         }
@@ -18,6 +18,8 @@ metaGUI tinkering 2023 {
     }
     
     table layout?? or some manner of syncing label widths
+    
+    layout variables!!
     
     button right click option
 }

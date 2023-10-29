@@ -40,11 +40,11 @@ function eventHook.subscribe(id, func)
 end
 
 function eventHook.subscribeClient(id, func)
-  if world and not world.players then eventHook.subscribe(id, func) end
+  if world and not world.setPlayerStart then eventHook.subscribe(id, func) end
 end
 
 function eventHook.subscribeServer(id, func)
-  if world and world.players then eventHook.subscribe(id, func) end
+  if world and world.setPlayerStart then eventHook.subscribe(id, func) end
 end
 
 function eventHook.unsubscribe(id)

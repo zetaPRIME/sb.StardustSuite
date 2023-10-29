@@ -19,7 +19,11 @@ metaGUI tinkering 2023 {
     
     table layout?? or some manner of syncing label widths
     
-    layout variables!!
+    layout variables!! {
+        dictionary in stuff, address variables by string "@@varname"
+        "$$varname"?
+        any type, not copied if a table (so you can technically pass an empty table to something for it to use as a shared pool/handle)
+    }
     
     button right click option
 }

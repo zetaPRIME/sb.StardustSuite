@@ -150,13 +150,13 @@ end
 
 local fw = { } -- frame widgets table
 function theme.decorate()
-  local style = mg.cfg.style
+  mg.widgetContext = fw
+  frame.mode = "vertical"
   
+  local style = mg.cfg.style
   if style == "window" then
-    mg.widgetContext = fw
-    
     frame:addChild {
-      type = "layout", size = frame.size, mode = "vertical", spacing = 0, children = {
+      type = "layout", expandMode = {2, 2}, mode = "vertical", spacing = 0, children = {
         { -- title bar
           { id = "titleBar", spacing = 0, size = 20 },
           { { id = "titleBarLeft", mode = "horizontal", size = 20, canvasBacked = true, spacing = 2 },
@@ -180,10 +180,12 @@ function theme.decorate()
     --fw.closeButton:setImage(assets.closeButton)
     fw.closeButton.onClick = pane.dismiss
     
-    mg.widgetContext = nil
   else
-    widget.addChild(frame.backingWidget, { type = "canvas", position = {0, 0}, size = frame.size }, "canvas")
+    frame:addChild { id = "body", type = "layout", canvasBacked = true, expandMode = {2, 2} }
+    installBg(fw.body, assets.frame)
   end
+  
+  mg.widgetContext = nil
 end
 
 function theme.drawFrame()
@@ -196,16 +198,8 @@ function theme.drawFrame()
     
     local fitClose = frame.size[1] - fw.titleBarLeft:preferredSize()[1] >= 20
     fw.closeButton:setImage(fitClose and assets.closeButton or assets.closeButtonSmall)
-    --fw.closeButton:setVisible(fitClose)
     fw.titleBarRight.explicitSize = (not fitClose) and {2, 20} or nil
     fw.titleBarRight.expandMode = (not fitClose) and {0, 0} or {2, 0}
-    --[[mg.startEvent(function()
-    coroutine.yield()
-      fw.titleBarRight:updateGeometry()
-    end)]]
-  else
-    c = widget.bindCanvas(frame.backingWidget .. ".canvas")
-    c:clear() assets.frame:draw(c)
   end
 end
 

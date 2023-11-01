@@ -6,41 +6,55 @@ local assets = theme.assets
 assets.windowBorder = mg.ninePatch "windowBorder"
 assets.buttonColored = mg.ninePatch "buttonColored"
 
-local titleBar, icon, title, close, spacer
+local fw = { }
 function theme.decorate()
-  local style = mg.cfg.style
-  widget.addChild(frame.backingWidget, { type = "canvas", position = {0, 0}, size = frame.size }, "canvas")
+  mg.widgetContext = fw
+  frame.mode = "vertical"
   
+  local style = mg.cfg.style
   if (style == "window") then
-    titleBar = frame:addChild { type = "layout", position = {5, 2}, size = {frame.size[1] - 24 - 5, 23}, mode = "horizontal" }
-    icon = titleBar:addChild { type = "image" }
-    spacer = titleBar:addChild { type = "spacer", size = 0 }
-    spacer.expandMode = {0, 0}
-    title = titleBar:addChild { type = "label", expand = true, align = "left" }
-    close = frame:addChild{
-      type = "iconButton", position = {frame.size[1] - 24, 8},
-      image = "/interface/x.png", hoverImage = "/interface/xhover.png", pressImage = "/interface/xpress.png"
-    }
-    function close:onClick()
+    frame:addChild { id = "bg", type = "layout", expandMode = {2, 2}, canvasBacked = true, mode = "vertical", spacing = 0, children = {
+      2,
+      { { spacing = 0, size = 23 },
+        5,
+        { id = "icon", type = "image" },
+        { id = "spacer", type = "spacer", size = 0 },
+        { id = "title", type = "label", expand = true, align = "left" },
+        { id = "closeButton", type = "iconButton", image = "/interface/x.png", hoverImage = "/interface/xhover.png", pressImage = "/interface/xpress.png" },
+        15
+      }
+    } }
+    
+    function fw.bg:draw()
+      local c = widget.bindCanvas(self.subWidgets.canvas)
+      c:clear()
+      assets.windowBorder:draw(c, "frame?multiply=" .. mg.getColor("accent"))
+      assets.windowBorder:draw(c, "inner")
+    end
+    
+    function fw.closeButton:onClick()
       pane.dismiss()
     end
+  else -- raw frame
+    frame:addChild { id = "bg", type = "layout", expandMode = {2, 2}, canvasBacked = true, mode = "vertical" }
+    function fw.bg:draw()
+      local c = widget.bindCanvas(self.subWidgets.canvas)
+      c:clear()
+      assets.frame:draw(c)
+    end
   end
+  
+  mg.widgetContext = nil
 end
 
 function theme.drawFrame()
   local style = mg.cfg.style
-  c = widget.bindCanvas(frame.backingWidget .. ".canvas")
-  c:clear() --assets.frame:draw(c)
-  
   if (style == "window") then
-    assets.windowBorder:draw(c, "frame?multiply=" .. mg.getColor("accent"))
-    assets.windowBorder:draw(c, "inner")
-    
-    spacer.explicitSize = (not mg.cfg.icon) and -2 or 1
-    icon.explicitSize = (not mg.cfg.icon) and {-1, 0} or nil
-    icon:setFile(mg.cfg.icon)
-    title:setText("^shadow;" .. mg.cfg.title:gsub('%^reset;', '^reset;^shadow;'))
-  else assets.frame:draw(c) end
+    fw.spacer.explicitSize = (not mg.cfg.icon) and 0 or 3
+    fw.icon.explicitSize = (not mg.cfg.icon) and {-1, 0} or nil
+    fw.icon:setFile(mg.cfg.icon)
+    fw.title:setText("^shadow;" .. mg.cfg.title:gsub('%^reset;', '^reset;^shadow;'))
+  end
 end
 
 function theme.drawButton(w)

@@ -26,6 +26,12 @@ metaGUI tinkering 2023 {
     }
     
     button right click option
+    
+    > RESIZING SUPPORT {
+        findWindowPosition shortcut for anchored windows
+        adjust position on resizing non-anchored windows
+    }
+    style value that doesn't call decorate
 }
 
 HUD Manager {

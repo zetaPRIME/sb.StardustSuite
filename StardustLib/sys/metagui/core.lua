@@ -384,6 +384,30 @@ function mg.paneToWidgetPosition(w, pos)
   return pos
 end
 
+local updateWheelProto, recreateWheelChild
+function mg.getSize(total) return total and mg.cfg.totalSize or mg.cfg.size end
+function mg.canResize() return not not pane.setSize end -- resizing is only supported on extended clients
+function mg.resize(new, total)
+  if not pane.setSize then return end -- don't bother doing the work if we don't have this
+  local margin = vec2.sub(mg.cfg.totalSize, mg.cfg.size)
+  local old = mg.cfg.totalSize
+  
+  if not total then new = vec2.add(new, margin) end
+  mg.cfg.totalSize = new
+  mg.cfg.size = vec2.sub(mg.cfg.totalSize, margin)
+  
+  pane.setSize(new)
+  for k, v in pairs {"_tracker", "_mouse", "_wheel"} do widget.setSize(v, new) end
+  
+  frame.size = new
+  paneBase.size = mg.cfg.size
+  frame:updateGeometry()
+  paneBase:updateGeometry()
+  updateWheelProto()
+  recreateWheelChild()
+  mg.theme.drawFrame()
+end
+
 local function spawnKeysub(respawn)
   if not respawn and mg.ipc.keysub and mg.ipc.keysub.master == mg then return nil end
   mg.ipc.keysub = { keyEvent = _keyEvent, repeatEvent = _keyRepeatEvent, escEvent = _keyEscEvent, master = mg, accel = mg.ipc.keysub and mg.ipc.keysub.accel or nil }
@@ -423,7 +447,20 @@ module "extra"
 
 local wheel = { }
 local worldId
+
+updateWheelProto = function()
+  local size = mg.cfg.totalSize
+  wheel.proto = {
+    type = "scrollArea", position = {0, 0}, size = size, verticalScroll = false, children = {
+      fill = { type = "widget", position = {0, 0}, size },
+      target = { type = "widget", position = wheel.offset, size = {size[1], 71} },
+      over = { type = "widget", position = wheel.offset, size = {size[1], 1000} },
+    }
+  }
+end
+
 function init() -------------------------------------------------------------------------------------------------------------------------------------
+  getmetatable''.lmg = _ENV -- TEMP debug
   -- guard against wonky reloads
   if widget.getData("_tracker") then return pane.dismiss() end
   widget.setData("_tracker", "open")
@@ -488,14 +525,7 @@ function init() ----------------------------------------------------------------
       end
     end
     --wheel.block() -- start blocked so it doesn't misfire the first few frames
-    local size = mg.cfg.totalSize
-    wheel.proto = {
-      type = "scrollArea", position = {0, 0}, size = size, verticalScroll = false, children = {
-        fill = { type = "widget", position = {0, 0}, size },
-        target = { type = "widget", position = wheel.offset, size = {size[1], 71} },
-        over = { type = "widget", position = wheel.offset, size = {size[1], 1000} },
-      }
-    }
+    updateWheelProto()
   end
   
   mg.theme.decorate()
@@ -519,7 +549,7 @@ function init() ----------------------------------------------------------------
   --setmetatable(_ENV, {__index = function(_, n) if DBG then DBG:setText("unknown func " .. n) end end})
 end
 
-local function recreateWheelChild()
+recreateWheelChild = function()
   if mg.windowPosition[2] < 0 then
     wheel.offset[2] = -mg.windowPosition[2]
   else
@@ -546,6 +576,8 @@ function uninit()
 end
 
 local function findWindowPosition()
+  -- TODO make the easy way work for anchored windows
+  if pane.getPosition and not mg.cfg.anchor then mg.windowPosition = pane.getPosition() return end
   if not mg.windowPosition then mg.windowPosition = {0, 0} end -- at the very least, make sure this exists
   local fp
   local sz = mg.cfg.totalSize

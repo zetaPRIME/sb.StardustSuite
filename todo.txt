@@ -28,17 +28,15 @@ metaGUI tinkering 2023 {
     button right click option
     
     > RESIZING SUPPORT {
-        findWindowPosition shortcut for anchored windows
-        - adjust position on resizing non-anchored windows
-        
-        theme support:
-        - fallback
-        - FU modern
-        - FU classic
-        
-        - figure out how to implement resize thumbs??
-        
         add to docs (canResize, getSize, resize...)
+        
+        proper resizable and minSize flags
+        theme resize thumbs {
+            Starbound
+            Carbon
+            Chroma
+            FU
+        }
     }
     style value that doesn't call decorate
     shouldDrawFrame I guess??
@@ -46,6 +44,7 @@ metaGUI tinkering 2023 {
     - elide geometry updates for hidden pieces until made visible
     - allow wrap=false on labels, use for title bars
     
+    findWindowPosition shortcut for anchored windows
     use input table for cursor position where available for added stability?
     
     player-local "clipboard" support that gets used if there's no extension

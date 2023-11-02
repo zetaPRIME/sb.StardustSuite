@@ -729,14 +729,7 @@ function update()
       w = w.parent
     end
   end
-  
-  if input and input.keyHeld("r") then
-    local old = mg.getSize(true)
-    local md = vec2.sub(mg.mousePosition, lmp)
-    local new = { math.max(old[1] + md[1], 80), math.max(old[2] - md[2], 32) }
-    mg.resize(new, true)
-  end
-  
+    
   if ww then setWheelActive(true) end -- intercept mouse wheel whenever something wants it
   if keyFocus or mw then widget.focus(bcv[2])
   else widget.focus(bcv[1]) end

@@ -151,53 +151,75 @@ local paletteFor do
   end
 end
 
+local fw = { }
 if theme._export then
   theme._export.color = color
   theme._export.paletteFor = paletteFor
+  theme._export.fw = fw
 end
 
 -- set up fixed directives for some stock functionality
 theme.scrollBarDirectives = paletteFor "accent" .. "?multiply=ffffff7f"
 
-local titleBar, icon, title, close, spacer
 function theme.decorate()
-  local style = mg.cfg.style
-  widget.addChild(frame.backingWidget, { type = "canvas", position = {0, 0}, size = frame.size }, "canvas")
+  local height = 23
+  local top, l, r = 2, 6, 13
+  if theme._export and theme._export.v2 then
+    top, l, r = 3, 12, 9
+  end
   
+  mg.widgetContext = fw
+  frame.mode = "vertical"
+  
+  local style = mg.cfg.style
   if (style == "window") then
-    titleBar = frame:addChild { type = "layout", position = {6, 2}, size = {frame.size[1] - 24 - 5, 23}, mode = "horizontal", align = 0.55 }
-    icon = titleBar:addChild { type = "image" }
-    spacer = titleBar:addChild { type = "spacer", size = 0 }
-    spacer.expandMode = {0, 0}
-    title = titleBar:addChild { type = "label", expand = true, align = "left" }
-    close = frame:addChild{
-      type = "iconButton", position = {frame.size[1] - 24, 8},
-      image = "/interface/x.png", hoverImage = "/interface/xhover.png", pressImage = "/interface/xpress.png"
-    }
-    function close:onClick()
+    frame:addChild { id = "bg", type = "layout", expandMode = {2, 2}, canvasBacked = true, mode = "vertical", spacing = 0, children = {
+      top,
+      { { size = height, align = 0.55 }, l,
+        { id = "icon", type = "image" }, 2,
+        { id = "spacer", type = "spacer", size = 0 },
+        { id = "title", type = "label", expand = true, align = "left" }, 2,
+        { id = "closeButton", type = "iconButton", 
+          image = "/interface/x.png", hoverImage = "/interface/xhover.png", pressImage = "/interface/xpress.png"
+        },
+        r
+      }
+    } }
+    
+    function fw.closeButton:onClick()
       pane.dismiss()
     end
+  else
+    frame:addChild { id = "bg", type = "layout", expandMode = {2, 2}, canvasBacked = true }
   end
+  frame:updateGeometry() -- kick things to make ninepatch draw correctly the first time
+  
+  mg.widgetContext = nil
 end
 
 function theme.drawFrame()
-  local style = mg.cfg.style
-  c = widget.bindCanvas(frame.backingWidget .. ".canvas")
-  c:clear() --assets.frame:drawToCanvas(c)
+  c = widget.bindCanvas(fw.bg.subWidgets.canvas)
+  c:clear()
   
   local pal = paletteFor "accent"
   
+  local style = mg.cfg.style
   if (style == "window") then
     local bgClipWindow = rect.withSize({4, 4}, vec2.sub(c:size(), {4+6, 4+4}))
     c:drawTiledImage(assets.windowBg .. pal, {0, 0}, bgClipWindow)
     assets.windowBorder:drawToCanvas(c, "frame" .. pal)
     
-    spacer.explicitSize = (not mg.cfg.icon) and -2 or 1
-    icon.explicitSize = (not mg.cfg.icon) and {-1, 0} or nil
-    icon:setFile(mg.cfg.icon)
-    title:setText("^shadow;" .. mg.cfg.title:gsub('%^reset;', '^reset;^shadow;'))
+    theme._adjustFrame()
   else assets.frame:drawToCanvas(c, "default" .. pal) end
 end
+
+function theme._adjustFrame()
+  fw.spacer.explicitSize = (not mg.cfg.icon) and 0 or 3
+  fw.icon.explicitSize = (not mg.cfg.icon) and {-1, 0} or nil
+  fw.icon:setFile(mg.cfg.icon)
+  fw.title:setText("^shadow;" .. mg.cfg.title:gsub('%^reset;', '^reset;^shadow;'))
+end
+
 
 function theme.drawPanel(w)
   if w.tabStyle and theme.useTabStyling then return theme.drawTabPanel(w) end

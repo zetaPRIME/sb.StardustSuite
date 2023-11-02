@@ -6,7 +6,6 @@ local assets = theme.assets
 -- set up some directives
 theme.scrollBarDirectives = "?brightness=50?multiply=" .. mg.getColor("accent")
 
-local titleBar, icon, title, close
 local fw = { }
 function theme.decorate()
   mg.widgetContext = fw

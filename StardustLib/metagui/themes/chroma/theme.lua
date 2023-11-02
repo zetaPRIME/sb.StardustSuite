@@ -196,7 +196,7 @@ function theme.drawFrame()
     fw.icon:setFile(mg.cfg.icon)
     fw.title:setText(mg.cfg.title)
     
-    local fitClose = frame.size[1] - fw.titleBarLeft:preferredSize()[1] >= 20
+    local fitClose = frame.size[1] - fw.titleBarLeft:preferredSize()[1] >= 22
     fw.closeButton:setImage(fitClose and assets.closeButton or assets.closeButtonSmall)
     fw.titleBarRight.explicitSize = (not fitClose) and {2, 20} or nil
     fw.titleBarRight.expandMode = (not fitClose) and {0, 0} or {2, 0}

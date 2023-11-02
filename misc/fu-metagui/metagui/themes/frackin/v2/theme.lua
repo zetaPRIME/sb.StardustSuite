@@ -9,6 +9,7 @@ local assets = theme.assets
 assets.windowBg = "/assetmissing.png" -- clear this out just in case
 assets.windowGadget = mg.asset "windowGadget.png"
 
+local fw = theme._export.fw
 function theme.drawFrame()
   c = widget.bindCanvas(fw.bg.subWidgets.canvas)
   c:clear()

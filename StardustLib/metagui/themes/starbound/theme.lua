@@ -39,8 +39,7 @@ function theme.decorate()
     frame:addChild { id = "bg", type = "layout", expandMode = {2, 2}, canvasBacked = true, mode = "vertical" }
     function fw.bg:draw()
       local c = widget.bindCanvas(self.subWidgets.canvas)
-      c:clear()
-      assets.frame:draw(c)
+      c:clear() assets.frame:draw(c)
     end
   end
   

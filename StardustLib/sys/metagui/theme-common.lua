@@ -46,12 +46,16 @@ theme.sliderThumbWidth = assets.sliderThumb.frameSize[1]
 function tdef.update() end -- default null
 
 function tdef.decorate()
-  widget.addChild(frame.backingWidget, { type = "canvas", position = {0, 0}, size = frame.size }, "canvas")
+  frame.mode = "vertical"
+  local bg = frame:addChild { type = "layout", expandMode = {2, 2}, canvasBacked = true, mode = "vertical" }
+  function bg:draw()
+    local c = widget.bindCanvas(self.subWidgets.canvas)
+    c:clear() assets.frame:draw(c)
+  end
 end
 
 function tdef.drawFrame()
-  c = widget.bindCanvas(frame.backingWidget .. ".canvas")
-  c:clear() assets.frame:draw(c)
+  --
 end
 
 function tdef.drawPanel(w)

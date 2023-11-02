@@ -400,8 +400,10 @@ function mg.resize(new, total)
   for k, v in pairs {"_tracker", "_mouse", "_wheel"} do widget.setSize(v, new) end
   if not mg.cfg.anchor then -- move to compensate
     local pos = pane.getPosition()
-    mg.windowPosition = vec2.add(pos, {0, old[2] - new[2]})
+    local delta = {0, old[2] - new[2]}
+    mg.windowPosition = vec2.add(pos, delta)
     pane.setPosition(mg.windowPosition)
+    mg.mousePosition = vec2.sub(mg.mousePosition, delta) -- update expected mouse position too
   end
   
   frame.size = new
@@ -721,6 +723,13 @@ function update()
     while w and (not w:isWheelInteractable() or not w:onMouseWheelEvent(wheelDir)) do
       w = w.parent
     end
+  end
+  
+  if input and input.keyHeld("r") then
+    local old = mg.getSize(true)
+    local md = vec2.sub(mg.mousePosition, lmp)
+    local new = { math.max(old[1] + md[1], 80), math.max(old[2] - md[2], 32) }
+    mg.resize(new, true)
   end
   
   if ww then setWheelActive(true) end -- intercept mouse wheel whenever something wants it

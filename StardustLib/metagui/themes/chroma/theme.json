@@ -20,6 +20,8 @@
         }
     },
     
+    "minWindowSize" : [80, 11],
+    
     "listItemColor" : "#0000",
     
     "useTabStyling" : true,

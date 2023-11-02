@@ -2,6 +2,7 @@
   "style" : "window", // window (has titlebar), panel (just a frame) etc.
   "size" : [240, 220], // *internal* size (not including chrome)
   "title" : "metaGUI example pane",
+  "resizable" : true,
   //"openWithInventory" : true,
   //"layoutMode" : "horizontal",
   //"anchor" : ["bottomLeft", [16, -16]],

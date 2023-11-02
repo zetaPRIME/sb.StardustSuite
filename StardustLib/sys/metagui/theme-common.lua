@@ -43,6 +43,8 @@ theme.sliderTextColor = theme.sliderTextColor or theme.baseTextColor
 theme.sliderTextSize = theme.sliderTextSize or 8
 theme.sliderThumbWidth = assets.sliderThumb.frameSize[1]
 
+theme.minWindowSize = theme.minWindowSize or {80, 0}
+
 --
 
 function tdef.update() end -- default null
@@ -305,10 +307,18 @@ function tdef.modifyContextMenu(cfg) end -- stub
 
 -- utility function for setting up window resize thumb behavior
 function tdef.setupResizeThumb(w)
-  w:setVisible(mg.cfg.resizable and mg.canResize())
+  w:setVisible(mg.cfg.resizable and mg.canResize() or false)
+  
+  -- assert a default minimum size
+  if type(mg.cfg.minSize) ~= "table" or not mg.cfg.minSize[2] then
+    mg.cfg.minSize = theme.minWindowSize
+  else
+    mg.cfg.minSize = { math.max(mg.cfg.minSize[1], theme.minWindowSize[1]), math.max(mg.cfg.minSize[2], theme.minWindowSize[2]) }
+  end
   
   function w:onCaptureMouseMove(delta)
-    mg.resize(vec2.add(mg.getSize(), vec2.mul(delta, {1, -1})))
+    local s = mg.getSize()
+    mg.resize { math.max(s[1] + delta[1], mg.cfg.minSize[1]), math.max(s[2] - delta[2], mg.cfg.minSize[2]) }
   end
 end
 

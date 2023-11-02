@@ -38,12 +38,10 @@ metaGUI tinkering 2023 {
             FU
         }
     }
+    
     style value that doesn't call decorate
     shouldDrawFrame I guess??
-    
-    - elide geometry updates for hidden pieces until made visible
-    - allow wrap=false on labels, use for title bars
-    
+        
     findWindowPosition shortcut for anchored windows
     use input table for cursor position where available for added stability?
     

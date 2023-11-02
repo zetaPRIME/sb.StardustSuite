@@ -43,7 +43,7 @@ metaGUI tinkering 2023 {
     
     - elide geometry updates for hidden pieces until made visible
     
-    allow wrap=false on labels, use for title bars
+    - allow wrap=false on labels, use for title bars
 }
 
 HUD Manager {

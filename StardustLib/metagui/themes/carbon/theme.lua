@@ -16,7 +16,7 @@ function theme.decorate()
     frame:addChild { id = "bg", type = "layout", expandMode = {2, 2}, canvasBacked = true, mode = "vertical", spacing = 0, children = {
       { { size = 22 }, 3,
         { id = "icon", type = "image" }, 2,
-        { id = "title", type = "label", expand = true, align = "left" }, 2,
+        { id = "title", type = "label", expand = true, wrap = false, align = "left" }, 2,
         { id = "closeButton", type = "button", caption = "×", captionOffset = {0.5, -0.5}, color = "ff3f3f", size = {13, 13} },
         4
       }

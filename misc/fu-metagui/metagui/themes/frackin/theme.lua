@@ -178,7 +178,7 @@ function theme.decorate()
       { { size = height, align = 0.55 }, l,
         { id = "icon", type = "image" }, 2,
         { id = "spacer", type = "spacer", size = 0 },
-        { id = "title", type = "label", expand = true, align = "left" }, 2,
+        { id = "title", type = "label", expand = true, wrap = false, align = "left" }, 2,
         { id = "closeButton", type = "iconButton", 
           image = "/interface/x.png", hoverImage = "/interface/xhover.png", pressImage = "/interface/xpress.png"
         },

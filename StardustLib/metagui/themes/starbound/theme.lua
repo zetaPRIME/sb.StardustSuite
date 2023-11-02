@@ -19,7 +19,7 @@ function theme.decorate()
         5,
         { id = "icon", type = "image" },
         { id = "spacer", type = "spacer", size = 0 },
-        { id = "title", type = "label", expand = true, align = "left" },
+        { id = "title", type = "label", expand = true, wrap = false, align = "left" }, 2,
         { id = "closeButton", type = "iconButton", image = "/interface/x.png", hoverImage = "/interface/xhover.png", pressImage = "/interface/xpress.png" },
         15
       }

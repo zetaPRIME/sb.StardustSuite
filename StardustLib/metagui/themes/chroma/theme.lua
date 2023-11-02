@@ -162,7 +162,7 @@ function theme.decorate()
           { { id = "titleBarLeft", mode = "horizontal", size = 20, canvasBacked = true, spacing = 2 },
             1,
             { id = "icon", type = "image" },
-            { id = "title", type = "label", align = "left", inline = true },
+            { id = "title", type = "label", align = "left", inline = true, wrap = false },
             14,
           },
           { { id = "titleBarRight", mode = "horizontal", size = 20, expandMode = {2, 0}, canvasBacked = true, scissoring = false },

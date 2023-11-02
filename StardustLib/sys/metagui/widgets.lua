@@ -671,6 +671,7 @@ end do -- label ----------------------------------------------------------------
     self.color = param.color
     self.fontSize = param.fontSize
     self.align = param.align
+    self.wrap = not (param.wrap == false)
     self.expandMode = param.expandMode
     
     
@@ -686,7 +687,7 @@ end do -- label ----------------------------------------------------------------
   
   function widgets.label:preferredSize(width)
     if self.explicitSize then return self.explicitSize end
-    local s = mg.measureString(self.text, width, self.fontSize)
+    local s = mg.measureString(self.text, self.wrap and width or nil, self.fontSize)
     -- extra pixel to fit cut-off descenders in multiline text
     if s[2] > math.ceil(self.fontSize or 8) then s[2] = s[2] + 1 end
     if self.width then s[1] = self.width end
@@ -703,7 +704,7 @@ end do -- label ----------------------------------------------------------------
     end
     local color = mg.getColor(self.color) or mg.getColor(theme.baseTextColor)
     if color then color = '#' .. color end
-    c:drawText(self.text, { position = pos, horizontalAnchor = ha, verticalAnchor = "top", wrapWidth = self.size[1] + 1 }, self.fontSize or 8, color)
+    c:drawText(self.text, { position = pos, horizontalAnchor = ha, verticalAnchor = "top", wrapWidth = self.wrap and self.size[1] + 1 or nil }, self.fontSize or 8, color)
   end
   
   function widgets.label:setText(t)

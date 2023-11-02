@@ -19,6 +19,7 @@
 - Fixed a bug where list items (including tabs) would exhibit strange behavior with buttons other than left and right click
 - Added uninit() for widgets
 - Added explicit width for labels
+- Added wrap toggle for labels (on by default)
 
 ### Stardust UI
 (0.1.6...)

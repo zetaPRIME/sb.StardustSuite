@@ -28,6 +28,8 @@ A pane using metaGUI is a JSON document (as with vanilla panes), typically with 
 { // Basic attributes:
   "style" : "window", // This can be: window (default, has a titlebar), panel (just a simple frame)
   "size" : [320, 200], // This is the *internal* size of your UI layout, excluding window decorations.
+  "resizable" : true, // If true, will allow the player to resize the window if using client extensions.
+  "minSize" : [120, 64], // Minimum size the user can resize the window to.
   "title" : "metaGUI example pane", // The displayed title in "window" mode. Does nothing otherwise.
   "icon" : "icon.png", // Path can be relative or absolute. Recommended to be 18x18 pixels or smaller.
   "accentColor" : "3f3fff", // An accent color can be specified as a hexcode, or default to the theme's.

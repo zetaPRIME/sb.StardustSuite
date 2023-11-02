@@ -398,6 +398,11 @@ function mg.resize(new, total)
   
   pane.setSize(new)
   for k, v in pairs {"_tracker", "_mouse", "_wheel"} do widget.setSize(v, new) end
+  if not mg.cfg.anchor then -- move to compensate
+    local pos = pane.getPosition()
+    mg.windowPosition = vec2.add(pos, {0, old[2] - new[2]})
+    pane.setPosition(mg.windowPosition)
+  end
   
   frame.size = new
   paneBase.size = mg.cfg.size

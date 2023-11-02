@@ -29,7 +29,13 @@ metaGUI tinkering 2023 {
     
     > RESIZING SUPPORT {
         findWindowPosition shortcut for anchored windows
-        adjust position on resizing non-anchored windows
+        - adjust position on resizing non-anchored windows
+        
+        theme support:
+        fallback
+        FU
+        
+        figure out how to implement resize thumbs??
     }
     style value that doesn't call decorate
 }

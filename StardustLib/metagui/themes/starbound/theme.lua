@@ -22,7 +22,8 @@ function theme.decorate()
         { id = "title", type = "label", expand = true, wrap = false, align = "left" }, 2,
         { id = "closeButton", type = "iconButton", image = "/interface/x.png", hoverImage = "/interface/xhover.png", pressImage = "/interface/xpress.png" },
         15
-      }
+      }, "spacer",
+      { "spacer", { id = "resizeThumb", type = "iconButton", image = assets.resizeThumb }, 8 }, 8
     } }
     
     function fw.bg:draw()
@@ -35,6 +36,8 @@ function theme.decorate()
     function fw.closeButton:onClick()
       pane.dismiss()
     end
+    
+    theme.setupResizeThumb(fw.resizeThumb)
   else -- raw frame
     frame:addChild { id = "bg", type = "layout", expandMode = {2, 2}, canvasBacked = true, mode = "vertical" }
     function fw.bg:draw()

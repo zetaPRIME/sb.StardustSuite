@@ -19,6 +19,8 @@ theme.assets = { -- default assets
   sliderBackground = mg.ninePatch "sliderBackground",
   sliderThumb = mg.extAsset "sliderThumb.png",
   
+  resizeThumb = mg.extAsset "resizeThumb.png",
+  
   itemSlot = mg.extAsset "itemSlot.png",
   itemRarity = mg.extAsset "itemRarity.png",
 } local assets = theme.assets
@@ -300,6 +302,15 @@ function tdef.toolTipBackground(innerSize)
 end
 
 function tdef.modifyContextMenu(cfg) end -- stub
+
+-- utility function for setting up window resize thumb behavior
+function tdef.setupResizeThumb(w)
+  w:setVisible(mg.cfg.resizable and mg.canResize())
+  
+  function w:onCaptureMouseMove(delta)
+    mg.resize(vec2.add(mg.getSize(), vec2.mul(delta, {1, -1})))
+  end
+end
 
 -- copy in as defaults
 for k, v in pairs(tdef) do theme[k] = v theme.common[k] = v end

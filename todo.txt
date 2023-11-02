@@ -36,7 +36,7 @@ metaGUI tinkering 2023 {
         - FU modern
         - FU classic
         
-        figure out how to implement resize thumbs??
+        - figure out how to implement resize thumbs??
         
         add to docs (canResize, getSize, resize...)
     }
@@ -47,6 +47,10 @@ metaGUI tinkering 2023 {
     - allow wrap=false on labels, use for title bars
     
     use input table for cursor position where available for added stability?
+    
+    player-local "clipboard" support that gets used if there's no extension
+    
+    OSB button sound path
 }
 
 HUD Manager {

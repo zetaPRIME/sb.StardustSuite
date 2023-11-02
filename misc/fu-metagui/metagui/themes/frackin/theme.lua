@@ -183,12 +183,15 @@ function theme.decorate()
           image = "/interface/x.png", hoverImage = "/interface/xhover.png", pressImage = "/interface/xpress.png"
         },
         r
-      }
+      }, "spacer",
+      { "spacer", { id = "resizeThumb", type = "iconButton", image = assets.resizeThumb } }
     } }
     
     function fw.closeButton:onClick()
       pane.dismiss()
     end
+    
+    theme.setupResizeThumb(fw.resizeThumb)
   else
     frame:addChild { id = "bg", type = "layout", expandMode = {2, 2}, canvasBacked = true }
   end

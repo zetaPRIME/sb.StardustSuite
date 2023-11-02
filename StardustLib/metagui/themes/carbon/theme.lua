@@ -19,12 +19,15 @@ function theme.decorate()
         { id = "title", type = "label", expand = true, wrap = false, align = "left" }, 2,
         { id = "closeButton", type = "button", caption = "×", captionOffset = {0.5, -0.5}, color = "ff3f3f", size = {13, 13} },
         4
-      }
+      }, "spacer",
+      { "spacer", { id = "resizeThumb", type = "iconButton", image = assets.resizeThumb } }
     } }
     
     function fw.closeButton:onClick()
       pane.dismiss()
     end
+    
+    theme.setupResizeThumb(fw.resizeThumb)
   else
     frame:addChild { id = "bg", type = "layout", expandMode = {2, 2}, canvasBacked = true }
   end

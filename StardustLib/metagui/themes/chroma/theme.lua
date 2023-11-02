@@ -169,7 +169,10 @@ function theme.decorate()
             "spacer", { id = "closeButton", type = "iconButton" },
           },
         },
-        { { id = "body", canvasBacked = true, expandMode = {2, 2} } },
+        { { id = "body", canvasBacked = true, expandMode = {2, 2}, mode = "vertical" },
+          "spacer",
+          { "spacer", { id = "resizeThumb", type = "iconButton", image = assets.resizeThumb } }
+        },
       }
     }
     
@@ -179,6 +182,8 @@ function theme.decorate()
     
     --fw.closeButton:setImage(assets.closeButton)
     fw.closeButton.onClick = pane.dismiss
+    
+    theme.setupResizeThumb(fw.resizeThumb)
     
   else
     frame:addChild { id = "body", type = "layout", canvasBacked = true, expandMode = {2, 2} }

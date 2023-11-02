@@ -175,7 +175,7 @@ end do -- layout ---------------------------------------------------------------
     end
     
     -- propagate
-    for _, c in pairs(self.children or { }) do c:updateGeometry(true) end
+    for _, c in pairs(self.children or { }) do if c.visible or not c.size then c:updateGeometry(true) end end
     -- finally, apply
     if not noApply then self:applyGeometry() end
   end

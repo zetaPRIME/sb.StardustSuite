@@ -32,13 +32,16 @@ metaGUI tinkering 2023 {
         - adjust position on resizing non-anchored windows
         
         theme support:
-        fallback
-        FU
+        - fallback
+        FU modern
+        FU classic
         
         figure out how to implement resize thumbs??
     }
     style value that doesn't call decorate
     shouldDrawFrame I guess??
+    
+    > elide geometry updates for hidden pieces until made visible
 }
 
 HUD Manager {

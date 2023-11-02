@@ -178,29 +178,34 @@ function widgetBase:onKeyEsc() end
 function widgetBase:acceptsKeyRepeat() end
 
 function widgetBase:applyGeometry(selfOnly)
-  self.size = self.size or self:preferredSize() -- fill in default size if absent
-  local tp = self.position or {0, 0}
-  local s = self
-  while s.parent and not s.parent.isBaseWidget do
-    tp = vec2.add(tp, s.parent.position or {0, 0})
-    s = s.parent
-  end
-  s = s.parent -- we want the parent of the result
+  local vis = self.visible and not (self.parent and not self.parent.visible)
+  local etp
   -- apply calculated total position
   --sb.logInfo("processing " .. (self.backingWidget or "unknown") .. ", type " .. self.typeName)
-  local etp
-  if self.parent then etp = { tp[1], s.size[2] - (tp[2] + self.size[2]) } else etp = tp end -- if no parent, it must be a backing widget
-  if not self.visible or (self.parent and not self.parent.visible) then etp = {-99999, -99999} end -- simulate invisibility by shoving way offscreen
+  if not vis then
+    self.size = self.size or {0, 0}
+    etp = {-99999, -99999} -- simulate invisibility by shoving way offscreen
+  else
+    self.size = self.size or self:preferredSize() -- fill in default size if absent
+    local tp = self.position or {0, 0}
+    local s = self
+    while s.parent and not s.parent.isBaseWidget do
+      tp = vec2.add(tp, s.parent.position or {0, 0})
+      s = s.parent
+    end
+    s = s.parent -- we want the parent of the result
+    if self.parent then etp = { tp[1], s.size[2] - (tp[2] + self.size[2]) } else etp = tp end -- if no parent, it must be a backing widget
+    --sb.logInfo("widget " .. (self.backingWidget or "unknown") .. ", type " .. self.typeName .. ", pos (" .. self.position[1] .. ", " .. self.position[2] .. "), size (" .. self.size[1] .. ", " .. self.size[2] .. ")")
+    self:queueRedraw()
+    if not selfOnly and self.children then
+      for k,c in pairs(self.children) do
+        if c.applyGeometry then c:applyGeometry() end
+      end
+    end
+  end
   if self.backingWidget then
     widget.setSize(self.backingWidget, {math.floor(self.size[1]), math.floor(self.size[2])})
     widget.setPosition(self.backingWidget, {math.floor(etp[1]), math.floor(etp[2])})
-  end
-  --sb.logInfo("widget " .. (self.backingWidget or "unknown") .. ", type " .. self.typeName .. ", pos (" .. self.position[1] .. ", " .. self.position[2] .. "), size (" .. self.size[1] .. ", " .. self.size[2] .. ")")
-  self:queueRedraw()
-  if not selfOnly and self.children then
-    for k,c in pairs(self.children) do
-      if c.applyGeometry then c:applyGeometry() end
-    end
   end
 end
 

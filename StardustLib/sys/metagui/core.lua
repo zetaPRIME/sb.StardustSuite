@@ -107,6 +107,7 @@ local function runEventQueue()
   for _, f in pairs(scriptUpdate) do f() end
 end
 function mg.startEvent(func, ...)
+  if type(func) ~= "function" then return end -- silently discard nil or invalid
   local c = coroutine.create(func)
   local f, err = coroutine.resume(c, ...)
   if coroutine.status(c) ~= "dead" then table.insert(eventQueue, c)
@@ -392,7 +393,7 @@ end
 local updateWheelProto, recreateWheelChild
 function mg.getSize(total) return total and mg.cfg.totalSize or mg.cfg.size end
 function mg.canResize() return not not pane.setSize end -- resizing is only supported on extended clients
-function mg.resize(new, total)
+function mg.resize(new, total, playerInitiated)
   if not pane.setSize then return end -- don't bother doing the work if we don't have this
   local margin = vec2.sub(mg.cfg.totalSize, mg.cfg.size)
   local old = mg.cfg.totalSize
@@ -418,6 +419,8 @@ function mg.resize(new, total)
   updateWheelProto()
   recreateWheelChild()
   mg.theme.drawFrame()
+  
+  mg.startEvent(onResize, playerInitiated)
 end
 
 local function spawnKeysub(respawn)

@@ -318,7 +318,7 @@ function tdef.setupResizeThumb(w)
   
   function w:onCaptureMouseMove(delta)
     local s = mg.getSize()
-    mg.resize { math.max(s[1] + delta[1], mg.cfg.minSize[1]), math.max(s[2] - delta[2], mg.cfg.minSize[2]) }
+    mg.resize({ math.max(s[1] + delta[1], mg.cfg.minSize[1]), math.max(s[2] - delta[2], mg.cfg.minSize[2]) }, false, true)
   end
 end
 

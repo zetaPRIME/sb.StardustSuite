@@ -30,7 +30,7 @@ metaGUI tinkering 2023 {
     > RESIZING SUPPORT {
         add to docs (canResize, getSize, resize...)
         
-        proper resizable and minSize flags
+        - onResize event
         theme resize thumbs {
             Starbound
             Carbon

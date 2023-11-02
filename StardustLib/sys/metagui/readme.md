@@ -18,6 +18,7 @@
   - [Item Slot](#item-slot)
   - [Item Grid](#item-grid)
 - [Utility functions](#utility-functions)
+- [Pane events](#pane-events)
 - [Misc. notes](#misc-notes)
 
 ## Your first UI
@@ -458,6 +459,11 @@ metagui.fastCheckShift() -- Attempts to determine if player is holding shift thr
 metagui.checkSync(resync, id) -- Checks if sync succeeded with source entity (or entity id if specified).
 -- If resync specified, clears sync flag and pings entity.
 metagui.waitSync(resync, id) -- Same as above, but waits until sync flag set. Only available in events.
+```
+
+## Pane events
+```lua
+onResize(userInitiated) -- Called when window is resized. userInitiated is true if resize thumb was used.
 ```
 
 ## Misc. notes

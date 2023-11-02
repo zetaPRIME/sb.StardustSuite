@@ -244,6 +244,7 @@ A simple text display.
 "align" : "center", // Horizontal alignment (left, center, right). Defaults to "left".
 "inline" : false, // If true, makes label fixed-size.
 "expand" : false, // If true, gives (horizontal) expansion priority.
+"wrap" : true, // If false, disables word wrap. True by default.
 ```
 ##### Methods
 ```lua

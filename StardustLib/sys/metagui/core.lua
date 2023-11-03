@@ -475,7 +475,6 @@ updateWheelProto = function()
 end
 
 function init() -------------------------------------------------------------------------------------------------------------------------------------
-  getmetatable''.lmg = _ENV -- TEMP debug
   -- guard against wonky reloads
   if widget.getData("_tracker") then return pane.dismiss() end
   widget.setData("_tracker", "open")

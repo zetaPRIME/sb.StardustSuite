@@ -28,14 +28,9 @@ metaGUI tinkering 2023 {
     button right click option
     
     > RESIZING SUPPORT {
-        - add to docs (canResize, getSize, resize...)
-        
         theme resize thumbs {
             / Starbound
-            Carbon
-            - Chroma
-            - FU modern
-            - FU classic
+            - Carbon
         }
     }
     

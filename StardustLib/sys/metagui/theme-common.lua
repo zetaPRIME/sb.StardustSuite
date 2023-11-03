@@ -318,14 +318,12 @@ function tdef.setupResizeThumb(w)
   
   function w:captureMouse(...) -- hook capture to store a thing
     self._origSize = mg.getSize()
-    self._origPos = vec2.div(input.mousePosition(), interface.scale())
+    self._td = {0, 0}
     return mg.captureMouse(self)
   end
   function w:onCaptureMouseMove(delta)
-    local s = self._origSize
-    -- we use raw mouse position here to avoid wonkiness with expected positions changing
-    local mp = vec2.div(input.mousePosition(), interface.scale())
-    local td = { math.floor(0.5 + mp[1] - self._origPos[1]), math.floor(0.5 + mp[2] - self._origPos[2]) }
+    self._td = vec2.add(self._td, delta)
+    local s, td = self._origSize, self._td
     
     mg.resize({ math.max(s[1] + td[1], mg.cfg.minSize[1]), math.max(s[2] - td[2], mg.cfg.minSize[2]) }, false, true)
   end

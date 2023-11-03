@@ -37,9 +37,6 @@ metaGUI tinkering 2023 {
             FU modern
             FU classic
         }
-        
-        - change thumb to total distance
-        maybe see about adjusting that for SE compat
     }
     
     style value that doesn't call decorate

@@ -159,7 +159,9 @@ if theme._export then
 end
 
 -- set up fixed directives for some stock functionality
-theme.scrollBarDirectives = paletteFor "accent" .. "?multiply=ffffff7f"
+theme.accentDirectives = paletteFor "accent"
+theme.scrollBarDirectives = theme.accentDirectives .. "?multiply=ffffff7f"
+assets.resizeThumb.useThemeDirectives = "accentDirectives"
 
 function theme.decorate()
   local height = 23

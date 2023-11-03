@@ -35,7 +35,7 @@ metaGUI tinkering 2023 {
             Carbon
             - Chroma
             - FU modern
-            FU classic
+            - FU classic
         }
     }
     

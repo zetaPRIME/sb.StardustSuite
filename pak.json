@@ -5,6 +5,7 @@
   "globalIgnore" : [
     ".*\\.xcf$", // exclude GIMP workfiles
     ".*\\.kra$", // krita projects
+    ".*\\.ase$", ".*\\.aseprite$", // aseprite projects
     ".*\\.sh$" // and shell scripts
   ]
 }

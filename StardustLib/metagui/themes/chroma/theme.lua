@@ -16,6 +16,7 @@ for _, ast in pairs {
   assets.sliderBackground,
   assets.tabPanel, assets.tab,
   assets.itemSlot,
+  assets.resizeThumb,
 } do ast.useThemeDirectives = "baseColorDirectives" end
 
 for _, ast in pairs {

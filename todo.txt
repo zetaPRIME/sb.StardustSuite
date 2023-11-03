@@ -31,11 +31,15 @@ metaGUI tinkering 2023 {
         add to docs (canResize, getSize, resize...)
         
         theme resize thumbs {
-            Starbound
+            ... Starbound
             Carbon
             - Chroma
-            FU
+            FU modern
+            FU classic
         }
+        
+        - change thumb to total distance
+        maybe see about adjusting that for SE compat
     }
     
     style value that doesn't call decorate

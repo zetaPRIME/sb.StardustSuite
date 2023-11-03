@@ -447,6 +447,12 @@ metagui.mkwidget(parent, def) -- Makes a new vanilla (backing) widget and return
 metagui.paneToWidgetPosition(widget, pos) -- Turns a pane-relative position into a widget-relative one.
 metagui.screenToWidgetPosition(widget, pos) -- Turns a screen position into a widget-relative one.
 
+metagui.canResize() -- Returns true if the player is using an extended client that supports pane resizing.
+metagui.getSize(total) -- Returns the current size of the window; if total is true this includes the frame,
+-- otherwise it returns only the internal area.
+metagui.resize(size, total) -- Attempts to resize the window. Does nothing if the client does not support
+-- resizing. Behavior of total flag matches getSize.
+
 metagui.keyToChar(keycode, accel) -- Returns the character a given keycode should print, or nil if none.
 
 metagui.itemsCanStack(item1, item2) -- Check if two item descriptors can stack together.

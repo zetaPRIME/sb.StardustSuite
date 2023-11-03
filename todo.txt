@@ -31,10 +31,10 @@ metaGUI tinkering 2023 {
         add to docs (canResize, getSize, resize...)
         
         theme resize thumbs {
-            ... Starbound
+            / Starbound
             Carbon
             - Chroma
-            FU modern
+            - FU modern
             FU classic
         }
     }

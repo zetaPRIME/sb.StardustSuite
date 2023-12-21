@@ -1,15 +1,15 @@
 { //  -*- grammar-ext: json -*-
   "style" : "window",
-  "size" : [240, 150],
+  "size" : [250, 165],
   "title" : "Excess bees detected",
   "accentColor" : "7f5f5f",
   "uniqueBy" : "path",
   "scripts" : [ "warning.ui.lua" ],
   "children" : [
     { "mode" : "vertical" }, // layout mode
-    [ { "expandMode" : [2, 2] }, 1, [
+    [ { "expandMode" : [2, 2] }, 1, [ { "expandMode" : [2, 2] },
       1,
-      { "type" : "label", "text" : "You seem to be running ^red;xSB^reset;. In case you weren't aware, FezzedOne (its developer) is a noted transphobe who is not only known to repeatedly and insistently misgender trans members of the modding community, but also has gone on record on several occasions spreading harmful disinformation about trans people in general.\n\nAs such, I cannot in good faith recommend using anything he's touched, as code distributed by people like that cannot reasonably be trusted to be safe. Instead, I highly suggest switching to ^violet;OpenStarbound^reset;." },
+      { "type" : "label", "text" : "You seem to be running ^red;xSB^reset;. In case you weren't aware, FezzedOne (its developer) is a noted transphobe who is not only known to repeatedly and insistently misgender transgender members of the modding community, but also has gone on record on several occasions spreading harmful disinformation about trans people in general.\n\nAs such, I cannot in good faith recommend using or supporting anything he's involved with, being that he fundamentally disapproves of my very existence. Instead, I highly suggest switching to ^violet;OpenStarbound^reset;, as that is what I'm developing against, and thus will offer the most reliable and complete support." },
       "spacer",
       [ "spacer", { "type" : "label", "text" : "- Zia, Stardust Core developer" }]
     ], 1 ],// "spacer",

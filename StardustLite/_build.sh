@@ -30,6 +30,7 @@ deploy quickbar
 deploy sys/metagui
 deploy sys/quickbar
 deploy sys/stardust/quickbar
+deploy sys/stardust/excessbees
 
 # some select parts of Stardust Core's library files that can be useful for client-side things
 deploy lib/stardust/color.lua

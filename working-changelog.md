@@ -6,6 +6,7 @@
 ### Stardust Core+Lite
 - **eventHook**: thread-global event subscription and calling
 - [wip] HUD manager
+- Added an important PSA
 
 #### metaGUI
 - Added Slider widget

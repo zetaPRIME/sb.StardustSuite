@@ -45,6 +45,8 @@ metaGUI tinkering 2023 {
     OSB button sound path
 }
 
+hm... codex tracking I guess
+
 HUD Manager {
     - eventhook library
     refactor current HUD stuff into hudmanager using said eventhook

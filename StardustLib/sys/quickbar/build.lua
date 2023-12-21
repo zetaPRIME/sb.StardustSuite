@@ -98,4 +98,10 @@ do -- build the actual list
     {-24, math.max(47, 114 - height/2)} -- expand evenly from center of button until reaching top of crafting button
   }
   
+  -- warn about excess bees
+  if (xsb or player.addChatBubble) and (os.time() - (60*60*3) >= player.getProperty("__excess_bees_warned", 0)) then
+    player.interact("ScriptPane", { gui = { }, scripts = {"/metagui.lua"}, config = "stardustlib:excessbees" })
+    cfg = nil -- no quickbar
+  end
+  
 end

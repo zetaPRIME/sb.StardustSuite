@@ -14,6 +14,9 @@
     { "op" : "add", "path" : "/panes/quickbar", "value" : {
       "quickbar" : "/sys/quickbar/build.lua"
     } },
+    { "op" : "add", "path" : "/panes/stardustlib", "value" : {
+      "excessbees" : "/sys/stardust/excessbees/warning.ui"
+    } },
     
     { "op" : "add", "path" : "/settings/metagui", "value" : "/sys/metagui/settings/module.lua" }
   ]

@@ -17,7 +17,8 @@
     } },
     { "op" : "add", "path" : "/panes/stardustlib", "value" : {
       "cosplay" : "/sys/stardust/cosplay/cosplay.ui",
-      "metacrafting" : "/sys/stardust/metacrafting/metacrafting.ui"
+      "metacrafting" : "/sys/stardust/metacrafting/metacrafting.ui",
+      "excessbees" : "/sys/stardust/excessbees/warning.ui"
     } },
     
     { "op" : "add", "path" : "/settings/metagui", "value" : "/sys/metagui/settings/module.lua" }

@@ -9,7 +9,7 @@
     { "mode" : "vertical" }, // layout mode
     [ { "expandMode" : [2, 2] }, 1, [ { "expandMode" : [2, 2] },
       1,
-      { "type" : "label", "text" : "You seem to be running ^red;xSB^reset;. In case you weren't aware, FezzedOne (its developer) is a noted transphobe who is not only known to repeatedly and insistently misgender transgender members of the modding community, but also has gone on record on several occasions spreading harmful disinformation about trans people in general.\n\nAs such, I cannot in good faith recommend using or supporting anything he's involved with, being that he fundamentally disapproves of my very existence. Instead, I highly suggest switching to ^violet;OpenStarbound^reset;, as that is what I'm developing against, and thus will offer the most reliable and complete support." },
+      { "type" : "label", "text" : "You seem to be running ^red;xSB^reset;. In case you weren't aware, FezzedOne (its developer) is a noted transphobe who is not only known to repeatedly and insistently misgender transgender members of the modding community, but also has gone on record on several occasions spreading harmful disinformation about trans people in general.\n\nAs such, I cannot in good faith support anything he's involved with, being that he fundamentally disapproves of my very existence. Instead, I highly suggest switching to ^violet;OpenStarbound^reset;, as that is my development target, and thus will offer the most reliable and complete support.\n^gray;" },
       "spacer",
       [ "spacer", { "type" : "label", "text" : "- Zia, Stardust Core developer" }]
     ], 1 ],// "spacer",

@@ -1,0 +1,10 @@
+[ // -*- grammar-ext: json -*-
+  [
+    { "op" : "test", "path" : "/themes/frackin" },
+    { "op" : "remove", "path" : "/themes/frackin" }
+  ],
+  [
+    { "op" : "test", "path" : "/themes/frackin.v2" },
+    { "op" : "remove", "path" : "/themes/frackin.v2" }
+  ],
+]

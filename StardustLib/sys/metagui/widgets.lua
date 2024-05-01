@@ -17,43 +17,43 @@ end do -- layout ---------------------------------------------------------------
     -- widget attributes
     isBaseWidget = true,
     expandMode = {1, 0}, -- can expand to fill horizontally
-    
+
     -- defaults
     mode = "manual",
     spacing = 2,
     align = 0.5,
   })
-  
+
   -- layout modes:
   -- "manual" (the explicit default) is exactly what it says on the tim
   -- "horizontal" and "vertical" auto-arrange for each axis
-  
+
   function widgets.layout:init(base, param)
     self.children = self.children or { } -- always have a children table
-    
+
     -- parameters first
     self.mode = param.mode
     if self.mode == "h" then self.mode = "horizontal" end
     if self.mode == "v" then self.mode = "vertical" end
     self.spacing = param.spacing
     self.align = param.align
-    
+
     if type(self.explicitSize) == "number" then
       --self.explicitSize = {self.explicitSize, self.explicitSize}
       if self.mode == "horizontal" then self.expandMode = {1, 0} end
       if self.mode == "vertical" then self.expandMode = {0, 1} end
     elseif type(self.explicitSize) == "table" then self.expandMode = {0, 0} end
-    
+
     self.expandMode = param.expandMode or self.expandMode
-    
+
     if param.canvasBacked then
       self.subWidgets = { canvas = mkwidget(base, { type = "canvas" }) }
     end
-    
+
     local scissoring = param.scissoring
     if scissoring == nil then scissoring = true end
     self.backingWidget = mkwidget(base, { type = "layout", layoutType = "basic", zlevel = param.zLevel, scissoring = scissoring })
-    
+
     if debug.showLayoutBoxes and not param.canvasBacked then -- image to make it visible (random color)
       widget.addChild(self.backingWidget, { type = "image", file = string.format("/assetmissing.png?crop=0;0;1;1?multiply=0000?replace;0000=%06x4f", sb.makeRandomSource():randu32() % 0x1000000), scale = 1024 })
     end
@@ -70,7 +70,7 @@ end do -- layout ---------------------------------------------------------------
       end
     end
   end
-  
+
   function widgets.layout:preferredSize(width)
     width = width or (parent and parent.size[1]) or nil
     if type(self.explicitSize) == "table" then return self.explicitSize end
@@ -78,9 +78,9 @@ end do -- layout ---------------------------------------------------------------
     if self.mode == "horizontal" or self.mode == "vertical" then
       local axis = self.mode == "vertical" and 2 or 1
       local opp = 3 - axis
-      
+
       res[axis] = -self.spacing --self.spacing * (#(self.children) - 1)
-      
+
       for _, c in pairs(self.children) do if c.visible then
         local ps = c:preferredSize(width)
         if width and axis == 1 then width = width - ps[1] - self.spacing end
@@ -105,13 +105,13 @@ end do -- layout ---------------------------------------------------------------
     end
     return res
   end
-  
+
   function widgets.layout:updateGeometry(noApply)
     -- autoarrange modes
     if self.mode == "horizontal" or self.mode == "vertical" then
       local axis = self.mode == "vertical" and 2 or 1
       local opp = 3 - axis
-      
+
       -- find maximum expansion level
       -- if not zero, anything that matches it gets expanded to equal size after preferred sizes are fulfilled
       -- and while we're iterating through, determine total spacing size
@@ -122,7 +122,7 @@ end do -- layout ---------------------------------------------------------------
       end end
       local numEx = 0 -- count matching
       for _, c in pairs(self.children) do if c.visible and c.expandMode[axis] == exLv then numEx = numEx + 1 end end
-      
+
       -- size pass 1
       for _, c in pairs(self.children) do
         if c.visible and c.expandMode[axis] < exLv then
@@ -146,7 +146,7 @@ end do -- layout ---------------------------------------------------------------
           end
         end
       end
-      
+
       -- and position
       local posAcc = 0
       for _, c in pairs(self.children) do
@@ -163,7 +163,7 @@ end do -- layout ---------------------------------------------------------------
           end
         end
       end
-      
+
     elseif self.mode == "stack" then -- stacked on top of each other
       for _, c in pairs(self.children) do
         c.position = {0, 0}
@@ -173,13 +173,13 @@ end do -- layout ---------------------------------------------------------------
         end
       end
     end
-    
+
     -- propagate
     for _, c in pairs(self.children or { }) do if c.visible or not c.size then c:updateGeometry(true) end end
     -- finally, apply
     if not noApply then self:applyGeometry() end
   end
-  
+
   function widgets.layout:applyGeometry(so)
     mg.widgetBase.applyGeometry(self, so) -- base first
     if self.subWidgets then
@@ -193,24 +193,24 @@ end do -- layout ---------------------------------------------------------------
 end do -- panel -------------------------------------------------------------------------------------------------------------------------------------
   widgets.panel = mg.proto(mg.widgetBase, {
     expandMode = {1, 2}, -- can expand to fill horizontally, wants to expand vertically
-    
+
     style = "convex",
   })
-  
+
   local padding = 2
-  
+
   function widgets.panel:init(base, param)
     self.children = self.children or { }
-    
+
     if type(self.explicitSize) == "number" then self.explicitSize = {self.explicitSize, 0} end
-    
+
     self.style = param.style
     self.expandMode = param.expandMode
-    
+
     self.backingWidget = mkwidget(base, { type = "canvas" })
     mg.createImplicitLayout(param.children, self, { mode = "vertical" })
   end
-  
+
   function widgets.panel:preferredSize(width)
     if width then width = width - padding*2 end
     local res = vec2.add(self.children[1]:preferredSize(width), {padding*2, padding*2})
@@ -224,7 +224,7 @@ end do -- panel ----------------------------------------------------------------
     local l = self.children[1]
     l.position = {padding, padding}
     l.size = vec2.sub(self.size, {padding*2, padding*2})
-    
+
     l:updateGeometry(true)
     if not noApply then applyGeometry() end
   end
@@ -235,44 +235,44 @@ end do -- scroll area ----------------------------------------------------------
   widgets.scrollArea = mg.proto(mg.widgetBase, {
     isBaseWidget = true,
     expandMode = {1, 2}, -- can expand to fill horizontally, wants to expand vertically
-    
+
     scrollDirections = {0, 1},
     scrollBars = true,
     thumbScrolling = true,
   })
-  
+
   local sizeMod = {0, 0}
   local scrollFriction = 0.025
   local scrollVelocityThreshold = 0.25
   local wheelScrollAmount = 64
   local wheelScrollTicks = 6
-  
+
   function widgets.scrollArea:init(base, param)
     self.children = self.children or { }
-    
+
     if type(self.explicitSize) == "number" then self.expandMode = {1, 0}
     elseif type(self.explicitSize) == "table" then self.expandMode = {0, 0} end
-    
+
     self.expandMode = param.expandMode or self.expandMode
     self.scrollDirections = param.scrollDirections
     self.scrollBars = param.scrollBars
     self.thumbScrolling = param.thumbScrolling
-    
+
     self.velocity = {0, 0}
-    
+
     self.subWidgets = { }
     self.subWidgets.back = mkwidget(base, { type = "canvas" })
     self.backingWidget = mkwidget(base, { type = "layout", layoutType = "basic" })
     self.subWidgets.front = mkwidget(base, { type = "canvas", mouseTransparent = true })
-    
+
     mg.createImplicitLayout(param.children, self, { mode = "vertical", scissoring = false })
   end
-  
+
   function widgets.scrollArea:addChild(...) return self.children[1]:addChild(...) end
   function widgets.scrollArea:clearChildren(...) return self.children[1]:clearChildren(...) end
-  
+
   --local function roundVec(v) return {math.floor(0.5 + v[1]), math.floor(0.5 + v[2])} end
-  
+
   local function evFling(self)
     while not self.deleted and vec2.mag(self.velocity) >= scrollVelocityThreshold do
       self:scrollBy(self.velocity)
@@ -280,7 +280,7 @@ end do -- scroll area ----------------------------------------------------------
       coroutine.yield()
     end
   end
-  
+
   local function evWheel(self)
     if self._wheelControl then self._wheelControl.cancel = true end -- cancel old
     local control = { }
@@ -296,18 +296,18 @@ end do -- scroll area ----------------------------------------------------------
       self.wheelTarget = nil
     end
   end
-  
+
   local sdActive, sdVal
   local function scrollDirCheck()
     -- try the fast route first
     local r = mg.fastCheckShift()
     if r ~= nil then return r end
-    
+
     -- else do the slow check once per continuous scrolling
     local aa = sdActive
     sdActive = 25
     if aa then return sdVal end
-    
+
     mg.startEvent(function()
       while true do
         sdVal = mg.checkShift()
@@ -324,10 +324,10 @@ end do -- scroll area ----------------------------------------------------------
     end)
     return sdVal
   end
-  
+
   -- only intercept if it can actually scroll
-  function widgets.scrollArea:isMouseInteractable(init) 
-    return init or 
+  function widgets.scrollArea:isMouseInteractable(init)
+    return init or
     (self.scrollDirections[2] ~= 0 and self.children[1].size[2] > self.size[2]) or
     (self.scrollDirections[1] ~= 0 and self.children[1].size[1] > self.size[1])
   end
@@ -408,7 +408,7 @@ end do -- scroll area ----------------------------------------------------------
     end
   end
   function widgets.scrollArea:scrollPosition() return vec2.mul(self.children[1].position, -1) end
-  
+
   function widgets.scrollArea:preferredSize(width) return vec2.add(self.children[1]:preferredSize(width + sizeMod[1]), sizeMod) end
   function widgets.scrollArea:updateGeometry(noApply)
     local l = self.children[1]
@@ -420,7 +420,7 @@ end do -- scroll area ----------------------------------------------------------
       end
     end
     --l.size[2] = ps[2]
-    
+
     l:updateGeometry(true)
     -- snap scroll to bounds
     l.position = rect.ll(rect.bound(rect.fromVec2(l.position, l.position), {math.max(0, l.size[1] - self.size[1]) * -1, math.max(0, l.size[2] - self.size[2]) * -1, 0, 0}))
@@ -449,45 +449,45 @@ end do -- spacer ---------------------------------------------------------------
 end do -- canvas ------------------------------------------------------------------------------------------------------------------------------------
   widgets.canvas = mg.proto(mg.widgetBase, {
     expandMode = {1, 1}, -- can expand if no size specified
-    
+
     mouseTransparent = false,
   })
-  
+
   function widgets.canvas:init(base, param)
     self.mouseTransparent = param.mouseTransparent
-    
+
     if self.explicitSize then expandMode = {0, 0} end -- fixed size
     self.backingWidget = mkwidget(base, { type = "canvas" })
   end
-  
+
   function widgets.canvas:preferredSize() return self.explicitSize or {64, 64} end
   function widgets.canvas:isMouseInteractable() return not self.mouseTransparent end
-  
+
   function widgets.canvas:bind() return widget.bindCanvas(self.backingWidget) end
 end do -- button ------------------------------------------------------------------------------------------------------------------------------------
   widgets.button = mg.proto(mg.widgetBase, {
     expandMode = {1, 0}, -- will expand horizontally, but not vertically
   })
-  
+
   function widgets.button:init(base, param)
     self.expandMode = param.expandMode
     if param.inline then self.expandMode = {0, 0} end
     if param.expand then self.expandMode = {2, 0} end
-    
+
     self.caption = mg.formatText(param.caption)
     self.captionOffset = param.captionOffset or {0, 0}
     self.color = param.color
-    
+
     self.state = "idle"
     self.backingWidget = mkwidget(base, { type = "canvas" })
     if type(self.explicitSize) == "number" then self.explicitSize = {self.explicitSize, 16} end
   end
-  
+
   function widgets.button:minSize() return {16, 16} end
   function widgets.button:preferredSize() return self.explicitSize or {64, 16} end
-  
+
   function widgets.button:draw() theme.drawButton(self) end
-  
+
   function widgets.button:isMouseInteractable() return true end
   function widgets.button:onMouseEnter()
     self.state = "hover"
@@ -517,9 +517,9 @@ end do -- button ---------------------------------------------------------------
   		local _ = self:passMouseCapture() or self:releaseMouse()
   	end
   end
-  
+
   function widgets.button:onClick() end
-  
+
   function widgets.button:setText(t)
     self.caption = mg.formatText(t)
     self:queueRedraw()
@@ -528,20 +528,20 @@ end do -- button ---------------------------------------------------------------
 end do -- icon button -------------------------------------------------------------------------------------------------------------------------------
   widgets.iconButton = mg.proto(widgets.button, {
     expandMode = {0, 0}, -- fixed size
-    
+
     image = "/assetmissing.png",
   })
-  
+
   function widgets.iconButton:init(base, param)
     self.size = nil -- force recalculate
     self:setImage(param.image, param.hoverImage, param.pressImage)
-    
+
     self.state = "idle"
     self.backingWidget = mkwidget(base, { type = "canvas" })
   end
-  
+
   function widgets.iconButton:preferredSize() return self.explicitSize or self.imgSize end
-  
+
   function widgets.iconButton:draw() theme.drawIconButton(self) end
   function widgets.iconButton:setImage(main, hover, press)
     if not main then return end
@@ -558,7 +558,7 @@ end do -- icon button ----------------------------------------------------------
         self.hoverImage = mg.path(hover)
         self.pressImage = mg.path(press)
       end
-      
+
       self.imgSize = root.imageSize(self.image)
     end
     self:queueGeometryUpdate()
@@ -567,21 +567,21 @@ end do -- icon button ----------------------------------------------------------
 end do -- checkbox ----------------------------------------------------------------------------------------------------------------------------------
   widgets.checkBox = mg.proto(widgets.button, {
     expandMode = {0, 0}, -- fixed size
-    
+
     checked = false,
   })
-  
+
   local broadcastLevel = 2
   local hRadioFind = { } -- empty table as private event handle
   local hRadioValueFind = { }
-  
+
   function widgets.checkBox:init(base, param)
     self.state = "idle"
     self.backingWidget = mkwidget(base, { type = "canvas" })
     self.checked = param.checked
     self.radioGroup = param.radioGroup
     self.value = param.value
-    
+
     self:subscribeEvent("radioButtonChecked", function(self, btn)
       if btn ~= self and btn.radioGroup == self.radioGroup then
         self.checked = false
@@ -595,10 +595,10 @@ end do -- checkbox -------------------------------------------------------------
       if self.radioGroup == group and self.value == val then return self end
     end)
   end
-  
+
   function widgets.checkBox:preferredSize() return {12, 12} end
   function widgets.checkBox:draw() theme.drawCheckBox(self) end
-  
+
   function widgets.checkBox:onMouseEnter()
     self.state = "hover"
     self:queueRedraw()
@@ -628,7 +628,7 @@ end do -- checkbox -------------------------------------------------------------
       return true
     end
   end
-  
+
   function widgets.checkBox:setChecked(b)
     if b and self.radioGroup and not self.checked then
       self.checked = true -- set before event
@@ -637,25 +637,25 @@ end do -- checkbox -------------------------------------------------------------
     self.checked = b
     self:queueRedraw()
   end
-  
+
   function widgets.checkBox:getGroupChecked()
     if not self.radioGroup then return nil end
     if self.checked then return self end
     return self:wideBroadcast(broadcastLevel, hRadioFind, self.radioGroup)
   end
-  
+
   function widgets.checkBox:getGroupValue()
     local c = self:getGroupChecked()
     if c then return c.value end
     return nil -- explicit nil
   end
-  
+
   function widgets.checkBox:findValue(val)
     if not self.radioGroup then return nil end
     if self.value == val then return self end
     return self:wideBroadcast(broadcastLevel, hRadioValueFind, self.radioGroup, val)
   end
-  
+
   function widgets.checkBox:selectValue(val)
     local c = self:findValue(val)
     if c then c:setChecked(true) end
@@ -667,7 +667,7 @@ end do -- label ----------------------------------------------------------------
     expandMode = {1, 0}, -- will expand horizontally, but not vertically
     text = "",
   })
-  
+
   function widgets.label:init(base, param)
     self.text = mg.formatText(param.text)
     self.color = param.color
@@ -675,18 +675,18 @@ end do -- label ----------------------------------------------------------------
     self.align = param.align
     self.wrap = not (param.wrap == false)
     self.expandMode = param.expandMode
-    
-    
+
+
     if param.inline then self.expandMode = {0, 0} end
     if param.expand then self.expandMode = {2, 0} end
     if param.width then
       self.width = param.width
       self.expandMode = {0, 0}
     end
-    
+
     self.backingWidget = mkwidget(base, { type = "canvas" })
   end
-  
+
   function widgets.label:preferredSize(width)
     if self.explicitSize then return self.explicitSize end
     local s = mg.measureString(self.text, self.wrap and width or nil, self.fontSize)
@@ -695,7 +695,7 @@ end do -- label ----------------------------------------------------------------
     if self.width then s[1] = self.width end
     return s
   end
-  
+
   function widgets.label:draw()
     local c = widget.bindCanvas(self.backingWidget) c:clear()
     local pos, ha = {0, self.size[2]}, "left"
@@ -708,7 +708,7 @@ end do -- label ----------------------------------------------------------------
     if color then color = '#' .. color end
     c:drawText(self.text, { position = pos, horizontalAnchor = ha, verticalAnchor = "top", wrapWidth = self.wrap and self.size[1] + 1 or nil }, self.fontSize or 8, color)
   end
-  
+
   function widgets.label:setText(t)
     local old = self.text
     self.text = mg.formatText(t)
@@ -723,7 +723,7 @@ end do -- image ----------------------------------------------------------------
     imgSize = {0, 0},
     scale = 1
   })
-  
+
   function widgets.image:init(base, param)
     self.size = nil -- force recalculate
     self.noAutoCrop = param.noAutoCrop
@@ -736,7 +736,7 @@ end do -- image ----------------------------------------------------------------
     end
     self.scale = param.scale
     if type(self.scale) == "number" then self.scale = {self.scale, self.scale} end
-    
+
     self.backingWidget = mkwidget(base, { type = "canvas" })
   end
   function widgets.image:preferredSize()
@@ -772,14 +772,14 @@ end do -- item slot ------------------------------------------------------------
     storedCount = 0
     --
   })
-  
+
   local autoInteract = { } do -- modes
     function autoInteract.default(self, btn, container)
       if btn == 1 or btn > 2 then return nil end -- no default behavior
-      
+
       -- don't attempt interaction if unsynced container
       if container and not mg.checkSync(true) then return nil end
-      
+
       local itm, set
       if container then
         local cid = pane.sourceEntity()
@@ -790,7 +790,7 @@ end do -- item slot ------------------------------------------------------------
         itm = self:item()
         set = function(item) self:setItem(item) self:onItemModified() end
       end
-      
+
       local stm = player.swapSlotItem()
       if not itm and not stm then return nil end -- blank slot, blank cursor
       local canStack = mg.itemsCanStack(itm, stm)
@@ -824,10 +824,10 @@ end do -- item slot ------------------------------------------------------------
       end
     end
     function autoInteract.container(self, btn) return autoInteract.default(self, btn, true) end
-    
+
     --
   end -- end modes
-  
+
   local containerSlots
   local function containerLoop()
     containerSlots = { }
@@ -849,7 +849,7 @@ end do -- item slot ------------------------------------------------------------
       for i=1,12 do coroutine.yield() end -- every 1/5 sec
     end
   end
-  
+
   function widgets.itemSlot:init(base, param)
     self.size = nil -- force recalculate
     self.hideRarity = param.hideRarity
@@ -859,7 +859,7 @@ end do -- item slot ------------------------------------------------------------
     self.autoInteract = param.autoInteract or param.auto
     self.containerSlot = param.containerSlot
     if self.containerSlot then self.autoInteract = "container" end
-    
+
     self.directCache = param.directCache
     --
     self.backingWidget = mkwidget(base, { type = "canvas" })
@@ -879,7 +879,7 @@ end do -- item slot ------------------------------------------------------------
     local pos = widget.getPosition(self.backingWidget)
     widget.setPosition(self.subWidgets.slot, pos) -- sync position
     widget.setSize(self.subWidgets.slot, {18, 18})
-    
+
     widget.setPosition(self.subWidgets.count, vec2.add(pos, {20, -3}))
   end
   function widgets.itemSlot:draw()
@@ -894,7 +894,7 @@ end do -- item slot ------------------------------------------------------------
     elseif num > 9999 then return math.floor(num / 1000) .. "K"
     end return "" .. num
   end
-  
+
   function widgets.itemSlot:isMouseInteractable() return true end
   function widgets.itemSlot:onMouseEnter() self.hover = true self:queueRedraw() end
   function widgets.itemSlot:onMouseLeave() self.hover = false self:queueRedraw() end
@@ -909,10 +909,10 @@ end do -- item slot ------------------------------------------------------------
     end
   end
   widgets.itemSlot.onCaptureMouseMove = widgets.button.onCaptureMouseMove -- yoink
-  
+
   function widgets.itemSlot:acceptsItem() return true end
   function widgets.itemSlot:onItemModified() end
-  
+
   local deepCopy
   deepCopy = function(t)
     if type(t) ~= "table" then return t end
@@ -923,7 +923,7 @@ end do -- item slot ------------------------------------------------------------
     end
     return n
   end
-  
+
   function widgets.itemSlot:item() return widget.itemSlotItem(self.subWidgets.slot) end
   function widgets.itemSlot:setItem(itm, force)
     if not force
@@ -946,29 +946,29 @@ end do -- item grid ------------------------------------------------------------
   widgets.itemGrid = mg.proto(mg.widgetBase, {
     -- widget attributes
     isBaseWidget = true,
-    
+
     -- defaults
     spacing = 2,
   })
-  
+
   function widgets.itemGrid:init(base, param)
     self.children = self.children or { } -- always have a children table
-    
+
     self.columns = param.columns
     self.spacing = param.spacing
     if type(self.spacing) == "number" then self.spacing = {self.spacing, self.spacing} end
     self.autoInteract = param.autoInteract or param.auto
     self.containerSlot = param.containerSlot
     if self.containerSlot then self.autoInteract = "container" end
-    
+
     self.directCache = param.directCache
-    
+
     self.backingWidget = mkwidget(base, { type = "layout", layoutType = "basic", scissoring = false })
-    
+
     local slots = param.slots or 1
     for i=1,slots do self:addSlot() end
   end
-  
+
   function widgets.itemGrid:addSlot(item)
     local s = self:addChild {
       type = "itemSlot",
@@ -992,27 +992,27 @@ end do -- item grid ------------------------------------------------------------
       for i=count+1, num do self:addSlot() end
     end
   end
-  
+
   function widgets.itemGrid:onSlotMouseEvent(btn, down) end
-  
+
   function widgets.itemGrid:item(index) if not self:slot(index) then return nil end return self:slot(index):item() end
   function widgets.itemGrid:setItem(index, item) if not self:slot(index) then return nil end return self:slot(index):setItem(item) end
-  
+
   function widgets.itemGrid:preferredSize(width)
     local dim = {0, 0}
-    
+
     if self.columns then dim[1] = self.columns else
       width = width + self.spacing[1]
       local sw = 18 + self.spacing[1]
       dim[1] = math.modf(width / sw)
     end
-    
+
     local w, p = math.modf(#(self.children) / dim[1])
     dim[2] = w + math.ceil(p)
-    
+
     return {dim[1] * 18 + self.spacing[1] * (dim[1] - 1), dim[2] * 18 + self.spacing[2] * (dim[2] - 1)}
   end
-  
+
   function widgets.itemGrid:updateGeometry()
     local container = self.autoInteract == "container"
     local slots = #(self.children)
@@ -1029,41 +1029,41 @@ end do -- item grid ------------------------------------------------------------
 end do -- list item ---------------------------------------------------------------------------------------------------------------------------------
   widgets.listItem = mg.proto(mg.widgetBase, {
     expandMode = {1, 0}, -- assumed to be vertical list
-    
+
     padding = 2,
   })
   widgets.menuItem = widgets.listItem -- modified alias
-  
+
   function widgets.listItem:init(base, param)
     self.children = self.children or { }
     self.isMenuItem = param.type == "menuItem"
-    
+
     self.expandMode = param.expandMode
     self.padding = param.padding
     self.buttonLike = param.buttonLike
     self.noAutoSelect = param.noAutoSelect
     self.selectionGroup = param.selectionGroup
-    
+
     widgets.listItem.widgetType = "listItem" -- force it here so nondeterministic iteration order doesn't screw us
     if self.isMenuItem then -- implicit settings
       self.widgetType = "menuItem" -- store this in the widget
       if self.buttonLike == nil then self.buttonLike = true end
       if self.noAutoSelect == nil then self.noAutoSelect = true end
     end
-    
+
     self.backingWidget = mkwidget(base, { type = "canvas" })
     mg.createImplicitLayout(param.children, self, { mode = "horizontal" })
-    
+
     self:subscribeEvent("listItemSelected", function(self, itm)
       if itm ~= self and itm.selectionGroup == self.selectionGroup then
         self:deselect()
       end
     end)
   end
-  
+
   function widgets.listItem:addChild(...) return self.children[1]:addChild(...) end
   function widgets.listItem:clearChildren(...) return self.children[1]:clearChildren(...) end
-  
+
   function widgets.listItem:preferredSize(width)
     if self.explicitSize then return self.explicitSize end
     if width then width = width - self.padding*2 end
@@ -1073,12 +1073,12 @@ end do -- list item ------------------------------------------------------------
     local l = self.children[1]
     l.position = {self.padding, self.padding}
     l.size = vec2.sub(self.size, {self.padding*2, self.padding*2})
-    
+
     l:updateGeometry(true)
     if not noApply then applyGeometry() end
   end
   function widgets.listItem:draw() theme.drawListItem(self) end
-  
+
   function widgets.listItem:isMouseInteractable() return true end
   function widgets.listItem:onMouseEnter() self.hover = true self:queueRedraw() end
   function widgets.listItem:onMouseLeave() self.hover = false self:queueRedraw() end
@@ -1099,9 +1099,9 @@ end do -- list item ------------------------------------------------------------
     end
     return true
   end
-  
+
   widgets.listItem.onCaptureMouseMove = widgets.button.onCaptureMouseMove -- just yoink this
-  
+
   function widgets.listItem:select()
     if self.selected then return nil end -- no need
     self.selected = true
@@ -1119,25 +1119,25 @@ end do -- list item ------------------------------------------------------------
 end do -- text box ----------------------------------------------------------------------------------------------------------------------------------
   widgets.textBox = mg.proto(mg.widgetBase, {
     expandMode = {1, 0},
-    
+
     text = "", textWidth = 0,
     caption = "",
     cursorPos = 0,
     scrollPos = 0,
     frameWidth = 4,
   })
-  
+
   local ptLast = '^(.*%W+)%w%w-%W-$'
   local ptNext = '^%W-%w%w-(%W+.*)$'
-  
+
   function widgets.textBox:init(base, param)
     self.caption = param.caption
     self.color = param.color
-    
+
     self.expandMode = param.expandMode
     if param.inline then self.expandMode = {0, 0} end
     if param.expand then self.expandMode = {2, 0} end
-    
+
     self.backingWidget = mkwidget(base, { type = "canvas" })
     self.subWidgets = { content = mkwidget(base, { type = "canvas" }) }
   end
@@ -1163,7 +1163,7 @@ end do -- text box -------------------------------------------------------------
     end
     c:drawText(self.text, { position = {-self.scrollPos, vc}, horizontalAnchor = "left", verticalAnchor = "mid" }, 8, color)
   end
-  
+
   function widgets.textBox:isMouseInteractable() return true end
   function widgets.textBox:onMouseButtonEvent(btn, down)
     if btn == 0 and down then
@@ -1172,7 +1172,7 @@ end do -- text box -------------------------------------------------------------
         self:moveCursor(self.text:len())
       else -- find cursor position from mouse
         local tp = self:relativeMousePosition()[1] + self.scrollPos - self.frameWidth
-        local fcp, len = 0, self.text:len() 
+        local fcp, len = 0, self.text:len()
         for i = 1, len do
           local m = mg.measureString(self.text:sub(1, i))[1]
           if m > tp then break end
@@ -1194,7 +1194,7 @@ end do -- text box -------------------------------------------------------------
   function widgets.textBox:onMouseWheelEvent(dir)
     self:setScrollPosition(self.scrollPos + dir*15)
   end
-  
+
   function widgets.textBox:focus()
     if not self.focused then
       self:grabFocus()
@@ -1202,7 +1202,7 @@ end do -- text box -------------------------------------------------------------
     end
   end
   function widgets.textBox:blur() self:releaseFocus() end
-  
+
   function widgets.textBox:setText(t)
     local c = self.text
     self.text = type(t) == "string" and t or ""
@@ -1216,7 +1216,7 @@ end do -- text box -------------------------------------------------------------
     self.color = c
     self:queueRedraw()
   end
-  
+
   function widgets.textBox:setScrollPosition(p)
     self.scrollPos = math.max(0, math.min(p, self.textWidth - (self.size[1] - self.frameWidth * 2) + 1))
     self:queueRedraw()
@@ -1233,7 +1233,7 @@ end do -- text box -------------------------------------------------------------
     end
   end
   function widgets.textBox:moveCursor(o) self:setCursorPosition(self.cursorPos + o) end
-  
+
   function widgets.textBox:onFocus() self.focused = true self:queueRedraw() end
   function widgets.textBox:onUnfocus() self.focused = false self:queueRedraw() end
   function widgets.textBox:onKeyEsc() mg.startEvent(self.onEscape, self) end
@@ -1305,7 +1305,7 @@ end do -- text box -------------------------------------------------------------
       --mg.setTitle("key: " .. key)
     end
   end
-  
+
   -- events out
   function widgets.textBox:onTextChanged() end
   function widgets.textBox:onEnter() end
@@ -1315,22 +1315,22 @@ end do -- slider ---------------------------------------------------------------
     min = 0, max = 100, value = 0,
     granularity = 1,
     expandMode = {1, 0},
-    
+
     buffer = 0,
     rawBuffer = 0,
   })
-  
+
   local namedSiblingPools = { }
-  
+
   function widgets.slider:init(base, param)
     self.granularity = param.granularity or param.step
     self:setRange(param.range or param.min, param.max)
     if type(param.value) == "number" then self:setValue(param.value) end
-    
+
     self.state = "idle"
-    
+
     self.backingWidget = mkwidget(base, { type = "canvas" })
-    
+
     -- find/create sibling pool
     local pool = param.pool or param.siblingPool
     if type(pool) == "string" then -- named pool
@@ -1379,12 +1379,12 @@ end do -- slider ---------------------------------------------------------------
     -- remove self from pool
     if self.siblingPool then self.siblingPool[self] = nil end
   end
-  
+
   function widgets.slider:preferredSize() return {96, theme.sliderHeight} end
   function widgets.slider:draw()
     theme.drawSlider(self)
   end
-  
+
   function widgets.slider:isMouseInteractable() return true end
   function widgets.slider:isWheelInteractable() return true end
   function widgets.slider:onMouseEnter()
@@ -1404,14 +1404,14 @@ end do -- slider ---------------------------------------------------------------
     self:setValue(self.value + self.granularity * dir)
     mg.startEvent(self.onValueChanged, self)
   end
-  
+
   function widgets.slider:setRange(min, max)
     if not min and not max then min, max = self.min, self.max end -- nothing given, just use current values
     if not max then max = 0 end
     if type(min) == "table" then min, max = min[1] or 0, min[2] or 0 end
     self.min = math.min(min, max)
     self.max = math.max(min, max)
-    
+
     self.rawBuffer = math.max(mg.measureString(""..min, nil, theme.sliderTextSize)[1], mg.measureString(""..max, nil, theme.sliderTextSize)[1])
     self.buffer = self.rawBuffer
     if self.siblingPool then -- automatically sync adjacent sliders' buffer widths
@@ -1419,7 +1419,7 @@ end do -- slider ---------------------------------------------------------------
       for w in pairs(self.siblingPool) do b = math.max(b, w.rawBuffer) end
       for w in pairs(self.siblingPool) do w.buffer = b w:queueRedraw() end
     end
-    
+
     self:queueRedraw()
   end
   function widgets.slider:setValue(v, raw)
@@ -1430,42 +1430,42 @@ end do -- slider ---------------------------------------------------------------
     self.value = util.clamp(self.value, self.min, self.max)
     self:queueRedraw()
   end
-  
+
   widgets.slider.setText = false
-  
+
   -- events out
   function widgets.slider:onValueChanged() end
-  
-  
+
+
 end do -- tab field ---------------------------------------------------------------------------------------------------------------------------------
   widgets.tabField = mg.proto(mg.widgetBase, {
     expandMode = {1, 2}, -- can expand to fill horizontally, wants to expand vertically
     layout = "horizontal",
     tabWidth = 80,
   })
-  
+
   local linv = {
     horizontal = "vertical",
     vertical = "horizontal",
   }
-  
+
   local tabHeight = 16
-  
+
   function widgets.tabField:init(base, param)
     self.children = self.children or { }
-    
+
     if type(self.explicitSize) == "number" then self.explicitSize = {self.explicitSize, 0} end
-    
+
     self.layout = param.layout
     if not linv[self.layout] then self.layout = nil end
     self.tabWidth = param.tabWidth
     self.expandMode = param.expandMode
     self.noFocusFirstTab = param.noFocusFirstTab
-    
+
     -- and build
     local layout = self.layout
     local inv = linv[layout]
-    
+
     local base = mg.createImplicitLayout({ }, self, { mode = inv })
     local panel = base:addChild { type = "panel", style = "flat" or "concave" }
     local tabScroll = panel.children[1]:addChild { type = "scrollArea", children = { { mode = layout, align = 0, spacing = 1 } } }
@@ -1484,16 +1484,16 @@ end do -- tab field ------------------------------------------------------------
     self.surround = surround
     self.stack = stack
     self.bottomBar = bottomBar
-    
+
     panel.tabStyle = layout -- set style var
-    
+
     self.tabs = { }
     for id, p in ipairs(param.tabs or { }) do
       self:newTab(p)
     end
     --
   end
-  
+
   function widgets.tabField:preferredSize(width)
     local res = self.children[1]:preferredSize(width)
     if self.explicitSize then res[1] = self.explicitSize[1] end
@@ -1502,14 +1502,14 @@ end do -- tab field ------------------------------------------------------------
   function widgets.tabField:updateGeometry(noApply)
     local l = self.children[1]
     l.size = vec2.mul(self.size, 1.0) -- quick copy
-    
+
     l:updateGeometry(true)
     if not noApply then applyGeometry() end
   end
-  
+
   local tabProto = { }
   local tabMt = { __index = tabProto }
-  
+
   function tabProto:setTitle(txt, icon)
     self.titleWidget:setText(txt or tab.id)
     if icon ~= nil then
@@ -1527,9 +1527,11 @@ end do -- tab field ------------------------------------------------------------
   function tabProto:select()
     self.tabWidget:select()
   end
-  
+
   local function evContentsTabChanged(self, tab)
-    self:setVisible(self.tab == tab)
+    if self.tab.parent == tab.parent then -- prevents nested tabFields from their contents becoming invisible if their parent tabField's tab changes
+      self:setVisible(self.tab == tab)
+    end
   end
   local function evTabSelect(self)
     local tf = self.tab.parent
@@ -1540,10 +1542,10 @@ end do -- tab field ------------------------------------------------------------
   end
   function widgets.tabField:newTab(param)
     local first = not self.tabScroll.children[1].children[1] -- check if first tab added
-    
+
     local tab = setmetatable({ parent = self, id = param.id or sb.makeUuid() }, tabMt)
     self.tabs[tab.id] = tab
-    
+
     -- set up tab widget itself
     tab.tabWidget = self.tabScroll.children[1]:addChild { type = "listItem", size = (self.layout == "vertical" and {self.tabWidth, tabHeight} or nil), expandMode = self.layout == "vertical" and {1, 0} or {0, 0}, padding = 0, buttonLike = true, visible = param.visible }
     tab.tabWidget.children[1]:addChild { type = "spacer", size = {0, tabHeight} } -- manual padding
@@ -1552,22 +1554,22 @@ end do -- tab field ------------------------------------------------------------
     tab.tabWidget.children[1]:addChild { type = "spacer", size = {0, tabHeight} } -- manual padding
     tab.tabWidget.tabStyle = self.layout -- set style var
     tab.tabWidget.color = param.color
-    
+
     -- populate title and contents
     tab:setTitle(param.title, param.icon)
     tab.contents = mg.createImplicitLayout(param.contents, self.stack, { mode = "vertical", visible = false })
-    
+
     -- hook up events
     tab.tabWidget.tab = tab
     tab.tabWidget.onSelected = evTabSelect
     tab.contents.tab = tab
     tab.contents:subscribeEvent("tabChanged", evContentsTabChanged)
-    
+
     if first and not self.noFocusFirstTab then tab:select() end
     return tab
   end
-  
+
   function widgets.tabField:onTabChanged() end
-  
-  
+
+
 end

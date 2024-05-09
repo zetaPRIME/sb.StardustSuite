@@ -272,6 +272,11 @@ image:setScale(value)
 ### Canvas
 A raw canvas. Override `draw()` and optionally the various mouse functions to use.
 
+##### Methods
+```lua
+canvas:bind() -- Shorthand for widget.bindCanvas(canvas.backingWidget)
+```
+
 ### Button
 A simple push button. Can be given an accent color.
 ##### Attributes

@@ -1,5 +1,9 @@
 -
 
+ungreg the greg
+
+custom hotbar - mode where hands unlinked
+
 add integration info to startech part of readme (generators, autosmelter)
 
 metaGUI tinkering 2023 {

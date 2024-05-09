@@ -8,6 +8,9 @@
 - [wip] HUD manager
 - Added an important PSA
 
+### Stardust Core Lite
+- Added missing entry for Chroma theme (whoops)
+
 #### metaGUI
 - Added Slider widget
 - Client extension (StarExtensions etc.) integration

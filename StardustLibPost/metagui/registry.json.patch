@@ -6,5 +6,5 @@
   [
     { "op" : "test", "path" : "/themes/frackin.v2" },
     { "op" : "remove", "path" : "/themes/frackin.v2" }
-  ],
+  ]
 ]

@@ -3,6 +3,7 @@
 ungreg the greg
 
 custom hotbar - mode where hands unlinked
+maybe shift chest positioning shenanigans into metaGUI itself
 
 add integration info to startech part of readme (generators, autosmelter)
 

@@ -4,6 +4,27 @@ require "/lib/stardust/itemutil.lua"
 
 local src = pane.sourceEntity()
 
+-- OSB feature: display opposite inventory
+if true and interface and interface.bindRegisteredPane then
+  local inv = interface.bindRegisteredPane("Inventory")
+  local pos = pane.getPosition()
+  local gc = interface.bindCanvas("thing")
+  
+  --pos[1] = gc:size()[1] - metagui.cfg.totalSize[1] - inv.getPosition()[1] -- distance from outer edge
+  local cen = math.floor(gc:size()[1]/2)
+  pos[1] = cen - (inv.getPosition()[1] + inv.getSize()[1] - cen) -- distance from center
+  pos[1] = math.max(pos[1], inv.getPosition()[1] + inv.getSize()[1])
+  -- start up event to force position where we want it
+  metagui.startEvent(function()
+    local size = pane.getSize()
+    pane.setSize{0,0}
+    pane.setPosition(pos)
+    coroutine.yield()
+    pane.setSize(size)
+    pane.setPosition(pos)
+  end)
+end
+
 --local slotsBar = slotsLabel
 slotsBar.state = "idle"
 function slotsBar:isMouseInteractable() return true end

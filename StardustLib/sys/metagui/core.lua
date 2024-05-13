@@ -595,7 +595,7 @@ local function findWindowPosition()
   if not mg.windowPosition then mg.windowPosition = {0, 0} end -- at the very least, make sure this exists
   local fp
   local sz = mg.cfg.totalSize
-  local max = {1920, 1080} -- technically probably 4k
+  local max = {3840, 2160} -- formerly {1920, 1080}
   
   local ws = "_tracker" -- widget to search for
   

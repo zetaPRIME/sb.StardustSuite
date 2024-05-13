@@ -9,9 +9,6 @@
 - [wip] HUD manager
 - Added an important PSA
 
-### Stardust Core Lite
-- Added missing entry for Chroma theme (whoops)
-
 #### metaGUI
 - Added Slider widget
 - Client extension (StarExtensions etc.) integration
@@ -25,6 +22,10 @@
 - Added uninit() for widgets
 - Added explicit width for labels
 - Added wrap toggle for labels (on by default)
+- Expanded initial mouse search range dramatically to encompass even the most extreme resolutions
+
+### Stardust Core Lite
+- Added missing entry for Chroma theme (whoops)
 
 ### Stardust UI
 (0.1.6...)

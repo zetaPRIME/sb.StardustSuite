@@ -5,6 +5,26 @@ ungreg the greg
 custom hotbar - mode where hands unlinked
 maybe shift chest positioning shenanigans into metaGUI itself
 
+Stardust UI rumblings 2024 {
+    paneLayer="hud", dismissable=false
+    
+    custom full UI since displayRegisteredPane exists to do the buttons' job
+    autohide stuff??
+    custom layout - theme dependent? configurable??
+    
+    radial menu on holding r - doing what? do we want to venture away from the vanilla essential slot setup??
+    
+    - - -
+    
+    create a functional inventory replacement first!!
+    can puppet around a {0, 0} sized inventory pane as an origin for openWithInventory panes
+    
+    fake tabfield that doesn't swap?? and just changes the bag that the item grid is representing
+    
+    - need to figure out how to tell (with accuracy) what container the player has open...
+    - since we're OSB, we could do it a messy hacky way, monkey patching ALL container pane configs to hook in
+}
+
 add integration info to startech part of readme (generators, autosmelter)
 
 metaGUI tinkering 2023 {

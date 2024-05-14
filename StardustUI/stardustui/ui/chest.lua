@@ -5,7 +5,7 @@ require "/lib/stardust/itemutil.lua"
 local src = pane.sourceEntity()
 
 -- OSB feature: display opposite inventory
-if true and interface and interface.bindRegisteredPane then
+if false and interface and interface.bindRegisteredPane then
   local inv = interface.bindRegisteredPane("Inventory")
   local pos = pane.getPosition()
   local gc = interface.bindCanvas("thing")

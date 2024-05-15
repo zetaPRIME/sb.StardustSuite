@@ -3,6 +3,8 @@
 -- /run player.interact("ScriptPane", { gui = { }, scripts = {"/metagui.lua"}, config = "stardustui:inventory" })
 
 local mg = metagui
+local ipc = getmetatable''["stardustui:"]
+if not ipc then ipc = { } getmetatable''["stardustui:"] = ipc end
 
 --local itemBags
 itemBagsById = { }
@@ -31,17 +33,46 @@ for k, bag in ipairs(itemBagsById) do -- set up tabs
 end
 
 bagTabs.stack:addChild {
-  type = "scrollArea", children = {
-    { id = "itemGrid", type = "itemGrid", slots = maxBagSize }
+  id = "itemGridContainer", type = "scrollArea", children = {
+    { id = "itemGrid", type = "itemGrid", slots = itemBagsById[1].size }
   }
 }
 
--- -- -- -- --
+-- on bag switch
+itemGrid:subscribeEvent("tabChanged", function(self, tab)
+  local bag = tab._bag
+  itemGridContainer:setVisible(not not bag)
+  if bag then
+    self:setNumSlots(bag.size)
+  end
+end)
 
-function init()
-  --portraitContainer:addChild { type = "portrait" }
-  --portraitCanvas = mg.createWidget { type = "canvas" }--portraitContainer:addChild { type = "canvas" }
+function itemGrid:onSlotMouseEvent(btn, down) -- remember, self is the *slot*, not the grid
+  if down then self:captureMouse(btn) return
+  elseif btn == self:mouseCaptureButton() then
+    self:releaseMouse()
+  else return end
+  
+  local bag = bagTabs.currentTab._bag
+  if not bag then return end
+  local sd = {bag.name, self.index - 1}
+  
+  local shift = mg.checkShift()
+  if shift then
+    if btn ~= 0 then return end -- only left button
+    -- only into an open container
+    if not ipc.openContainerId or not world.containerSize(ipc.openContainerId) then return end
+    local itm = player.item(sd)
+    if not itm then return end -- no item
+    local lo = world.containerItemsFitWhere(ipc.openContainerId, itm).leftover
+    local res = world.containerAddItems(ipc.openContainerId, itm)
+    res.count = lo
+    player.setItem(sd, res)
+    self:setItem(res) -- update immediately
+  end
 end
+
+-- -- -- -- --
 
 local pid = player.id()
 function drawPortrait()
@@ -49,7 +80,6 @@ function drawPortrait()
   if drw then
     local c = portraitCanvas:bind()
     c:clear()
-    --c:drawRect({0, 0, 200, 200}, {0, 0, 0, 63})
     
     -- position (vec2), transformation (table)
     -- image (string), color (table), fullbright (bool, irrelevant)
@@ -60,13 +90,17 @@ function drawPortrait()
   end
 end
 
+function updateStats()
+  
+end
+
+function updateEquipment()
+  
+end
+
 function updateItems()
   local bag = bagTabs.currentTab._bag
-  sb.logInfo("bag is: " .. bag.name)
-  local ac = player.actionBarSlotLink(1, "primary")
-  for k,v in pairs(ac) do
-    sb.logInfo(k .. ": " .. v)
-  end
+  if not bag then return end
   
   local i
   for i = 1, bag.size do
@@ -76,6 +110,8 @@ end
 
 function update()
   drawPortrait()
+  updateStats()
   
+  updateEquipment()
   updateItems()
 end

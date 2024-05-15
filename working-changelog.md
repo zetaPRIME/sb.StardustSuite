@@ -3,6 +3,7 @@
 - Slightly reworked Augpack lighting; should behave identically to before, but may be slightly more efficient
 
 ### Stardust Core
+- Fixed broken magnorbs
 
 ### Stardust Core+Lite
 - **eventHook**: thread-global event subscription and calling

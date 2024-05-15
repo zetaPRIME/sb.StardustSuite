@@ -89,12 +89,14 @@ function world.spawnProjectile(name, pos, src, dir, track, params)
   return spawnProjectile(name, pos, src, dir, track, params)
 end
 
-local _upd = Weapon.update
-function Weapon.update(...)
-  _upd(...)
-  
-  local hd = getmetatable''["stardustlib:hudData"]
-  if hd then
-    hd.targetPos = activeItem.ownerAimPosition()
+if Weapon then
+  local _upd = Weapon.update
+  function Weapon.update(...)
+    _upd(...)
+    
+    local hd = getmetatable''["stardustlib:hudData"]
+    if hd then
+      hd.targetPos = activeItem.ownerAimPosition()
+    end
   end
 end

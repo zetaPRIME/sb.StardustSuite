@@ -1511,7 +1511,7 @@ end do -- tab field ------------------------------------------------------------
   local tabMt = { __index = tabProto }
   
   function tabProto:setTitle(txt, icon)
-    self.titleWidget:setText(txt or tab.id)
+    self.titleWidget:setText(txt or self.id)
     if icon ~= nil then
       self.iconWidget:setFile(icon or nil)
       self.iconWidget:setVisible(not not icon)

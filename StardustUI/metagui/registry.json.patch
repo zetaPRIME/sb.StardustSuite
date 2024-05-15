@@ -1,6 +1,8 @@
 [ // -*- grammar-ext: json -*-
   { "op" : "add", "path" : "/panes/stardustui", "value": {
     "chest" : "/stardustui/ui/buildchest.lua",
-    "chestoptions" : "/stardustui/ui/chestoptions.ui"
+    "chestoptions" : "/stardustui/ui/chestoptions.ui",
+    
+    "inventory" : "/stardustui/ui/inventory.ui"
   } }
 ]

@@ -1,0 +1,21 @@
+{ //  -*- grammar-ext: json -*-
+  "style" : "window", // window (has titlebar), panel (just a frame) etc.
+  "size" : [135, 280], // *internal* size (not including chrome)
+  "title" : "Inventory",
+  //"accentColor" : "7f7787", // a nice near-gray for themes that tint the whole window
+  "uniqueBy" : "path",
+  "scripts" : [ "inventory.lua" ],
+  "resizable" : true,
+  "children" : [
+    //{ "type" : "layout", "id" : "portraitContainer" }
+    [
+      "spacer",
+      { "type" : "panel", "style" : "concave", "children" : [
+        { "type" : "canvas", "id" : "portraitCanvas", "size" : [44, 44] }
+        ]
+      },
+      "spacer"
+    ],
+    { "type" : "tabField", "id" : "bagTabs", "layout" : "vertical", "tabWidth" : 28 }
+  ]
+}

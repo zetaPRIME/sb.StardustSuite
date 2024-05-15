@@ -23,6 +23,7 @@
 - Added explicit width for labels
 - Added wrap toggle for labels (on by default)
 - Expanded initial mouse search range dramatically to encompass even the most extreme resolutions
+- Fixed lua error on creating a tab with no title (oops)
 
 ### Stardust Core Lite
 - Added missing entry for Chroma theme (whoops)

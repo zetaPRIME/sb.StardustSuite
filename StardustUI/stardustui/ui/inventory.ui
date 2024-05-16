@@ -38,25 +38,28 @@
         ],
         [ // stats
           [ // left pane
-            [ // health
+            { "type" : "panel", "style" : "concave", "children" : [ { "mode" : "horizontal" }, // health
               { "type" : "image", "file" : "/interface/inventory/heart.png?replace;ffffff45=00000000" }, -1,
               { "type" : "label", "id" : "statHealth" }
-            ],
-            [ // armor
+            ] }, -3,
+            { "type" : "panel", "style" : "concave", "children" : [ { "mode" : "horizontal" }, // armor
               { "type" : "image", "file" : "/interface/inventory/shield.png?replace;ffffff45=00000000"/*?border=1;ffffff45"*/ }, -1,
               { "type" : "label", "id" : "statArmor" }
-            ]
-          ],
+            ] }
+          ], -3,
           [ // right pane
-            [ // energy
+            { "type" : "panel", "style" : "concave", "children" : [ { "mode" : "horizontal" }, // energy
               { "type" : "image", "file" : "/interface/inventory/lightning.png?replace;ffffff45=00000000" }, -1,
               { "type" : "label", "id" : "statEnergy" }
-            ],
-            [ // attack
+            ] }, -3,
+            { "type" : "panel", "style" : "concave", "children" : [ { "mode" : "horizontal" }, // attack
               { "type" : "image", "file" : "/interface/inventory/sword.png?replace;ffffff45=00000000" }, -1,
               { "type" : "label", "id" : "statAttack" }
-            ]
-          ]
+            ] }
+          ],
+          { "type" : "panel", "style" : "convex", "expandMode" : [0, 0], "children" : [
+            { "type" : "itemSlot", "id" : "slotTrash", "glyph" : "glyphs/trash.png" }
+          ] }
         ]
         
       ]/*,

@@ -256,8 +256,7 @@ function updateStats()
   -- currencies
   lblPixels:setText(player.currency("money"))
   local essence = player.currency("essence")
-  local showEssence = essence > 0
-  if rEssence.visible ~= showEssence then rEssence:setVisible(showEssence) end
+  rEssence:setVisible(essence > 0)
   if rEssence.visible then
     lblEssence:setText(essence)
   end

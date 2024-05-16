@@ -216,7 +216,11 @@ function widgetBase:queueGeometryUpdate() -- find root
   recalcQueue[w] = true
 end
 function widgetBase:updateGeometry() end
-function widgetBase:setVisible(v) self.visible = v self:queueGeometryUpdate() end
+function widgetBase:setVisible(v)
+  v = not not v -- coerce to bool
+  if self.visible == v then return end -- don't thrash
+  self.visible = v self:queueGeometryUpdate()
+end
 
 function widgetBase:addChild(param) return mg.createWidget(param, self) end
 function widgetBase:clearChildren()

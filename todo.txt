@@ -30,6 +30,8 @@ Stardust UI rumblings 2024 {
     will want pane position memory as part of metagui
     hm. probably tab memory for the session
     
+    action bar link follow!
+    
     equipment slots
     trash slot
     stats
@@ -38,6 +40,8 @@ Stardust UI rumblings 2024 {
     pixels/currency
     hotbar slot indicator
     sort button
+    
+    toggle: auto tab switch
 }
 
 add integration info to startech part of readme (generators, autosmelter)

@@ -51,6 +51,7 @@ Stardust UI rumblings 2024 {
     right-click equipment on?
     
     update rate optimizations
+    - item grid doesn't work if it scrolls??? wasn't consuming event
     
     toggle: auto tab switch
     

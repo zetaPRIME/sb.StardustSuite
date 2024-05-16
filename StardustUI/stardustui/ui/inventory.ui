@@ -1,6 +1,6 @@
 { //  -*- grammar-ext: json -*-
   "style" : "window", // window (has titlebar), panel (just a frame) etc.
-  "size" : [135, 280], // *internal* size (not including chrome)
+  "size" : [135, 262], // *internal* size (not including chrome)
   "title" : "Inventory",
   //"accentColor" : "7f7787", // a nice near-gray for themes that tint the whole window
   "uniqueBy" : "path",

@@ -35,6 +35,13 @@ for k, bag in ipairs(itemBagsById) do -- set up tabs
   tab._bag = bag
 end
 
+--[[
+local i
+for i = 1, 5 do
+  local tab = bagTabs:newTab { id = "" .. i }
+  tab.tabWidget.explicitSize = { bagTabs.tabWidth, 20 }
+end-- ]]
+
 bagTabs.stack:addChild {
   id = "itemGridContainer", type = "scrollArea", children = {
     { id = "itemGrid", type = "itemGrid", slots = itemBagsById[1].size }
@@ -81,7 +88,7 @@ end
 -- and define item grid behavior
 itemGrid.onCaptureMouseMove = mg.widgetTypes.button.onCaptureMouseMove
 function itemGrid:onSlotMouseEvent(btn, down) -- remember, self is the *slot*, not the grid
-  if down then self:captureMouse(btn) return
+  if down then self:captureMouse(btn) return true
   elseif btn == self:mouseCaptureButton() then
     self:releaseMouse()
   else return end
@@ -154,6 +161,7 @@ function itemGrid:onSlotMouseEvent(btn, down) -- remember, self is the *slot*, n
     end
   end
   root.setConfigurationPath("inventory.pickupToActionBar", pta)
+  return true
 end
 
 local equipSlots = { }

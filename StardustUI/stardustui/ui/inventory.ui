@@ -38,21 +38,25 @@
         ],
         [ // stats
           [ // left pane
-            { "type" : "panel", "style" : "concave", "children" : [ { "mode" : "horizontal" }, // health
+            { "type" : "panel", "style" : "concave", "padding" : -1, "children" : [ // health
+              { "mode" : "horizontal" }, -1,
               { "type" : "image", "file" : "/interface/inventory/heart.png?replace;ffffff45=00000000" }, -1,
               { "type" : "label", "id" : "statHealth" }
             ] }, -3,
-            { "type" : "panel", "style" : "concave", "children" : [ { "mode" : "horizontal" }, // armor
+            { "type" : "panel", "style" : "concave", "padding" : -1, "children" : [ // armor
+              { "mode" : "horizontal" }, -1,
               { "type" : "image", "file" : "/interface/inventory/shield.png?replace;ffffff45=00000000"/*?border=1;ffffff45"*/ }, -1,
               { "type" : "label", "id" : "statArmor" }
             ] }
           ], -3,
           [ // right pane
-            { "type" : "panel", "style" : "concave", "children" : [ { "mode" : "horizontal" }, // energy
+            { "type" : "panel", "style" : "concave", "padding" : -1, "children" : [ // energy
+              { "mode" : "horizontal" }, -1,
               { "type" : "image", "file" : "/interface/inventory/lightning.png?replace;ffffff45=00000000" }, -1,
               { "type" : "label", "id" : "statEnergy" }
             ] }, -3,
-            { "type" : "panel", "style" : "concave", "children" : [ { "mode" : "horizontal" }, // attack
+            { "type" : "panel", "style" : "concave", "padding" : -1, "children" : [ // attack
+              { "mode" : "horizontal" }, -1,
               { "type" : "image", "file" : "/interface/inventory/sword.png?replace;ffffff45=00000000" }, -1,
               { "type" : "label", "id" : "statAttack" }
             ] }

@@ -195,9 +195,10 @@ end do -- panel ----------------------------------------------------------------
     expandMode = {1, 2}, -- can expand to fill horizontally, wants to expand vertically
     
     style = "convex",
+    padding = 0,
   })
   
-  local padding = 2
+  local edge = 2
   
   function widgets.panel:init(base, param)
     self.children = self.children or { }
@@ -206,12 +207,14 @@ end do -- panel ----------------------------------------------------------------
     
     self.style = param.style
     self.expandMode = param.expandMode
+    self.padding = param.padding
     
     self.backingWidget = mkwidget(base, { type = "canvas" })
     mg.createImplicitLayout(param.children, self, { mode = "vertical" })
   end
   
   function widgets.panel:preferredSize(width)
+    local padding = edge + self.padding
     if width then width = width - padding*2 end
     local res = vec2.add(self.children[1]:preferredSize(width), {padding*2, padding*2})
     if self.explicitSize then
@@ -221,6 +224,7 @@ end do -- panel ----------------------------------------------------------------
     return res
   end
   function widgets.panel:updateGeometry(noApply)
+    local padding = edge + self.padding
     local l = self.children[1]
     l.position = {padding, padding}
     l.size = vec2.sub(self.size, {padding*2, padding*2})

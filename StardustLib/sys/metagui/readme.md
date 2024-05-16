@@ -183,6 +183,7 @@ Essentially a layout with a background.
 ##### Attributes
 ```js
 "style" : "concave", // "convex" (default), "concave", "flat"
+"padding" : 0, // Internal padding, added to the default two-pixel edge.
 ```
 
 ### Scroll Area

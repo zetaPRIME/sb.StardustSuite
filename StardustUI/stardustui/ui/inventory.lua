@@ -215,8 +215,19 @@ function drawPortrait()
   end
 end
 
+local function numStr(n, percent) -- friendly string representation of number
+  if percent then n = math.floor(0.5 + n * 10000) / 100 end
+  n = math.floor(n*100+0.5)/100 -- limit to two decimal points
+  local fn = math.floor(n)
+  if math.abs(fn - n) < 0.05 then n = fn end
+  return tostring(n) .. (percent and "%" or "")
+end
+
 function updateStats()
-  
+  statHealth:setText(numStr(status.stat("maxHealth")))
+  statEnergy:setText(numStr(status.stat("maxEnergy")))
+  statArmor:setText(numStr(status.stat("protection")))
+  statAttack:setText(numStr(status.stat("powerMultiplier"), true))
 end
 
 function updateEquipment()

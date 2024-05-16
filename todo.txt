@@ -33,8 +33,8 @@ Stardust UI rumblings 2024 {
     - action bar link follow!
     
     - equipment slots
+    - stats
     trash slot
-    stats
     techs?
     pet stats??
     pixels/currency

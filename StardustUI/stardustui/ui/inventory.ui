@@ -11,7 +11,7 @@
     [
       [
         //{ "type" : "label", "text" : "Equipment", "align" : "center" },
-        [
+        [ // equipment pane
           "spacer",
           [
             { "type" : "itemSlot", "id" : "slotBack" },
@@ -35,6 +35,28 @@
             ]
           ],
           "spacer"
+        ],
+        [ // stats
+          [ // left pane
+            [ // health
+              { "type" : "image", "file" : "/interface/inventory/heart.png?replace;ffffff45=00000000" }, -1,
+              { "type" : "label", "id" : "statHealth" }
+            ],
+            [ // armor
+              { "type" : "image", "file" : "/interface/inventory/shield.png?replace;ffffff45=00000000"/*?border=1;ffffff45"*/ }, -1,
+              { "type" : "label", "id" : "statArmor" }
+            ]
+          ],
+          [ // right pane
+            [ // energy
+              { "type" : "image", "file" : "/interface/inventory/lightning.png?replace;ffffff45=00000000" }, -1,
+              { "type" : "label", "id" : "statEnergy" }
+            ],
+            [ // attack
+              { "type" : "image", "file" : "/interface/inventory/sword.png?replace;ffffff45=00000000" }, -1,
+              { "type" : "label", "id" : "statAttack" }
+            ]
+          ]
         ]
         
       ]/*,
@@ -45,7 +67,7 @@
           "spacer"
         ]
       ]*/
-    ],
+    ], -3, // decrease spacing 
     { "type" : "tabField", "id" : "bagTabs", "layout" : "vertical", "tabWidth" : 28 }
   ]
 }

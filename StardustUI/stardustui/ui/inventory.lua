@@ -50,6 +50,35 @@ itemGrid:subscribeEvent("tabChanged", function(self, tab)
   end
 end)
 
+local numActionBarSlots = root.assetJson("/player.config").inventory.customBarIndexes
+function swapActionBarLinks(a, b, uni)
+  local cmt = { }
+  local hands = {"primary", "alt"}
+  local function cmp(a, b)
+    if type(a) ~= "table" or type(b) ~= "table" then return a == b end
+    return a[1] == b[1] and a[2] == b[2]
+  end
+  
+  local i
+  for i = 1, numActionBarSlots do
+    for _, hand in pairs(hands) do
+      local lnk = player.actionBarSlotLink(i, hand)
+      if cmp(lnk, a) then
+        table.insert(cmt, function() player.setActionBarSlotLink(i, hand, b) end)
+      elseif (not uni) and cmp(lnk, b) then
+        table.insert(cmt, function() player.setActionBarSlotLink(i, hand, a) end)
+      end
+    end
+  end
+  
+  local function cc()
+    for _,f in pairs(cmt) do f() end
+  end
+  cc()
+  return cc
+end
+
+-- and define item grid behavior
 itemGrid.onCaptureMouseMove = mg.widgetTypes.button.onCaptureMouseMove
 function itemGrid:onSlotMouseEvent(btn, down) -- remember, self is the *slot*, not the grid
   if down then self:captureMouse(btn) return
@@ -60,7 +89,10 @@ function itemGrid:onSlotMouseEvent(btn, down) -- remember, self is the *slot*, n
   local bag = bagTabs.currentTab._bag
   if not bag then return end
   local sd = {bag.name, self.index - 1}
+  local swd = "swap"
   local itm = player.item(sd)
+  
+  local pta = root.getConfigurationPath("inventory.pickupToActionBar")
   
   local shift = mg.checkShift()
   if shift and btn == 0 then -- shift+lclick into an open container
@@ -77,15 +109,20 @@ function itemGrid:onSlotMouseEvent(btn, down) -- remember, self is the *slot*, n
     --if itm and stm and not root.itemDescriptorsMatch(itm, stm) then return end -- 
     if stm and not player.itemAllowedInBag(bag.name, stm) then return end -- carrying forbidden item; game will reject placement
     
+    root.setConfigurationPath("inventory.pickupToActionBar", false)
+    -- BE CAREFUL ABOUT RETURNING HERE ^^^
     if btn == 0 then -- left click
       if not mg.itemsCanStack(itm, stm) then -- heterogenous: plonk in/swap
+        local commit = swapActionBarLinks(sd, swd)
         player.setItem(sd, stm)
         player.setSwapSlotItem(itm)
+        commit()
       else -- homogenous: attempt to stack into
         -- we know both items exist and are the same
         local maxStack = mg.itemMaxStack(itm)
         local xf = math.min(maxStack - itm.count, stm.count) -- max transfer
         if xf > 0 then -- we want to transfer more than zero, do the thing
+          swapActionBarLinks(swd, sd, true) -- deposit links from swap slot into inventory
           itm.count = itm.count + xf
           stm.count = stm.count - xf
           player.setItem(sd, itm)
@@ -108,11 +145,15 @@ function itemGrid:onSlotMouseEvent(btn, down) -- remember, self is the *slot*, n
       if xf > 0 then -- we want to transfer more than zero, do the thing
         itm.count = itm.count - xf
         stm.count = stm.count + xf
+        if itm.count == 0 then -- last of it
+          swapActionBarLinks(sd, swd, true) -- yoink bar link
+        end
         player.setItem(sd, itm)
         player.setSwapSlotItem(stm)
       end
     end
   end
+  root.setConfigurationPath("inventory.pickupToActionBar", pta)
 end
 
 -- -- -- -- --

@@ -30,7 +30,7 @@ Stardust UI rumblings 2024 {
     will want pane position memory as part of metagui
     hm. probably tab memory for the session
     
-    action bar link follow!
+    - action bar link follow!
     
     equipment slots
     trash slot

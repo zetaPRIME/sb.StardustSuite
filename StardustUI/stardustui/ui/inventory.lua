@@ -269,10 +269,17 @@ function updateItems()
   end
 end
 
+local vpane = interface.bindRegisteredPane "Inventory"
 function update()
   drawPortrait()
   updateStats()
   
   updateEquipment()
   updateItems()
+  
+  if not vpane.isDisplayed() then pane.dismiss() end
+end
+
+function uninit()
+  vpane.dismiss()
 end

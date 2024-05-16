@@ -10,3 +10,8 @@ local cfgs = assets.byExtension("config")
 for k, v in pairs(cfgs) do
   assets.patch(v, "/stardustui/containerhook.patch.lua")
 end
+
+-- install HUD engine only on OSB
+local p = "/stardustui/hudengine.patch"
+assets.add(p, '{"genericScriptContexts":{"stardustui:hudengine":"/stardustui/hudengine.lua"}}')
+assets.patch("/player.config", p)

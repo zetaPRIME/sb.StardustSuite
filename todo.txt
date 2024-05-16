@@ -34,7 +34,7 @@ Stardust UI rumblings 2024 {
     
     - equipment slots
     - stats
-    trash slot
+    - trash slot
     techs?
     pet stats??
     pixels/currency
@@ -45,6 +45,8 @@ Stardust UI rumblings 2024 {
     wait, how do you even do that???
     ah, it runs kind of sort of a build script
     I guess do some dirty synchronous pane init hackery
+    
+    burn sfx on overwriting an item in trash slot
     
     toggle: auto tab switch
     

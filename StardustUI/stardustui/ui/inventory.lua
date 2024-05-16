@@ -157,7 +157,7 @@ function itemGrid:onSlotMouseEvent(btn, down) -- remember, self is the *slot*, n
 end
 
 local equipSlots = { }
-do
+do -- set up equipment slots
   local mouseEv = function(self, btn, down)
     if down then self:captureMouse(btn) return
     elseif btn == self:mouseCaptureButton() then
@@ -191,6 +191,29 @@ do
       slot._accepts = sb .. "armor"
       equipSlots[s] = slot
       slot.onMouseButtonEvent = mouseEv
+    end
+  end
+end
+
+function slotTrash:onMouseButtonEvent(btn, down)
+  if down then self:captureMouse(btn) return
+  elseif btn == self:mouseCaptureButton() then
+    self:releaseMouse()
+  else return end
+  
+  if btn == 1 or btn > 2 then return end -- only left/right
+  
+  if btn == 0 and mg.checkShift() then -- shift click back into inventory
+    player.giveItem(self:item())
+    self:setItem(nil)
+  else -- normal click
+    local stm = player.swapSlotItem()
+    if not stm then -- no item in cursor, pull out
+      player.setSwapSlotItem(self:item())
+      self:setItem(nil)
+    else -- trash item in cursor
+      self:setItem(stm)
+      player.setSwapSlotItem(nil)
     end
   end
 end

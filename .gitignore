@@ -39,6 +39,9 @@ luac.out
 *.x86_64
 *.hex
 
+# krita backups
+*.png~
+
 # stuff
 _release/*
 _tmp/*

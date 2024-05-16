@@ -32,7 +32,7 @@ Stardust UI rumblings 2024 {
     
     - action bar link follow!
     
-    equipment slots
+    / equipment slots
     trash slot
     stats
     techs?
@@ -40,6 +40,11 @@ Stardust UI rumblings 2024 {
     pixels/currency
     hotbar slot indicator
     sort button
+    
+    AUGMENT APPLICATION!!!
+    wait, how do you even do that???
+    ah, it runs kind of sort of a build script
+    I guess do some dirty synchronous pane init hackery
     
     toggle: auto tab switch
 }

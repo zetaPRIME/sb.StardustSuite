@@ -156,12 +156,26 @@ function itemGrid:onSlotMouseEvent(btn, down) -- remember, self is the *slot*, n
   root.setConfigurationPath("inventory.pickupToActionBar", pta)
 end
 
+local equipSlots = { }
+do
+  local sn = {"back", "backCosmetic", "head", "headCosmetic", "chest", "chestCosmetic", "legs", "legsCosmetic"}
+  -- (str:gsub("^%l", string.upper))
+  for _, s in pairs(sn) do
+    local S = s:gsub("^%l", string.upper) -- capitalize
+    local slot = _ENV["slot" .. S]
+    slot._slotName = s
+    equipSlots[s] = slot
+  end
+end
+
 -- -- -- -- --
 
 local pid = player.id()
 function drawPortrait()
   local drw = world.entityPortrait(pid, "Full")
   if drw then
+    local scale = 1.5
+    local off = {-10, 0}
     local c = portraitCanvas:bind()
     c:clear()
     
@@ -169,7 +183,7 @@ function drawPortrait()
     -- image (string), color (table), fullbright (bool, irrelevant)
     for k,v in pairs(drw) do
       -- TODO?? figure out wtf transformation means here
-      c:drawImage(v.image, v.position, 1.0, v.color, false)
+      c:drawImage(v.image, vec2.add(off, vec2.mul(v.position, scale)), scale, v.color, false)
     end
   end
 end
@@ -179,7 +193,9 @@ function updateStats()
 end
 
 function updateEquipment()
-  
+  for s, slot in pairs(equipSlots) do
+    slot:setItem(player.equippedItem(s))
+  end
 end
 
 function updateItems()

@@ -9,12 +9,42 @@
   "children" : [
     //{ "type" : "layout", "id" : "portraitContainer" }
     [
-      "spacer",
-      { "type" : "panel", "style" : "concave", "children" : [
-        { "type" : "canvas", "id" : "portraitCanvas", "size" : [44, 44] }
+      [
+        //{ "type" : "label", "text" : "Equipment", "align" : "center" },
+        [
+          "spacer",
+          [
+            { "type" : "itemSlot", "id" : "slotBack" },
+            { "type" : "itemSlot", "id" : "slotBackCosmetic" }
+          ],
+          { "type" : "panel", "style" : "concave", "expandMode" : [0, 0], "children" : [
+            { "type" : "canvas", "id" : "portraitCanvas", "size" : [44, 54] }
+          ] },
+          [
+            [
+              { "type" : "itemSlot", "id" : "slotHead" },
+              { "type" : "itemSlot", "id" : "slotHeadCosmetic" }
+            ],
+            [
+              { "type" : "itemSlot", "id" : "slotChest" },
+              { "type" : "itemSlot", "id" : "slotChestCosmetic" }
+            ],
+            [
+              { "type" : "itemSlot", "id" : "slotLegs" },
+              { "type" : "itemSlot", "id" : "slotLegsCosmetic" }
+            ]
+          ],
+          "spacer"
         ]
-      },
-      "spacer"
+        
+      ]/*,
+      [
+        { "type" : "label", "text" : "Stats", "align" : "center" },
+        [ { "expandMode" : [2, 2] },
+          
+          "spacer"
+        ]
+      ]*/
     ],
     { "type" : "tabField", "id" : "bagTabs", "layout" : "vertical", "tabWidth" : 28 }
   ]

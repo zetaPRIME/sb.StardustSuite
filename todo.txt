@@ -35,22 +35,28 @@ Stardust UI rumblings 2024 {
     - equipment slots
     - stats
     - trash slot
-    techs?
-    pet stats??
-    pixels/currency
+    - pixels/currency
     hotbar slot indicator
     sort button
+    techs?
+    pet stats??
     
     AUGMENT APPLICATION!!!
     wait, how do you even do that???
     ah, it runs kind of sort of a build script
     I guess do some dirty synchronous pane init hackery
     
+    armor slot glyphs
     burn sfx on overwriting an item in trash slot
+    right-click equipment on?
+    
+    update rate optimizations
     
     toggle: auto tab switch
     
+    fix broken container switch
     eventually, figure out the smol oddness with nanofield head/leg slots
+    costumes still display base body for some reason
 }
 
 add integration info to startech part of readme (generators, autosmelter)

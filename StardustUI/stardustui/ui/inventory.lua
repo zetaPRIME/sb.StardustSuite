@@ -247,11 +247,21 @@ local function numStr(n, percent) -- friendly string representation of number
 end
 
 function updateStats()
+  -- combat stats
   statHealth:setText(numStr(status.stat("maxHealth")))
   statEnergy:setText(numStr(status.stat("maxEnergy")))
   statArmor:setText(numStr(status.stat("protection")))
   statAttack:setText(numStr(status.stat("powerMultiplier"), true))
-end
+  
+  -- currencies
+  lblPixels:setText(player.currency("money"))
+  local essence = player.currency("essence")
+  local showEssence = essence > 0
+  if rEssence.visible ~= showEssence then rEssence:setVisible(showEssence) end
+  if rEssence.visible then
+    lblEssence:setText(essence)
+  end
+end updateStats()
 
 function updateEquipment()
   for s, slot in pairs(equipSlots) do

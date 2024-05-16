@@ -75,6 +75,15 @@
         ]
       ]*/
     ], -3, // decrease spacing 
-    { "type" : "tabField", "id" : "bagTabs", "layout" : "vertical", "tabWidth" : 28 }
+    { "type" : "tabField", "id" : "bagTabs", "layout" : "vertical", "tabWidth" : 28 },
+    [ // status bar
+      { "height" : 12 },
+      { "type" : "image", "file" : "/items/currency/money.png" }, -1,
+      { "type" : "label", "id" : "lblPixels", "text" : "0", "inline" : true },
+      [ { "id" : "rEssence", "mode" : "horizontal" },
+        { "type" : "image", "file" : "/animations/shards/ancientenergy.png:3?replace;6600d880=000000ff" }, -1,
+        { "type" : "label", "id" : "lblEssence", "text" : "0", "inline" : true }
+      ]
+    ]
   ]
 }

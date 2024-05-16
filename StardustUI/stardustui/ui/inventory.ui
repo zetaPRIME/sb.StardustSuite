@@ -15,7 +15,7 @@
           "spacer",
           [
             { "type" : "itemSlot", "id" : "slotBack" },
-            { "type" : "itemSlot", "id" : "slotBackCosmetic" }
+            { "type" : "itemSlot", "id" : "slotBackCosmetic", "glyph" : "glyphs/cosmetic.png" }
           ],
           { "type" : "panel", "style" : "concave", "expandMode" : [0, 0], "children" : [
             { "type" : "canvas", "id" : "portraitCanvas", "size" : [44, 54] }
@@ -23,15 +23,15 @@
           [
             [
               { "type" : "itemSlot", "id" : "slotHead" },
-              { "type" : "itemSlot", "id" : "slotHeadCosmetic" }
+              { "type" : "itemSlot", "id" : "slotHeadCosmetic", "glyph" : "glyphs/cosmetic.png" }
             ],
             [
               { "type" : "itemSlot", "id" : "slotChest" },
-              { "type" : "itemSlot", "id" : "slotChestCosmetic" }
+              { "type" : "itemSlot", "id" : "slotChestCosmetic", "glyph" : "glyphs/cosmetic.png" }
             ],
             [
               { "type" : "itemSlot", "id" : "slotLegs" },
-              { "type" : "itemSlot", "id" : "slotLegsCosmetic" }
+              { "type" : "itemSlot", "id" : "slotLegsCosmetic", "glyph" : "glyphs/cosmetic.png" }
             ]
           ],
           "spacer"

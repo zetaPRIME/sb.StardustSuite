@@ -158,13 +158,40 @@ end
 
 local equipSlots = { }
 do
-  local sn = {"back", "backCosmetic", "head", "headCosmetic", "chest", "chestCosmetic", "legs", "legsCosmetic"}
+  local mouseEv = function(self, btn, down)
+    if down then self:captureMouse(btn) return
+    elseif btn == self:mouseCaptureButton() then
+      self:releaseMouse()
+    else return end
+    
+    if btn == 1 or btn > 2 then return end -- only left/right
+    
+    local itm = player.equippedItem(self._slotName)
+    local stm = player.swapSlotItem()
+    
+    if false then
+      -- TODO augments
+    else
+      if not stm or root.itemType(stm.name) == self._accepts then -- fits
+        player.setEquippedItem(self._slotName, stm)
+        player.setSwapSlotItem(itm)
+      end
+    end
+  end
+  
+  local sn = {"back", "head", "chest", "legs"}
+  local sv = {"", "Cosmetic"}
   -- (str:gsub("^%l", string.upper))
-  for _, s in pairs(sn) do
-    local S = s:gsub("^%l", string.upper) -- capitalize
-    local slot = _ENV["slot" .. S]
-    slot._slotName = s
-    equipSlots[s] = slot
+  for _, sb in pairs(sn) do
+    for _, v in pairs(sv) do
+      local s = sb .. v
+      local S = s:gsub("^%l", string.upper) -- capitalize
+      local slot = _ENV["slot" .. S]
+      slot._slotName = s
+      slot._accepts = sb .. "armor"
+      equipSlots[s] = slot
+      slot.onMouseButtonEvent = mouseEv
+    end
   end
 end
 

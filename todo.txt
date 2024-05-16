@@ -32,7 +32,7 @@ Stardust UI rumblings 2024 {
     
     - action bar link follow!
     
-    / equipment slots
+    - equipment slots
     trash slot
     stats
     techs?
@@ -47,6 +47,8 @@ Stardust UI rumblings 2024 {
     I guess do some dirty synchronous pane init hackery
     
     toggle: auto tab switch
+    
+    eventually, figure out the smol oddness with nanofield head/leg slots
 }
 
 add integration info to startech part of readme (generators, autosmelter)

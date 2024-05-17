@@ -488,6 +488,17 @@ function init() ----------------------------------------------------------------
   mg.inputData = mg.cfg.inputData -- alias
   
   mg.settings = player.getProperty("metagui:settings") or player.getProperty("metaGUISettings") or { }
+  if mg.cfg.configPath then -- retrieve/init state memory
+    mg.state = player.getProperty("metagui:state", { })[mg.cfg.configPath] or { }
+  else mg.state = { } end -- blank if completely adhoc?
+  
+  if pane.setPosition and not mg.cfg.anchor then
+    local p = mg.state["metagui:lastPosition"]
+    if p then -- restore to remembered position
+      p[2] = p[2] - pane.getSize()[2]
+      pane.setPosition(p)
+    end
+  end
   
   mg.theme = root.assetJson(mg.cfg.themePath .. "theme.json")
   mg.theme.id = mg.cfg.theme
@@ -589,6 +600,21 @@ end
 function uninit()
   killKeysub()
   for _, f in pairs(scriptUninit) do f() end
+  if mg.cfg.configPath then -- save state memory
+    if pane.setPosition and not mg.cfg.anchor then -- save last position
+      local p = pane.getPosition()
+      p[2] = p[2] + pane.getSize()[2] -- store by top-left even though counted from bottom-left
+      mg.state["metagui:lastPosition"] = p
+    end
+    
+    local f = false
+    for _ in pairs(mg.state) do f = true break end -- check if any storage present
+    
+    -- and store
+    local sm = player.getProperty("metagui:state", { })
+    sm[mg.cfg.configPath] = f and mg.state or nil
+    player.setProperty("metagui:state", sm)
+  end
   if mg.ipc.uniqueByPath and mg.cfg.configPath then mg.ipc.uniqueByPath[mg.cfg.configPath] = nil end
   if mg.cfg.isContainer then mg.ipc.openContainerProxy = nil end
 end

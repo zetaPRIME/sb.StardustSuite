@@ -492,21 +492,6 @@ function init() ----------------------------------------------------------------
     mg.state = player.getProperty("metagui:state", { })[mg.cfg.configPath] or { }
   else mg.state = { } end -- blank if completely adhoc?
   
-  if pane.setPosition and not mg.cfg.anchor then
-    local p = mg.state["metagui:lastPosition"]
-    if p then -- restore to remembered position
-      local s = pane.getSize()
-      p[2] = p[2] - s[2]
-      if interface and interface.bindCanvas then -- pop into the screen
-        local sc = interface.bindCanvas("metagui"):size()
-        local m = 32 -- margin
-        p[1] = util.clamp(p[1], -s[1]+m, sc[1]-m)
-        p[2] = util.clamp(p[2], -s[2]+m, sc[2]-m)
-      end
-      pane.setPosition(p)
-    end
-  end
-  
   mg.theme = root.assetJson(mg.cfg.themePath .. "theme.json")
   mg.theme.id = mg.cfg.theme
   mg.theme.path = mg.cfg.themePath
@@ -576,6 +561,22 @@ function init() ----------------------------------------------------------------
     if init then init() end -- call script init
   end
   update, uninit = sysUpdate, sysUninit
+  
+  -- position memory
+  if pane.setPosition and not mg.cfg.anchor then
+    local p = mg.state["metagui:lastPosition"]
+    if p then -- restore to remembered position
+      local s = pane.getSize()
+      p[2] = p[2] - s[2]
+      if interface and interface.bindCanvas then -- pop into the screen
+        local sc = interface.bindCanvas("metagui"):size()
+        local m = 32 -- margin
+        p[1] = util.clamp(p[1], -s[1]+m, sc[1]-m)
+        p[2] = util.clamp(p[2], -s[2]+m, sc[2]-m)
+      end
+      pane.setPosition(p)
+    end
+  end
   
   frame:updateGeometry()
   paneBase:updateGeometry()

@@ -1,5 +1,8 @@
 -- Stardust UI HUD engine (player script)
 
+local ipc = getmetatable''["stardustui:"]
+if not ipc then ipc = { } getmetatable''["stardustui:"] = ipc end
+
 local tasks = { }
 function task(f)
   table.insert(tasks, coroutine.create(f))
@@ -26,8 +29,10 @@ end
 task(function()
   local inv = interface.bindRegisteredPane "Inventory"
   while true do
-    while not inv.isDisplayed() do coroutine.yield() end
-    openUI("stardustui:inventory")
-    while inv.isDisplayed() do coroutine.yield() end
+    if inv.isDisplayed() and not ipc.inventoryOpen then
+      openUI("stardustui:inventory")
+      coroutine.yield() -- need to give it an extra frame to open
+    end
+    coroutine.yield()
   end
 end)

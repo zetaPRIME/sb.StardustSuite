@@ -296,6 +296,7 @@ function updateItems()
   end
 end updateItems()
 
+local autoDismiss
 local vpane = interface.bindRegisteredPane "Inventory"
 function update()
   drawPortrait()
@@ -304,10 +305,17 @@ function update()
   updateEquipment()
   updateItems()
   
-  if not vpane.isDisplayed() then pane.dismiss() end
+  if not vpane.isDisplayed() then autoDismiss = true pane.dismiss()
+  else -- puppet things around
+    local p, s = pane.getPosition(), pane.getSize()
+    vpane.setSize{s[1], 0}
+    vpane.setPosition{p[1], p[2] + s[2]/2}
+  end
 end
 
+ipc.inventoryOpen = true
 function uninit()
+  ipc.inventoryOpen = false
   mg.state.scrollPos = itemGridContainer:scrollPosition()
-  vpane.dismiss()
+  if not autoDismiss then vpane.dismiss() end
 end

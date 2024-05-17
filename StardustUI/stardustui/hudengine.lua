@@ -28,6 +28,9 @@ end
 
 task(function()
   local inv = interface.bindRegisteredPane "Inventory"
+  if inv.getSize()[2] > 0 then -- start of session
+    inv.setSize{0, 0}
+  end
   while true do
     if inv.isDisplayed() and not ipc.inventoryOpen then
       openUI("stardustui:inventory")

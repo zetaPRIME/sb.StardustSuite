@@ -608,6 +608,7 @@ end
 function uninit()
   killKeysub()
   for _, f in pairs(scriptUninit) do f() end
+  
   if mg.cfg.configPath then -- save state memory
     if pane.setPosition and not mg.cfg.anchor then -- save last position
       local p = pane.getPosition()
@@ -623,6 +624,7 @@ function uninit()
     sm[mg.cfg.configPath] = f and mg.state or nil
     player.setProperty("metagui:state", sm)
   end
+  
   if mg.ipc.uniqueByPath and mg.cfg.configPath then mg.ipc.uniqueByPath[mg.cfg.configPath] = nil end
   if mg.cfg.isContainer then mg.ipc.openContainerProxy = nil end
 end

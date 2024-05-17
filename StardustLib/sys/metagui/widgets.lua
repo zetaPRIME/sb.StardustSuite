@@ -1441,6 +1441,7 @@ end do -- slider ---------------------------------------------------------------
   function widgets.slider:onValueChanged() end
   
   
+  --
 end do -- tab field ---------------------------------------------------------------------------------------------------------------------------------
   widgets.tabField = mg.proto(mg.widgetBase, {
     expandMode = {1, 2}, -- can expand to fill horizontally, wants to expand vertically

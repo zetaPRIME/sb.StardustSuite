@@ -27,8 +27,8 @@ Stardust UI rumblings 2024 {
     x { type=portrait scale=1.5 renderHumanoid=true }
     - got the portrait working via canvas though
     
-    will want pane position memory as part of metagui
-    hm. probably tab memory for the session
+    - will want pane position memory as part of metagui
+    - hm. probably tab memory for the session
     
     - action bar link follow!
     

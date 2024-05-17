@@ -50,12 +50,18 @@ bagTabs.stack:addChild {
 
 -- on bag switch
 itemGrid:subscribeEvent("tabChanged", function(self, tab)
+  mg.state.tab = tab.id
   local bag = tab._bag
   itemGridContainer:setVisible(not not bag)
   if bag then
     self:setNumSlots(bag.size)
   end
 end)
+
+if mg.state.tab then
+  local t = bagTabs.tabs[mg.state.tab]
+  if t then t:select() end
+end
 
 local numActionBarSlots = root.assetJson("/player.config").inventory.customBarIndexes
 function swapActionBarLinks(a, b, uni)

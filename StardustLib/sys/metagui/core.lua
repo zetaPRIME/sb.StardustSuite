@@ -495,7 +495,14 @@ function init() ----------------------------------------------------------------
   if pane.setPosition and not mg.cfg.anchor then
     local p = mg.state["metagui:lastPosition"]
     if p then -- restore to remembered position
-      p[2] = p[2] - pane.getSize()[2]
+      local s = pane.getSize()
+      p[2] = p[2] - s[2]
+      if interface and interface.bindCanvas then -- pop into the screen
+        local sc = interface.bindCanvas("metagui"):size()
+        local m = 32 -- margin
+        p[1] = util.clamp(p[1], -s[1]+m, sc[1]-m)
+        p[2] = util.clamp(p[2], -s[2]+m, sc[2]-m)
+      end
       pane.setPosition(p)
     end
   end

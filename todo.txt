@@ -60,7 +60,7 @@ Stardust UI rumblings 2024 {
     costumes still display base body for some reason
 }
 
-!!! force recoverability for metaGUI panes !!!
+- force recoverability for metaGUI panes
 
 add integration info to startech part of readme (generators, autosmelter)
 

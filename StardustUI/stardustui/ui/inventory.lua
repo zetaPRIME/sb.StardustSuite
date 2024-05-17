@@ -63,6 +63,10 @@ if mg.state.tab then
   if t then t:select() end
 end
 
+if mg.state.scrollPos then
+  itemGridContainer:scrollTo(mg.state.scrollPos, true, true)
+end
+
 local numActionBarSlots = root.assetJson("/player.config").inventory.customBarIndexes
 function swapActionBarLinks(a, b, uni)
   local cmt = { }
@@ -250,7 +254,7 @@ function drawPortrait()
       c:drawImage(v.image, vec2.add(off, vec2.mul(v.position, scale)), scale, v.color, false)
     end
   end
-end
+end drawPortrait()
 
 local function numStr(n, percent) -- friendly string representation of number
   if percent then n = math.floor(0.5 + n * 10000) / 100 end
@@ -280,7 +284,7 @@ function updateEquipment()
   for s, slot in pairs(equipSlots) do
     slot:setItem(player.equippedItem(s))
   end
-end
+end updateEquipment()
 
 function updateItems()
   local bag = bagTabs.currentTab._bag
@@ -290,7 +294,7 @@ function updateItems()
   for i = 1, bag.size do
     itemGrid:setItem(i, player.item{bag.name, i-1})
   end
-end
+end updateItems()
 
 local vpane = interface.bindRegisteredPane "Inventory"
 function update()
@@ -304,5 +308,6 @@ function update()
 end
 
 function uninit()
+  mg.state.scrollPos = itemGridContainer:scrollPosition()
   vpane.dismiss()
 end

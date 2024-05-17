@@ -44,7 +44,7 @@ end-- ]]
 
 bagTabs.stack:addChild {
   id = "itemGridContainer", type = "scrollArea", children = {
-    { id = "itemGrid", type = "itemGrid", slots = itemBagsById[1].size }
+    { id = "itemGrid", type = "itemGrid", slots = maxBagSize }
   }
 }
 
@@ -53,6 +53,7 @@ itemGrid:subscribeEvent("tabChanged", function(self, tab)
   mg.state.tab = tab.id
   local bag = tab._bag
   itemGridContainer:setVisible(not not bag)
+  itemGridContainer:scrollTo({0, 0}) -- back to the top
   if bag then
     self:setNumSlots(bag.size)
   end
@@ -63,8 +64,9 @@ if mg.state.tab then
   if t then t:select() end
 end
 
-if mg.state.scrollPos then
-  itemGridContainer:scrollTo(mg.state.scrollPos, true, true)
+if mg.state.scrollPos then -- restore scroll position
+  itemGridContainer.children[1].position = vec2.mul(mg.state.scrollPos, -1)
+  itemGridContainer:applyGeometry()
 end
 
 local numActionBarSlots = root.assetJson("/player.config").inventory.customBarIndexes

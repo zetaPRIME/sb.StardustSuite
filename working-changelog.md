@@ -3,7 +3,6 @@
 - Slightly reworked Augpack lighting; should behave identically to before, but may be slightly more efficient
 
 ### Stardust Core
-- Fixed broken magnorbs
 
 ### Stardust Core+Lite
 - **sharedTable**: load-time metatable smuggling made clean and easy

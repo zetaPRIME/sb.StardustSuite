@@ -1,7 +1,6 @@
 require "/lib/stardust/eventhook.lua"
 
-local hd = { }
-getmetatable''["stardustlib:hudData"] = hd
+local hd = sharedTable "stardustlib:hudData"
 
 --[[function update(...)
   localAnimator.clearDrawables()

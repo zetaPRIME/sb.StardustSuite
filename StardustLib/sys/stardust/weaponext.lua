@@ -1,4 +1,5 @@
 -- weapon extension
+require "/lib/stardust/sharedtable.lua"
 require "/lib/stardust/weaponutil.lua"
 
 local follow = false
@@ -90,13 +91,12 @@ function world.spawnProjectile(name, pos, src, dir, track, params)
 end
 
 if Weapon then
+  local hd = sharedTable "stardustlib:hudData"
+  
   local _upd = Weapon.update
   function Weapon.update(...)
     _upd(...)
     
-    local hd = getmetatable''["stardustlib:hudData"]
-    if hd then
-      hd.targetPos = activeItem.ownerAimPosition()
-    end
+    hd.targetPos = activeItem.ownerAimPosition()
   end
 end

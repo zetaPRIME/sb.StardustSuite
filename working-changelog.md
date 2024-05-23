@@ -6,6 +6,7 @@
 - Fixed broken magnorbs
 
 ### Stardust Core+Lite
+- **sharedTable**: load-time metatable smuggling made clean and easy
 - **eventHook**: thread-global event subscription and calling
 - [wip] HUD manager
 - Added an important PSA

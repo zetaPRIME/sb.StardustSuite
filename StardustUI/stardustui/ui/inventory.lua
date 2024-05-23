@@ -307,13 +307,22 @@ function update()
   updateEquipment()
   updateItems()
   
-  if not vpane.isDisplayed() then autoDismiss = true pane.dismiss()
-  else -- puppet things around
-    local p, s = pane.getPosition(), pane.getSize()
-    vpane.setSize{s[1], 0}
-    vpane.setPosition{p[1], p[2] + s[2]/2}
-  end
+  
 end
+mg.startEvent(function()
+  while true do
+    if not vpane.isDisplayed() then
+      if not input.bindDown("game", "InterfaceInventory") then coroutine.yield() end
+      if not vpane.isDisplayed() then autoDismiss = true pane.dismiss() end
+    else -- puppet things around
+      local p, s = pane.getPosition(), pane.getSize()
+      vpane.setSize{s[1], 0}
+      vpane.setPosition{p[1], p[2] + s[2]/2}
+    end
+    
+    coroutine.yield()
+  end
+end)
 
 ipc.inventoryOpen = true
 function uninit()

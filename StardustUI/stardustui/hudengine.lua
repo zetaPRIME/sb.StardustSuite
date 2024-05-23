@@ -1,7 +1,8 @@
 -- Stardust UI HUD engine (player script)
 
-local ipc = getmetatable''["stardustui:"]
-if not ipc then ipc = { } getmetatable''["stardustui:"] = ipc end
+require "/lib/stardust/sharedtable.lua"
+
+local ipc = sharedTable "stardustui:ipc"
 
 local tasks = { }
 function task(f)

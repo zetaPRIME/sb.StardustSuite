@@ -4,10 +4,10 @@
 
 require "/scripts/util.lua"
 require "/lib/stardust/itemutil.lua"
+require "/lib/stardust/sharedtable.lua"
 
 local mg = metagui
-local ipc = getmetatable''["stardustui:"]
-if not ipc then ipc = { } getmetatable''["stardustui:"] = ipc end
+local ipc = sharedTable "stardustui:ipc"
 
 --local itemBags
 itemBagsById = { }

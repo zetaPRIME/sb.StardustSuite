@@ -1,10 +1,9 @@
 -- eventHook: cross-script event subscription and propagation
 
-local ck = { } -- context key
-local keystr = "stardustlib:eventHooks"
+require "/lib/stardust/sharedtable.lua"
 
-local hooks = getmetatable''[keystr]
-if not hooks then hooks = { } getmetatable''[keystr] = hooks end
+local ck = { } -- context key
+local hooks = sharedTable "stardustlib:eventHook"
 
 eventHook = { }
 

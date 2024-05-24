@@ -1,6 +1,7 @@
 ### StarTech
 - Removed power cost of Nanofield double jump (why should it cost FP when vanilla techs are free?)
-- Slightly reworked Augpack lighting; should behave identically to before, but may be slightly more efficient
+- Slightly reworked Augpack lighting; should behave ~~identically~~ very similar to before, but may be slightly more efficient
+- Augpack lighting now smoothly attenuates with ambient light levels
 
 ### Stardust Core
 

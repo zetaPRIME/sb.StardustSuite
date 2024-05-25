@@ -523,6 +523,7 @@ function init() ----------------------------------------------------------------
   if mg.cfg.isContainer then -- hook up closing sync
     local cs = mg.ipc.containerSync[pane.sourceEntity()]
     cs.pane = pane.dismiss
+    if not cs.stub then return pane.dismiss() end -- guard against frame-perfect container cancels
   end
   
   -- set up basic pane stuff

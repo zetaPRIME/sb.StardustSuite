@@ -59,9 +59,6 @@ Stardust UI rumblings 2024 {
     - try to fix it disappearing for a frame whenever you switch containers
     eventually, figure out the smol oddness with nanofield head/leg slots
     costumes still display base body for some reason
-    
-    !!! closeWithInventory=false on chest ui!!
-    maybe that should be default with metaGUI???
 }
 
 - force recoverability for metaGUI panes

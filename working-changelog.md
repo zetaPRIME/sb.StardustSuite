@@ -37,4 +37,5 @@
 - Added missing entry for Chroma theme (whoops)
 
 ### Stardust UI
-(0.1.6...)
+- [ph] Inventory pane replacement (OSB only)
+- [ph] Take All hotkey

@@ -1,0 +1,15 @@
+{ //  -*- grammar-ext: json -*-
+  "stardustui" : {
+    "name" : "Stardust UI",
+    "groups" : {
+      "inventory" : { "name" : "Inventory" }
+    },
+    "binds" : {
+      "takeAll" : {
+        "name" : "Take All",
+        "group" : "inventory",
+        "default" : [{ "type" : "key", "value" : "`" }]
+      }
+    }
+  }
+}

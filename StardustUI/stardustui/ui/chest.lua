@@ -189,3 +189,10 @@ function sort:onClick()
   world.containerTakeAll(id)
   for slot, it in pairs(fi) do world.containerSwapItems(id, it, slot-1) end
 end
+
+function update()
+  if input and input.bindDown("stardustui", "takeAll") then
+    metagui.theme.onButtonClick(slotsBar)
+    slotsBar:onClick()
+  end
+end

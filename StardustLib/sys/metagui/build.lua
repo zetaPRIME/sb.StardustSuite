@@ -88,7 +88,18 @@ if uicfg.uniqueBy == "path" and uicfg.configPath then
   end
 end
 
-if pane.containerEntityId then uicfg.isContainer = true end
+local containerEntityId -- save in case of object destruction
+if pane.containerEntityId then
+  uicfg.isContainer = true
+  containerEntityId = pane.containerEntityId()
+  ipc.containerSync = ipc.containerSync or { }
+  local cs = ipc.containerSync[containerEntityId]
+  if not cs then
+    cs = setmetatable({ }, { __mode = 'v' })
+    ipc.containerSync[containerEntityId] = cs
+  end
+  cs.stub = pane.dismiss
+end
 
 local pf = { type = "panefeature" }
 if type(uicfg.anchor) == "table" then
@@ -122,3 +133,13 @@ player.interact("ScriptPane", {
   closeWithInventory = (function() if uicfg.isContainer then return false end end)(),
   ___ = uicfg
 }, pane.sourceEntity())
+
+local _uninit = uninit
+function uninit(...)
+  if _uninit then _uninit(...) end
+  if containerEntityId then
+    local cs = ipc.containerSync[containerEntityId]
+    cs.stub = nil
+    if cs.pane then cs.pane() end
+  end
+end

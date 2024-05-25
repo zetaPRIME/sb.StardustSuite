@@ -520,6 +520,11 @@ function init() ----------------------------------------------------------------
     mg.ipc.uniqueByPath[mg.cfg.configPath] = function() pane.dismiss() end
   end
   
+  if mg.cfg.isContainer then -- hook up closing sync
+    local cs = mg.ipc.containerSync[pane.sourceEntity()]
+    cs.pane = pane.dismiss
+  end
+  
   -- set up basic pane stuff
   local borderMargins = mg.theme.metrics.borderMargins[mg.cfg.style]
   frame = mg.createWidget({ type = "layout", size = mg.cfg.totalSize, position = {0, 0}, zlevel = -9999 })
@@ -624,7 +629,12 @@ function uninit()
   end
   
   if mg.ipc.uniqueByPath and mg.cfg.configPath then mg.ipc.uniqueByPath[mg.cfg.configPath] = nil end
-  if mg.cfg.isContainer then mg.ipc.openContainerProxy = nil end
+  if mg.cfg.isContainer then
+    mg.ipc.openContainerProxy = nil
+    local cs = mg.ipc.containerSync[pane.sourceEntity()]
+    cs.pane = nil
+    if cs.stub then cs.stub() end
+  end
 end
 
 local function findWindowPosition()

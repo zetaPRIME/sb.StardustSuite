@@ -30,6 +30,8 @@
 - Added wrap toggle for labels (on by default)
 - Added `padding` for panels
 - Expanded initial mouse search range dramatically to encompass even the most extreme resolutions
+- Added hard sync between paired container stubs and panes (if one closes, it'll actively close the other)
+  - This fixes erratic behavior that may be exhibited in OSB CI builds.
 
 ### Stardust Core Lite
 - Added missing entry for Chroma theme (whoops)

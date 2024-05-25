@@ -1,7 +1,7 @@
 -- monkey patch to keep track of any container being open
 
-local ipc = getmetatable''["stardustui:"]
-if not ipc then ipc = { } getmetatable''["stardustui:"] = ipc end
+require "/lib/stardust/sharedtable.lua"
+local ipc = sharedTable "stardustui:ipc"
 
 local cid
 

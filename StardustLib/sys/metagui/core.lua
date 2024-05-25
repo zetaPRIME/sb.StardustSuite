@@ -9,6 +9,8 @@ require "/scripts/util.lua"
 require "/scripts/vec2.lua"
 require "/scripts/rect.lua"
 
+require "/lib/stardust/sharedtable.lua"
+
 local function module(s) require(metagui.rootPath .. s .. ".lua") end -- for easy repointing if needed
 
 local debug = {
@@ -20,6 +22,8 @@ metagui = metagui or { }
 local mg = metagui
 mg.rootPath = getmetatable ''.metagui_root
 mg.debugFlags = debug
+
+mg.ipc = sharedTable "metagui:ipc"
 
 module "gfx"
 
@@ -510,12 +514,6 @@ function init() ----------------------------------------------------------------
   
   -- store this for later
   worldId = player.worldId()
-  
-  -- set up IPC
-  do local mt = getmetatable ''
-    mt.metagui_ipc = mt.metagui_ipc or { }
-    mg.ipc = mt.metagui_ipc
-  end
   
   if mg.cfg.uniqueBy == "path" and mg.cfg.configPath then
     mg.ipc.uniqueByPath = mg.ipc.uniqueByPath or { }

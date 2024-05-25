@@ -1,6 +1,7 @@
 -- hmm.
+require "/lib/stardust/sharedtable.lua"
+local ipc = sharedTable "metagui:ipc"
 
-local ipc = getmetatable ''.metagui_ipc
 local ks = ipc.keysub
 ks.accel = ks.accel or { }
 local accel = ks.accel

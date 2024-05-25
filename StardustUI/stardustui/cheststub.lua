@@ -1,8 +1,9 @@
 -- Modified metaGUI container stub
+require "/lib/stardust/sharedtable.lua"
+local ipc = sharedTable "metagui:ipc"
 
 function init()
-  local ipc = getmetatable ''.metagui_ipc
-  if ipc and ipc._stardustui_chestopts then
+  if ipc._stardustui_chestopts then
     inputcfg = "stardustui:chestoptions"
     ipc._stardustui_chestopts = nil
   else

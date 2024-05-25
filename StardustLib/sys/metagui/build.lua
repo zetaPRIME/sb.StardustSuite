@@ -3,13 +3,14 @@
 require "/scripts/util.lua"
 require "/scripts/vec2.lua"
 
+require "/lib/stardust/sharedtable.lua"
+local ipc = sharedTable "metagui:ipc"
+
 if not _mgcfg then _mgcfg = root.assetJson("/panes.config").metaGUI end -- make sure we have this
 local registry = root.assetJson("/metagui/registry.json")
 getmetatable ''.metagui_root = _mgcfg.providerRoot -- shove this in here so we don't need to configure this
 
 if pane.containerEntityId then
-  local ipc = getmetatable ''.metagui_ipc
-  if not ipc then ipc = { } getmetatable ''.metagui_ipc = ipc end
   if ipc.openContainerProxy then -- close and reopen next frame to prevent inventory from just closing due to openWithInventory
     ipc.openContainerProxy = nil -- dismiss this here to guard against infinite loops
     player.interact("OpenContainer", nil, pane.sourceEntity())
@@ -81,8 +82,7 @@ uicfg.totalSize = size
 -- handle unique conditions
 local abort
 if uicfg.uniqueBy == "path" and uicfg.configPath then
-  local ipc = getmetatable ''.metagui_ipc
-  if ipc and ipc.uniqueByPath and ipc.uniqueByPath[uicfg.configPath] then
+  if ipc.uniqueByPath and ipc.uniqueByPath[uicfg.configPath] then
     ipc.uniqueByPath[uicfg.configPath]()
     if uicfg.uniqueMode == "toggle" then return end
   end
@@ -119,5 +119,6 @@ player.interact("ScriptPane", {
   scriptWidgetCallbacks = { "__cb1", "__cb2", "__cb3", "__cb4", "__cb5", "_clickLeft", "_clickRight" },
   canvasClickCallbacks = { _mouse = "_mouseEvent" },
   openWithInventory = uicfg.openWithInventory or uicfg.isContainer,
+  closeWithInventory = (function() if uicfg.isContainer then return false end end)(),
   ___ = uicfg
 }, pane.sourceEntity())

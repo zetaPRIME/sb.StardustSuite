@@ -30,7 +30,14 @@ end
 task(function()
   local inv = interface.bindRegisteredPane "Inventory"
   if inv.getSize()[2] > 0 then -- start of session
+    
+    --for i=1,3 do coroutine.yield() end
+    --[[local lp = ((player.getProperty("metagui:state") or { })["/stardustui/ui/inventory.ui"] or { })["metagui:lastPosition"] or {0, 0}
+    interface.displayRegisteredPane "Inventory"
     inv.setSize{0, 0}
+    inv.setPosition(lp)
+    inv.dismiss()]]
+    --openUI("stardustui:inventory")
   end
   while true do
     if inv.isDisplayed() and not ipc.inventoryOpen then

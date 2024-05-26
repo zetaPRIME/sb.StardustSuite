@@ -309,15 +309,30 @@ function update()
   
   
 end
+
+local function puppet()
+  local sc = interface.bindCanvas("metagui"):size()
+  local p, s = pane.getPosition(), mg.cfg.totalSize
+  vpane.setSize{sc[1] - (p[1] + s[1]), 0}
+  vpane.setPosition{0, p[2] + s[2]/2}
+end
+
+--[[if not vpane.isDisplayed() then -- first launch
+  chat.addMessage("first launch detected")
+  interface.displayRegisteredPane "Inventory"
+  puppet()
+  vpane.dismiss()
+  pane.dismiss()
+end]]
+
 mg.startEvent(function()
   while true do
+    puppet()
     if not vpane.isDisplayed() then
       if not input.bindDown("game", "InterfaceInventory") then coroutine.yield() end
       if not vpane.isDisplayed() then autoDismiss = true pane.dismiss() end
     else -- puppet things around
-      local p, s = pane.getPosition(), pane.getSize()
-      vpane.setSize{s[1], 0}
-      vpane.setPosition{p[1], p[2] + s[2]/2}
+      --
     end
     
     coroutine.yield()

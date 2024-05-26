@@ -15,3 +15,8 @@ end
 local p = "/stardustui/hudengine.patch"
 assets.add(p, '{"genericScriptContexts":{"stardustui:hudengine":"/stardustui/hudengine.lua"}}')
 assets.patch("/player.config", p)
+
+--
+local p = "/stardustui/bringclose.patch"
+assets.add(p, '{"bringAdjacentWindowGap":0}')
+assets.patch("/interface.config", p)

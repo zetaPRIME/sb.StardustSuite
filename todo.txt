@@ -43,8 +43,6 @@ Stardust UI rumblings 2024 {
     
     > AUGMENT APPLICATION!!!
     
-    - oh, unrelated, but USE SHAREDTABLE IN BUILD SCRIPT SHENANIGANS
-    
     armor slot glyphs
     burn sfx on overwriting an item in trash slot
     right-click equipment on?
@@ -61,6 +59,8 @@ Stardust UI rumblings 2024 {
     
     convert both inventory and hudengine to task lib
     give metagui an eventhook dispatch for container/openWithInventory opening?
+    
+    figure out how to force item tool tip refresh, especially after augment
 }
 
 - do mouse events happen before or after update()?? if after then we don't get startEvent immediately which is maybe kind of a problem??

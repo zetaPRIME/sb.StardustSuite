@@ -13,7 +13,6 @@ function config.getParameter(key, def)
 end
 
 function build(directory, conf, parameters, level, seed)
-  sb.logInfo("build script")
   build = nil
   
   local aug = parameters.augment
@@ -21,10 +20,7 @@ function build(directory, conf, parameters, level, seed)
   
   ac = root.itemConfig(aug)
   local sc = config.getParameter("scripts", { })
-  for k,v in pairs(sc) do
-    sb.logInfo("augment script: " .. v)
-    require(v)
-  end
+  for k,v in pairs(sc) do require(v) end
   
   parameters = { result = apply(target) }
   

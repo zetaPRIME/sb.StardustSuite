@@ -101,7 +101,6 @@ function tryApplyAugment(slot, aug)
   if not slot or not aug or root.itemType(aug.name) ~= "augmentitem" then
     return false
   end
-  chat.addMessage("attempting to apply augment: " .. aug.name)
   local itm = player.item(slot)
   if not itm then return false end -- can't augment nothing
   local res do
@@ -216,8 +215,6 @@ do -- set up equipment slots
     local stm = player.swapSlotItem()
     
     if btn == 2 and stm and root.itemType(stm.name) == "augmentitem" then
-      -- TODO augments
-      chat.addMessage("augment")
       tryApplyHeldAugment(self._slotName)
     else
       if not stm or root.itemType(stm.name) == self._accepts then -- fits

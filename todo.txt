@@ -19,23 +19,6 @@ Stardust UI rumblings 2024 {
     create a functional inventory replacement first!!
     can puppet around a {0, 0} sized inventory pane as an origin for openWithInventory panes
     
-    - fake tabfield that doesn't swap?? and just changes the bag that the item grid is representing
-    
-    - need to figure out how to tell (with accuracy) what container the player has open...
-    - since we're OSB, we could do it a messy hacky way, monkey patching ALL container pane configs to hook in
-    
-    x { type=portrait scale=1.5 renderHumanoid=true }
-    - got the portrait working via canvas though
-    
-    - will want pane position memory as part of metagui
-    - hm. probably tab memory for the session
-    
-    - action bar link follow!
-    
-    - equipment slots
-    - stats
-    - trash slot
-    - pixels/currency
     hotbar slot indicator
     sort button
     techs?
@@ -47,17 +30,13 @@ Stardust UI rumblings 2024 {
     burn sfx on overwriting an item in trash slot
     right-click equipment on?
     
-    update rate optimizations
-    - item grid doesn't work if it scrolls??? wasn't consuming event
-    
     toggle: auto tab switch
     
-    - fix broken container switch
-    - try to fix it disappearing for a frame whenever you switch containers
     eventually, figure out the smol oddness with nanofield head/leg slots
     costumes still display base body for some reason
     
     convert both inventory and hudengine to task lib
+    update rate optimizations
     give metagui an eventhook dispatch for container/openWithInventory opening?
     
     figure out how to force item tool tip refresh, especially after augment

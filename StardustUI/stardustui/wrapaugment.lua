@@ -8,7 +8,7 @@ function config.getParameter(key, def)
   if r ~= nil then return r end
   r = ac.config[key]
   if r ~= nil then return r end
-  sb.logInfo("Augment requests unconfigured key: " .. key)
+  --sb.logInfo("Augment requests unconfigured key: " .. key)
   return def
 end
 

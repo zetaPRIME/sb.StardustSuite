@@ -1,9 +1,8 @@
 -- simple global session data storage
+require "/lib/stardust/sharedtable.lua"
+local ds = sharedTable "stardustlib:gdata"
 
 function build(directory, config, parameters, level, seed)
-  local ds = getmetatable ''["stardustlib:gdata"]
-  if not ds then ds = { } getmetatable ''["stardustlib:gdata"] = ds end
-  
   if type(parameters.dataRequest) == "table" then
     parameters.dataReturn = { }
     for k in pairs(parameters.dataRequest) do parameters.dataReturn[k] = ds[k] end

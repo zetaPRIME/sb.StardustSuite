@@ -42,15 +42,8 @@ Stardust UI rumblings 2024 {
     pet stats??
     
     > AUGMENT APPLICATION!!!
-    wait, how do you even do that???
-    ah, it runs kind of sort of a build script
-    I guess do some dirty synchronous pane init hackery
-    pane inits are **not** synchronous, they occur one frame later
-    loads are immediately before inits
-    - now that I think of it, this probably normally happens in item db land, shove it in a build script
-    indeed it does.
     
-    oh, unrelated, but USE SHAREDTABLE IN BUILD SCRIPT SHENANIGANS
+    - oh, unrelated, but USE SHAREDTABLE IN BUILD SCRIPT SHENANIGANS
     
     armor slot glyphs
     burn sfx on overwriting an item in trash slot

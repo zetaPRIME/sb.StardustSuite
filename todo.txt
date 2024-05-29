@@ -24,13 +24,14 @@ Stardust UI rumblings 2024 {
     techs?
     pet stats??
     
-    > AUGMENT APPLICATION!!!
+    - AUGMENT APPLICATION!!!
     
     armor slot glyphs
     burn sfx on overwriting an item in trash slot
     right-click equipment on?
     
     toggle: auto tab switch
+    have it only switch when first picking up an item (e.g. when swapslotitem's name changes)
     
     eventually, figure out the smol oddness with nanofield head/leg slots
     costumes still display base body for some reason

@@ -119,7 +119,9 @@ function tryApplyHeldAugment(slot)
     held.count = held.count - 1
     if held.count > 0 then player.setSwapSlotItem(held)
     else player.setSwapSlotItem() end
+    return true
   end
+  return false
 end
 
 -- and define item grid behavior
@@ -195,6 +197,8 @@ function itemGrid:onSlotMouseEvent(btn, down) -- remember, self is the *slot*, n
         player.setItem(sd, itm)
         player.setSwapSlotItem(stm)
       end
+    elseif btn == 2 and stm and root.itemType(stm.name) == "augmentitem" then
+      tryApplyHeldAugment(sd) -- try and apply augment
     end
   end
   root.setConfigurationPath("inventory.pickupToActionBar", pta)
@@ -215,7 +219,7 @@ do -- set up equipment slots
     local stm = player.swapSlotItem()
     
     if btn == 2 and stm and root.itemType(stm.name) == "augmentitem" then
-      tryApplyHeldAugment(self._slotName)
+      tryApplyHeldAugment(self._slotName) -- try and apply augment
     else
       if not stm or root.itemType(stm.name) == self._accepts then -- fits
         player.setEquippedItem(self._slotName, stm)

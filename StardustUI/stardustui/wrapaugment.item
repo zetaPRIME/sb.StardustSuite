@@ -1,0 +1,4 @@
+{ // -*- grammar-ext: json -*-
+  "itemName" : "stardustui:augmentwrapper",
+  "builder" : "/stardustui/wrapaugment.lua"
+}

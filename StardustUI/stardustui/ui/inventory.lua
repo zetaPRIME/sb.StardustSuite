@@ -97,6 +97,32 @@ function swapActionBarLinks(a, b, uni)
   return cc
 end
 
+function tryApplyAugment(slot, aug)
+  if not slot or not aug or root.itemType(aug.name) ~= "augmentitem" then
+    return false
+  end
+  chat.addMessage("attempting to apply augment: " .. aug.name)
+  local itm = player.item(slot)
+  if not itm then return false end -- can't augment nothing
+  local res do
+    local c = root.itemConfig { name = "stardustui:augmentwrapper", count = 1, parameters = { augment = aug, target = itm } }
+    res = c.parameters.result
+  end
+  if not res then return false end -- canceled by augment
+  player.setItem(slot, res)
+  return true
+end
+
+function tryApplyHeldAugment(slot)
+  local held = player.swapSlotItem()
+  local r = tryApplyAugment(slot, held)
+  if r then -- decrement
+    held.count = held.count - 1
+    if held.count > 0 then player.setSwapSlotItem(held)
+    else player.setSwapSlotItem() end
+  end
+end
+
 -- and define item grid behavior
 itemGrid.onCaptureMouseMove = mg.widgetTypes.button.onCaptureMouseMove
 function itemGrid:onSlotMouseEvent(btn, down) -- remember, self is the *slot*, not the grid
@@ -189,8 +215,10 @@ do -- set up equipment slots
     local itm = player.equippedItem(self._slotName)
     local stm = player.swapSlotItem()
     
-    if false then
+    if btn == 2 and stm and root.itemType(stm.name) == "augmentitem" then
       -- TODO augments
+      chat.addMessage("augment")
+      tryApplyHeldAugment(self._slotName)
     else
       if not stm or root.itemType(stm.name) == self._accepts then -- fits
         player.setEquippedItem(self._slotName, stm)
@@ -348,7 +376,9 @@ end
 
 function testBtn:onClick()
   chat.addMessage("before stub open, " .. ipc.framecount)
+  ipc._addm = chat.addMessage
   player.interact("ScriptPane", { gui = { }, scripts = {"/stardustui/teststub.lua"}, config = c })
+  chat.addMessage("immediately after")
   for i=1,5 do
     coroutine.yield()
     chat.addMessage("after " .. i .. " yields, " .. ipc.framecount )

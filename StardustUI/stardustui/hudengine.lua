@@ -3,6 +3,7 @@
 require "/lib/stardust/sharedtable.lua"
 
 local ipc = sharedTable "stardustui:ipc"
+if not ipc.framecount then ipc.framecount = 0 end
 
 local tasks = { }
 function task(f)
@@ -20,6 +21,7 @@ function uninit()
 end
 
 function update()
+  ipc.framecount = (ipc.framecount + 1) % 60
   for _,t in pairs(tasks) do coroutine.resume(t) end
 end
 

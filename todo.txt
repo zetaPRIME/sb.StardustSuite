@@ -64,7 +64,8 @@ Stardust UI rumblings 2024 {
     give metagui an eventhook dispatch for container/openWithInventory opening?
 }
 
-- force recoverability for metaGUI panes
+- do mouse events happen before or after update()?? if after then we don't get startEvent immediately which is maybe kind of a problem??
+mouse events are before update, also startevent manually resumes immediately; do we want to normalize events started from input events??
 
 add integration info to startech part of readme (generators, autosmelter)
 

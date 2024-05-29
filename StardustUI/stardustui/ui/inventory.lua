@@ -345,3 +345,12 @@ function uninit()
   mg.state.scrollPos = itemGridContainer:scrollPosition()
   if not autoDismiss then vpane.dismiss() end
 end
+
+function testBtn:onClick()
+  chat.addMessage("before stub open, " .. ipc.framecount)
+  player.interact("ScriptPane", { gui = { }, scripts = {"/stardustui/teststub.lua"}, config = c })
+  for i=1,5 do
+    coroutine.yield()
+    chat.addMessage("after " .. i .. " yields, " .. ipc.framecount )
+  end
+end
